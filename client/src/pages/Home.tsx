@@ -114,9 +114,9 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              Votre Courtier en Assurances
+              Votre Partenaire de Confiance
               <br />
-              <span className="text-accent">de Confiance</span>
+              <span className="text-accent">en Assurances</span>
             </motion.h1>
 
             <motion.p 
@@ -134,10 +134,10 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
             >
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold text-lg px-8 py-6 h-auto">
                   <Target className="w-5 h-5 mr-2" />
-                  Analyse Gratuite de Votre Situation
+                  Demandez Conseil
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -164,7 +164,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-accent" />
-                <span>100% gratuit</span>
+                <span>100% confidentiel</span>
               </div>
             </motion.div>
           </motion.div>
@@ -427,10 +427,10 @@ export default function Home() {
               transition={{ delay: 0.5, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold">
                   <Target className="w-5 h-5 mr-2" />
-                  Commencer Mon Analyse Gratuite
+                  Demandez Conseil
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -546,13 +546,13 @@ export default function Home() {
               Prêt à Protéger Votre Avenir ?
             </h2>
             <p className="text-xl mb-8 text-white/90">
-              Rejoignez plus de {COMPANY_INFO.stats.clients} clients satisfaits et bénéficiez d'une analyse gratuite de votre situation
+              Rejoignez plus de {COMPANY_INFO.stats.clients} clients satisfaits et bénéficiez d'un conseil personnalisé
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold text-lg px-8 py-6 h-auto">
                   <Target className="w-5 h-5 mr-2" />
-                  Commencer Mon Analyse
+                  Demandez Conseil
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>

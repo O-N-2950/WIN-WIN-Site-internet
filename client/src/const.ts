@@ -125,6 +125,7 @@ export const ROUTES = {
   contact: "/contact",
   pricing: "/tarifs",
   questionnaire: "/questionnaire",
+  questionnaireInfo: "/questionnaire-info",
   signature: "/signature",
   payment: "/paiement",
   thankYou: "/merci",

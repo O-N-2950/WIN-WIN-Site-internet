@@ -34,9 +34,9 @@ export default function Durabilis() {
               Anticipez, protégez et assurez la continuité de votre entreprise en cas d'imprévu
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Demander une Analyse Gratuite
+                  Demandez Conseil
                 </Button>
               </Link>
               <a href={SERVICES_LINKS.durabilis} target="_blank" rel="noopener noreferrer">
@@ -405,9 +405,9 @@ export default function Durabilis() {
               Ne laissez pas l'imprévu mettre en péril des années de travail
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Demander une Analyse Gratuite
+                  Demandez Conseil
                 </Button>
               </Link>
               <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>

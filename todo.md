@@ -210,3 +210,11 @@
 - **Sur 500 clients** : 108 heures économisées = **16'200 CHF** (à CHF 150/h)
 - **Coût développement** : ~3'000 CHF
 - **ROI** : **5.4x dès la première année** 🚀
+
+
+## 📝 Corrections Vocabulaire (Demande Utilisateur - 15 nov 2025)
+- [x] Remplacer "Analyse gratuite" par "Demandez conseil" sur toutes les pages
+- [x] Remplacer "courtier" par "partenaire de confiance" partout
+- [x] Supprimer le terme "gratuit" (valoriser le service, pas le prix)
+- [x] Vérifier cohérence du vocabulaire sur toutes les pages
+- [ ] Créer checkpoint après corrections

@@ -370,13 +370,13 @@ export default function Services() {
               Prêt à optimiser votre prévoyance ?
             </h2>
             <p className="text-lg opacity-90">
-              Bénéficiez d'un conseil personnalisé gratuit et sans engagement. 
+              Bénéficiez d'un conseil personnalisé et sans engagement. 
               Nos experts analysent votre situation et vous proposent les meilleures solutions du marché.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/formulaire">
+              <Link href="/questionnaire-info">
                 <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90">
-                  Demander un conseil gratuit
+                  Demandez Conseil
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>

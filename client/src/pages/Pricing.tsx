@@ -81,7 +81,7 @@ export default function Pricing() {
                 <div className="text-5xl mb-4">🎓</div>
                 <h3 className="text-2xl font-bold mb-2">Moins de 18 ans</h3>
                 <div className="text-4xl font-bold text-primary mb-4">
-                  Gratuit
+                  Offert
                 </div>
                 <p className="text-muted-foreground mb-6">
                   Protection complète pour les jeunes et étudiants
@@ -126,7 +126,7 @@ export default function Pricing() {
                 <ul className="space-y-3 text-left mb-8">
                   <li className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <span>Tout ce qui est inclus en gratuit</span>
+                    <span>Tout ce qui est inclus dans l'offre de base</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -246,9 +246,9 @@ export default function Pricing() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-8 text-center"
             >
-              <Link href={ROUTES.questionnaire}>
+              <Link href={ROUTES.questionnaireInfo}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Demander une Analyse Gratuite
+                  Demandez Conseil
                 </Button>
               </Link>
             </motion.div>
@@ -313,8 +313,8 @@ export default function Pricing() {
               },
               {
                 icon: "🔎",
-                title: "Recherche LPP Gratuite",
-                description: "Accès gratuit à notre outil de recherche de libre passage"
+                title: "Recherche LPP Incluse",
+                description: "Accès à notre outil de recherche de libre passage"
               },
               {
                 icon: "💼",
@@ -415,12 +415,12 @@ export default function Pricing() {
               Prêt à Commencer ?
             </h2>
             <p className="text-xl mb-8 text-white/90">
-              Rejoignez plus de 500+ clients satisfaits et bénéficiez d'une analyse gratuite
+              Rejoignez plus de 500+ clients satisfaits et bénéficiez d'un conseil personnalisé
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={ROUTES.questionnaire}>
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Commencer Mon Analyse Gratuite
+                  Demandez Conseil
                 </Button>
               </Link>
               <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>

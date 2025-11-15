@@ -58,8 +58,8 @@ const chiffres = [
 ];
 
 const certifications = [
-  "Courtier en assurances agréé FINMA",
-  "Membre CICERO (Centre d'Information des Courtiers en Assurances)",
+  "Partenaire en assurances agréé FINMA",
+  "Membre CICERO (Centre d'Information des Partenaires en Assurances)",
   "Certification en prévoyance professionnelle",
   "Expert en planification financière",
 ];

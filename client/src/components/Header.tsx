@@ -77,9 +77,9 @@ export default function Header() {
             <Phone className="h-4 w-4" />
             <span>{CONTACT_INFO.phone}</span>
           </a>
-          <Link href="/questionnaire">
+          <Link href="/questionnaire-info">
             <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
-              Analyse Gratuite
+              Demandez Conseil
             </Button>
           </Link>
         </div>
@@ -146,9 +146,9 @@ export default function Header() {
                 <Mail className="h-4 w-4" />
                 <span>{CONTACT_INFO.email}</span>
               </a>
-              <Link href="/questionnaire">
+              <Link href="/questionnaire-info">
                 <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Analyse Gratuite
+                  Demandez Conseil
                 </Button>
               </Link>
             </div>
