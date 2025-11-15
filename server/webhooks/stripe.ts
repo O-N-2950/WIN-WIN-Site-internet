@@ -8,45 +8,13 @@ import Stripe from 'stripe';
 import { ENV } from '../_core/env';
 import { createClientInAirtable } from '../airtable';
 import { notifyOwner } from '../_core/notification';
+import { sendWelcomeEmail, sendOwnerNotificationEmail } from '../email';
 
 const stripe = new Stripe(ENV.stripeSecretKey, {
   apiVersion: '2025-10-29.clover',
 });
 
-/**
- * Envoyer un email de bienvenue au client
- */
-async function sendWelcomeEmail(clientEmail: string, clientName: string, mandatNumber: string) {
-  // TODO: Implémenter avec un service d'email (SendGrid, Mailgun, etc.)
-  // Pour le moment, on log simplement
-  console.log('[Email] Envoi email de bienvenue à:', clientEmail);
-  console.log('[Email] Nom:', clientName);
-  console.log('[Email] Numéro de mandat:', mandatNumber);
-  
-  // Template email :
-  // Sujet: Bienvenue chez WIN WIN Finance Group - Votre mandat est activé !
-  // Corps:
-  // Bonjour {clientName},
-  //
-  // Félicitations ! Votre mandat de gestion WIN WIN Finance Group est maintenant activé.
-  //
-  // Numéro de mandat : {mandatNumber}
-  //
-  // Prochaines étapes :
-  // 1. Vous recevrez un email dans les 48h pour planifier votre rendez-vous d'analyse
-  // 2. Olivier Neukomm vous contactera personnellement pour faire le point sur vos besoins
-  // 3. Vous aurez accès à votre espace client pour suivre vos contrats
-  //
-  // Accédez à votre espace client : https://airtable.com/appZQkRJ7PwOtdQ3O/shrJqT8kxxxxxxx
-  //
-  // Merci de votre confiance !
-  //
-  // L'équipe WIN WIN Finance Group
-  // 032 466 11 00
-  // contact@winwin.swiss
-  
-  return true;
-}
+
 
 /**
  * Handler du webhook Stripe
@@ -124,7 +92,7 @@ export async function handleStripeWebhook(req: Request, res: Response) {
         // Envoyer l'email de bienvenue au client
         await sendWelcomeEmail(clientEmail, clientName, mandatNumber);
         
-        // Notifier Olivier
+        // Notifier Olivier (notification Manus)
         await notifyOwner({
           title: 'Nouveau client payé ✅',
           content: `**Nouveau client WIN WIN Finance Group**\n\n` +
@@ -137,7 +105,17 @@ export async function handleStripeWebhook(req: Request, res: Response) {
                    `[Voir dans Airtable](https://airtable.com/appZQkRJ7PwOtdQ3O/tblWPcIpGmBZ3ASGI/${airtableRecord.id})`
         });
         
-        console.log('[Webhook] Notification envoyée à Olivier');
+        // Envoyer email notification à Olivier
+        await sendOwnerNotificationEmail(
+          clientName,
+          clientEmail,
+          clientType === 'particulier' ? 'Particulier' : 'Entreprise',
+          annualPrice,
+          mandatNumber,
+          airtableRecord.id
+        );
+        
+        console.log('[Webhook] Notifications envoyées à Olivier');
         
       } catch (error: any) {
         console.error('[Webhook] Erreur lors de la création du client:', error);

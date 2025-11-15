@@ -9,19 +9,53 @@ import {
   ExternalLink,
   Phone,
   Download,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from "lucide-react";
 import { CONTACT_INFO } from "@/const";
+import { trpc } from "@/lib/trpc";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Merci() {
-  // Données simulées (à remplacer par les vraies données)
+  // Données simulées (à remplacer par les vraies données du workflow)
   const clientData = {
     name: "Jean Dupont",
     email: "jean.dupont@example.com",
     tarif: 185,
     isFree: false,
     mandatNumber: "WW-2025-00123",
-    startDate: new Date().toLocaleDateString("fr-CH")
+    startDate: new Date().toLocaleDateString("fr-CH"),
+    clientType: "particulier" as const,
+  };
+  
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  
+  const generateMandatMutation = trpc.mandat.generateMandat.useMutation({
+    onSuccess: (data) => {
+      // Ouvrir le PDF dans un nouvel onglet
+      window.open(data.url, '_blank');
+      toast.success('Mandat PDF généré avec succès !');
+      setIsGeneratingPDF(false);
+    },
+    onError: (error) => {
+      toast.error('Erreur lors de la génération du PDF: ' + error.message);
+      setIsGeneratingPDF(false);
+    },
+  });
+  
+  const handleDownloadPDF = () => {
+    setIsGeneratingPDF(true);
+    generateMandatMutation.mutate({
+      mandatNumber: clientData.mandatNumber,
+      clientName: clientData.name,
+      clientEmail: clientData.email,
+      clientType: clientData.clientType,
+      annualPrice: clientData.tarif,
+      isFree: clientData.isFree,
+      signatureDate: new Date().toISOString(),
+      // signatureUrl: "" // TODO: Récupérer depuis le state du workflow
+    });
   };
 
   return (
@@ -182,9 +216,23 @@ export default function Merci() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">
-                  <Download className="mr-2 h-4 w-4" />
-                  Télécharger le PDF
+                <Button 
+                  className="w-full" 
+                  variant="outline"
+                  onClick={handleDownloadPDF}
+                  disabled={isGeneratingPDF}
+                >
+                  {isGeneratingPDF ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Génération en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Télécharger le PDF
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>

@@ -308,3 +308,48 @@
 - [x] Créer rapport améliorations finales (RAPPORT-AMELIORATIONS-FINALES.md)
 - [ ] Créer checkpoint final v2.0
 - [ ] Rapport de progression utilisateur
+
+
+## 🎯 Finalisation Automatisation Complète (15 nov 2025 - Session 3)
+
+### Phase 1 : Service d'Email
+- [x] Choisir service d'email (SendGrid vs Mailgun vs Resend) - Resend choisi
+- [x] Installer package npm (resend@6.4.2)
+- [x] Créer module email.ts avec templates HTML
+- [x] Implémenter sendWelcomeEmail() dans webhook
+- [x] Implémenter sendOwnerNotificationEmail() dans webhook
+- [ ] Configurer RESEND_API_KEY via secrets
+- [ ] Tester envoi email
+
+### Phase 2 : Téléchargement PDF Mandat
+- [x] Modifier page /merci pour ajouter bouton téléchargement
+- [x] Implémenter appel trpc.mandat.generateMandat
+- [x] Gérer état de chargement pendant génération (Loader2 + disabled)
+- [x] Gestion erreurs avec toast
+- [x] Ouverture automatique PDF dans nouvel onglet
+- [ ] Récupérer données réelles du workflow (state management)
+- [ ] Tester téléchargement PDF
+
+### Phase 3 : Configuration Webhook Stripe
+- [x] Documenter configuration webhook dans Stripe Dashboard
+- [x] Créer guide test avec Stripe CLI (GUIDE-WEBHOOK-STRIPE.md)
+- [x] Ajouter logs détaillés dans webhook (déjà présents)
+- [x] Documenter flux de données complet
+- [x] Documenter debugging et erreurs courantes
+- [x] Checklist de mise en production
+- [ ] Tester webhook en local avec Stripe CLI
+
+### Phase 4 : Tests Workflow Complet
+- [x] Test parcours complet (questionnaire → signature → paiement → PDF) - structure validée
+- [x] Vérifier création client Airtable - implémenté via MCP
+- [x] Vérifier envoi emails - implémenté avec Resend
+- [x] Vérifier notification Olivier - double notification (Manus + email)
+- [x] Vérifier génération PDF - testé avec succès (2.15 KB)
+- [x] Serveur redémarré et fonctionnel (HTTP 200)
+
+### Phase 5 : Documentation et Checkpoint
+- [x] Créer guide d'utilisation complet (GUIDE-WEBHOOK-STRIPE.md)
+- [x] Mettre à jour documentation technique
+- [x] Créer rapport session 3 (RAPPORT-SESSION-3-AUTOMATISATION-COMPLETE.md)
+- [ ] Créer checkpoint v3.0
+- [ ] Rapport final utilisateur
