@@ -1,0 +1,72 @@
+[
+  {
+    "key": "particulier_18_22",
+    "productId": "prod_TQcwOp0X3VDFyT",
+    "priceId": "price_1STlgKDevWYEIiJ8QqZu9R52",
+    "amount": 85,
+    "currency": "chf"
+  },
+  {
+    "key": "particulier_over_22",
+    "productId": "prod_TQcwgHMkQBqkRb",
+    "priceId": "price_1STlgKDevWYEIiJ8ExMQznN7",
+    "amount": 185,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_0",
+    "productId": "prod_TQcw5ZjfohcPQF",
+    "priceId": "price_1STlgLDevWYEIiJ8fpjNpgAn",
+    "amount": 160,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_1",
+    "productId": "prod_TQcw4mzZRwi637",
+    "priceId": "price_1STlgLDevWYEIiJ8TtUOdeBY",
+    "amount": 260,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_2",
+    "productId": "prod_TQcwy9HDhmmJJx",
+    "priceId": "price_1STlgMDevWYEIiJ8LcVUCBzI",
+    "amount": 360,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_3_5",
+    "productId": "prod_TQcwjMDLEaFK6p",
+    "priceId": "price_1STlgMDevWYEIiJ8lnbNPxVe",
+    "amount": 460,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_6_10",
+    "productId": "prod_TQcwmGf4511Upf",
+    "priceId": "price_1STlgNDevWYEIiJ8WHVYyo0l",
+    "amount": 560,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_11_20",
+    "productId": "prod_TQcwFYhhlIw4nA",
+    "priceId": "price_1STlgNDevWYEIiJ8jQRDvTuS",
+    "amount": 660,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_21_30",
+    "productId": "prod_TQcwc46Ftm9gc9",
+    "priceId": "price_1STlgNDevWYEIiJ8r1Ysxivn",
+    "amount": 760,
+    "currency": "chf"
+  },
+  {
+    "key": "entreprise_31_plus",
+    "productId": "prod_TQcwJ8wPgTh9qB",
+    "priceId": "price_1STlgODevWYEIiJ8vMjiO56u",
+    "amount": 860,
+    "currency": "chf"
+  }
+]

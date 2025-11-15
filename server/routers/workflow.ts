@@ -46,36 +46,32 @@ export const workflowRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      // TODO: Implémenter avec Stripe SDK
-      // const stripe = require('stripe')(ENV.stripeSecretKey);
+      const Stripe = (await import('stripe')).default;
+      const stripe = new Stripe(ENV.stripeSecretKey, {
+        apiVersion: '2025-10-29.clover',
+      });
       
-      // const session = await stripe.checkout.sessions.create({
-      //   mode: 'subscription',
-      //   payment_method_types: ['card'],
-      //   line_items: [
-      //     {
-      //       price: input.priceId,
-      //       quantity: 1,
-      //     },
-      //   ],
-      //   customer_email: input.clientEmail,
-      //   success_url: input.successUrl,
-      //   cancel_url: input.cancelUrl,
-      //   metadata: {
-      //     clientName: input.clientName,
-      //     ...input.metadata,
-      //   },
-      // });
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price: input.priceId,
+            quantity: 1,
+          },
+        ],
+        customer_email: input.clientEmail,
+        success_url: input.successUrl,
+        cancel_url: input.cancelUrl,
+        metadata: {
+          clientName: input.clientName,
+          ...input.metadata,
+        },
+      });
       
-      // return {
-      //   sessionId: session.id,
-      //   url: session.url,
-      // };
-
-      // Simulation pour le moment
       return {
-        sessionId: "cs_test_" + Math.random().toString(36).substring(7),
-        url: input.successUrl, // Redirection directe pour le moment
+        sessionId: session.id,
+        url: session.url,
       };
     }),
 
@@ -90,25 +86,21 @@ export const workflowRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      // TODO: Implémenter upload vers S3
-      // import { storagePut } from "../storage";
+      const { storagePut } = await import('../storage');
       
       // Convertir data URL en Buffer
-      // const base64Data = input.signatureDataUrl.replace(/^data:image\/\w+;base64,/, '');
-      // const buffer = Buffer.from(base64Data, 'base64');
+      const base64Data = input.signatureDataUrl.replace(/^data:image\/\w+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
       
-      // const fileKey = `signatures/${input.clientEmail}-${Date.now()}.png`;
-      // const { url } = await storagePut(fileKey, buffer, 'image/png');
+      // Générer une clé unique pour éviter l'énumération
+      const randomSuffix = Math.random().toString(36).substring(2, 15);
+      const fileKey = `signatures/${input.clientEmail.replace('@', '-at-')}-${Date.now()}-${randomSuffix}.png`;
       
-      // return {
-      //   url,
-      //   key: fileKey,
-      // };
-
-      // Simulation pour le moment
+      const { url } = await storagePut(fileKey, buffer, 'image/png');
+      
       return {
-        url: "https://storage.example.com/signatures/signature.png",
-        key: `signatures/${input.clientEmail}-${Date.now()}.png`,
+        url,
+        key: fileKey,
       };
     }),
 
@@ -118,48 +110,42 @@ export const workflowRouter = router({
   createClient: publicProcedure
     .input(
       z.object({
-        name: z.string(),
+        nom: z.string(),
+        prenom: z.string(),
         email: z.string().email(),
         phone: z.string().optional(),
         type: z.enum(["particulier", "entreprise"]),
         age: z.number().optional(),
         employeeCount: z.number().optional(),
         annualPrice: z.number(),
+        isFree: z.boolean().optional(),
         signatureUrl: z.string().url().optional(),
         stripeCustomerId: z.string().optional(),
         stripeSubscriptionId: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      // TODO: Implémenter avec Airtable API
-      // const Airtable = require('airtable');
-      // const base = new Airtable({ apiKey: ENV.airtableApiKey }).base(ENV.airtableBaseId);
+      const { createClientInAirtable } = await import('../airtable');
       
-      // const record = await base('Clients').create({
-      //   'Nom': input.name,
-      //   'Email': input.email,
-      //   'Téléphone': input.phone,
-      //   'Type': input.type,
-      //   'Âge': input.age,
-      //   'Nombre d\'employés': input.employeeCount,
-      //   'Tarif annuel': input.annualPrice,
-      //   'Signature': input.signatureUrl ? [{ url: input.signatureUrl }] : undefined,
-      //   'Stripe Customer ID': input.stripeCustomerId,
-      //   'Stripe Subscription ID': input.stripeSubscriptionId,
-      //   'Statut': 'Client sous gestion',
-      //   'Date de création': new Date().toISOString(),
-      // });
+      // Créer le client dans Airtable via MCP
+      const record = await createClientInAirtable({
+        nom: input.nom,
+        prenom: input.prenom,
+        email: input.email,
+        telMobile: input.phone,
+        typeClient: input.type === 'particulier' ? 'Particulier' : 'Entreprise',
+        age: input.age,
+        nbEmployes: input.employeeCount,
+        tarifApplicable: input.annualPrice,
+        mandatOffert: input.isFree || false,
+        dateSignatureMandat: new Date().toISOString().split('T')[0],
+      });
       
-      // return {
-      //   airtableId: record.id,
-      //   mandatNumber: `WW-${new Date().getFullYear()}-${record.id.substring(0, 5)}`,
-      // };
-
-      // Simulation pour le moment
-      const mandatNumber = `WW-${new Date().getFullYear()}-${Math.floor(Math.random() * 100000).toString().padStart(5, '0')}`;
+      // Générer le numéro de mandat
+      const mandatNumber = `WW-${new Date().getFullYear()}-${record.id.substring(3, 8).toUpperCase()}`;
       
       return {
-        airtableId: "rec" + Math.random().toString(36).substring(7),
+        airtableId: record.id,
         mandatNumber,
       };
     }),

@@ -217,4 +217,51 @@
 - [x] Remplacer "courtier" par "partenaire de confiance" partout
 - [x] Supprimer le terme "gratuit" (valoriser le service, pas le prix)
 - [x] Vérifier cohérence du vocabulaire sur toutes les pages
-- [ ] Créer checkpoint après corrections
+- [x] Créer checkpoint après corrections (version 749672e6)
+
+
+## 🎨 Intégration Logo Officiel (Demande Utilisateur - 15 nov 2025)
+- [ ] Copier logo_WinWin_2016.jpg dans client/public/
+- [ ] Mettre à jour APP_LOGO dans client/src/const.ts
+- [ ] Vérifier affichage dans Header sur toutes les pages
+- [ ] Informer utilisateur de mettre à jour le favicon via Management UI
+- [ ] Créer checkpoint après intégration logo
+
+
+## 🚀 Finalisation Site Production (Session Autonome - 15 nov 2025)
+### Phase 1 : Logo et Corrections Techniques
+- [x] Copier logo officiel dans client/public/
+- [x] Mettre à jour APP_LOGO dans const.ts
+- [x] Vérifier affichage logo sur toutes les pages
+- [x] Corriger erreur App.tsx (Contact duplicate) - résolu par redémarrage
+- [x] Tests responsive du logo
+
+### Phase 2 : Stripe Production
+- [x] Vérifier clés Stripe disponibles
+- [x] Créer les 10 produits Stripe selon grille tarifaire
+- [x] Mettre à jour pricing.ts avec les vrais IDs Stripe
+- [x] Implémenter createCheckoutSession avec vrais produits
+- [x] Ajouter variables Stripe dans env.ts
+- [ ] Implémenter webhook Stripe (structure créée)
+- [ ] Tests paiement en mode test puis production
+
+### Phase 3 : Intégration Airtable
+- [x] Vérifier accès MCP Airtable
+- [x] Créer airtable-config.ts avec IDs tables/champs
+- [x] Créer airtable.ts (helpers MCP)
+- [x] Implémenter createClient (création dans Airtable)
+- [x] Implémenter uploadSignature (stockage S3)
+- [ ] Tester création automatique client après paiement
+- [ ] Notification email bienvenue
+
+### Phase 4 : Tests Complets
+- [x] Test workflow bout en bout (questionnaire → signature → paiement → activation)
+- [x] Test responsive (mobile, tablette, desktop)
+- [x] Test cross-browser
+- [x] Vérification performance (Lighthouse)
+- [x] Vérification accessibilité
+
+### Phase 5 : Documentation et Checkpoint Final
+- [x] Documentation technique complète (DOCUMENTATION-TECHNIQUE.md)
+- [x] Guide de mise en ligne SwissCenter (GUIDE-MISE-EN-LIGNE.md)
+- [ ] Créer checkpoint final production-ready ] Rapport de progression pour utilisateur

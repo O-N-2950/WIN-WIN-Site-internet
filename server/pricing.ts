@@ -48,18 +48,18 @@ const PRICING_ENTREPRISE: Record<string, number> = {
  */
 const STRIPE_PRICE_IDS: Record<string, string> = {
   // Particuliers
-  "particulier_18_22": "price_particulier_18_22",
-  "particulier_over_22": "price_particulier_over_22",
+  "particulier_18_22": "price_1STlgKDevWYEIiJ8QqZu9R52",
+  "particulier_over_22": "price_1STlgKDevWYEIiJ8ExMQznN7",
   
   // Entreprises
-  "entreprise_0": "price_entreprise_0",
-  "entreprise_1": "price_entreprise_1",
-  "entreprise_2": "price_entreprise_2",
-  "entreprise_3_5": "price_entreprise_3_5",
-  "entreprise_6_10": "price_entreprise_6_10",
-  "entreprise_11_20": "price_entreprise_11_20",
-  "entreprise_21_30": "price_entreprise_21_30",
-  "entreprise_31_plus": "price_entreprise_31_plus",
+  "entreprise_0": "price_1STlgLDevWYEIiJ8fpjNpgAn",
+  "entreprise_1": "price_1STlgLDevWYEIiJ8TtUOdeBY",
+  "entreprise_2": "price_1STlgMDevWYEIiJ8LcVUCBzI",
+  "entreprise_3_5": "price_1STlgMDevWYEIiJ8lnbNPxVe",
+  "entreprise_6_10": "price_1STlgNDevWYEIiJ8WHVYyo0l",
+  "entreprise_11_20": "price_1STlgNDevWYEIiJ8jQRDvTuS",
+  "entreprise_21_30": "price_1STlgNDevWYEIiJ8r1Ysxivn",
+  "entreprise_31_plus": "price_1STlgODevWYEIiJ8vMjiO56u",
 };
 
 /**
