@@ -1,33 +1,581 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
-import { Streamdown } from 'streamdown';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  APP_TITLE, 
+  CONTACT_INFO, 
+  COMPANY_INFO, 
+  PRICING_DISPLAY,
+  ROUTES,
+  SERVICES_LINKS 
+} from "@/const";
+import {
+  Shield,
+  TrendingUp,
+  Users,
+  Heart,
+  Building2,
+  FileText,
+  ArrowRight,
+  CheckCircle2,
+  Star,
+  Phone,
+  Mail,
+  Sparkles,
+  Target,
+  Award,
+  Clock,
+} from "lucide-react";
+import { Link } from "wouter";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Workflow, Frontend Best Practices, Design Guide and Common Pitfalls
- */
+// Animations
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.9 },
+  whileInView: { opacity: 1, scale: 1 },
+  transition: { duration: 0.5 },
+  viewport: { once: true }
+};
+
+// Compteur animé
+function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      setCount(Math.floor(progress * end));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration]);
+
+  return <span>{count}{suffix}</span>;
+}
+
 export default function Home() {
-  // The userAuth hooks provides authentication state
-  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
-
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
-  // Use APP_LOGO (as image src) and APP_TITLE if needed
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section 
+        className="relative min-h-[90vh] flex items-center justify-center overflow-hidden"
+        style={{
+          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 45%), hsl(205, 40%, 69%))'
+        }}
+      >
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        
+        {/* Content */}
+        <div className="container relative z-10 py-20">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center text-white"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/20 backdrop-blur-sm"
+            >
+              <Award className="w-4 h-4" />
+              <span className="text-sm font-medium">Autorisé FINMA {COMPANY_INFO.finma}</span>
+            </motion.div>
+
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              Votre Courtier en Assurances
+              <br />
+              <span className="text-accent">de Confiance</span>
+            </motion.h1>
+
+            <motion.p 
+              className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              {COMPANY_INFO.stats.experience} d'expertise au service de votre protection et de votre prévoyance
+            </motion.p>
+
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+            >
+              <Link href={ROUTES.questionnaire}>
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold text-lg px-8 py-6 h-auto">
+                  <Target className="w-5 h-5 mr-2" />
+                  Analyse Gratuite de Votre Situation
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+              <Link href={ROUTES.services}>
+                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white font-semibold text-lg px-8 py-6 h-auto backdrop-blur-sm">
+                  Découvrir Nos Services
+                </Button>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              className="mt-12 flex items-center justify-center gap-8 text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9, duration: 0.6 }}
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-accent" />
+                <span>Sans engagement</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-accent" />
+                <span>Réponse sous 48h</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-accent" />
+                <span>100% gratuit</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Wave Divider */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V120Z" fill="hsl(var(--background))"/>
+          </svg>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="container">
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            <motion.div variants={scaleIn} className="text-center">
+              <div className="text-6xl font-bold text-primary mb-2">
+                <AnimatedCounter end={500} suffix="+" />
+              </div>
+              <p className="text-xl font-semibold text-foreground/80">Clients Actifs</p>
+              <p className="text-sm text-muted-foreground mt-2">Familles et entreprises qui nous font confiance</p>
+            </motion.div>
+
+            <motion.div variants={scaleIn} className="text-center">
+              <div className="text-6xl font-bold text-primary mb-2">
+                <AnimatedCounter end={30} suffix=" ans" />
+              </div>
+              <p className="text-xl font-semibold text-foreground/80">D'Expérience</p>
+              <p className="text-sm text-muted-foreground mt-2">Au service de la protection et de la prévoyance</p>
+            </motion.div>
+
+            <motion.div variants={scaleIn} className="text-center">
+              <div className="text-6xl font-bold text-primary mb-2">
+                <AnimatedCounter end={98} suffix="%" />
+              </div>
+              <p className="text-xl font-semibold text-foreground/80">Satisfaction Client</p>
+              <p className="text-sm text-muted-foreground mt-2">De nos clients recommandent nos services</p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-24 bg-background">
+        <div className="container">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Nos Services d'Assurance</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Une gamme complète de solutions pour protéger ce qui compte le plus pour vous
+            </p>
+          </motion.div>
+
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: Shield,
+                title: "Conseil Global & Retraite",
+                description: "Analyse complète de votre situation et planification de votre retraite pour un avenir serein",
+                color: "text-primary"
+              },
+              {
+                icon: Building2,
+                title: "Prévoyance Professionnelle",
+                description: "Optimisation de votre 2ème pilier (LPP) et solutions de prévoyance pour indépendants",
+                color: "text-secondary"
+              },
+              {
+                icon: Users,
+                title: "Assurances Entreprises",
+                description: "Protection complète pour votre entreprise et vos collaborateurs",
+                color: "text-accent"
+              }
+            ].map((service, index) => (
+              <motion.div key={index} variants={scaleIn}>
+                <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/20">
+                  <CardHeader>
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mb-4`}>
+                      <service.icon className={`w-8 h-8 ${service.color}`} />
+                    </div>
+                    <CardTitle className="text-2xl">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base">{service.description}</CardDescription>
+                    <Link href={ROUTES.services}>
+                      <Button variant="link" className="mt-4 p-0 h-auto text-primary">
+                        En savoir plus <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div 
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Link href={ROUTES.services}>
+              <Button size="lg" variant="outline">
+                Voir Tous Nos Services
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Concepts Section */}
+      <section className="py-24 bg-gradient-to-br from-accent/5 to-accent/10">
+        <div className="container">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full bg-accent/20">
+              <Sparkles className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold text-accent">Nos Concepts Innovants</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Solutions Sur Mesure</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Des concepts uniques développés pour répondre à vos besoins spécifiques
+            </p>
+          </motion.div>
+
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                title: "Talentis",
+                subtitle: "Fidélisation des Talents",
+                description: "Retenez vos collaborateurs clés grâce à des solutions de prévoyance attractives",
+                link: ROUTES.talentis,
+                gradient: "from-primary to-secondary"
+              },
+              {
+                title: "Durabilis",
+                subtitle: "Protection des Associés",
+                description: "Protégez votre entreprise et vos associés contre les imprévus",
+                link: ROUTES.durabilis,
+                gradient: "from-secondary to-accent"
+              },
+              {
+                title: "Synergis",
+                subtitle: "Plateforme Collaborative",
+                description: "La synergie parfaite entre expertise humaine et IA pour créer, gérer et développer votre entreprise",
+                link: ROUTES.synergis,
+                gradient: "from-accent to-primary"
+              }
+            ].map((concept, index) => (
+              <motion.div key={index} variants={scaleIn}>
+                <Link href={concept.link}>
+                  <Card className={`h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-accent/30 hover:border-accent overflow-hidden group cursor-pointer`}>
+                    <div className={`h-2 bg-gradient-to-r ${concept.gradient}`} />
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Star className="w-5 h-5 text-accent fill-accent" />
+                        <span className="text-sm font-semibold text-accent">{concept.subtitle}</span>
+                      </div>
+                      <CardTitle className="text-3xl font-bold">{concept.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base mb-4">{concept.description}</CardDescription>
+                      <div className="flex items-center text-accent font-semibold group-hover:translate-x-2 transition-transform">
+                        Découvrir <ArrowRight className="w-4 h-4 ml-1" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-24 bg-background">
+        <div className="container">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Comment Ça Marche ?</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Un processus simple et transparent pour devenir client
+            </p>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto">
+            <motion.div 
+              className="grid md:grid-cols-5 gap-6"
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+            >
+              {[
+                { step: "1", icon: FileText, title: "Questionnaire", desc: "20 minutes en ligne" },
+                { step: "2", icon: Shield, title: "Mandat", desc: "Génération automatique" },
+                { step: "3", icon: CheckCircle2, title: "Signature", desc: "Électronique sécurisée" },
+                { step: "4", icon: Star, title: "Paiement", desc: "Sécurisé par Stripe" },
+                { step: "5", icon: Heart, title: "Activation", desc: "Sous 48h" }
+              ].map((item, index) => (
+                <motion.div key={index} variants={scaleIn} className="relative">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4 relative">
+                      <item.icon className="w-10 h-10 text-white" />
+                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold text-sm">
+                        {item.step}
+                      </div>
+                    </div>
+                    <h3 className="font-bold text-lg mb-1">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                  {index < 4 && (
+                    <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-secondary" />
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div 
+              className="text-center mt-12"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Link href={ROUTES.questionnaire}>
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold">
+                  <Target className="w-5 h-5 mr-2" />
+                  Commencer Mon Analyse Gratuite
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Preview Section */}
+      <section className="py-24 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="container">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Tarifs Transparents</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Des tarifs clairs et adaptés à votre profil
+            </p>
+          </motion.div>
+
+          <motion.div 
+            className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            <motion.div variants={scaleIn}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-2xl">Clients Privés</CardTitle>
+                  <CardDescription>Tarifs selon votre âge</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between items-center py-2 border-b">
+                    <span className="text-muted-foreground">{PRICING_DISPLAY.private.under18.label}</span>
+                    <span className="font-semibold text-lg">{PRICING_DISPLAY.private.under18.price}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b">
+                    <span className="text-muted-foreground">{PRICING_DISPLAY.private.age18_22.label}</span>
+                    <span className="font-semibold text-lg text-primary">{PRICING_DISPLAY.private.age18_22.price}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-muted-foreground">{PRICING_DISPLAY.private.age22Plus.label}</span>
+                    <span className="font-semibold text-lg text-primary">{PRICING_DISPLAY.private.age22Plus.price}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={scaleIn}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-2xl">Entreprises</CardTitle>
+                  <CardDescription>Tarifs selon le nombre d'employés</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between items-center py-2 border-b">
+                    <span className="text-muted-foreground">{PRICING_DISPLAY.business.employee0.label}</span>
+                    <span className="font-semibold text-lg text-primary">{PRICING_DISPLAY.business.employee0.price}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b">
+                    <span className="text-muted-foreground">{PRICING_DISPLAY.business.employee1.label}</span>
+                    <span className="font-semibold text-lg text-primary">{PRICING_DISPLAY.business.employee1.price}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-muted-foreground">...</span>
+                    <span className="font-semibold text-lg text-primary">Jusqu'à CHF 860.-/an</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          <motion.div 
+            className="text-center mt-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Link href={ROUTES.pricing}>
+              <Button variant="outline" size="lg">
+                Voir la Grille Tarifaire Complète
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Final Section */}
+      <section 
+        className="py-24 text-white relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 44%), hsl(205, 40%, 69%))'
+        }}
+      >
+        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        <div className="container relative z-10">
+          <motion.div 
+            className="max-w-3xl mx-auto text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Prêt à Protéger Votre Avenir ?
+            </h2>
+            <p className="text-xl mb-8 text-white/90">
+              Rejoignez plus de {COMPANY_INFO.stats.clients} clients satisfaits et bénéficiez d'une analyse gratuite de votre situation
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href={ROUTES.questionnaire}>
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold text-lg px-8 py-6 h-auto">
+                  <Target className="w-5 h-5 mr-2" />
+                  Commencer Mon Analyse
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+              <Link href={ROUTES.contact}>
+                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white font-semibold text-lg px-8 py-6 h-auto backdrop-blur-sm">
+                  <Phone className="w-5 h-5 mr-2" />
+                  Nous Contacter
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-8 flex items-center justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                <span>Réponse sous 48h</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                <span>Sans engagement</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

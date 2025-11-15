@@ -1,0 +1,310 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CheckCircle2, AlertCircle, Pen, RotateCcw, Download } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { useLocation } from "wouter";
+
+export default function Signature() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Configuration du canvas
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    // Ajuster la taille du canvas pour le responsive
+    const resizeCanvas = () => {
+      const container = canvas.parentElement;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = 200;
+
+      // Redessiner le fond blanc
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    return () => window.removeEventListener("resize", resizeCanvas);
+  }, []);
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    setIsDrawing(true);
+    setIsEmpty(false);
+
+    const rect = canvas.getBoundingClientRect();
+    const x = "touches" in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    const y = "touches" in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = "touches" in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    const y = "touches" in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    setIsEmpty(true);
+  };
+
+  const saveSignature = async () => {
+    if (isEmpty) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    setIsSaving(true);
+
+    try {
+      // Convertir le canvas en blob
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob);
+        }, "image/png");
+      });
+
+      // TODO: Upload vers S3 via tRPC
+      // const formData = new FormData();
+      // formData.append("signature", blob, "signature.png");
+      // const result = await trpc.signature.upload.mutate(formData);
+
+      // Simulation d'upload
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Redirection vers la page de paiement
+      setLocation("/paiement");
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde de la signature:", error);
+      alert("Erreur lors de la sauvegarde. Veuillez réessayer.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const downloadSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas || isEmpty) return;
+
+    const link = document.createElement("a");
+    link.download = "signature.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  return (
+    <div className="min-h-screen bg-muted/50 py-12">
+      <div className="container max-w-4xl">
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <h1 className="text-3xl md:text-4xl font-bold">Signature du Mandat de Gestion</h1>
+            <p className="text-lg text-muted-foreground">
+              Signez électroniquement votre mandat de gestion annuel
+            </p>
+          </div>
+
+          {/* Récapitulatif */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Récapitulatif de votre mandat</CardTitle>
+              <CardDescription>
+                Veuillez vérifier les informations avant de signer
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Type de client</p>
+                  <p className="font-medium">Particulier (&gt; 22 ans)</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Tarif annuel</p>
+                  <p className="font-medium">CHF 185.-/an</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Durée du mandat</p>
+                  <p className="font-medium">12 mois (renouvelable)</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Date de début</p>
+                  <p className="font-medium">{new Date().toLocaleDateString("fr-CH")}</p>
+                </div>
+              </div>
+
+              <Alert>
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertDescription>
+                  Votre mandat de gestion vous donne accès à un suivi personnalisé de toutes vos assurances, 
+                  des conseils d'optimisation, et une assistance en cas de sinistre.
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+          </Card>
+
+          {/* Canvas de signature */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Pen className="h-5 w-5" />
+                Votre signature électronique
+              </CardTitle>
+              <CardDescription>
+                Signez dans le cadre ci-dessous avec votre souris ou votre doigt (sur mobile)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-4 bg-white">
+                <canvas
+                  ref={canvasRef}
+                  className="w-full cursor-crosshair touch-none"
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="outline"
+                  onClick={clearSignature}
+                  disabled={isEmpty}
+                >
+                  <RotateCcw className="mr-2 h-4 w-4" />
+                  Effacer
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={downloadSignature}
+                  disabled={isEmpty}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Télécharger
+                </Button>
+              </div>
+
+              {isEmpty && (
+                <Alert variant="default">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Veuillez signer dans le cadre ci-dessus pour continuer
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Conditions */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="space-y-4 text-sm text-muted-foreground">
+                <p>
+                  En signant ce document, je confirme avoir pris connaissance et accepter les 
+                  <a href="/conditions" className="text-primary hover:underline ml-1">
+                    conditions générales
+                  </a> du mandat de gestion WIN WIN Finance Group.
+                </p>
+                <p>
+                  Je comprends que ce mandat est valable pour une durée de 12 mois et se renouvelle 
+                  automatiquement sauf résiliation écrite 30 jours avant l'échéance.
+                </p>
+                <p>
+                  Ma signature électronique a la même valeur juridique qu'une signature manuscrite 
+                  conformément à la loi suisse sur la signature électronique (SCSE).
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-between">
+            <Button
+              variant="outline"
+              onClick={() => setLocation("/questionnaire")}
+            >
+              Retour au questionnaire
+            </Button>
+            <Button
+              size="lg"
+              onClick={saveSignature}
+              disabled={isEmpty || isSaving}
+              className="bg-primary hover:bg-primary/90"
+            >
+              {isSaving ? (
+                <>
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Enregistrement...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="mr-2 h-5 w-5" />
+                  Valider et Continuer
+                </>
+              )}
+            </Button>
+          </div>
+
+          {/* Sécurité */}
+          <div className="text-center text-sm text-muted-foreground">
+            <p className="flex items-center justify-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              Connexion sécurisée SSL • Hébergement Suisse 🇨🇭 • Données cryptées
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
