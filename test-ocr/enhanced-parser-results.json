@@ -1,0 +1,86 @@
+[
+  {
+    "policy": "police-axa",
+    "company": "AXA",
+    "policyNumber": "18.813.308",
+    "insuredName": "Katia Monney\nChemin des Tarrières",
+    "address": {
+      "postalCode": "2900",
+      "city": "Porrentruy\nPas"
+    },
+    "coverageType": "Household",
+    "annualPremium": null,
+    "precision": 83,
+    "extracted": 5
+  },
+  {
+    "policy": "police-swisslife",
+    "company": "Swiss Life",
+    "policyNumber": "105.527.194",
+    "insuredName": "Bernadette Rondez",
+    "address": {
+      "postalCode": "2900",
+      "city": "Porrentruy"
+    },
+    "coverageType": "LCA",
+    "annualPremium": null,
+    "precision": 83,
+    "extracted": 5
+  },
+  {
+    "policy": "police-emmental",
+    "company": "Emmental",
+    "policyNumber": "50128660",
+    "insuredName": null,
+    "address": {
+      "postalCode": "2950",
+      "city": "Courgenay"
+    },
+    "coverageType": "Vehicle",
+    "annualPremium": null,
+    "precision": 67,
+    "extracted": 4
+  },
+  {
+    "policy": "police-swica-lamal-lca",
+    "company": "SWICA",
+    "policyNumber": "8283042",
+    "insuredName": "Nils Golay\nRue de la Gare",
+    "address": {
+      "postalCode": "1006",
+      "city": "Lausanne"
+    },
+    "coverageType": "LAMal",
+    "annualPremium": 4903.200000000001,
+    "precision": 100,
+    "extracted": 6
+  },
+  {
+    "policy": "police-simpego-vehicule",
+    "company": "SIMPEGO",
+    "policyNumber": null,
+    "insuredName": "Adresse\nEmail\nDate de naissance\nPermis de conduire\nNationalité",
+    "address": {
+      "postalCode": "2025",
+      "city": "Car Assurance"
+    },
+    "coverageType": "Vehicle",
+    "annualPremium": null,
+    "precision": 67,
+    "extracted": 4
+  },
+  {
+    "policy": "police-groupemutuel-ijm",
+    "company": "Groupe Mutuel",
+    "policyNumber": null,
+    "insuredName": "Swissoil Trading SA\nRue Pierre",
+    "address": {
+      "postalCode": "8989",
+      "city": "Une"
+    },
+    "coverageType": "LAMal",
+    "annualPremium": null,
+    "precision": 67,
+    "extracted": 4
+  }
+]

@@ -40,9 +40,14 @@ export const workflowRouter = router({
         priceId: z.string(),
         clientEmail: z.string().email(),
         clientName: z.string(),
+        clientType: z.enum(['particulier', 'entreprise']),
+        clientAge: z.number().optional(),
+        clientEmployeeCount: z.number().optional(),
+        annualPrice: z.number(),
+        isFree: z.boolean().optional(),
+        signatureUrl: z.string().url().optional(),
         successUrl: z.string().url(),
         cancelUrl: z.string().url(),
-        metadata: z.record(z.string(), z.string()).optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -65,7 +70,13 @@ export const workflowRouter = router({
         cancel_url: input.cancelUrl,
         metadata: {
           clientName: input.clientName,
-          ...input.metadata,
+          clientEmail: input.clientEmail,
+          clientType: input.clientType,
+          clientAge: input.clientAge?.toString() || '',
+          clientEmployeeCount: input.clientEmployeeCount?.toString() || '',
+          annualPrice: input.annualPrice.toString(),
+          isFree: input.isFree ? 'true' : 'false',
+          signatureUrl: input.signatureUrl || '',
         },
       });
       
