@@ -11,39 +11,56 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { useWorkflow } from "@/contexts/WorkflowContext";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 export default function Paiement() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [, setLocation] = useLocation();
-
-  // Données simulées (à remplacer par les vraies données du questionnaire)
+  const { workflow, updateWorkflow } = useWorkflow();
+  
+  const createCheckoutMutation = trpc.workflow.createCheckoutSession.useMutation();
+  const createClientMutation = trpc.workflow.createClient.useMutation();
+  
+  // Récupérer les données du workflow
   const clientData = {
-    type: "particulier",
-    age: 25,
-    tarif: 185,
-    isFree: false // true si "Mandat offert"
+    type: workflow.clientType || "particulier",
+    age: workflow.clientAge || 25,
+    tarif: workflow.annualPrice || 185,
+    isFree: workflow.isFree || false
   };
 
   const handlePayment = async () => {
     setIsProcessing(true);
 
     try {
-      // TODO: Créer Stripe Checkout Session via tRPC
-      // const session = await trpc.stripe.createCheckoutSession.mutate({
-      //   priceId: "price_xxx", // ID du produit Stripe selon le tarif
-      //   successUrl: `${window.location.origin}/merci`,
-      //   cancelUrl: `${window.location.origin}/paiement`
-      // });
+      // Créer Stripe Checkout Session via tRPC
+      // TODO: Calculer le priceId selon le tarif
+      const priceId = "price_1S4IHpClI3EKhVGDCpJKmqEz"; // Par défaut: Particulier > 22 ans
+      
+      const session = await createCheckoutMutation.mutateAsync({
+        priceId,
+        clientName: workflow.clientName || "Client Test",
+        clientEmail: workflow.clientEmail || "test@example.com",
+        clientType: workflow.clientType || "particulier",
+        clientAge: workflow.clientAge,
+        clientEmployeeCount: workflow.clientEmployeeCount,
+        annualPrice: workflow.annualPrice || 185,
+        successUrl: `${window.location.origin}/merci`,
+        cancelUrl: `${window.location.origin}/paiement`
+      });
+      
+      // Sauvegarder l'ID de session
+      updateWorkflow({ stripeSessionId: session.sessionId });
       
       // Redirection vers Stripe Checkout
-      // window.location.href = session.url;
-
-      // Simulation
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setLocation("/merci");
+      if (session.url) {
+        window.location.href = session.url;
+      }
     } catch (error) {
       console.error("Erreur lors de la création de la session de paiement:", error);
-      alert("Erreur lors du paiement. Veuillez réessayer.");
+      toast.error("Erreur lors du paiement. Veuillez réessayer.");
     } finally {
       setIsProcessing(false);
     }
@@ -54,15 +71,31 @@ export default function Paiement() {
     setIsProcessing(true);
 
     try {
-      // TODO: Créer le client dans Airtable sans paiement
-      // await trpc.client.createFree.mutate({ ... });
-
-      // Simulation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setLocation("/merci");
+      // Créer le client dans Airtable sans paiement
+      const result = await createClientMutation.mutateAsync({
+        nom: workflow.clientName?.split(' ')[1] || "Test",
+        prenom: workflow.clientName?.split(' ')[0] || "Client",
+        email: workflow.clientEmail || "test@example.com",
+        type: workflow.clientType || "particulier",
+        age: workflow.clientAge,
+        employeeCount: workflow.clientEmployeeCount,
+        annualPrice: 0,
+        isFree: true,
+        signatureUrl: workflow.signatureS3Url,
+      });
+      
+      // Sauvegarder les données de confirmation
+      updateWorkflow({
+        paymentCompleted: true,
+        mandatNumber: result.mandatNumber,
+        airtableRecordId: result.airtableId,
+      });
+      
+      toast.success("Mandat activé avec succès !");
+      setTimeout(() => setLocation("/merci"), 500);
     } catch (error) {
       console.error("Erreur lors de la création du client:", error);
-      alert("Erreur. Veuillez réessayer.");
+      toast.error("Erreur. Veuillez réessayer.");
     } finally {
       setIsProcessing(false);
     }

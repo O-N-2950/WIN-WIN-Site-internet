@@ -4,9 +4,10 @@
  */
 
 import { Resend } from 'resend';
+import { ENV } from './_core/env';
 
-// Initialiser Resend avec la clé API (à configurer via secrets)
-const resend = new Resend(process.env.RESEND_API_KEY || '');
+// Initialiser Resend avec la clé API
+const resend = new Resend(ENV.resendApiKey || '');
 
 /**
  * Template email de bienvenue client
@@ -151,7 +152,7 @@ export async function sendWelcomeEmail(
   mandatNumber: string
 ): Promise<boolean> {
   // Si pas de clé API Resend, logger et retourner false
-  if (!process.env.RESEND_API_KEY) {
+  if (!ENV.resendApiKey) {
     console.log('[Email] ⚠️  RESEND_API_KEY non configurée - Email non envoyé');
     console.log('[Email] Destinataire:', clientEmail);
     console.log('[Email] Nom:', clientName);
@@ -195,7 +196,7 @@ export async function sendOwnerNotificationEmail(
   airtableRecordId: string
 ): Promise<boolean> {
   // Si pas de clé API Resend, logger et retourner false
-  if (!process.env.RESEND_API_KEY) {
+  if (!ENV.resendApiKey) {
     console.log('[Email] ⚠️  RESEND_API_KEY non configurée - Notification Olivier non envoyée');
     return false;
   }

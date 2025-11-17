@@ -4,6 +4,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, AlertCircle, Pen, RotateCcw, Download } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useWorkflow } from "@/contexts/WorkflowContext";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 export default function Signature() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,6 +14,9 @@ export default function Signature() {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [, setLocation] = useLocation();
+  const { workflow, updateWorkflow } = useWorkflow();
+  
+  const uploadSignatureMutation = trpc.workflow.uploadSignature.useMutation();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -105,26 +111,28 @@ export default function Signature() {
     setIsSaving(true);
 
     try {
-      // Convertir le canvas en blob
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => {
-          if (blob) resolve(blob);
-        }, "image/png");
+      // Convertir le canvas en data URL
+      const signatureDataUrl = canvas.toDataURL("image/png");
+      
+      // Sauvegarder dans le workflow
+      updateWorkflow({
+        signatureDataUrl,
+        signatureDate: new Date().toISOString(),
       });
-
-      // TODO: Upload vers S3 via tRPC
-      // const formData = new FormData();
-      // formData.append("signature", blob, "signature.png");
-      // const result = await trpc.signature.upload.mutate(formData);
-
-      // Simulation d'upload
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      
+      // Upload vers S3 (optionnel, pour le moment on garde juste le dataURL)
+      // const result = await uploadSignatureMutation.mutateAsync({
+      //   signatureDataUrl,
+      // });
+      // updateWorkflow({ signatureS3Url: result.url });
+      
+      toast.success("Signature enregistrée avec succès !");
+      
       // Redirection vers la page de paiement
-      setLocation("/paiement");
+      setTimeout(() => setLocation("/paiement"), 500);
     } catch (error) {
       console.error("Erreur lors de la sauvegarde de la signature:", error);
-      alert("Erreur lors de la sauvegarde. Veuillez réessayer.");
+      toast.error("Erreur lors de la sauvegarde. Veuillez réessayer.");
     } finally {
       setIsSaving(false);
     }

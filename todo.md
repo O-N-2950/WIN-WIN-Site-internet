@@ -353,3 +353,44 @@
 - [x] Créer rapport session 3 (RAPPORT-SESSION-3-AUTOMATISATION-COMPLETE.md)
 - [ ] Créer checkpoint v3.0
 - [ ] Rapport final utilisateur
+
+
+## 🎯 Finalisation Production (15 nov 2025 - Session 4)
+
+### Phase 1 : Configuration Clés API
+- [x] Demander RESEND_API_KEY via webdev_request_secrets
+- [x] Documenter procédure obtention clé Resend
+- [x] Clé Resend reçue et configurée dans .env.local
+- [x] Ajouter resendApiKey dans ENV
+- [x] Mettre à jour email.ts pour utiliser ENV.resendApiKey
+- [x] Redémarrer serveur avec nouvelle clé
+
+### Phase 2 : State Management Workflow
+- [x] Créer WorkflowContext (React Context)
+- [x] Définir interface WorkflowData (9 champs)
+- [x] Implémenter provider avec localStorage persistence
+- [x] Créer hooks useWorkflow()
+- [x] Ajouter WorkflowProvider dans main.tsx
+
+### Phase 3 : Connexion Pages au State
+- [x] Modifier /questionnaire-info pour initialiser workflow
+- [x] Modifier /signature pour sauvegarder signature (dataURL + date)
+- [x] Modifier /paiement pour récupérer données + appels tRPC
+- [x] Modifier /merci pour afficher données réelles du workflow
+- [x] Corriger erreurs TypeScript (priceId, airtableId)
+- [x] Redémarrer serveur et vérifier (HTTP 200)
+
+### Phase 4 : Tests Complets
+- [x] Test workflow complet (données réelles)
+- [x] Test génération PDF avec vraies données
+- [x] Test persistance localStorage (WorkflowContext)
+- [x] Vérifier tous les endpoints tRPC
+- [x] Vérifier affichage site (screenshot OK)
+- [x] Serveur stable (HTTP 200, no errors)
+
+### Phase 5 : Documentation et Checkpoint
+- [x] Créer guide utilisateur complet
+- [x] Mettre à jour documentation technique
+- [x] Créer rapport session 4 (RAPPORT-SESSION-4-STATE-MANAGEMENT.md)
+- [ ] Créer checkpoint v4.0
+- [ ] Rapport final utilisateur

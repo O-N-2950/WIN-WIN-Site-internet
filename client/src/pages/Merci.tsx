@@ -16,17 +16,20 @@ import { CONTACT_INFO } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useWorkflow } from "@/contexts/WorkflowContext";
 
 export default function Merci() {
-  // Données simulées (à remplacer par les vraies données du workflow)
+  const { workflow } = useWorkflow();
+  
+  // Récupérer les données du workflow
   const clientData = {
-    name: "Jean Dupont",
-    email: "jean.dupont@example.com",
-    tarif: 185,
-    isFree: false,
-    mandatNumber: "WW-2025-00123",
+    name: workflow.clientName || "Client",
+    email: workflow.clientEmail || "client@example.com",
+    tarif: workflow.annualPrice || 185,
+    isFree: workflow.isFree || false,
+    mandatNumber: workflow.mandatNumber || "WW-2025-XXXXX",
     startDate: new Date().toLocaleDateString("fr-CH"),
-    clientType: "particulier" as const,
+    clientType: workflow.clientType || "particulier",
   };
   
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -53,8 +56,8 @@ export default function Merci() {
       clientType: clientData.clientType,
       annualPrice: clientData.tarif,
       isFree: clientData.isFree,
-      signatureDate: new Date().toISOString(),
-      // signatureUrl: "" // TODO: Récupérer depuis le state du workflow
+      signatureDate: workflow.signatureDate || new Date().toISOString(),
+      signatureUrl: workflow.signatureS3Url || workflow.signatureDataUrl,
     });
   };
 

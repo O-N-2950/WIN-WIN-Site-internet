@@ -10,6 +10,7 @@ import {
   Upload,
   Sparkles
 } from "lucide-react";
+import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const steps = [
   {
@@ -57,6 +58,17 @@ const benefits = [
 ];
 
 export default function Questionnaire() {
+  const { updateWorkflow } = useWorkflow();
+  
+  const handleStartQuestionnaire = () => {
+    // Initialiser le workflow quand l'utilisateur commence
+    updateWorkflow({
+      questionnaireCompleted: false,
+    });
+    // Rediriger vers Genspark
+    window.open('/questionnaire/', '_blank');
+  };
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -221,16 +233,14 @@ export default function Questionnaire() {
             </p>
 
             <div className="space-y-4">
-              <a 
-                href="/questionnaire/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90"
+                onClick={handleStartQuestionnaire}
               >
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Commencer le Questionnaire
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </a>
+                Commencer le Questionnaire
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
               <p className="text-sm text-muted-foreground">
                 Vous serez redirigé vers notre plateforme sécurisée
               </p>
