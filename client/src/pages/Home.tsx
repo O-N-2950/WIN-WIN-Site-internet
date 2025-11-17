@@ -296,6 +296,122 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Libre Passage Section - Service Gratuit */}
+      <section className="py-24 bg-gradient-to-br from-green-50 via-background to-primary/5">
+        <div className="container">
+          <motion.div
+            className="max-w-5xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Card className="border-2 border-green-200 shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-green-500 to-green-600 px-8 py-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Target className="h-8 w-8 text-white" />
+                    </div>
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/30 backdrop-blur-sm mb-2">
+                        <Sparkles className="w-4 h-4 text-white" />
+                        <span className="text-sm font-bold text-white">SERVICE GRATUIT</span>
+                      </div>
+                      <h2 className="text-3xl md:text-4xl font-bold text-white">
+                        Recherche de Libre Passage
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Avez-vous changé d'employeur plusieurs fois ? Vous avez peut-être <strong className="text-foreground">oublié des avoirs de libre passage</strong> chez d'anciens employeurs. 
+                    Nous vous aidons à <strong className="text-foreground">retrouver gratuitement</strong> tous vos avoirs de prévoyance professionnelle (2ème pilier) en Suisse.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-6 my-8">
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle2 className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">100% Gratuit</h4>
+                        <p className="text-sm text-muted-foreground">Aucun frais, aucun engagement</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Clock className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Rapide</h4>
+                        <p className="text-sm text-muted-foreground">Résultats en quelques jours</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Shield className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Sécurisé</h4>
+                        <p className="text-sm text-muted-foreground">Conforme aux normes suisses</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-accent/10 border border-accent/20 rounded-lg p-6">
+                    <div className="flex items-start gap-3">
+                      <Award className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold text-lg mb-2">Pourquoi rechercher vos avoirs ?</h4>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Des <strong className="text-foreground">millions de francs</strong> d'avoirs de libre passage sont oubliés en Suisse</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Consolidez vos avoirs pour une <strong className="text-foreground">meilleure visibilité</strong> de votre patrimoine</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Optimisez la gestion de votre <strong className="text-foreground">prévoyance professionnelle</strong></span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a 
+                      href="https://winwin.recherche-libre-passage.ch/fr/homepage" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex-1"
+                    >
+                      <Button size="lg" className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold text-lg px-8 py-6 h-auto shadow-lg hover:shadow-xl transition-all">
+                        <Target className="w-5 h-5 mr-2" />
+                        Lancer Ma Recherche Gratuite
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </a>
+                    <Link href={ROUTES.librePassage}>
+                      <Button size="lg" variant="outline" className="w-full sm:w-auto font-semibold text-lg px-8 py-6 h-auto">
+                        En Savoir Plus
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Concepts Section */}
       <section className="py-24 bg-gradient-to-br from-accent/5 to-accent/10">
         <div className="container">

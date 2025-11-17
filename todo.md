@@ -394,3 +394,37 @@
 - [x] Créer rapport session 4 (RAPPORT-SESSION-4-STATE-MANAGEMENT.md)
 - [ ] Créer checkpoint v4.0
 - [ ] Rapport final utilisateur
+
+## 🎯 Intégration Service Libre Passage (16 nov 2025)
+
+### Objectif
+Intégrer et mettre en valeur le service gratuit de recherche de libre passage (https://winwin.recherche-libre-passage.ch/fr/homepage)
+
+### Phase 1 : Section Page d'Accueil
+- [x] Ajouter section dédiée "Recherche de Libre Passage" sur Home.tsx
+- [x] CTA visible avec lien externe vers https://winwin.recherche-libre-passage.ch/fr/homepage
+- [x] Design attractif avec icône et description du service
+- [x] Badge "Service Gratuit" pour attirer l'attention
+
+### Phase 2 : Page Dédiée
+- [x] Créer page /libre-passage (LibrePassage.tsx)
+- [x] Expliquer ce qu'est le libre passage
+- [x] Avantages de la recherche (argent oublié, consolidation)
+- [x] Processus en 3 étapes
+- [x] Bouton CTA vers l'outil externe
+- [x] FAQ complète (4 questions)
+- [x] Ajouter route dans App.tsx
+
+### Phase 3 : Navigation et Services
+- [x] Ajouter "Libre Passage" dans Header.tsx (navigation principale)
+- [x] Ajouter carte "Recherche Libre Passage" dans Services.tsx
+- [x] Badge "GRATUIT" sur la carte service
+- [x] Mettre à jour const.ts avec nouvelle route
+
+### Phase 4 : Tests et Checkpoint
+- [x] Vérifier tous les liens fonctionnent
+- [x] Tester responsive
+- [x] Serveur redémarré et fonctionnel (HTTP 200)
+- [x] Screenshot capturé - site affiché correctement
+- [x] 0 erreur TypeScript
+- [ ] Créer checkpoint v4.1

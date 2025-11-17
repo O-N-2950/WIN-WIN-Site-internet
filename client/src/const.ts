@@ -118,6 +118,7 @@ export const PRICING = {
 export const ROUTES = {
   home: "/",
   services: "/services",
+  librePassage: "/libre-passage",
   talentis: "/concepts/talentis",
   durabilis: "/concepts/durabilis",
   synergis: "/concepts/synergis",

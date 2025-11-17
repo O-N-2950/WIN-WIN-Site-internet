@@ -214,6 +214,26 @@ const servicesDetailles = [
       "Atteinte de vos objectifs financiers",
     ],
   },
+  {
+    icon: FileText,
+    title: "Recherche de Libre Passage",
+    description: "Service gratuit pour retrouver vos avoirs de prévoyance oubliés",
+    details: [
+      "Recherche gratuite auprès de la Centrale du 2ème pilier",
+      "Identification de tous vos comptes de libre passage",
+      "Rapport détaillé avec coordonnées des institutions",
+      "Conseil pour consolider vos avoirs",
+      "Accompagnement dans les démarches de récupération",
+    ],
+    benefices: [
+      "100% gratuit, aucun engagement",
+      "Retrouvez des milliers de francs oubliés",
+      "Optimisez votre prévoyance professionnelle",
+    ],
+    link: "/libre-passage",
+    external: false,
+    badge: "GRATUIT",
+  },
 ];
 
 const processus = [
@@ -272,8 +292,15 @@ export default function Services() {
                 }`}
               >
                 <div className="space-y-6">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-xl bg-primary/10 text-primary">
-                    <service.icon className="h-8 w-8" />
+                  <div className="flex items-center gap-4">
+                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-xl bg-primary/10 text-primary">
+                      <service.icon className="h-8 w-8" />
+                    </div>
+                    {service.badge && (
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 border border-green-300">
+                        <span className="text-sm font-bold text-green-700">{service.badge}</span>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <h2 className="text-3xl font-bold mb-4">{service.title}</h2>
@@ -281,15 +308,24 @@ export default function Services() {
                   </div>
                   
                   {service.link && (
-                    <a
-                      href={service.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
-                    >
-                      En savoir plus sur {service.title}
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
+                    service.external ? (
+                      <a
+                        href={service.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                      >
+                        En savoir plus sur {service.title}
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <Link href={service.link}>
+                        <Button variant="outline" className="inline-flex items-center gap-2">
+                          En savoir plus sur {service.title}
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    )
                   )}
                 </div>
 
