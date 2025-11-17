@@ -428,3 +428,147 @@ Intégrer et mettre en valeur le service gratuit de recherche de libre passage (
 - [x] Screenshot capturé - site affiché correctement
 - [x] 0 erreur TypeScript
 - [ ] Créer checkpoint v4.1
+
+
+## 🔍 Optimisation SEO Google (16 nov 2025)
+
+### Objectif
+Optimiser le référencement naturel du site avec meta descriptions, Open Graph, et Schema.org pour améliorer la visibilité sur Google et les réseaux sociaux
+
+### Phase 1 : Meta Tags Dynamiques
+- [ ] Créer composant SEO.tsx réutilisable
+- [ ] Ajouter meta description sur toutes les pages
+- [ ] Ajouter meta keywords pertinents
+- [ ] Configurer title dynamique par page
+
+### Phase 2 : Open Graph
+- [ ] Ajouter balises og:title, og:description, og:image
+- [ ] Configurer og:type pour chaque type de page
+- [ ] Ajouter balises Twitter Card
+- [ ] Créer image de partage par défaut (1200x630px)
+
+### Phase 3 : Schema.org JSON-LD
+- [ ] Ajouter schema Organization (entreprise)
+- [ ] Ajouter schema LocalBusiness (adresse, horaires)
+- [ ] Ajouter schema Service pour chaque service
+- [ ] Ajouter schema Person pour Olivier
+- [ ] Ajouter breadcrumbs schema
+
+### Phase 4 : Tests et Checkpoint
+- [ ] Tester avec Google Rich Results Test
+- [ ] Tester avec Facebook Sharing Debugger
+- [ ] Vérifier sitemap.xml
+- [ ] Créer checkpoint v4.2
+
+
+## 🎨 Amélioration Animations UX (16 nov 2025)
+
+### Objectif
+Améliorer les animations pour rendre le site plus dynamique et engageant
+
+### Phase 1 : Animations d'Entrée et Scroll
+- [ ] Améliorer fadeInUp avec stagger sur Home.tsx
+- [ ] Ajouter parallaxe sur hero sections
+- [ ] Améliorer scroll reveals sur toutes les pages
+- [ ] Ajouter animations de compteurs (déjà présent, à améliorer)
+
+### Phase 2 : Micro-Interactions
+- [ ] Hover effects sur cartes (scale + shadow)
+- [ ] Boutons avec effet glow au hover
+- [ ] Animations sur icônes (rotate, bounce)
+- [ ] Transitions smooth sur tous les liens
+
+### Phase 3 : Transitions de Page
+- [ ] Page transitions avec Framer Motion
+- [ ] Loading states élégants (skeletons)
+- [ ] Animations workflow (questionnaire → signature → paiement)
+
+### Phase 4 : Tests et Checkpoint
+- [ ] Tester performance (60 FPS)
+- [ ] Vérifier accessibilité (prefers-reduced-motion)
+- [ ] Créer checkpoint v4.3
+
+
+## 🎯 Finalisation Système 100% Opérationnel (16 nov 2025)
+
+### Objectif
+Rendre le système d'inscription client complètement opérationnel avec toutes les intégrations testées et validées
+
+### Phase 1 : Intégration Genspark
+- [ ] Analyser l'API Genspark pour récupérer données questionnaire
+- [ ] Créer endpoint tRPC pour recevoir callback Genspark
+- [ ] Mapper données Genspark vers WorkflowContext
+- [ ] Tester flux complet Genspark → Signature
+
+### Phase 2 : Upload Signature S3
+- [ ] Tester uploadSignature avec vraie signature Canvas
+- [ ] Vérifier URL retournée accessible
+- [ ] Valider format et taille fichier
+- [ ] Gérer erreurs upload
+
+### Phase 3 : Création Client Airtable
+- [ ] Tester createClient avec données réelles
+- [ ] Vérifier tous les champs mappés correctement
+- [ ] Valider création dans table Airtable
+- [ ] Gérer erreurs et doublons
+
+### Phase 4 : Envoi Emails Resend
+- [ ] Vérifier domaine winwin.swiss sur Resend
+- [ ] Tester sendWelcomeEmail avec vraies données
+- [ ] Tester sendOwnerNotificationEmail
+- [ ] Valider templates HTML affichage
+
+### Phase 5 : Webhook Stripe
+- [ ] Configurer URL webhook dans Stripe Dashboard
+- [ ] Tester avec paiement test Stripe
+- [ ] Vérifier création client après paiement
+- [ ] Vérifier envoi emails après paiement
+- [ ] Valider logs webhook
+
+### Phase 6 : Documentation et Checkpoint
+- [ ] Créer guide de test complet
+- [ ] Documenter toutes les intégrations
+- [ ] Créer checkpoint v5.0 Production Ready
+- [ ] Rapport final utilisateur
+
+
+## 🚀 Déploiement Production SwissCenter (16 nov 2025)
+
+### Objectif
+Déployer le site WIN WIN Finance Group en production sur winwin.swiss via SwissCenter
+
+### Phase 1 : Finalisation
+- [ ] Ajouter micro-interactions sur cartes (hover effects)
+- [ ] Ajouter glassmorphism sur sections
+- [ ] Optimiser performance (lazy loading, code splitting)
+- [ ] Créer checkpoint final pre-production
+
+### Phase 2 : Build Production
+- [ ] Configurer variables d'environnement production
+- [ ] Builder le projet (`pnpm build`)
+- [ ] Vérifier taille bundle
+- [ ] Tester build localement
+
+### Phase 3 : Connexion SwissCenter
+- [ ] Tester connexion FTP/SFTP SwissCenter
+- [ ] Identifier structure dossiers (public_html, www, etc.)
+- [ ] Vérifier permissions écriture
+
+### Phase 4 : Déploiement
+- [ ] Upload fichiers build sur SwissCenter
+- [ ] Configurer .htaccess pour React Router
+- [ ] Upload fichiers statiques (images, fonts)
+- [ ] Configurer variables d'environnement serveur
+
+### Phase 5 : Configuration Production
+- [ ] Configurer domaine winwin.swiss
+- [ ] Configurer HTTPS/SSL
+- [ ] Tester toutes les routes
+- [ ] Vérifier intégrations (Stripe, Resend, Airtable)
+
+### Phase 6 : Tests Finaux
+- [ ] Tester workflow complet (questionnaire → paiement)
+- [ ] Tester responsive (mobile, tablette, desktop)
+- [ ] Tester performance (Google PageSpeed)
+- [ ] Vérifier SEO (meta tags, sitemap)
+- [ ] Rapport final utilisateur

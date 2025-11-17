@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import SpectacularHero from "@/components/SpectacularHero";
 import { 
   APP_TITLE, 
   CONTACT_INFO, 
@@ -28,28 +29,18 @@ import {
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-// Animations
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.9 },
-  whileInView: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5 },
-  viewport: { once: true }
-};
+import { 
+  fadeInUp, 
+  staggerContainer, 
+  scaleIn, 
+  cardHover, 
+  buttonHover,
+  revealFromBottom,
+  revealFromLeft,
+  revealFromRight,
+  iconFloat,
+  badgePulse
+} from "@/lib/animations";
 
 // Compteur animé
 function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
@@ -80,103 +71,8 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section 
-        className="relative min-h-[90vh] flex items-center justify-center overflow-hidden"
-        style={{
-          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 45%), hsl(205, 40%, 69%))'
-        }}
-      >
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-        
-        {/* Content */}
-        <div className="container relative z-10 py-20">
-          <motion.div 
-            className="max-w-4xl mx-auto text-center text-white"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/20 backdrop-blur-sm"
-            >
-              <Award className="w-4 h-4" />
-              <span className="text-sm font-medium">Autorisé FINMA {COMPANY_INFO.finma}</span>
-            </motion.div>
-
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              Votre Partenaire de Confiance
-              <br />
-              <span className="text-accent">en Assurances</span>
-            </motion.h1>
-
-            <motion.p 
-              className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-            >
-              {COMPANY_INFO.stats.experience} d'expertise au service de votre protection et de votre prévoyance
-            </motion.p>
-
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-            >
-              <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-foreground font-semibold text-lg px-8 py-6 h-auto">
-                  <Target className="w-5 h-5 mr-2" />
-                  Demandez Conseil
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href={ROUTES.services}>
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white font-semibold text-lg px-8 py-6 h-auto backdrop-blur-sm">
-                  Découvrir Nos Services
-                </Button>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              className="mt-12 flex items-center justify-center gap-8 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.6 }}
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-accent" />
-                <span>Sans engagement</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-accent" />
-                <span>Réponse sous 48h</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-accent" />
-                <span>100% confidentiel</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Wave Divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V120Z" fill="hsl(var(--background))"/>
-          </svg>
-        </div>
-      </section>
+      {/* Hero Section Spectaculaire */}
+      <SpectacularHero />
 
       {/* Stats Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
