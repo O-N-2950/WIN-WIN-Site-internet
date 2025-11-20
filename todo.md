@@ -1254,6 +1254,23 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Réduire validation message à 3 caractères
 - [ ] Tester avec PDF 0.70 MB - APRES DEPLOIEMENT
 - [ ] Tester avec image JPG - APRES DEPLOIEMENT
-- [x] Push vers GitHub - EN COURS
+- [x] Push vers GitHub (commit f659fe8)
 
 - [x] Réduire validation message de 10 à 3 caractères minimum
+
+
+---
+
+## 🔧 Corrections Validation Zod + Timeouts Airtable - 20 nov 2025
+
+### Tâches
+- [ ] Ajouter AIRTABLE_API_KEY dans Railway Variables (MANUEL - OLIVIER)
+- [x] Corriger schéma Zod lignes 198-202 dans server/routers/appointment.ts
+- [x] Ajouter timeout createLeadInAirtable (ligne 90)
+- [x] Ajouter timeout updateLeadStatus (ligne 244)
+- [x] Ajouter timeout getLeadsByStatus (ligne 272)
+- [x] Ajouter timeout createLeadFromCalBooking (ligne 307)
+- [ ] Commit: "Fix: Correction validation formulaire + timeout Airtable API"
+- [ ] Push vers GitHub main
+- [ ] Vérifier déploiement Railway
+- [ ] Tester formulaire contact sur site

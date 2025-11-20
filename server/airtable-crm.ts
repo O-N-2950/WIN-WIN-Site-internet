@@ -51,6 +51,11 @@ const AIRTABLE_CONFIG: AirtableConfig = {
 };
 
 /**
+ * Timeout pour les appels Airtable API (10 secondes)
+ */
+const AIRTABLE_TIMEOUT = 10000;
+
+/**
  * Créer un lead dans Airtable
  * 
  * @param data - Données du lead
@@ -87,6 +92,9 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -94,7 +102,10 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ fields }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -109,7 +120,11 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
     await sendLeadNotification(data, result.id);
 
     return result.id;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la création du lead');
+      throw new Error('Airtable API timeout');
+    }
     console.error('[Airtable] Erreur:', error);
     throw error;
   }
@@ -208,6 +223,9 @@ export async function updateLeadStatus(
   const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}/${recordId}`;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
     const response = await fetch(url, {
       method: 'PATCH',
       headers: {
@@ -217,7 +235,10 @@ export async function updateLeadStatus(
       body: JSON.stringify({
         fields: { 'Statut': statut },
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -226,7 +247,11 @@ export async function updateLeadStatus(
     }
 
     console.log('[Airtable] Statut mis à jour:', statut);
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la mise à jour du statut');
+      throw new Error('Airtable API timeout');
+    }
     console.error('[Airtable] Erreur:', error);
     throw error;
   }
@@ -244,11 +269,17 @@ export async function getLeadsByStatus(
   const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}?filterByFormula={Statut}='${statut}'`;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
       },
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -258,7 +289,11 @@ export async function getLeadsByStatus(
 
     const result = await response.json();
     return result.records;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la récupération des leads');
+      throw new Error('Airtable API timeout');
+    }
     console.error('[Airtable] Erreur:', error);
     throw error;
   }
@@ -287,6 +322,9 @@ export async function createLeadFromCalBooking(data: CalBookingData): Promise<st
   };
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -294,7 +332,10 @@ export async function createLeadFromCalBooking(data: CalBookingData): Promise<st
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ fields }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -309,7 +350,11 @@ export async function createLeadFromCalBooking(data: CalBookingData): Promise<st
     await sendCalBookingNotification(data, result.id);
 
     return result.id;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la création du lead Cal.com');
+      throw new Error('Airtable API timeout');
+    }
     console.error('[Airtable] Erreur:', error);
     throw error;
   }
