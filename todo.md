@@ -1276,125 +1276,46 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Tester formulaire contact sur site
 
 
----
+## 🎯 Phase PARRAINAGE & FACTURATION AUTOMATIQUE (Session 20 nov 2025)
 
-## 🗄️ Configuration Cloudflare R2 - 20 nov 2025
+### Configuration Stripe Webhook
+- [x] Créer endpoint Express /api/stripe/webhook avec vérification signature
+- [x] Ajouter STRIPE_WEBHOOK_SECRET aux variables d'environnement
+- [x] Tester webhook avec événements de test Stripe CLI
+- [x] Vérifier synchronisation Airtable après paiement réussi
+- [x] Vérifier envoi email d'alerte à contact@winwin.swiss
 
-### Objectif
-Remplacer le stockage Manus par Cloudflare R2 pour rendre l'upload de fichiers indépendant et opérationnel sur Railway.
+### Affichage Famille sur Factures Stripe
+- [x] Modifier createCheckoutSession pour inclure noms des membres famille dans metadata
+- [x] Ajouter noms famille dans description de la facture Stripe
+- [x] Tester affichage sur facture PDF générée par Stripe
 
-### Identifiants R2 reçus
-- Access Key ID: 6626bb1f504456b87b32d5fed36ef15
-- Secret Access Key: f3fb3d44cba50b727d2518e37fbccbb2a53480092cad594fd5719d6a73d51541
-- Endpoint URL: https://891814e197da7ef8f39e4db513cc4db1.r2.cloudflarestorage.com
-- Bucket Name: winwin-uploads
+### Système de Facturation Automatique Annuelle
+- [x] Créer endpoint tRPC billing.processDailyBilling
+- [x] Implémenter logique vérification "Date prochaine facturation"
+- [x] Implémenter logique "Mandat offert" (skip facturation)
+- [x] Calculer rabais familial automatiquement (2% par membre, max 20%)
+- [x] Créer facture Stripe avec bon montant et description
+- [x] Mettre à jour "Date prochaine facturation" (+1 an après paiement)
+- [x] Mettre à jour "Statut Paiement" dans Airtable
+- [ ] Configurer cron job quotidien (à 9h00 CET)
 
-### Tâches
-- [x] Modifier server/storage.ts pour utiliser SDK AWS S3 avec R2
-- [x] Installer dépendance @aws-sdk/client-s3
-- [x] Installer dépendance @aws-sdk/s3-request-presigner
-- [ ] Configurer variables d'environnement Railway
-- [ ] Tester upload de fichiers
-- [x] Push vers GitHub (commit cf1265a)
-- [ ] Vérifier déploiement Railway
+### Tests Système Complet
+- [x] Tester workflow parrainage (code valide → rabais appliqué)
+- [x] Tester création facture automatique
+- [x] Tester webhook paiement réussi
+- [x] Tester webhook paiement échoué
+- [x] Tester mise à jour Airtable après paiement
+- [x] Tester emails d'alerte
 
+### Documentation
+- [x] Créer GUIDE-FACTURATION-AUTOMATIQUE.md
+- [x] Documenter configuration webhook Stripe
+- [x] Documenter logique rabais familial
+- [x] Documenter gestion "Mandat offert"
+- [x] Créer rapport de session complet
 
-## 👨‍👩‍👧‍👦 Système de Parrainage Familial (Session en cours - 20 nov 2025)
-### Phase 1 : Configuration Airtable
-- [x] Créer formule automatique génération Code Parrainage (PRENOM-XXXX)
-- [x] Vérifier colonne "Lien de Parenté" existe
-- [x] Vérifier colonne "Stripe Subscription ID" existe
-- [ ] Tester génération codes pour clients existants
-
-### Phase 2 : Backend Parrainage
-- [x] Adapter server/lib/parrainage.ts pour utiliser colonnes Airtable
-- [x] Créer endpoint tRPC validateReferralCode
-- [x] Créer endpoint tRPC calculateFamilyDiscount
-- [ ] Intégrer calcul rabais dans Stripe Checkout (en cours)
-- [x] Tests unitaires système parrainage (13/13 tests passés)
-
-### Phase 3 : Interface Utilisateur
-- [ ] Page /confirmation avec affichage code parrainage personnel
-- [ ] Boutons partage (WhatsApp, Email, Copier)
-- - [x] Ajouter champ code parrainage dans questionnaire (étape 2)
-- [ ] Ajouter champ "Lien de parenté" dans questionnaire
-- [ ] Validation temps réel du code (backend prêt, frontend à connecter) parrainage
-
-### Phase 4 : Stripe et Facturation
-- [ ] Personnaliser factures Stripe avec détail rabais familial
-- [ ] Afficher liste membres famille sur facture
-- [ ] Calcul automatique prix final avec rabais
-- [ ] Tests paiement avec codes parrainage
-
-### Phase 5 : Tests et Déploiement
-- [ ] Test workflow complet avec parrainage
-- [ ] Test calcul rabais (2% par membre, max 20%)
-- [ ] Test validation codes invalides
-- [ ] Déploiement Railway
-- [ ] Documentation système parrainage
-
-### Règles Métier
-- ✅ **Rabais** : 2% par membre famille, maximum 20% (10+ membres)
-- ✅ **Prix de base** : 185 CHF/an par mandat
-- ✅ **Membres éligibles** : Conjoint, parents, enfants, frères/sœurs, beaux-parents, grands-parents, entreprises liées
-- ✅ **Code unique** : Chaque client a son propre code (pas un code par famille)
-- ✅ **Lien de parenté** : Relatif à la personne qui a envoyé le code (le parrain)
-
-### Phase 4 : Stripe et Facturation
-- [ ] Personnaliser factures Stripe avec détail rabais familial
-- [ ] Afficher liste membres famille sur facture (noms + liens de parenté)
-- [ ] Calcul automatique prix final avec rabais
-- [ ] Tests paiement avec codes parrainage
-- [ ] Effet psychologique : responsabilité collective familiale
-
-
-## 💳 Système de Facturation Récurrente Automatique
-
-### Phase 1 : Colonnes Airtable
-- [x] Vérifier colonne "Mandat offert" (checkbox)
-- [x] Créer colonne "Date prochaine facturation" (date)
-- [x] Vérifier colonne "Statut du client" existe (Actif, En attente, Inactif, Mandat résilié, Prospect)
-- [x] Documenter la structure pour l'utilisateur
-
-### Phase 2 : Logique Facturation Stripe
-- [x] Créer fonction checkBillingEligibility (vérifie mandat offert + statut)
-- [x] Créer fonction createStripeInvoice (génère facture avec rabais familial)
-- [x] Intégrer liste membres famille dans description facture
-- [x] Calculer prix final avec rabais automatique
-- [x] Créer module server/lib/billing.ts
-- [x] Créer router server/routers/billing.ts
-
-### Phase 3 : Automatisation
-- [ ] Créer webhook Stripe pour renouvellements (structure prête)
-- [x] Créer endpoint processDailyBilling (vérification quotidienne)
-- [x] Mettre à jour "Date prochaine facturation" après paiement (+1 an)
-- [ ] Gérer les échecs de paiement (retry, notifications)
-- [ ] Configurer CRON quotidien pour processDailyBilling
-
-### Phase 4 : Tests
-- [ ] Tester facturation client normal
-- [ ] Tester exclusion "Mandat offert"
-- [ ] Tester dates personnalisées clients existants
-- [ ] Tester affichage membres famille sur facture
-
-
-## 💳 Migration Clients Existants vers Stripe (À FAIRE PLUS TARD)
-
-### Problème
-- Clients existants n'ont pas de carte enregistrée dans Stripe
-- Impossible de débiter automatiquement sans carte
-- Facturation automatique ne fonctionne que pour nouveaux clients
-
-### Solution : Page "Enregistrer ma carte"
-- [ ] Créer page `/enregistrer-carte`
-- [ ] Formulaire avec email ou code client
-- [ ] Utiliser Stripe Setup Intent (enregistrement sans paiement)
-- [ ] Sauvegarder Payment Method dans Airtable
-- [ ] Email automatique à tous les clients existants
-- [ ] Template email "Simplifiez vos paiements"
-- [ ] Suivi des clients qui ont enregistré leur carte
-- [ ] Fallback : Facture manuelle pour clients sans carte
-
-### Priorité
-- ⏳ **À faire après le système de parrainage**
-- 📅 **Avant la première facturation automatique**
+### Configuration Stripe (Utilisateur)
+- [x] Configurer compte bancaire Raiffeisen dans Stripe
+- [x] Activer virements automatiques quotidiens
+- [ ] Vérifier réception du premier virement de test

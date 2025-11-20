@@ -1,263 +1,208 @@
 /**
- * Module de gestion du système de parrainage familial WIN WIN
+ * Module de gestion du parrainage familial pour WIN WIN Finance Group
  * 
  * Fonctionnalités :
  * - Validation des codes de parrainage
- * - Calcul automatique des rabais familiaux (2% par membre, max 20%)
- * - Gestion des groupes familiaux
- * - Intégration avec Airtable et Stripe
+ * - Calcul des rabais familiaux (2% par membre, max 20%)
+ * - Récupération des membres de la famille
+ * - Génération de descriptions pour factures Stripe
  */
 
 /**
- * Types de liens de parenté éligibles
+ * Configuration Airtable pour la table Clients
  */
-export type LienParente =
-  | "Fondateur"
-  | "Conjoint(e)"
-  | "Père"
-  | "Mère"
-  | "Fils"
-  | "Fille"
-  | "Frère"
-  | "Sœur"
-  | "Grand-père"
-  | "Grand-mère"
-  | "Beau-père"
-  | "Belle-mère"
-  | "Beau-frère"
-  | "Belle-sœur"
-  | "Entreprise liée"
-  | "Autre";
+const AIRTABLE_CONFIG = {
+  baseId: 'appZQkRJ7PwOtdQ3O',
+  tableId: 'tblTODO_CLIENTS', // TODO: Remplacer par le vrai ID de la table "Clients"
+  apiKey: process.env.AIRTABLE_API_KEY || '',
+};
 
 /**
- * Structure d'un membre de famille
+ * Interface pour un membre de famille
  */
 export interface FamilyMember {
-  recordId: string;
+  id: string;
   nom: string;
   prenom?: string;
-  nomEntreprise?: string;
+  email: string;
   codeParrainage: string;
-  lienParente?: LienParente;
-  typeClient: "Privé" | "Entreprise";
+  lienParente?: string;
 }
 
 /**
- * Résultat de validation d'un code de parrainage
- */
-export interface ReferralValidationResult {
-  valid: boolean;
-  member?: FamilyMember;
-  error?: string;
-}
-
-/**
- * Calcul du rabais familial
- */
-export interface FamilyDiscountResult {
-  nombreMembres: number;
-  pourcentageRabais: number; // 0-20
-  prixBase: number;
-  montantRabais: number;
-  prixFinal: number;
-}
-
-/**
- * Valide un code de parrainage en interrogeant Airtable
+ * Valider un code de parrainage
  * 
- * @param code - Code de parrainage (format: PRENOM-XXXX)
- * @returns Résultat de validation avec informations du parrain
+ * @param code - Code de parrainage à valider (format: NOM-XXXX)
+ * @returns Les informations du parrain si le code est valide, null sinon
  */
-export async function validateReferralCode(
-  code: string
-): Promise<ReferralValidationResult> {
-  // Import dynamique pour éviter les dépendances circulaires
-  const { searchRecords } = await import("../airtable-crm");
-
-  try {
-    // Nettoyer et normaliser le code
-    const cleanCode = code.trim().toUpperCase();
-
-    // Format basique : XXXX-YYYY
-    if (!/^[A-Z]{2,4}-[A-Z0-9]{4}$/.test(cleanCode)) {
-      return {
-        valid: false,
-        error: "Format de code invalide. Format attendu : PRENOM-XXXX",
-      };
-    }
-
-    // Rechercher le client avec ce code de parrainage dans Airtable
-    const results = await searchRecords(cleanCode, ["Code Parrainage"]);
-
-    if (results.length === 0) {
-      return {
-        valid: false,
-        error: "Code de parrainage introuvable",
-      };
-    }
-
-    const record = results[0];
-    const fields = record.fields;
-
-    // Construire l'objet membre
-    const member: FamilyMember = {
-      recordId: record.id,
-      nom: (fields["Nom"] as string) || "",
-      prenom: fields["Prénom"] as string | undefined,
-      nomEntreprise: fields["Nom de l'entreprise"] as string | undefined,
-      codeParrainage: cleanCode,
-      typeClient: (fields["Type de client"] as "Privé" | "Entreprise") || "Privé",
-    };
-
-    return {
-      valid: true,
-      member,
-    };
-  } catch (error) {
-    console.error("[Parrainage] Erreur validation code:", error);
-    return {
-      valid: false,
-      error: "Erreur lors de la validation du code",
-    };
-  }
-}
-
-/**
- * Calcule le rabais familial basé sur le nombre de membres
- * 
- * Règles :
- * - 2% de rabais par membre de la famille
- * - Maximum 20% de rabais (10+ membres)
- * - Prix de base : 185 CHF/an par mandat
- * 
- * @param nombreMembres - Nombre total de membres dans le groupe familial (incluant le nouveau)
- * @param prixBase - Prix de base du mandat (par défaut 185 CHF)
- * @returns Détails du calcul du rabais
- */
-export function calculateFamilyDiscount(
-  nombreMembres: number,
-  prixBase: number = 185
-): FamilyDiscountResult {
-  // Minimum 2 membres pour avoir un rabais (le parrain + le nouveau)
-  if (nombreMembres < 2) {
-    return {
-      nombreMembres: 1,
-      pourcentageRabais: 0,
-      prixBase,
-      montantRabais: 0,
-      prixFinal: prixBase,
-    };
+export async function validateReferralCode(code: string): Promise<FamilyMember | null> {
+  if (!code || code.trim() === '') {
+    return null;
   }
 
-  // Calcul du pourcentage : 2% par membre, max 20%
-  const pourcentageRabais = Math.min(nombreMembres * 2, 20);
+  // Normaliser le code (uppercase, trim)
+  const normalizedCode = code.trim().toUpperCase();
 
-  // Calcul du montant du rabais
-  const montantRabais = (prixBase * pourcentageRabais) / 100;
-
-  // Prix final
-  const prixFinal = prixBase - montantRabais;
-
-  return {
-    nombreMembres,
-    pourcentageRabais,
-    prixBase,
-    montantRabais: Math.round(montantRabais * 100) / 100, // Arrondi à 2 décimales
-    prixFinal: Math.round(prixFinal * 100) / 100,
-  };
-}
-
-/**
- * Génère un ID de groupe familial unique
- * Format : FAM-NOM-ANNEE-XX
- * 
- * @param nomFamille - Nom de famille du fondateur
- * @returns ID de groupe familial
- */
-export function generateFamilyId(nomFamille: string): string {
-  const year = new Date().getFullYear();
-  const nomClean = nomFamille
-    .toUpperCase()
-    .replace(/[^A-Z]/g, "")
-    .substring(0, 8);
-  
-  // Suffixe aléatoire
-  const suffix = Math.random().toString(36).substring(2, 4).toUpperCase();
-  
-  return `FAM-${nomClean}-${year}-${suffix}`;
-}
-
-/**
- * Récupère tous les membres d'un groupe familial depuis Airtable
- * 
- * @param codeGroupeFamilial - ID du groupe familial
- * @returns Liste des membres du groupe
- */
-export async function getFamilyMembers(
-  codeGroupeFamilial: string
-): Promise<FamilyMember[]> {
-  const { listRecords } = await import("../airtable-crm");
+  // Vérifier le format (4 lettres - 4 caractères)
+  const codePattern = /^[A-Z]{4}-[A-Z0-9]{4}$/;
+  if (!codePattern.test(normalizedCode)) {
+    console.log(`[Parrainage] Code invalide (format incorrect): ${normalizedCode}`);
+    return null;
+  }
 
   try {
-    const records = await listRecords({
-      filterByFormula: `{Code Groupe Familial} = "${codeGroupeFamilial}"`,
+    // Rechercher le client dans Airtable par code de parrainage
+    const filterFormula = `{Code Parrainage}='${normalizedCode}'`;
+    const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}?filterByFormula=${encodeURIComponent(filterFormula)}`;
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+      },
     });
 
-    return records.map((record) => ({
-      recordId: record.id,
-      nom: (record.fields["Nom"] as string) || "",
-      prenom: record.fields["Prénom"] as string | undefined,
-      nomEntreprise: record.fields["Nom de l'entreprise"] as string | undefined,
-      codeParrainage: (record.fields["Code Parrainage"] as string) || "",
-      lienParente: record.fields["Lien de Parenté"] as LienParente | undefined,
-      typeClient: (record.fields["Type de client"] as "Privé" | "Entreprise") || "Privé",
+    if (!response.ok) {
+      console.error('[Parrainage] Erreur recherche code:', await response.text());
+      return null;
+    }
+
+    const result = await response.json();
+
+    if (result.records.length === 0) {
+      console.log(`[Parrainage] Code non trouvé: ${normalizedCode}`);
+      return null;
+    }
+
+    const record = result.records[0];
+    const fields = record.fields;
+
+    return {
+      id: record.id,
+      nom: fields['NOM du client'] as string,
+      prenom: fields['Prénom'] as string | undefined,
+      email: fields['Email'] as string,
+      codeParrainage: normalizedCode,
+      lienParente: fields['Lien de Parenté'] as string | undefined,
+    };
+  } catch (error) {
+    console.error('[Parrainage] Erreur validation code:', error);
+    return null;
+  }
+}
+
+/**
+ * Récupérer tous les membres de la famille d'un client
+ * 
+ * @param groupeFamilial - Identifiant du groupe familial
+ * @returns Liste des membres de la famille
+ */
+export async function getFamilyMembers(groupeFamilial: string): Promise<FamilyMember[]> {
+  if (!groupeFamilial || groupeFamilial.trim() === '') {
+    return [];
+  }
+
+  try {
+    // Rechercher tous les clients du même groupe familial
+    const filterFormula = `{Groupe Familial}='${groupeFamilial.replace(/'/g, "\\'")}'`;
+    const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}?filterByFormula=${encodeURIComponent(filterFormula)}`;
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error('[Parrainage] Erreur recherche famille:', await response.text());
+      return [];
+    }
+
+    const result = await response.json();
+
+    return result.records.map((record: any) => ({
+      id: record.id,
+      nom: record.fields['NOM du client'] as string,
+      prenom: record.fields['Prénom'] as string | undefined,
+      email: record.fields['Email'] as string,
+      codeParrainage: record.fields['Code Parrainage'] as string,
+      lienParente: record.fields['Lien de Parenté'] as string | undefined,
     }));
   } catch (error) {
-    console.error("[Parrainage] Erreur récupération membres famille:", error);
+    console.error('[Parrainage] Erreur récupération famille:', error);
     return [];
   }
 }
 
 /**
- * Met à jour les rabais de tous les membres d'une famille
- * Appelé quand un nouveau membre rejoint le groupe
+ * Calculer le rabais familial
  * 
- * @param codeGroupeFamilial - ID du groupe familial
+ * @param familyMembersCount - Nombre de membres de la famille (incluant le client)
+ * @returns Pourcentage de rabais (0-20%)
  */
-export async function updateFamilyDiscounts(
-  codeGroupeFamilial: string
-): Promise<void> {
-  const { updateRecords } = await import("../airtable-crm");
-
-  try {
-    // Récupérer tous les membres
-    const members = await getFamilyMembers(codeGroupeFamilial);
-    const nombreMembres = members.length;
-
-    // Calculer le nouveau rabais
-    const discount = calculateFamilyDiscount(nombreMembres);
-
-    // Mettre à jour chaque membre dans Airtable
-    const updates = members.map((member) => ({
-      id: member.recordId,
-      fields: {
-        "Nb membres famille": nombreMembres,
-        "Rabais familial %": discount.pourcentageRabais,
-        "Prix final avec rabais": discount.prixFinal,
-      },
-    }));
-
-    // Batch update (max 10 par appel Airtable)
-    for (let i = 0; i < updates.length; i += 10) {
-      const batch = updates.slice(i, i + 10);
-      await updateRecords(batch);
-    }
-
-    console.log(
-      `[Parrainage] Rabais mis à jour pour ${nombreMembres} membres du groupe ${codeGroupeFamilial}`
-    );
-  } catch (error) {
-    console.error("[Parrainage] Erreur mise à jour rabais:", error);
-    throw error;
+export function calculateFamilyDiscount(familyMembersCount: number): number {
+  if (familyMembersCount <= 1) {
+    return 0; // Pas de rabais si seul
   }
+
+  // 2% par membre supplémentaire (le client ne compte pas pour le rabais)
+  const discount = (familyMembersCount - 1) * 2;
+
+  // Maximum 20% (10 membres)
+  return Math.min(discount, 20);
+}
+
+/**
+ * Appliquer le rabais familial à un prix
+ * 
+ * @param basePrice - Prix de base en CHF
+ * @param discountPercent - Pourcentage de rabais (0-20%)
+ * @returns Prix après rabais
+ */
+export function applyFamilyDiscount(basePrice: number, discountPercent: number): number {
+  if (discountPercent <= 0) {
+    return basePrice;
+  }
+
+  const discount = basePrice * (discountPercent / 100);
+  return Math.round((basePrice - discount) * 100) / 100; // Arrondir à 2 décimales
+}
+
+/**
+ * Générer la description pour une facture Stripe incluant les membres de la famille
+ * 
+ * @param familyMembers - Liste des membres de la famille
+ * @param discountPercent - Pourcentage de rabais appliqué
+ * @returns Description formatée pour Stripe
+ */
+export function generateInvoiceDescription(
+  familyMembers: FamilyMember[],
+  discountPercent: number
+): string {
+  if (familyMembers.length <= 1) {
+    return 'Mandat de Gestion Annuel';
+  }
+
+  const memberNames = familyMembers
+    .map(m => {
+      const fullName = m.prenom ? `${m.prenom} ${m.nom}` : m.nom;
+      return m.lienParente ? `${fullName} (${m.lienParente})` : fullName;
+    })
+    .join(', ');
+
+  return `Mandat de Gestion Annuel - Vous et ${familyMembers.length - 1} membre${familyMembers.length > 2 ? 's' : ''} de votre famille (${memberNames}) - Rabais familial ${discountPercent}%`;
+}
+
+/**
+ * Générer un résumé des membres de la famille pour les métadonnées Stripe
+ * 
+ * @param familyMembers - Liste des membres de la famille
+ * @returns Chaîne formatée avec les noms des membres
+ */
+export function generateFamilyMembersSummary(familyMembers: FamilyMember[]): string {
+  return familyMembers
+    .map(m => {
+      const fullName = m.prenom ? `${m.prenom} ${m.nom}` : m.nom;
+      return m.lienParente ? `${fullName} (${m.lienParente})` : fullName;
+    })
+    .join(', ');
 }

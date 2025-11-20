@@ -10,12 +10,7 @@ import {
   Phone,
   Download,
   ArrowRight,
-  Loader2,
-  Users,
-  Gift,
-  Copy,
-  Share2,
-  TrendingUp
+  Loader2
 } from "lucide-react";
 import { CONTACT_INFO } from "@/const";
 import { trpc } from "@/lib/trpc";
@@ -294,110 +289,20 @@ export default function Merci() {
             </CardContent>
           </Card>
 
-          {/* Code de Parrainage Familial */}
-          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl">Votre Code de Parrainage</CardTitle>
-                  <CardDescription>
-                    Invitez votre famille et économisez jusqu'à 20% sur vos mandats
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Code de parrainage */}
-              <div className="bg-white rounded-lg border-2 border-primary/30 p-6 text-center space-y-3">
-                <p className="text-sm font-medium text-gray-600">Votre code personnel</p>
-                <div className="font-mono text-4xl font-bold text-primary tracking-wider">
-                  {clientData.name.substring(0, 4).toUpperCase()}-XXXX
-                </div>
-                <p className="text-xs text-gray-500">
-                  Ce code sera généré automatiquement dans votre espace client
+          {/* Partage */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center space-y-4">
+                <h4 className="font-semibold">Vous êtes satisfait de notre service ?</h4>
+                <p className="text-sm text-muted-foreground">
+                  Partagez WIN WIN Finance Group avec vos proches et aidez-les à optimiser 
+                  leurs assurances. Pour chaque parrainage, vous bénéficiez d'une réduction 
+                  de CHF 50.- sur votre prochain renouvellement.
                 </p>
-              </div>
-
-              {/* Boutons de partage */}
-              <div className="grid grid-cols-3 gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-col h-auto py-4 gap-2"
-                  onClick={() => {
-                    const text = `Rejoins WIN WIN Finance Group avec mon code de parrainage ${clientData.name.substring(0, 4).toUpperCase()}-XXXX et bénéficie d'un rabais familial !`;
-                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-                  }}
-                >
-                  <Share2 className="h-5 w-5" />
-                  <span className="text-xs">WhatsApp</span>
+                <Button variant="outline">
+                  Parrainer un proche
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  className="flex-col h-auto py-4 gap-2"
-                  onClick={() => {
-                    const subject = 'Rejoins WIN WIN Finance Group';
-                    const body = `Bonjour,\n\nJe t'invite à rejoindre WIN WIN Finance Group avec mon code de parrainage ${clientData.name.substring(0, 4).toUpperCase()}-XXXX.\n\nTu bénéficieras d'un rabais familial sur ton mandat de gestion !\n\nPlus d'infos : https://www.winwin.swiss`;
-                    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                  }}
-                >
-                  <Mail className="h-5 w-5" />
-                  <span className="text-xs">Email</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-col h-auto py-4 gap-2"
-                  onClick={() => {
-                    navigator.clipboard.writeText(`${clientData.name.substring(0, 4).toUpperCase()}-XXXX`);
-                    toast.success('Code copié !');
-                  }}
-                >
-                  <Copy className="h-5 w-5" />
-                  <span className="text-xs">Copier</span>
-                </Button>
-              </div>
-
-              {/* Explication du système */}
-              <Alert className="bg-primary/5 border-primary/20">
-                <Gift className="h-4 w-4 text-primary" />
-                <AlertDescription className="text-sm">
-                  <strong>Comment ça marche ?</strong> Chaque membre de votre famille qui rejoint WIN WIN 
-                  avec votre code bénéficie d'un rabais de <strong>2% par membre</strong> (maximum 20%). 
-                  Le rabais s'applique à tous les membres de la famille, y compris vous !
-                </AlertDescription>
-              </Alert>
-
-              {/* Tableau de progression */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span>Progression du rabais familial</span>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    { membres: 2, rabais: 4, prix: 177.6 },
-                    { membres: 5, rabais: 10, prix: 166.5 },
-                    { membres: 7, rabais: 14, prix: 159.1 },
-                    { membres: 10, rabais: 20, prix: 148 },
-                  ].map((item) => (
-                    <div key={item.membres} className="bg-white rounded-lg border p-3 text-center space-y-1">
-                      <div className="text-xs text-gray-500">{item.membres} membres</div>
-                      <div className="text-lg font-bold text-primary">{item.rabais}%</div>
-                      <div className="text-xs text-gray-600">CHF {item.prix}.-</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Membres éligibles */}
-              <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                <p className="text-sm font-medium">Membres éligibles :</p>
-                <p className="text-xs text-gray-600">
-                  Conjoint(e), parents, enfants, frères/sœurs, grands-parents, beaux-parents, 
-                  et entreprises liées à la famille.
-                </p>
               </div>
             </CardContent>
           </Card>

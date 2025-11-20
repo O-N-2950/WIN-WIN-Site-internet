@@ -1,15 +1,7 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../_core/trpc";
-import { ENV } from "../_core/env";
-import { 
-  validateCodeParrainage, 
-  addClientToFamily, 
-  createNewFamily,
-  calculatePrixMandat,
-  calculateRabaisFamille,
-  recalculateFamilyDiscount
-} from "../parrainage";
+import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { calculatePrice, getAllPricing } from "../pricing";
+import { ENV } from "../_core/env";
 import { generateMandatPDF, addSignatureToPDF, type ClientData } from "../pdfGenerator";
 
 /**
@@ -57,9 +49,6 @@ export const workflowRouter = router({
         signatureUrl: z.string().url().optional(),
         successUrl: z.string().url(),
         cancelUrl: z.string().url(),
-        codeParrainage: z.string().optional(), // Code parrainage famille
-        lienParente: z.string().optional(), // Lien de parenté (Conjoint, Fils, Fille, etc.)
-        nombreMembresFamille: z.number().optional(), // Nombre de membres dans la famille (pour calcul rabais)
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -67,16 +56,6 @@ export const workflowRouter = router({
       const stripe = new Stripe(ENV.stripeSecretKey, {
         apiVersion: '2025-10-29.clover',
       });
-      
-      // Calculer le prix ajusté selon le rabais famille
-      let prixAjuste = input.annualPrice;
-      let rabaisFamille = 0;
-      
-      if (input.nombreMembresFamille && input.nombreMembresFamille > 0) {
-        rabaisFamille = calculateRabaisFamille(input.nombreMembresFamille);
-        prixAjuste = calculatePrixMandat(input.nombreMembresFamille);
-        console.log(`[Workflow] Rabais famille: ${rabaisFamille}% → Prix: ${prixAjuste} CHF`);
-      }
       
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
@@ -96,14 +75,9 @@ export const workflowRouter = router({
           clientType: input.clientType,
           clientAge: input.clientAge?.toString() || '',
           clientEmployeeCount: input.clientEmployeeCount?.toString() || '',
-          annualPrice: prixAjuste.toString(),
-          annualPriceOriginal: input.annualPrice.toString(),
-          rabaisFamille: rabaisFamille.toString(),
-          nombreMembresFamille: input.nombreMembresFamille?.toString() || '1',
+          annualPrice: input.annualPrice.toString(),
           isFree: input.isFree ? 'true' : 'false',
           signatureUrl: input.signatureUrl || '',
-          codeParrainage: input.codeParrainage || '',
-          lienParente: input.lienParente || '',
         },
       });
       

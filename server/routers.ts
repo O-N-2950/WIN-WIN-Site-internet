@@ -7,7 +7,7 @@ import { mandatRouter } from "./routers/mandat";
 import { appointmentRouter } from "./routers/appointment";
 import { uploadRouter } from "./routers/upload";
 import { parrainageRouter } from "./routers/parrainage";
-import { billingRouter } from "./routers/billing";
+// import { stripeWebhookRouter } from "./routers/stripe-webhook"; // Non utilisé - webhook géré par Express directement
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -17,7 +17,7 @@ export const appRouter = router({
   appointment: appointmentRouter,
   upload: uploadRouter,
   parrainage: parrainageRouter,
-  billing: billingRouter,
+  // stripeWebhook: stripeWebhookRouter, // Non utilisé - webhook géré par Express directement
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

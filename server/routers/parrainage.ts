@@ -1,17 +1,17 @@
 /**
- * Router tRPC pour le système de parrainage familial
+ * Router tRPC pour le système de parrainage et facturation automatique
+ * WIN WIN Finance Group
  */
 
 import { z } from "zod";
-import { publicProcedure, router } from "../_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import {
   validateReferralCode,
-  calculateFamilyDiscount,
-  generateFamilyId,
   getFamilyMembers,
-  updateFamilyDiscounts,
-  type LienParente,
+  calculateFamilyDiscount,
+  applyFamilyDiscount,
 } from "../lib/parrainage";
+import { processDailyBilling } from "../lib/billing";
 
 export const parrainageRouter = router({
   /**
@@ -20,54 +20,101 @@ export const parrainageRouter = router({
   validateCode: publicProcedure
     .input(
       z.object({
-        code: z.string().min(1, "Le code de parrainage est requis"),
+        code: z.string().min(1, "Code de parrainage requis"),
       })
     )
     .mutation(async ({ input }) => {
-      const result = await validateReferralCode(input.code);
-      return result;
+      const referrer = await validateReferralCode(input.code);
+
+      if (!referrer) {
+        return {
+          valid: false,
+          referrer: null,
+        };
+      }
+
+      return {
+        valid: true,
+        referrer: {
+          nom: referrer.nom,
+          prenom: referrer.prenom,
+          lienParente: referrer.lienParente,
+        },
+      };
     }),
 
   /**
-   * Calculer le rabais familial
+   * Calculer le rabais familial pour un nombre de membres donné
    */
   calculateDiscount: publicProcedure
     .input(
       z.object({
-        nombreMembres: z.number().int().min(1),
-        prixBase: z.number().optional(),
+        familyMembersCount: z.number().int().min(1),
       })
     )
     .query(({ input }) => {
-      return calculateFamilyDiscount(input.nombreMembres, input.prixBase);
+      const discountPercent = calculateFamilyDiscount(input.familyMembersCount);
+
+      return {
+        familyMembersCount: input.familyMembersCount,
+        discountPercent,
+      };
     }),
 
   /**
-   * Récupérer les membres d'un groupe familial
+   * Récupérer les membres de la famille d'un client
    */
   getFamilyMembers: publicProcedure
     .input(
       z.object({
-        codeGroupeFamilial: z.string(),
+        groupeFamilial: z.string().min(1),
       })
     )
     .query(async ({ input }) => {
-      const members = await getFamilyMembers(input.codeGroupeFamilial);
-      return members;
+      const members = await getFamilyMembers(input.groupeFamilial);
+
+      return {
+        groupeFamilial: input.groupeFamilial,
+        membersCount: members.length,
+        members: members.map(m => ({
+          nom: m.nom,
+          prenom: m.prenom,
+          lienParente: m.lienParente,
+        })),
+        discountPercent: calculateFamilyDiscount(members.length),
+      };
     }),
 
   /**
-   * Mettre à jour les rabais d'un groupe familial
-   * (appelé automatiquement après ajout d'un membre)
+   * Calculer le prix final après application du rabais familial
    */
-  updateFamilyDiscounts: publicProcedure
+  calculateFinalPrice: publicProcedure
     .input(
       z.object({
-        codeGroupeFamilial: z.string(),
+        basePrice: z.number().positive(),
+        familyMembersCount: z.number().int().min(1),
       })
     )
-    .mutation(async ({ input }) => {
-      await updateFamilyDiscounts(input.codeGroupeFamilial);
-      return { success: true };
+    .query(({ input }) => {
+      const discountPercent = calculateFamilyDiscount(input.familyMembersCount);
+      const finalPrice = applyFamilyDiscount(input.basePrice, discountPercent);
+
+      return {
+        basePrice: input.basePrice,
+        discountPercent,
+        discountAmount: input.basePrice - finalPrice,
+        finalPrice,
+      };
+    }),
+
+  /**
+   * Déclencher la facturation quotidienne (endpoint admin)
+   * Cette fonction doit normalement être appelée par un cron job
+   */
+  processDailyBilling: protectedProcedure
+    .mutation(async () => {
+      const result = await processDailyBilling();
+
+      return result;
     }),
 });

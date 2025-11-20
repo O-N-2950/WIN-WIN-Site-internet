@@ -1,122 +1,102 @@
-/**
- * Storage helpers for Cloudflare R2
- * Uses AWS S3 SDK compatible with Cloudflare R2
- */
+// Preconfigured storage helpers for Manus WebDev templates
+// Uses the Biz-provided storage proxy (Authorization: Bearer <token>)
 
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { ENV } from './_core/env';
 
-interface R2Config {
-  accessKeyId: string;
-  secretAccessKey: string;
-  endpoint: string;
-  bucketName: string;
-}
+type StorageConfig = { baseUrl: string; apiKey: string };
 
-function getR2Config(): R2Config {
-  const accessKeyId = process.env.R2_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-  const endpoint = process.env.R2_ENDPOINT;
-  const bucketName = process.env.R2_BUCKET_NAME || 'winwin-uploads';
+function getStorageConfig(): StorageConfig {
+  const baseUrl = ENV.forgeApiUrl;
+  const apiKey = ENV.forgeApiKey;
 
-  if (!accessKeyId || !secretAccessKey || !endpoint) {
+  if (!baseUrl || !apiKey) {
     throw new Error(
-      'R2 credentials missing: set R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_ENDPOINT'
+      "Storage proxy credentials missing: set BUILT_IN_FORGE_API_URL and BUILT_IN_FORGE_API_KEY"
     );
   }
 
-  return { accessKeyId, secretAccessKey, endpoint, bucketName };
+  return { baseUrl: baseUrl.replace(/\/+$/, ""), apiKey };
 }
 
-let s3Client: S3Client | null = null;
+function buildUploadUrl(baseUrl: string, relKey: string): URL {
+  const url = new URL("v1/storage/upload", ensureTrailingSlash(baseUrl));
+  url.searchParams.set("path", normalizeKey(relKey));
+  return url;
+}
 
-function getS3Client(): S3Client {
-  if (!s3Client) {
-    const config = getR2Config();
-    s3Client = new S3Client({
-      region: 'auto',
-      endpoint: config.endpoint,
-      credentials: {
-        accessKeyId: config.accessKeyId,
-        secretAccessKey: config.secretAccessKey,
-      },
-    });
-  }
-  return s3Client;
+async function buildDownloadUrl(
+  baseUrl: string,
+  relKey: string,
+  apiKey: string
+): Promise<string> {
+  const downloadApiUrl = new URL(
+    "v1/storage/downloadUrl",
+    ensureTrailingSlash(baseUrl)
+  );
+  downloadApiUrl.searchParams.set("path", normalizeKey(relKey));
+  const response = await fetch(downloadApiUrl, {
+    method: "GET",
+    headers: buildAuthHeaders(apiKey),
+  });
+  return (await response.json()).url;
+}
+
+function ensureTrailingSlash(value: string): string {
+  return value.endsWith("/") ? value : `${value}/`;
 }
 
 function normalizeKey(relKey: string): string {
-  return relKey.replace(/^\/+/, '');
+  return relKey.replace(/^\/+/, "");
 }
 
-/**
- * Upload a file to Cloudflare R2
- * 
- * @param relKey - Relative path/key for the file (e.g., "uploads/image.jpg")
- * @param data - File data as Buffer, Uint8Array, or string
- * @param contentType - MIME type of the file
- * @returns Object with key and public URL
- */
+function toFormData(
+  data: Buffer | Uint8Array | string,
+  contentType: string,
+  fileName: string
+): FormData {
+  const blob =
+    typeof data === "string"
+      ? new Blob([data], { type: contentType })
+      : new Blob([data as any], { type: contentType });
+  const form = new FormData();
+  form.append("file", blob, fileName || "file");
+  return form;
+}
+
+function buildAuthHeaders(apiKey: string): HeadersInit {
+  return { Authorization: `Bearer ${apiKey}` };
+}
+
 export async function storagePut(
   relKey: string,
   data: Buffer | Uint8Array | string,
-  contentType = 'application/octet-stream'
+  contentType = "application/octet-stream"
 ): Promise<{ key: string; url: string }> {
-  const config = getR2Config();
-  const client = getS3Client();
+  const { baseUrl, apiKey } = getStorageConfig();
   const key = normalizeKey(relKey);
-
-  // Convert string to Buffer if needed
-  const buffer = typeof data === 'string' ? Buffer.from(data) : data;
-
-  const command = new PutObjectCommand({
-    Bucket: config.bucketName,
-    Key: key,
-    Body: buffer,
-    ContentType: contentType,
+  const uploadUrl = buildUploadUrl(baseUrl, key);
+  const formData = toFormData(data, contentType, key.split("/").pop() ?? key);
+  const response = await fetch(uploadUrl, {
+    method: "POST",
+    headers: buildAuthHeaders(apiKey),
+    body: formData,
   });
 
-  try {
-    await client.send(command);
-    
-    // Construct public URL
-    // Format: https://<bucket>.<account-id>.r2.cloudflarestorage.com/<key>
-    const url = `${config.endpoint}/${key}`;
-    
-    console.log('[R2] File uploaded successfully:', key);
-    return { key, url };
-  } catch (error) {
-    console.error('[R2] Upload error:', error);
-    throw new Error(`R2 upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  if (!response.ok) {
+    const message = await response.text().catch(() => response.statusText);
+    throw new Error(
+      `Storage upload failed (${response.status} ${response.statusText}): ${message}`
+    );
   }
+  const url = (await response.json()).url;
+  return { key, url };
 }
 
-/**
- * Get a presigned URL to download a file from R2
- * 
- * @param relKey - Relative path/key for the file
- * @param expiresIn - URL expiration time in seconds (default: 1 hour)
- * @returns Object with key and presigned URL
- */
-export async function storageGet(
-  relKey: string,
-  expiresIn = 3600
-): Promise<{ key: string; url: string }> {
-  const config = getR2Config();
-  const client = getS3Client();
+export async function storageGet(relKey: string): Promise<{ key: string; url: string; }> {
+  const { baseUrl, apiKey } = getStorageConfig();
   const key = normalizeKey(relKey);
-
-  const command = new GetObjectCommand({
-    Bucket: config.bucketName,
-    Key: key,
-  });
-
-  try {
-    const url = await getSignedUrl(client, command, { expiresIn });
-    console.log('[R2] Presigned URL generated:', key);
-    return { key, url };
-  } catch (error) {
-    console.error('[R2] Get URL error:', error);
-    throw new Error(`R2 get URL failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
+  return {
+    key,
+    url: await buildDownloadUrl(baseUrl, key, apiKey),
+  };
 }
