@@ -18,11 +18,16 @@ export default function Conseil() {
     telephone: "",
     message: "",
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const sendContactRequest = trpc.appointment.sendContactRequest.useMutation({
     onSuccess: () => {
       toast.success("Message envoyé ! Nous vous répondrons sous 24h.");
       setFormData({ nom: "", email: "", telephone: "", message: "" });
+      setSelectedFile(null);
+      setFilePreview(null);
       setSelectedOption(null);
     },
     onError: (error) => {
@@ -30,14 +35,82 @@ export default function Conseil() {
     },
   });
 
-  const handleSubmitMessage = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Vérifier la taille (max 10 MB)
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    if (file.size > maxSize) {
+      toast.error("Le fichier est trop volumineux. Taille maximale : 10 MB");
+      return;
+    }
+
+    // Vérifier le type
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Format non supporté. Formats acceptés : PDF, JPG, PNG");
+      return;
+    }
+
+    setSelectedFile(file);
+
+    // Créer preview pour les images
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFilePreview(null);
+    }
+  };
+
+  const uploadFile = trpc.upload.uploadFile.useMutation();
+
+  const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    let attachmentUrl: string | undefined;
+
+    // Si un fichier est sélectionné, l'uploader d'abord
+    if (selectedFile) {
+      setIsUploading(true);
+      try {
+        // Convertir le fichier en base64
+        const reader = new FileReader();
+        const fileData = await new Promise<string>((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(selectedFile);
+        });
+
+        // Upload vers S3
+        const uploadResult = await uploadFile.mutateAsync({
+          fileName: selectedFile.name,
+          fileType: selectedFile.type,
+          fileData,
+        });
+
+        attachmentUrl = uploadResult.url;
+      } catch (error) {
+        toast.error("Erreur lors de l'upload du fichier");
+        setIsUploading(false);
+        return;
+      } finally {
+        setIsUploading(false);
+      }
+    }
+
+    // Envoyer le message avec l'URL du fichier
     sendContactRequest.mutate({
       nom: formData.nom,
       email: formData.email,
       telephone: formData.telephone,
       typeClient: "particulier", // Valeur par défaut pour les messages
       message: formData.message,
+      attachmentUrl,
     });
   };
 
@@ -415,15 +488,63 @@ export default function Conseil() {
                           placeholder="Décrivez votre situation et vos besoins..."
                         />
                       </div>
+
+                      <div>
+                        <Label htmlFor="file">Joindre un document (optionnel)</Label>
+                        <Input
+                          id="file"
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={handleFileChange}
+                          className="cursor-pointer"
+                        />
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Formats acceptés : PDF, JPG, PNG (max 10 MB)
+                        </p>
+                        
+                        {selectedFile && (
+                          <div className="mt-3 p-3 bg-muted rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Mail className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm font-medium">{selectedFile.name}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                                </span>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedFile(null);
+                                  setFilePreview(null);
+                                }}
+                              >
+                                Supprimer
+                              </Button>
+                            </div>
+                            {filePreview && (
+                              <img 
+                                src={filePreview} 
+                                alt="Preview" 
+                                className="mt-2 max-h-40 rounded border"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <Button 
                       type="submit" 
                       size="lg" 
                       className="w-full"
-                      disabled={sendContactRequest.isPending}
+                      disabled={sendContactRequest.isPending || isUploading}
                     >
-                      {sendContactRequest.isPending ? (
+                      {isUploading ? (
+                        <>Upload du fichier...</>
+                      ) : sendContactRequest.isPending ? (
                         <>Envoi en cours...</>
                       ) : (
                         <>

@@ -179,9 +179,10 @@ export const appointmentRouter = router({
       z.object({
         nom: z.string().min(2),
         email: z.string().email(),
-        telephone: z.string().min(10),
+        telephone: z.string().optional(),
         typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
         message: z.string().min(10, "Le message doit contenir au moins 10 caractères"),
+        attachmentUrl: z.string().url().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -192,11 +193,12 @@ export const appointmentRouter = router({
         const recordId = await createLeadInAirtable({
           nom: input.nom,
           email: input.email,
-          telephone: input.telephone,
+          telephone: input.telephone || "",
           typeClient: input.typeClient === "particulier" ? "Particulier" : 
                       input.typeClient === "entreprise" ? "Entreprise" : "Les deux",
           source: "Formulaire Contact",
           message: input.message,
+          attachmentUrl: input.attachmentUrl,
         });
 
         return {

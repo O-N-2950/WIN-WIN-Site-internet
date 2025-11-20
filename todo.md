@@ -1200,3 +1200,33 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - ✅ **Webhooks** : Intégration Airtable automatique
 
 ---
+
+
+---
+
+## 🐛 Correction Formulaire Contact + Upload Fichiers - 20 nov 2025
+
+### Problèmes identifiés
+- [x] Erreur lors de l'envoi de message depuis page /conseil
+- [x] Impossible de joindre des documents (PDF, images)
+
+### Phase 1 : Diagnostic et Correction Erreur
+- [x] Identifier l'erreur d'envoi de message (validation téléphone)
+- [x] Vérifier endpoint tRPC appointment.sendContactRequest
+- [x] Vérifier logs serveur
+- [x] Corriger l'erreur (téléphone optional)
+- [ ] Tester envoi de message simple - EN COURS
+
+### Phase 2 : Ajout Upload Fichiers
+- [x] Ajouter input file au formulaire (accept: .pdf, .jpg, .png)
+- [x] Limiter taille fichier (max 10 MB)
+- [x] Afficher preview des fichiers sélectionnés
+- [x] Upload vers S3 avec storagePut()
+- [x] Envoyer URL fichier à Airtable
+- [ ] Tester upload PDF - EN COURS
+- [ ] Tester upload images - EN COURS
+
+### Phase 3 : Déploiement
+- [ ] Tester workflow complet
+- [ ] Push vers GitHub
+- [ ] Vérifier déploiement Railway

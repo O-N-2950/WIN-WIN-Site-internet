@@ -22,6 +22,7 @@ interface LeadData {
   message?: string;
   dateRdv?: string;
   heureRdv?: string;
+  attachmentUrl?: string;
 }
 
 interface CalBookingData {
@@ -79,6 +80,10 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
 
   if (data.heureRdv) {
     fields['Heure RDV'] = data.heureRdv;
+  }
+
+  if (data.attachmentUrl) {
+    fields['Pièce jointe'] = data.attachmentUrl;
   }
 
   try {
