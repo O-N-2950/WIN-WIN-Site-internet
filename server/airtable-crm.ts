@@ -88,8 +88,7 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
   }
 
   if (data.attachmentUrl) {
-    fields['Pièce jointe'] = data.attachmentUrl;
-  }
+    fields['Pièce jointe'] = [{ url: data.attachmentUrl }];
 
   try {
     const controller = new AbortController();
