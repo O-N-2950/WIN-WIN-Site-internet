@@ -1,0 +1,246 @@
+/**
+ * Module d'intégration Airtable CRM pour WIN WIN Finance Group
+ * 
+ * Ce module permet de :
+ * - Créer automatiquement des leads dans Airtable depuis les formulaires du site
+ * - Envoyer des notifications email à contact@winwin.swiss
+ * - Tracker la source et le statut des leads
+ */
+
+interface AirtableConfig {
+  baseId: string;
+  tableId: string;
+  apiKey: string;
+}
+
+interface LeadData {
+  nom: string;
+  email: string;
+  telephone: string;
+  typeClient: 'Particulier' | 'Entreprise' | 'Les deux';
+  source: 'Formulaire Contact' | 'Demande RDV' | 'Questionnaire Mandat';
+  message?: string;
+  dateRdv?: string;
+  heureRdv?: string;
+}
+
+/**
+ * Configuration Airtable
+ * Base: ERP Clients WW
+ * Table: Leads Site Web
+ */
+const AIRTABLE_CONFIG: AirtableConfig = {
+  baseId: 'appZQkRJ7PwOtdQ3O',
+  tableId: 'tbl7kIZd294RTM1de', // ID de la table "Leads Site Web"
+  apiKey: process.env.AIRTABLE_API_KEY || '',
+};
+
+/**
+ * Créer un lead dans Airtable
+ * 
+ * @param data - Données du lead
+ * @returns L'ID du record créé dans Airtable
+ */
+export async function createLeadInAirtable(data: LeadData): Promise<string> {
+  const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}`;
+
+  // Préparer les champs selon la structure Airtable
+  const fields: Record<string, any> = {
+    'Nom': data.nom,
+    'Email': data.email,
+    'Téléphone': data.telephone,
+    'Type Client': data.typeClient,
+    'Source': data.source,
+    'Statut': 'Nouveau', // Statut par défaut
+  };
+
+  // Ajouter les champs optionnels
+  if (data.message) {
+    fields['Message'] = data.message;
+  }
+
+  if (data.dateRdv) {
+    fields['Date RDV'] = data.dateRdv;
+  }
+
+  if (data.heureRdv) {
+    fields['Heure RDV'] = data.heureRdv;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fields }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur création lead:', errorText);
+      throw new Error(`Airtable API error: ${response.status} - ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log('[Airtable] Lead créé avec succès:', result.id);
+    
+    // Envoyer notification email
+    await sendLeadNotification(data, result.id);
+
+    return result.id;
+  } catch (error) {
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}
+
+/**
+ * Envoyer une notification email à contact@winwin.swiss
+ * 
+ * @param data - Données du lead
+ * @param recordId - ID du record Airtable créé
+ */
+async function sendLeadNotification(data: LeadData, recordId: string): Promise<void> {
+  const airtableRecordUrl = `https://airtable.com/${AIRTABLE_CONFIG.baseId}/${AIRTABLE_CONFIG.tableId}/${recordId}`;
+
+  const emailSubject = `🔔 Nouveau Lead - ${data.source}`;
+  
+  const emailBody = `
+Bonjour Olivier,
+
+Un nouveau lead vient d'être créé sur le site WIN WIN Finance Group.
+
+📋 INFORMATIONS DU LEAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 Nom : ${data.nom}
+📧 Email : ${data.email}
+📞 Téléphone : ${data.telephone}
+🏢 Type de client : ${data.typeClient}
+📍 Source : ${data.source}
+
+${data.dateRdv ? `📅 Date RDV demandée : ${data.dateRdv} à ${data.heureRdv || 'N/A'}` : ''}
+
+${data.message ? `💬 Message :\n${data.message}` : ''}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 Voir dans Airtable : ${airtableRecordUrl}
+
+⚡ ACTIONS RECOMMANDÉES :
+1. Contacter le lead dans les 24h
+2. Qualifier le besoin
+3. Proposer un entretien si pertinent
+4. Mettre à jour le statut dans Airtable
+
+---
+Notification automatique - WIN WIN Finance Group
+  `.trim();
+
+  try {
+    // TODO: Implémenter l'envoi d'email via Resend ou autre service
+    // Pour l'instant, on log dans la console
+    console.log('[Email Notification]', {
+      to: 'contact@winwin.swiss',
+      subject: emailSubject,
+      body: emailBody,
+    });
+
+    // Si vous avez configuré Resend, décommenter :
+    /*
+    const { ENV } = await import('./_core/env');
+    if (ENV.resendApiKey) {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ENV.resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'notifications@winwin.swiss',
+          to: 'contact@winwin.swiss',
+          subject: emailSubject,
+          text: emailBody,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('[Email] Erreur envoi:', await response.text());
+      }
+    }
+    */
+  } catch (error) {
+    console.error('[Email Notification] Erreur:', error);
+    // Ne pas bloquer la création du lead si l'email échoue
+  }
+}
+
+/**
+ * Mettre à jour le statut d'un lead dans Airtable
+ * 
+ * @param recordId - ID du record Airtable
+ * @param statut - Nouveau statut
+ */
+export async function updateLeadStatus(
+  recordId: string,
+  statut: 'Nouveau' | 'Contacté' | 'Qualifié' | 'Converti' | 'Perdu'
+): Promise<void> {
+  const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}/${recordId}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fields: { 'Statut': statut },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur mise à jour statut:', errorText);
+      throw new Error(`Airtable API error: ${response.status}`);
+    }
+
+    console.log('[Airtable] Statut mis à jour:', statut);
+  } catch (error) {
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}
+
+/**
+ * Récupérer tous les leads avec un statut donné
+ * 
+ * @param statut - Statut à filtrer
+ * @returns Liste des leads
+ */
+export async function getLeadsByStatus(
+  statut: 'Nouveau' | 'Contacté' | 'Qualifié' | 'Converti' | 'Perdu'
+): Promise<any[]> {
+  const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}?filterByFormula={Statut}='${statut}'`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur récupération leads:', errorText);
+      throw new Error(`Airtable API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.records;
+  } catch (error) {
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}

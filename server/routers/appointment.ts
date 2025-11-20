@@ -34,22 +34,46 @@ export const appointmentRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      // Générer un ID unique pour cette demande
-      const appointmentId = `apt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Stocker temporairement
-      pendingAppointments.set(appointmentId, input);
-      
-      // Nettoyer après 1 heure (timeout)
-      setTimeout(() => {
-        pendingAppointments.delete(appointmentId);
-      }, 60 * 60 * 1000);
+      try {
+        // Créer le lead dans Airtable
+        const { createLeadInAirtable } = await import("../airtable-crm");
+        
+        const recordId = await createLeadInAirtable({
+          nom: input.nom,
+          email: input.email,
+          telephone: input.telephone,
+          typeClient: input.typeClient === "particulier" ? "Particulier" : 
+                      input.typeClient === "entreprise" ? "Entreprise" : "Les deux",
+          source: "Demande RDV",
+          message: input.message,
+          dateRdv: input.dateRdv,
+          heureRdv: input.heureRdv,
+        });
 
-      return {
-        success: true,
-        appointmentId,
-        message: "Demande de rendez-vous enregistrée. Redirection vers l'authentification Google...",
-      };
+        // Générer un ID unique pour cette demande
+        const appointmentId = `apt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Stocker temporairement
+        pendingAppointments.set(appointmentId, input);
+        
+        // Nettoyer après 1 heure (timeout)
+        setTimeout(() => {
+          pendingAppointments.delete(appointmentId);
+        }, 60 * 60 * 1000);
+
+        return {
+          success: true,
+          appointmentId,
+          recordId,
+          message: "Demande de rendez-vous enregistrée. Redirection vers l'authentification Google...",
+        };
+      } catch (error) {
+        console.error("[Request Appointment] Erreur:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Erreur lors de l'enregistrement du rendez-vous. Veuillez réessayer.",
+        });
+      }
     }),
 
   /**
@@ -151,12 +175,31 @@ export const appointmentRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      // TODO: Envoyer à Airtable + notification email
-      console.log("[Contact Request]", input);
+      try {
+        // Créer le lead dans Airtable
+        const { createLeadInAirtable } = await import("../airtable-crm");
+        
+        const recordId = await createLeadInAirtable({
+          nom: input.nom,
+          email: input.email,
+          telephone: input.telephone,
+          typeClient: input.typeClient === "particulier" ? "Particulier" : 
+                      input.typeClient === "entreprise" ? "Entreprise" : "Les deux",
+          source: "Formulaire Contact",
+          message: input.message,
+        });
 
-      return {
-        success: true,
-        message: "Votre message a été envoyé. Nous vous recontacterons sous 24h.",
-      };
+        return {
+          success: true,
+          message: "Votre message a été envoyé. Nous vous recontacterons sous 24h.",
+          recordId,
+        };
+      } catch (error) {
+        console.error("[Contact Request] Erreur:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Erreur lors de l'envoi du message. Veuillez réessayer.",
+        });
+      }
     }),
 });

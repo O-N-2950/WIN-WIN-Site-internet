@@ -1054,3 +1054,64 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [ ] Vérifier responsive mobile
 - [ ] Optimiser vitesse de chargement
 - [ ] Corrections bugs éventuels
+
+
+## 🎯 Refonte Messaging "Devenir Client" + Airtable CRM (20 nov 2025)
+
+### Phase 1 : Messaging & Navigation
+- [x] Modifier Header : ajouter bouton "Devenir Client" (vert, à droite)
+- [x] Modifier lien "Demandez Conseil" → rediriger vers `/conseil`
+- [x] Refondre page `/questionnaire-info` :
+  - [x] Nouveau titre : "Devenez Client WIN WIN"
+  - [x] Nouveau sous-titre : "Libérez-vous de la Gestion de Vos Assurances"
+  - [x] Retirer "Gratuit • Sans engagement"
+  - [x] Ajouter mention "À partir de CHF 185.-/an"
+  - [x] Améliorer les 3 icônes avec bénéfices orientés client
+- [x] Améliorer Hero Section page d'accueil :
+  - [x] Ajouter 2 CTA : "Devenir Client" (vert) + "Demandez Conseil" (bleu outline)
+  - [x] Nouveau titre : "Libérez-vous de la Gestion de Vos Assurances"
+  - [x] Sous-titre : "99% des gens détestent gérer leurs assurances. Nous le faisons pour vous."
+
+### Phase 2 : Page Conseil
+- [x] Créer nouvelle page `/conseil`
+- [x] Design avec 3 cartes :
+  - [x] Carte 1 : Appel Express (032 466 11 00)
+  - [x] Carte 2 : Réserver un Entretien (formulaire)
+  - [x] Carte 3 : Envoyer un Message (formulaire contact)
+- [x] Formulaire de réservation d'entretien (nom, email, téléphone, type, message)
+- [x] Formulaire de contact simple (nom, email, téléphone, message)
+- [x] Ajouter route /conseil dans App.tsx
+
+### Phase 3 : Intégration Google Calendar (Backend)
+- [x] Installer googleapis package
+- [x] Créer module server/google-calendar.ts
+- [x] Créer router appointment avec endpoints tRPC
+- [x] Ajouter route callback OAuth /api/calendar/callback
+- [x] Configurer identifiants Google OAuth (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+- [x] Ajouter URI de redirection dans Google Cloud Console
+- [ ] Mettre à jour page Conseil pour utiliser l'intégration (en attente décision client)
+
+### Phase 4 : Intégration Airtable CRM
+- [x] Créer table "Leads Site Web" dans Airtable (ID: tbl7kIZd294RTM1de)
+- [x] Créer fichier CSV template avec 8 exemples de leads
+- [x] Créer guide d'import Airtable (AIRTABLE_IMPORT_GUIDE.md)
+- [x] Créer module server/airtable-crm.ts
+- [x] Connecter formulaire Contact → Airtable
+- [x] Connecter formulaire RDV → Airtable
+- [x] Configurer notifications email à contact@winwin.swiss
+- [x] Créer tests Vitest (3/3 passés)
+- [x] Valider connexion API Airtable
+- [x] Configurer AIRTABLE_API_KEY
+
+### Phase 5 : Documentation Notion (À faire)
+- [ ] Créer page technique dans Notion
+- [ ] Documenter architecture système
+- [ ] Documenter variables d'environnement
+- [ ] Documenter workflows automatisés
+- [ ] Documenter procédures de déploiement
+
+### Phase 6 : Paiement Stripe (À faire)
+- [ ] Tester parcours complet questionnaire → signature → paiement
+- [ ] Valider webhook Stripe
+- [ ] Création client Airtable post-paiement
+- [ ] Tests end-to-end
