@@ -49,16 +49,36 @@ export default function Merci() {
   
   const handleDownloadPDF = () => {
     setIsGeneratingPDF(true);
-    generateMandatMutation.mutate({
+    
+    // Préparer les données selon la nouvelle interface MandatData
+    const mandatData = {
+      // Informations client
+      prenom: workflow.questionnaireData?.prenom,
+      nom: workflow.questionnaireData?.nom,
+      nomEntreprise: workflow.questionnaireData?.nomEntreprise,
+      email: workflow.questionnaireData?.email || clientData.email,
+      adresse: workflow.questionnaireData?.adresse || '',
+      npa: workflow.questionnaireData?.npa || '',
+      localite: workflow.questionnaireData?.localite || '',
+      
+      // Informations entreprise
+      formeJuridique: workflow.questionnaireData?.formeJuridique,
+      nombreEmployes: workflow.questionnaireData?.nombreEmployes,
+      
+      // Type de client
+      typeClient: workflow.questionnaireData?.typeClient || clientData.clientType,
+      
+      // Signature
+      signatureDataUrl: workflow.signatureDataUrl || '',
+      dateSignature: workflow.signatureDate || new Date().toISOString(),
+      
+      // Informations de paiement (optionnel)
       mandatNumber: clientData.mandatNumber,
-      clientName: clientData.name,
-      clientEmail: clientData.email,
-      clientType: clientData.clientType,
       annualPrice: clientData.tarif,
       isFree: clientData.isFree,
-      signatureDate: workflow.signatureDate || new Date().toISOString(),
-      signatureUrl: workflow.signatureS3Url || workflow.signatureDataUrl,
-    });
+    };
+    
+    generateMandatMutation.mutate(mandatData);
   };
 
   return (

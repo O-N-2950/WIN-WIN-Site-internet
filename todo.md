@@ -986,9 +986,14 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
   - Forme juridique (si entreprise)
   - Nombre d'employés (si entreprise)
   - Sections séparées : Informations personnelles + Détails du mandat
-- [ ] Intégrer modèle PDF mandat (Mandatdegestion-WINWINFinanceGroup.pdf)
-- [ ] Automatiser génération PDF avec signature intégrée
-- [ ] Envoi automatique email client + notification owner
+- [x] Créer dossier server/templates/ et copier Mandatdegestion-WINWINFinanceGroup.pdf
+- [x] Installer packages nécessaires (pdf-lib pour manipulation PDF)
+- [x] Créer module server/pdf-generator.ts avec fonction generateMandat()
+- [x] Intégrer signature électronique (Canvas) dans le PDF
+- [x] Remplir automatiquement les champs du PDF avec données client
+- [x] Créer endpoint tRPC mandat.generateMandat (mis à jour avec nouvelle interface)
+- [x] Tester génération PDF complète avec signature (tests vitest passés)
+- [x] Upload automatique du PDF généré vers S3 (implémenté dans mandatRouter)
 
 ## 📧 Envoi Automatique Mandats aux Compagnies (PLUS TARD)
 - [ ] Après paiement Stripe confirmé : envoi automatique du mandat signé aux compagnies
