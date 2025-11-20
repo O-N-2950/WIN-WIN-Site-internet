@@ -892,3 +892,10 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [x] Remplacer par https://talentis-les-indemnites--xaf5by0.gamma.site/
 - [x] Tester le lien
 - [x] Commiter et déployer
+
+
+## 🔗 Rendre PEP's Cliquable (20 nov 2025)
+- [x] Rechercher le texte "membres actifs de l'application PEP's"
+- [x] Transformer "PEP's" en lien hypertexte vers https://peps.swiss/
+- [x] Tester le lien
+- [x] Commiter et déployer

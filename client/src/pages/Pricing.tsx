@@ -363,7 +363,18 @@ export default function Pricing() {
               },
               {
                 question: "Y a-t-il des frais cachés ?",
-                answer: "Non, le tarif annuel inclut toutes les prestations listées. L'analyse prévoyance PEP's (d'une valeur de CHF 250.-) est offerte gratuitement aux membres actifs de l'application PEP's."
+                answer: (
+                  <>
+                    Non, le tarif annuel inclut toutes les prestations listées. L'analyse prévoyance{" "}
+                    <a href="https://peps.swiss/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      PEP's
+                    </a>{" "}
+                    (d'une valeur de CHF 250.-) est offerte gratuitement aux membres actifs de l'application{" "}
+                    <a href="https://peps.swiss/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      PEP's
+                    </a>.
+                  </>
+                )
               },
               {
                 question: "Comment se fait le paiement ?",
