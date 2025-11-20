@@ -5,7 +5,8 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../_core/trpc";
 import { generateMandatPDF, generateMandatFilename } from "../pdf-generator";
-import { storagePut } from "../storage";
+import { uploadToTmpFiles } from "../tmpfiles-upload";
+import { createLeadInAirtable } from "../airtable-crm";
 
 export const mandatRouter = router({
   /**
@@ -51,15 +52,50 @@ export const mandatRouter = router({
         const randomSuffix = Math.random().toString(36).substring(2, 15);
         const fileKey = `mandats/${filename.replace('.pdf', '')}-${randomSuffix}.pdf`;
         
-        // Uploader vers S3
-        const { url } = await storagePut(fileKey, pdfBuffer, 'application/pdf');
+        // 1. Uploader la signature PNG vers tmpfiles (pour réutilisation)
+        const signatureFilename = `signature_${Date.now()}.png`;
+        const signatureResult = await uploadToTmpFiles(
+          input.signatureDataUrl,
+          signatureFilename,
+          'image/png'
+        );
         
-        console.log(`[Mandat] PDF généré et uploadé: ${url}`);
+        console.log(`[Mandat] Signature PNG uploadée: ${signatureResult.url}`);
+        
+        // 2. Uploader le PDF vers tmpfiles (Airtable téléchargera et stockera définitivement)
+        const base64Pdf = pdfBuffer.toString('base64');
+        const dataUrl = `data:application/pdf;base64,${base64Pdf}`;
+        const pdfResult = await uploadToTmpFiles(dataUrl, filename, 'application/pdf');
+        
+        console.log(`[Mandat] PDF généré et uploadé: ${pdfResult.url}`);
+        
+        // 3. Créer/mettre à jour le lead dans Airtable avec signature + PDF
+        const clientName = input.typeClient === 'entreprise' 
+          ? input.nomEntreprise || 'Entreprise'
+          : `${input.prenom || ''} ${input.nom || ''}`.trim();
+        
+        try {
+          await createLeadInAirtable({
+            nom: clientName,
+            email: input.email,
+            telephone: '', // TODO: ajouter téléphone dans le formulaire
+            typeClient: input.typeClient === 'entreprise' ? 'Entreprise' : 'Particulier',
+            source: 'Questionnaire Mandat',
+            signatureUrl: signatureResult.url,
+            mandatPdfUrl: pdfResult.url,
+            dateSignature: new Date(input.dateSignature).toLocaleDateString('fr-CH'),
+          });
+          console.log(`[Mandat] Lead créé dans Airtable avec signature + PDF`);
+        } catch (airtableError) {
+          console.error('[Mandat] Erreur Airtable (non bloquant):', airtableError);
+          // Ne pas bloquer si Airtable échoue, le PDF est quand même généré
+        }
         
         return {
-          url,
+          url: pdfResult.url,
           key: fileKey,
           filename,
+          signatureUrl: signatureResult.url,
         };
       } catch (error) {
         console.error('[Mandat Router] Erreur lors de la génération du mandat:', error);

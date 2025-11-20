@@ -23,6 +23,9 @@ interface LeadData {
   dateRdv?: string;
   heureRdv?: string;
   attachmentUrl?: string;
+  signatureUrl?: string; // URL de la signature PNG (pour réutilisation)
+  mandatPdfUrl?: string; // URL du mandat de gestion signé
+  dateSignature?: string; // Date de signature du mandat
 }
 
 interface CalBookingData {
@@ -89,6 +92,18 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
 
   if (data.attachmentUrl) {
     fields['Pièce jointe'] = [{ url: data.attachmentUrl }];
+  }
+
+  if (data.signatureUrl) {
+    fields['Signature client'] = [{ url: data.signatureUrl }];
+  }
+
+  if (data.mandatPdfUrl) {
+    fields['MANDAT DE GESTION signé'] = [{ url: data.mandatPdfUrl }];
+  }
+
+  if (data.dateSignature) {
+    fields['Date signature mandat de gestion'] = data.dateSignature;
   }
 
   try {
@@ -305,6 +320,151 @@ export async function getLeadsByStatus(
  * @param data - Données de la réservation Cal.com
  * @returns L'ID du record créé dans Airtable
  */
+/**
+ * Rechercher des records dans la table Clients par code de parrainage
+ * 
+ * @param searchTerm - Terme de recherche (code de parrainage)
+ * @param fieldIds - IDs des champs à rechercher
+ * @returns Liste des records trouvés
+ */
+export async function searchRecords(
+  searchTerm: string,
+  fieldIds?: string[]
+): Promise<any[]> {
+  const CLIENTS_TABLE_ID = 'tblWPcIpGmBZ3ASGI';
+  const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(CLIENTS_TABLE_ID)}?filterByFormula={Code Parrainage}='${searchTerm}'`;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur recherche records:', errorText);
+      throw new Error(`Airtable API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.records;
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la recherche');
+      throw new Error('Airtable API timeout');
+    }
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}
+
+/**
+ * Lister des records avec un filtre optionnel
+ * 
+ * @param options - Options de filtrage
+ * @returns Liste des records
+ */
+export async function listRecords(options?: {
+  filterByFormula?: string;
+  maxRecords?: number;
+}): Promise<any[]> {
+  const CLIENTS_TABLE_ID = 'tblWPcIpGmBZ3ASGI';
+  let url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(CLIENTS_TABLE_ID)}`;
+  
+  const params = new URLSearchParams();
+  if (options?.filterByFormula) {
+    params.append('filterByFormula', options.filterByFormula);
+  }
+  if (options?.maxRecords) {
+    params.append('maxRecords', options.maxRecords.toString());
+  }
+  
+  if (params.toString()) {
+    url += '?' + params.toString();
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur liste records:', errorText);
+      throw new Error(`Airtable API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.records;
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la liste');
+      throw new Error('Airtable API timeout');
+    }
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}
+
+/**
+ * Mettre à jour plusieurs records en batch
+ * 
+ * @param updates - Liste des mises à jour (max 10)
+ */
+export async function updateRecords(
+  updates: Array<{ id: string; fields: Record<string, any> }>
+): Promise<void> {
+  const CLIENTS_TABLE_ID = 'tblWPcIpGmBZ3ASGI';
+  const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(CLIENTS_TABLE_ID)}`;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ records: updates }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur mise à jour records:', errorText);
+      throw new Error(`Airtable API error: ${response.status}`);
+    }
+
+    console.log('[Airtable] Records mis à jour:', updates.length);
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la mise à jour');
+      throw new Error('Airtable API timeout');
+    }
+    console.error('[Airtable] Erreur:', error);
+    throw error;
+  }
+}
+
 export async function createLeadFromCalBooking(data: CalBookingData): Promise<string> {
   const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}`;
 

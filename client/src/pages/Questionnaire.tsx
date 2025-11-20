@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import PoliceModal from "@/components/PoliceModal";
+import { trpc } from "@/lib/trpc";
 
 // Types de contrats (46 options groupés par catégorie)
 const TYPES_CONTRATS_GROUPED = {
@@ -136,6 +137,7 @@ interface QuestionnaireData {
   dateNaissance: string;
   situationFamiliale: "celibataire" | "marie" | "divorce" | "veuf" | "";
   typeClient: "prive" | "entreprise" | "les_deux" | "";
+  codeParrainage?: string;
   
   // Données privé
   adresse: string;
@@ -173,6 +175,7 @@ export default function Questionnaire() {
     npa: "",
     localite: "",
     polices: [],
+    codeParrainage: "",
     
     // Entreprise
     nomEntreprise: "",
@@ -185,6 +188,48 @@ export default function Questionnaire() {
 
   const [currentPoliceIndex, setCurrentPoliceIndex] = useState(0);
   const [showPoliceForm, setShowPoliceForm] = useState(false);
+  
+  // Validation code de parrainage
+  const [codeParrainageStatus, setCodeParrainageStatus] = useState<'idle' | 'validating' | 'valid' | 'invalid'>('idle');
+  const [parrainInfo, setParrainInfo] = useState<{ nom: string; rabais: number } | null>(null);
+  
+  // Validation du code de parrainage avec debounce
+  useEffect(() => {    if (!data.codeParrainage || data.codeParrainage.length < 4) {
+      setCodeParrainageStatus('idle');
+      setParrainInfo(null);
+      return;
+    }
+    
+    setCodeParrainageStatus('validating');
+    
+    const timer = setTimeout(async () => {
+      try {
+        // TODO: Appeler l'endpoint tRPC pour valider le code
+        // const result = await trpc.parrainage.validateCode.query({ code: data.codeParrainage });
+        // if (result.valid) {
+        //   setCodeParrainageStatus('valid');
+        //   setParrainInfo({ nom: result.parrainNom, rabais: result.rabais });
+        // } else {
+        //   setCodeParrainageStatus('invalid');
+        //   setParrainInfo(null);
+        // }
+        
+        // Simulation pour l'instant
+        if (data.codeParrainage.match(/^[A-Z]{4}-[A-Z0-9]{4}$/)) {
+          setCodeParrainageStatus('valid');
+          setParrainInfo({ nom: 'Jean Dupont', rabais: 14 });
+        } else {
+          setCodeParrainageStatus('invalid');
+          setParrainInfo(null);
+        }
+      } catch (error) {
+        setCodeParrainageStatus('invalid');
+        setParrainInfo(null);
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [data.codeParrainage]);
 
   // Sauvegarde automatique
   useEffect(() => {
@@ -589,8 +634,75 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, telephone: e.target.value })}
                           placeholder="+41 79 123 45 67"
                           className="mt-2 text-lg h-14"
-                          onKeyPress={(e) => e.key === 'Enter' && nextStep()}
                         />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="codeParrainage" className="text-lg flex items-center gap-2">
+                          Code de parrainage
+                          <span className="text-sm text-muted-foreground font-normal">(optionnel)</span>
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            id="codeParrainage"
+                            value={data.codeParrainage || ""}
+                            onChange={(e) => setData({ ...data, codeParrainage: e.target.value.toUpperCase() })}
+                            placeholder="JEAN-A3X9"
+                            className={`mt-2 text-lg h-14 font-mono pr-12 ${
+                              codeParrainageStatus === 'valid' ? 'border-green-500' :
+                              codeParrainageStatus === 'invalid' ? 'border-red-500' : ''
+                            }`}
+                            onKeyPress={(e) => e.key === 'Enter' && nextStep()}
+                          />
+                          {codeParrainageStatus === 'validating' && (
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 mt-1">
+                              <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full" />
+                            </div>
+                          )}
+                          {codeParrainageStatus === 'valid' && (
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 mt-1">
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            </div>
+                          )}
+                          {codeParrainageStatus === 'invalid' && (
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 mt-1">
+                              <X className="h-5 w-5 text-red-500" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        {codeParrainageStatus === 'valid' && parrainInfo && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg"
+                          >
+                            <p className="text-sm font-medium text-green-800">
+                              ✅ Code valide ! Parrainé par <strong>{parrainInfo.nom}</strong>
+                            </p>
+                            <p className="text-sm text-green-700 mt-1">
+                              🎉 Vous bénéficiez d'un rabais familial de <strong>{parrainInfo.rabais}%</strong> !
+                            </p>
+                          </motion.div>
+                        )}
+                        
+                        {codeParrainageStatus === 'invalid' && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg"
+                          >
+                            <p className="text-sm font-medium text-red-800">
+                              ❌ Code invalide. Vérifiez le format (ex: JEAN-A3X9)
+                            </p>
+                          </motion.div>
+                        )}
+                        
+                        {codeParrainageStatus === 'idle' && (
+                          <p className="text-sm text-muted-foreground mt-2">
+                            👨‍👩‍👧‍👦 Avez-vous été parrainé par un membre de votre famille ? Entrez son code pour bénéficier du rabais familial !
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
