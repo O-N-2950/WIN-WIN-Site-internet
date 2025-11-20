@@ -899,3 +899,99 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [x] Transformer "PEP's" en lien hypertexte vers https://peps.swiss/
 - [x] Tester le lien
 - [x] Commiter et déployer
+
+
+## 🔍 Vérification Liens Talentis/Durabilis (20 nov 2025)
+- [x] Vérifier que SERVICES_LINKS est utilisé partout (Footer, Services, Home)
+- [x] Corriger le bouton "Voir la Présentation Complète" dans /concepts/talentis (déjà correct)
+- [x] Corriger le bouton "Voir la Présentation Complète" dans /concepts/durabilis (déjà correct)
+- [x] Tester tous les liens en local
+- [x] Pousser vers GitHub (12 commits poussés avec succès)
+- [ ] Vérifier déploiement Railway
+
+## 🎨 Amélioration Design Page Services - Effets WAOUH (20 nov 2025)
+- [x] Analyser la page actuelle (terne, manque de dynamisme)
+- [x] Hero avec gradient animé + particules (effet tech/IA)
+- [x] Glass morphism sur les cartes (semi-transparent + blur)
+- [x] Hover effects spectaculaires (scale, glow, rotation 3D)
+- [x] Animations Framer Motion fluides (fade-in, slide-up)
+- [x] Icônes colorées avec fond gradient circulaire
+- [x] Badges visuels pour services premium (GRATUIT, PREMIUM, IA)
+- [x] Micro-interactions intelligentes
+- [x] Dégradés lumineux (effet néon subtil)
+- [x] Processus avec animations
+- [ ] Tester responsive et performances
+- [ ] Commiter et déployer
+
+## 📋 Questionnaire Complet + Workflow Visible (20 nov 2025)
+- [x] Identifier le problème (workflow existe mais caché, lien cassé)
+- [x] Créer la vraie page /questionnaire (20 champs essentiels)
+- [x] Design moderne avec progression visuelle (steps)
+- [x] Intégration avec WorkflowContext existant
+- [x] Ajouter option "Les deux" (Privé + Entreprise)
+- [x] Section entreprise conditionnelle (nom, forme juridique, nb employés, polices pro)
+- [ ] Créer modal convivial avec 3 options :
+  - Option 1: Upload PDF (IA extrait tout)
+  - Option 2: Compagnie connue (WIN WIN demande copie)
+  - Option 3: Inventaire plus tard (entretien)
+- [ ] Ton convivial et rassurant ("Pas de souci, nous nous en occupons")
+- [ ] Design moderne avec animations
+- [ ] Logique 2 mandats séparés (privé + entreprise)
+- [ ] Adapter paiement Stripe (2 lignes de facturation)
+- [ ] Génération 2 PDF mandats distincts
+- [ ] CTA principal partout : "Souscrire au Mandat de Gestion"
+- [ ] Rendre le workflow visible sur toutes les pages
+- [x] Effets WAOUH sur le parcours client
+- [ ] Tester le workflow complet (Questionnaire → Signature → Paiement → Merci)
+- [ ] Commiter et déployer
+
+
+## 🚀 Idées Futures - Automatisation Avancée
+
+### Recherche Automatique Avoirs LPP via Numéro AVS
+- [ ] Upload photo recto/verso carte AVS
+- [ ] OCR extraction numéro AVS automatique
+- [ ] Intégration API Centrale du 2ème pilier
+- [ ] Consentement explicite client (RGPD)
+- [ ] Affichage automatique des avoirs LPP trouvés
+- [ ] Dashboard client avec suivi en temps réel
+- [ ] Notifications push quand avoirs trouvés
+
+**Avantages :**
+- ⚡ 100% automatique pour le client
+- 🎯 Zéro erreur de saisie manuelle
+- 🔒 Sécurisé et conforme RGPD
+- 💎 Expérience WAOUH différenciante
+
+
+## 🔧 Suppression Mentions IA (20 nov 2025)
+- [x] PoliceModal.tsx - Remplacé "L'IA extraira" par "Nous extrairons"
+- [x] Questionnaire.tsx - Aucune mention IA trouvée
+- [x] Services.tsx - Aucune mention IA trouvée
+- [x] Home.tsx - Remplacé "IA" par "technologie"
+- [x] Ajouté Emmental à la liste des compagnies
+- [x] Recherche globale terminée (seuls AIChatBox et Map.tsx contiennent des mentions techniques)
+
+- [x] Ajouté caisses maladie : ASSURA, KPT, Concordia
+- [x] Ajouté protections juridiques : AXA-ARAG, Coop, Dextra, Emilia
+- [x] Total : 25 compagnies (triées alphabétiquement)
+
+
+## 📝 Amélioration Questionnaire & Signature (20 nov 2025)
+- [x] Ajouté "Forme juridique" dans questionnaire entreprise (Entreprise individuelle / Sàrl / SA / Autre)
+- [x] Amélioré récapitulatif signature avec toutes les infos :
+  - Nom complet (Prénom + Nom pour privé, Nom entreprise pour entreprise)
+  - Email
+  - Adresse complète (Rue + Numéro, NPA, Localité)
+  - Forme juridique (si entreprise)
+  - Nombre d'employés (si entreprise)
+  - Sections séparées : Informations personnelles + Détails du mandat
+- [ ] Intégrer modèle PDF mandat (Mandatdegestion-WINWINFinanceGroup.pdf)
+- [ ] Automatiser génération PDF avec signature intégrée
+- [ ] Envoi automatique email client + notification owner
+
+## 📧 Envoi Automatique Mandats aux Compagnies (PLUS TARD)
+- [ ] Après paiement Stripe confirmé : envoi automatique du mandat signé aux compagnies
+- [ ] Email personnalisé par compagnie avec mandat PDF attaché
+- [ ] Tracking des envois dans Airtable (date envoi, statut, réponse)
+- [ ] Notification owner quand toutes les compagnies ont reçu le mandat

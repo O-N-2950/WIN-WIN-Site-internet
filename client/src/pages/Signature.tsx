@@ -168,23 +168,75 @@ export default function Signature() {
                 Veuillez vérifier les informations avant de signer
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-muted-foreground">Type de client</p>
-                  <p className="font-medium">Particulier (&gt; 22 ans)</p>
+            <CardContent className="space-y-6">
+              {/* Informations personnelles */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg border-b pb-2">Informations personnelles</h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Nom complet</p>
+                    <p className="font-medium">
+                      {workflow.questionnaireData?.typeClient === "entreprise" 
+                        ? workflow.questionnaireData?.nomEntreprise
+                        : `${workflow.questionnaireData?.prenom} ${workflow.questionnaireData?.nom}`}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Email</p>
+                    <p className="font-medium">{workflow.questionnaireData?.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Adresse</p>
+                    <p className="font-medium">{workflow.questionnaireData?.adresse}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">NPA / Localité</p>
+                    <p className="font-medium">{workflow.questionnaireData?.npa} {workflow.questionnaireData?.localite}</p>
+                  </div>
+                  {workflow.questionnaireData?.typeClient === "entreprise" && workflow.questionnaireData?.formeJuridique && (
+                    <>
+                      <div>
+                        <p className="text-muted-foreground">Forme juridique</p>
+                        <p className="font-medium">
+                          {workflow.questionnaireData.formeJuridique === "entreprise_individuelle" && "Entreprise individuelle"}
+                          {workflow.questionnaireData.formeJuridique === "sarl" && "Sàrl"}
+                          {workflow.questionnaireData.formeJuridique === "sa" && "SA"}
+                          {workflow.questionnaireData.formeJuridique === "autre" && "Autre"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Nombre d'employés</p>
+                        <p className="font-medium">{workflow.questionnaireData?.nombreEmployes}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div>
-                  <p className="text-muted-foreground">Tarif annuel</p>
-                  <p className="font-medium">CHF 185.-/an</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Durée du mandat</p>
-                  <p className="font-medium">12 mois (renouvelable)</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Date de début</p>
-                  <p className="font-medium">{new Date().toLocaleDateString("fr-CH")}</p>
+              </div>
+
+              {/* Détails du mandat */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg border-b pb-2">Détails du mandat</h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Type de client</p>
+                    <p className="font-medium">
+                      {workflow.questionnaireData?.typeClient === "prive" && "Particulier (> 22 ans)"}
+                      {workflow.questionnaireData?.typeClient === "entreprise" && "Entreprise"}
+                      {workflow.questionnaireData?.typeClient === "les_deux" && "Privé + Entreprise"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Tarif annuel</p>
+                    <p className="font-medium">CHF 185.-/an</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Durée du mandat</p>
+                    <p className="font-medium">12 mois (renouvelable)</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Date de début</p>
+                    <p className="font-medium">{new Date().toLocaleDateString("fr-CH")}</p>
+                  </div>
                 </div>
               </div>
 

@@ -530,7 +530,7 @@ export default function Home() {
               {
                 title: "Synergis",
                 subtitle: "Plateforme Collaborative",
-                description: "La synergie parfaite entre expertise humaine et IA pour créer, gérer et développer votre entreprise",
+                description: "La synergie parfaite entre expertise humaine et technologie pour créer, gérer et développer votre entreprise",
                 link: ROUTES.synergis,
                 gradient: "from-accent to-primary"
               }
