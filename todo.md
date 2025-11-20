@@ -1227,6 +1227,33 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Tester upload images - EN COURS
 
 ### Phase 3 : Déploiement
-- [ ] Tester workflow complet
-- [ ] Push vers GitHub
-- [ ] Vérifier déploiement Railway
+- [ ] Tester workflow complet - APRES DEPLOIEMENT RAILWAY
+- [x] Push vers GitHub (commit 380e094)
+- [ ] Vérifier déploiement Railway - EN COURS
+
+
+---
+
+## 🚨 URGENT - Erreur Upload Fichiers - 20 nov 2025
+
+### Problème
+- [ ] Erreur lors de l'upload du fichier PDF (0.70 MB)
+- [ ] Message d'erreur : "Erreur lors de l'upload du fichier"
+- [ ] Empêche l'envoi du formulaire de contact
+
+### Diagnostic
+- [x] Vérifier logs serveur
+- [x] Tester endpoint /api/trpc/upload.uploadFile
+- [x] Vérifier storagePut() dans server/storage.ts
+- [x] Vérifier conversion base64
+- [x] CONFIRMATION : C'est l'envoi du message qui bug, PAS l'upload
+
+### Correction
+- [x] Identifier la cause de l'erreur (validation Zod attachmentUrl)
+- [x] Corriger le code (z.union pour accepter undefined)
+- [x] Réduire validation message à 3 caractères
+- [ ] Tester avec PDF 0.70 MB - APRES DEPLOIEMENT
+- [ ] Tester avec image JPG - APRES DEPLOIEMENT
+- [x] Push vers GitHub - EN COURS
+
+- [x] Réduire validation message de 10 à 3 caractères minimum

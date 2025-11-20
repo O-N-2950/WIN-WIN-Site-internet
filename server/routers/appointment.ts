@@ -180,9 +180,7 @@ export const appointmentRouter = router({
         nom: z.string().min(2),
         email: z.string().email(),
         telephone: z.string().optional(),
-        typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
-        message: z.string().min(10, "Le message doit contenir au moins 10 caractères"),
-        attachmentUrl: z.string().url().optional(),
+        typeClient: z.enum(["particulier", "entreprise", "les-deux"]),        message: z.string().min(3, "Le message doit contenir au moins 3 caract\u00e8res"),     attachmentUrl: z.union([z.string().url(), z.undefined()]).optional(),
       })
     )
     .mutation(async ({ input }) => {
