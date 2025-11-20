@@ -1000,3 +1000,9 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [ ] Email personnalisé par compagnie avec mandat PDF attaché
 - [ ] Tracking des envois dans Airtable (date envoi, statut, réponse)
 - [ ] Notification owner quand toutes les compagnies ont reçu le mandat
+
+
+## 📅 Correction Format Date Suisse (20 nov 2025)
+- [x] Corrigé format date dans récapitulatif Signature (JJ.MM.AAAA au lieu de MM/JJ/AAAA)
+- [x] Corrigé format date dans page Merci (JJ.MM.AAAA)
+- [x] Vérifié affichage : "20.11.2025" correctement affiché

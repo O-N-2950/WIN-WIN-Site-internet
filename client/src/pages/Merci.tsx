@@ -28,7 +28,7 @@ export default function Merci() {
     tarif: workflow.annualPrice || 185,
     isFree: workflow.isFree || false,
     mandatNumber: workflow.mandatNumber || "WW-2025-XXXXX",
-    startDate: new Date().toLocaleDateString("fr-CH"),
+    startDate: new Date().toLocaleDateString("fr-CH", { day: '2-digit', month: '2-digit', year: 'numeric' }),
     clientType: workflow.clientType || "particulier",
   };
   

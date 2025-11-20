@@ -235,7 +235,7 @@ export default function Signature() {
                   </div>
                   <div>
                     <p className="text-muted-foreground">Date de début</p>
-                    <p className="font-medium">{new Date().toLocaleDateString("fr-CH")}</p>
+                    <p className="font-medium">{new Date().toLocaleDateString("fr-CH", { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
                   </div>
                 </div>
               </div>
