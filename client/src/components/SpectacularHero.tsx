@@ -178,10 +178,10 @@ export default function SpectacularHero() {
 
           {/* Titre principal avec effet typewriter */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-            <TypewriterText text="Votre Partenaire de Confiance" delay={0.5} />
+            <TypewriterText text="Libérez-vous de la Gestion" delay={0.5} />
             <br />
             <span className="text-accent">
-              <TypewriterText text="en Assurances" delay={1.5} />
+              <TypewriterText text="de Vos Assurances" delay={1.5} />
             </span>
           </h1>
 
@@ -192,7 +192,7 @@ export default function SpectacularHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.5, duration: 0.8 }}
           >
-            {COMPANY_INFO.stats.experience} d'expertise au service de votre protection et de votre prévoyance
+            99% des gens détestent gérer leurs assurances. Nous le faisons pour vous.
           </motion.p>
 
           {/* Boutons CTA avec animations hover spectaculaires */}
@@ -209,7 +209,7 @@ export default function SpectacularHero() {
               >
                 <Button 
                   size="lg" 
-                  className="relative bg-accent hover:bg-accent/90 text-foreground font-bold text-lg px-10 py-7 h-auto shadow-2xl overflow-hidden group"
+                  className="relative bg-green-600 hover:bg-green-700 text-white font-bold text-lg px-10 py-7 h-auto shadow-2xl overflow-hidden group"
                 >
                   {/* Effet de brillance au hover */}
                   <motion.div
@@ -219,13 +219,13 @@ export default function SpectacularHero() {
                     transition={{ duration: 0.6 }}
                   />
                   <Target className="w-6 h-6 mr-2" />
-                  Demandez Conseil
+                  Devenir Client
                   <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </Link>
             
-            <Link href={ROUTES.services}>
+            <Link href="/conseil">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -235,7 +235,7 @@ export default function SpectacularHero() {
                   variant="outline" 
                   className="bg-white/10 hover:bg-white/20 border-2 border-white/40 text-white font-bold text-lg px-10 py-7 h-auto backdrop-blur-md shadow-xl"
                 >
-                  Découvrir Nos Services
+                  Demandez Conseil
                 </Button>
               </motion.div>
             </Link>

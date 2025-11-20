@@ -353,10 +353,10 @@ export default function Questionnaire() {
 
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  Analyse Gratuite de Votre Situation
+                  Devenez Client WIN WIN
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  Un questionnaire intelligent pour une analyse personnalisée
+                  Libérez-vous de la gestion de vos assurances. Nous nous occupons de tout pour vous.
                 </p>
               </div>
 
@@ -368,8 +368,8 @@ export default function Questionnaire() {
                   className="space-y-2"
                 >
                   <Clock className="h-10 w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold">15 minutes</h3>
-                  <p className="text-sm text-muted-foreground">Questionnaire rapide et intuitif</p>
+                  <h3 className="font-semibold">Gestion Complète</h3>
+                  <p className="text-sm text-muted-foreground">Nous centralisons et optimisons tous vos contrats</p>
                 </motion.div>
 
                 <motion.div
@@ -379,8 +379,8 @@ export default function Questionnaire() {
                   className="space-y-2"
                 >
                   <Shield className="h-10 w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold">100% Sécurisé</h3>
-                  <p className="text-sm text-muted-foreground">Données cryptées et hébergées en Suisse</p>
+                  <h3 className="font-semibold">Accompagnement Proactif</h3>
+                  <p className="text-sm text-muted-foreground">Votre conseiller dédié anticipe vos besoins</p>
                 </motion.div>
 
                 <motion.div
@@ -390,8 +390,8 @@ export default function Questionnaire() {
                   className="space-y-2"
                 >
                   <Sparkles className="h-10 w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold">IA Intégrée</h3>
-                  <p className="text-sm text-muted-foreground">Analyse automatique de vos polices</p>
+                  <h3 className="font-semibold">Défense de Vos Intérêts</h3>
+                  <p className="text-sm text-muted-foreground">Nous gérons vos sinistres et négocions pour vous</p>
                 </motion.div>
               </div>
 
@@ -409,7 +409,7 @@ export default function Questionnaire() {
                   <Zap className="ml-2 w-5 h-5 group-hover:rotate-12 transition-transform" />
                 </Button>
                 <p className="text-sm text-muted-foreground mt-4">
-                  Gratuit • Sans engagement • Sauvegarde automatique
+                  À partir de CHF 185.-/an • Résiliable annuellement • Satisfaction garantie
                 </p>
               </motion.div>
             </div>

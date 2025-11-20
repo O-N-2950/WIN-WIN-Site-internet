@@ -79,9 +79,14 @@ export default function Header() {
             <Phone className="h-4 w-4" />
             <span>{CONTACT_INFO.phone}</span>
           </a>
-          <Link href="/questionnaire-info">
-            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Link href="/conseil">
+            <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">
               Demandez Conseil
+            </Button>
+          </Link>
+          <Link href="/questionnaire-info">
+            <Button className="bg-green-600 hover:bg-green-700 text-white font-semibold">
+              Devenir Client
             </Button>
           </Link>
         </div>
@@ -149,7 +154,12 @@ export default function Header() {
                 <span>{CONTACT_INFO.email}</span>
               </a>
               <Link href="/questionnaire-info">
-                <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold mb-2">
+                  Devenir Client
+                </Button>
+              </Link>
+              <Link href="/conseil">
+                <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">
                   Demandez Conseil
                 </Button>
               </Link>

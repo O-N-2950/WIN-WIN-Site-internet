@@ -16,6 +16,7 @@ import Synergis from "./pages/Synergis";
 import Contact from "./pages/Contact";
 import ProtectionJuridique from "./pages/ProtectionJuridique";
 import Questionnaire from "./pages/Questionnaire";
+import Conseil from "./pages/Conseil";
 import Signature from "./pages/Signature";
 import Paiement from "./pages/Paiement";
 import Merci from "./pages/Merci";
@@ -38,6 +39,7 @@ function Router() {
           <Route path="/concepts/synergis" component={Synergis} />
           <Route path="/a-propos" component={About} />
           <Route path="/contact" component={Contact} />
+          <Route path="/conseil" component={Conseil} />
           <Route path="/espace-client" component={ClientSpace} />
           <Route path="/questionnaire-info" component={Questionnaire} />
           <Route path="/signature" component={Signature} />

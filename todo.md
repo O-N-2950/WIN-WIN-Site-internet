@@ -1006,3 +1006,51 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [x] Corrigé format date dans récapitulatif Signature (JJ.MM.AAAA au lieu de MM/JJ/AAAA)
 - [x] Corrigé format date dans page Merci (JJ.MM.AAAA)
 - [x] Vérifié affichage : "20.11.2025" correctement affiché
+
+
+## 🎯 Refonte Messaging "Devenir Client" (20 nov 2025)
+
+### Phase 1 : Messaging & Navigation
+- [x] Modifier Header : ajouter bouton "Devenir Client" (vert, à droite)
+- [x] Modifier lien "Demandez Conseil" → rediriger vers `/conseil`
+- [x] Refondre page `/questionnaire-info` :
+  - [x] Nouveau titre : "Devenez Client WIN WIN"
+  - [x] Nouveau sous-titre : "Libérez-vous de la Gestion de Vos Assurances"
+  - [x] Retirer "Gratuit • Sans engagement"
+  - [x] Ajouter mention "À partir de CHF 185.-/an"
+  - [x] Améliorer les 3 icônes avec bénéfices orientés client
+- [x] Améliorer Hero Section page d'accueil :
+  - [x] Ajouter 2 CTA : "Devenir Client" (vert) + "Demandez Conseil" (bleu outline)
+  - [x] Nouveau titre : "Libérez-vous de la Gestion de Vos Assurances"
+  - [x] Sous-titre : "99% des gens détestent gérer leurs assurances. Nous le faisons pour vous."
+
+### Phase 2 : Page Conseil
+- [x] Créer nouvelle page `/conseil`
+- [x] Design avec 3 cartes :
+  - [x] Carte 1 : Appel Express (032 466 11 00)
+  - [x] Carte 2 : Réserver un Entretien (formulaire)
+  - [x] Carte 3 : Envoyer un Message (formulaire contact)
+- [x] Formulaire de réservation d'entretien (nom, email, téléphone, type, message)
+- [x] Formulaire de contact simple (nom, email, téléphone, message)
+- [x] Ajouter route /conseil dans App.tsx
+
+### Phase 3 : Intégration Calendrier
+- [ ] Intégrer Cal.com ou Calendly pour réservation d'entretiens
+- [ ] Connexion Google Calendar
+- [ ] Emails de confirmation automatiques
+- [ ] Formulaire personnalisé avec champs WIN WIN
+
+### Phase 4 : Airtable CRM
+- [ ] Créer base Airtable "Leads"
+- [ ] Table "Leads Conseil" (email, nom, téléphone, type, message, date)
+- [ ] Table "Leads RDV" (email, nom, téléphone, date RDV, statut)
+- [ ] Webhook : Formulaire conseil → Airtable
+- [ ] Webhook : Réservation RDV → Airtable
+- [ ] Notification email à contact@winwin.swiss
+
+### Phase 5 : Tests & Optimisations
+- [ ] Tester parcours "Devenir Client" complet
+- [ ] Tester parcours "Demandez Conseil" (3 options)
+- [ ] Vérifier responsive mobile
+- [ ] Optimiser vitesse de chargement
+- [ ] Corrections bugs éventuels
