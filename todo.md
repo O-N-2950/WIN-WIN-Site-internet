@@ -886,3 +886,9 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [x] Remplacer par https://durabilis-anticipez-prot-42qcd6c.gamma.site/
 - [x] Tester le lien
 - [x] Commiter et déployer
+
+
+## 🔗 Correction Lien Talentis (20 nov 2025)
+- [x] Remplacer par https://talentis-les-indemnites--xaf5by0.gamma.site/
+- [x] Tester le lien
+- [x] Commiter et déployer

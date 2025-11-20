@@ -69,7 +69,7 @@ export const COMPANY_INFO = {
 
 // Services Links
 export const SERVICES_LINKS = {
-  talentis: "https://gamma.app/docs/Fidelisez-vos-Talents-Cles-et-Boostez-la-Croissance-de-votre-Entr-fk5evlthz6inbea?mode=doc",
+  talentis: "https://talentis-les-indemnites--xaf5by0.gamma.site/",
   durabilis: "https://durabilis-anticipez-prot-42qcd6c.gamma.site/",
   parentsEnfants: "https://gamma.app/docs/Securisez-lavenir-de-vos-enfants-Notre-solution-unique-a-partir-d-j23lr0vrn1ejl20?mode=doc",
   lppSearch: "https://winwin.recherche-libre-passage.ch",
