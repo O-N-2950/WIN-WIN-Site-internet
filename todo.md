@@ -1270,7 +1270,30 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Ajouter timeout updateLeadStatus (ligne 244)
 - [x] Ajouter timeout getLeadsByStatus (ligne 272)
 - [x] Ajouter timeout createLeadFromCalBooking (ligne 307)
-- [ ] Commit: "Fix: Correction validation formulaire + timeout Airtable API"
-- [ ] Push vers GitHub main
+- [x] Commit: "Fix: Correction validation formulaire + timeout Airtable API" (9f630c1)
+- [x] Push vers GitHub main
 - [ ] Vérifier déploiement Railway
 - [ ] Tester formulaire contact sur site
+
+
+---
+
+## 🗄️ Configuration Cloudflare R2 - 20 nov 2025
+
+### Objectif
+Remplacer le stockage Manus par Cloudflare R2 pour rendre l'upload de fichiers indépendant et opérationnel sur Railway.
+
+### Identifiants R2 reçus
+- Access Key ID: 6626bb1f504456b87b32d5fed36ef15
+- Secret Access Key: f3fb3d44cba50b727d2518e37fbccbb2a53480092cad594fd5719d6a73d51541
+- Endpoint URL: https://891814e197da7ef8f39e4db513cc4db1.r2.cloudflarestorage.com
+- Bucket Name: winwin-uploads
+
+### Tâches
+- [x] Modifier server/storage.ts pour utiliser SDK AWS S3 avec R2
+- [x] Installer dépendance @aws-sdk/client-s3
+- [x] Installer dépendance @aws-sdk/s3-request-presigner
+- [ ] Configurer variables d'environnement Railway
+- [ ] Tester upload de fichiers
+- [ ] Push vers GitHub
+- [ ] Vérifier déploiement Railway
