@@ -84,6 +84,11 @@ async function startServer() {
   const calendarCallbackRouter = (await import('../routes/calendar-callback')).default;
   app.use(calendarCallbackRouter);
   console.log('[Google Calendar] Callback route registered');
+  
+  // Cal.com webhook
+  const calWebhookRouter = (await import('../routes/cal-webhook')).default;
+  app.use(calWebhookRouter);
+  console.log('[Cal.com] Webhook route registered');
   // tRPC API
   app.use(
     "/api/trpc",

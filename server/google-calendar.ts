@@ -35,17 +35,24 @@ export interface AppointmentData {
 
 /**
  * Créer un événement dans Google Calendar
+ * Utilise les tokens sauvegardés d'Olivier (automatique)
  * 
  * @param data - Données de la réservation
- * @param accessToken - Token d'accès OAuth (obtenu après authentification)
  * @returns L'événement créé avec son lien Google Meet
  */
 export async function createCalendarEvent(
-  data: AppointmentData,
-  accessToken: string
+  data: AppointmentData
 ) {
+  // Charger les tokens sauvegardés d'Olivier
+  const { loadGoogleTokens } = await import('./google-calendar-tokens');
+  const tokens = await loadGoogleTokens();
+  
+  if (!tokens) {
+    throw new Error('Tokens Google Calendar non disponibles. Olivier doit autoriser l\'accès.');
+  }
+  
   // Configurer le token d'accès
-  oauth2Client.setCredentials({ access_token: accessToken });
+  oauth2Client.setCredentials(tokens);
 
   // Construire la date/heure de début (timezone Suisse)
   const startDateTime = `${data.dateRdv}T${data.heureRdv}:00+01:00`;

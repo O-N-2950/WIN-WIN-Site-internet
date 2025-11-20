@@ -137,8 +137,18 @@ export const appointmentRouter = router({
           });
         }
 
+        // Sauvegarder les tokens d'Olivier (première fois)
+        const { saveGoogleTokens } = await import('../google-calendar-tokens');
+        await saveGoogleTokens({
+          access_token: tokens.access_token!,
+          refresh_token: tokens.refresh_token!,
+          scope: tokens.scope!,
+          token_type: tokens.token_type!,
+          expiry_date: tokens.expiry_date!,
+        });
+        
         // Créer l'événement dans Google Calendar
-        const result = await createCalendarEvent(appointmentData, tokens.access_token);
+        const result = await createCalendarEvent(appointmentData);
 
         // Nettoyer la demande temporaire
         pendingAppointments.delete(input.appointmentId);

@@ -1115,3 +1115,88 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [ ] Valider webhook Stripe
 - [ ] Création client Airtable post-paiement
 - [ ] Tests end-to-end
+
+
+## 🗓️ Finalisation Google Calendar Automatique (20 nov 2025)
+
+### Phase 1 : Intégration Frontend OAuth
+- [ ] Créer composant GoogleCalendarAuth pour gérer OAuth côté client
+- [ ] Implémenter flux OAuth (redirection + callback)
+- [ ] Stocker access_token dans localStorage
+- [ ] Gérer refresh_token automatiquement
+
+### Phase 2 : Connexion Formulaire RDV
+- [ ] Mettre à jour page /conseil pour utiliser Google Calendar
+- [ ] Appeler trpc.appointment.requestAppointment
+- [ ] Appeler trpc.appointment.getAuthUrl si non authentifié
+- [ ] Appeler trpc.appointment.confirmAppointment après OAuth
+- [ ] Créer événement Google Calendar automatiquement
+
+### Phase 3 : Invitations Google Meet
+- [ ] Configurer création Google Meet dans l'événement
+- [ ] Ajouter le client comme invité (email)
+- [ ] Envoyer invitation automatique via Google Calendar
+- [ ] Ajouter lien Google Meet dans l'email de confirmation
+
+### Phase 4 : Tests et Documentation
+- [ ] Tester workflow complet (formulaire → Airtable + Google Calendar)
+- [ ] Vérifier création événement dans Google Calendar
+- [ ] Vérifier envoi invitation au client
+- [ ] Vérifier notification Olivier
+- [ ] Créer documentation utilisateur
+- [ ] Créer checkpoint final
+
+
+---
+
+## 🗓️ Intégration Cal.com (Gestion Créneaux Disponibles) - 20 nov 2025
+
+### Contexte
+Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de réserver uniquement sur les créneaux disponibles d'Olivier, avec respect total de la confidentialité (les clients ne voient que les plages libres, jamais les autres rendez-vous).
+
+### Phase 1 : Configuration Cal.com
+- [x] Créer compte Cal.com pour Olivier (contact@winwin.swiss)
+- [x] Configurer disponibilités (jours de travail, heures)
+- [x] Connecter Google Calendar à Cal.com (synchronisation bidirectionnelle)
+- [x] Configurer durée RDV (15 min + 30 min + 2 secrets)
+- [x] Configurer buffer time entre RDV (15 min pour 30min, 10 min pour 15min)
+- [x] Tester affichage créneaux disponibles
+
+### Phase 2 : Intégration Widget
+- [x] Obtenir code embed Cal.com (winwin/15min + winwin/30min)
+- [x] Intégrer widget dans page /conseil (2 widgets)
+- [x] Remplacer formulaire RDV manuel par widget Cal.com
+- [x] Adapter design au style WIN WIN (couleurs #3176A6, polices)
+- [x] Tester responsive (mobile, tablette, desktop)
+
+### Phase 3 : Webhooks Airtable
+- [x] Configurer webhooks Cal.com (booking.created) - FAIT
+- [x] Créer endpoint /api/cal/webhook
+- [x] Parser données RDV Cal.com
+- [x] Créer lead automatiquement dans Airtable
+- [x] Envoyer notification email à Olivier
+- [ ] Tester workflow complet - APRES DEPLOIEMENT
+
+### Phase 4 : Tests et Validation
+- [ ] Tester confidentialité (clients ne voient pas autres RDV) - APRES DEPLOIEMENT
+- [ ] Tester synchronisation Google Calendar - APRES DEPLOIEMENT
+- [ ] Tester création automatique lead Airtable - APRES DEPLOIEMENT
+- [ ] Tester notifications email - APRES DEPLOIEMENT
+- [ ] Vérifier gestion des conflits (double booking) - APRES DEPLOIEMENT
+
+### Phase 5 : Nettoyage et Documentation
+- [ ] Supprimer ancien code formulaire RDV manuel (obsolète) - APRES TESTS
+- [ ] Supprimer endpoints Google Calendar OAuth (obsolètes) - APRES TESTS
+- [ ] Mettre à jour documentation technique
+- [ ] Créer guide configuration Cal.com
+- [x] Créer checkpoint v6.3 - EN COURS
+
+### Avantages Cal.com
+- ✅ **Confidentialité** : Clients voient seulement plages libres
+- ✅ **Professionnel** : Widget moderne et responsive
+- ✅ **Automatisation** : Synchronisation bidirectionnelle Google Calendar
+- ✅ **Flexibilité** : Olivier configure ses disponibilités facilement
+- ✅ **Gratuit** : Plan free suffisant pour démarrer
+- ✅ **Webhooks** : Intégration Airtable automatique
+
+---

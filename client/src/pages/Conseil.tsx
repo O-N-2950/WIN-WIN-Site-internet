@@ -3,12 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CONTACT_INFO } from "@/const";
 import { Phone, Calendar, Mail, ArrowRight, CheckCircle2, Clock, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function Conseil() {
   const [selectedOption, setSelectedOption] = useState<'appel' | 'rdv' | 'message' | null>(null);
@@ -16,25 +16,68 @@ export default function Conseil() {
     nom: "",
     email: "",
     telephone: "",
-    typeClient: "",
     message: "",
-    dateRdv: "",
-    heureRdv: "",
   });
 
-  const handleSubmitRdv = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Intégrer Cal.com ou envoyer à Airtable
-    toast.success("Demande de rendez-vous envoyée ! Nous vous confirmerons rapidement.");
-    console.log("RDV:", formData);
-  };
+  const sendContactRequest = trpc.appointment.sendContactRequest.useMutation({
+    onSuccess: () => {
+      toast.success("Message envoyé ! Nous vous répondrons sous 24h.");
+      setFormData({ nom: "", email: "", telephone: "", message: "" });
+      setSelectedOption(null);
+    },
+    onError: (error) => {
+      toast.error("Erreur lors de l'envoi : " + error.message);
+    },
+  });
 
   const handleSubmitMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Envoyer à Airtable + notification email
-    toast.success("Message envoyé ! Nous vous répondrons sous 24h.");
-    console.log("Message:", formData);
+    sendContactRequest.mutate({
+      nom: formData.nom,
+      email: formData.email,
+      telephone: formData.telephone,
+      typeClient: "particulier", // Valeur par défaut pour les messages
+      message: formData.message,
+    });
   };
+
+  // Charger le script Cal.com
+  useEffect(() => {
+    // Vérifier si le script est déjà chargé
+    if (document.querySelector('script[src="https://app.cal.com/embed/embed.js"]')) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://app.cal.com/embed/embed.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      // @ts-ignore
+      if (window.Cal) {
+        // @ts-ignore
+        window.Cal("init", { origin: "https://cal.com" });
+        
+        // Configuration UI pour les couleurs WIN WIN
+        // @ts-ignore
+        window.Cal("ui", {
+          theme: "light",
+          styles: {
+            branding: {
+              brandColor: "#3176A6" // Bleu WIN WIN
+            }
+          },
+          hideEventTypeDetails: false,
+          layout: "month_view"
+        });
+      }
+    };
+
+    return () => {
+      // Nettoyage si nécessaire
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -222,132 +265,95 @@ export default function Conseil() {
             </motion.div>
           </div>
 
-          {/* Formulaire de Réservation d'Entretien */}
+          {/* Widget Cal.com pour Réservation d'Entretien */}
           {selectedOption === 'rdv' && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="max-w-2xl mx-auto"
+              className="max-w-5xl mx-auto"
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Réserver votre entretien</CardTitle>
-                  <CardDescription>
-                    Remplissez ce formulaire et nous vous confirmerons rapidement votre créneau
+                  <CardTitle className="text-2xl text-center">Choisissez votre créneau</CardTitle>
+                  <CardDescription className="text-center">
+                    Sélectionnez la durée d'entretien qui vous convient
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmitRdv} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
+                <CardContent className="space-y-8">
+                  {/* Option 15 minutes */}
+                  <div className="border rounded-lg p-6 bg-gradient-to-br from-background to-primary/5">
+                    <div className="flex items-center justify-between mb-4">
                       <div>
-                        <Label htmlFor="nom">Nom complet *</Label>
-                        <Input
-                          id="nom"
-                          required
-                          value={formData.nom}
-                          onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                          placeholder="Jean Dupont"
-                        />
+                        <h3 className="text-xl font-semibold">Question Express</h3>
+                        <p className="text-sm text-muted-foreground">Réponse rapide à une question précise (15 min)</p>
                       </div>
-                      <div>
-                        <Label htmlFor="email">Email *</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          placeholder="jean.dupont@example.com"
-                        />
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
+                        <Clock className="h-4 w-4" />
+                        15 min
                       </div>
                     </div>
+                    <div
+                      data-cal-link="winwin/15min"
+                      data-cal-config='{"layout":"month_view","theme":"light"}'
+                      style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                      className="min-h-[600px]"
+                    ></div>
+                  </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
+                  {/* Séparateur */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-4 bg-background text-muted-foreground font-medium">OU</span>
+                    </div>
+                  </div>
+
+                  {/* Option 30 minutes */}
+                  <div className="border-2 border-primary rounded-lg p-6 bg-gradient-to-br from-primary/5 to-primary/10 relative">
+                    <div className="absolute top-4 right-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
+                        RECOMMANDÉ
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between mb-4">
                       <div>
-                        <Label htmlFor="telephone">Téléphone *</Label>
-                        <Input
-                          id="telephone"
-                          type="tel"
-                          required
-                          value={formData.telephone}
-                          onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                          placeholder="+41 79 123 45 67"
-                        />
+                        <h3 className="text-xl font-semibold">Entretien Conseil</h3>
+                        <p className="text-sm text-muted-foreground">Analyse approfondie de vos besoins (30 min)</p>
                       </div>
-                      <div>
-                        <Label htmlFor="typeClient">Type de besoin *</Label>
-                        <Select
-                          value={formData.typeClient}
-                          onValueChange={(value) => setFormData({ ...formData, typeClient: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Sélectionnez..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="particulier">Particulier</SelectItem>
-                            <SelectItem value="entreprise">Entreprise</SelectItem>
-                            <SelectItem value="les-deux">Privé + Entreprise</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 text-primary font-semibold">
+                        <Clock className="h-4 w-4" />
+                        30 min
                       </div>
                     </div>
+                    <div
+                      data-cal-link="winwin/30min"
+                      data-cal-config='{"layout":"month_view","theme":"light"}'
+                      style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                      className="min-h-[600px]"
+                    ></div>
+                  </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="dateRdv">Date souhaitée</Label>
-                        <Input
-                          id="dateRdv"
-                          type="date"
-                          value={formData.dateRdv}
-                          onChange={(e) => setFormData({ ...formData, dateRdv: e.target.value })}
-                          min={new Date().toISOString().split('T')[0]}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="heureRdv">Heure souhaitée</Label>
-                        <Select
-                          value={formData.heureRdv}
-                          onValueChange={(value) => setFormData({ ...formData, heureRdv: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Sélectionnez..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="08:00">08:00</SelectItem>
-                            <SelectItem value="09:00">09:00</SelectItem>
-                            <SelectItem value="10:00">10:00</SelectItem>
-                            <SelectItem value="11:00">11:00</SelectItem>
-                            <SelectItem value="14:00">14:00</SelectItem>
-                            <SelectItem value="15:00">15:00</SelectItem>
-                            <SelectItem value="16:00">16:00</SelectItem>
-                            <SelectItem value="17:00">17:00</SelectItem>
-                          </SelectContent>
-                        </Select>
+                  {/* Informations complémentaires */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+                    <div className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div className="space-y-2">
+                        <p className="font-semibold text-blue-900">Vous ne voyez que les créneaux disponibles</p>
+                        <p className="text-blue-700">
+                          Notre système vérifie automatiquement les disponibilités en temps réel. 
+                          Après réservation, vous recevrez une confirmation par email avec un lien Google Meet.
+                        </p>
                       </div>
                     </div>
-
-                    <div>
-                      <Label htmlFor="message">Votre situation en quelques mots (optionnel)</Label>
-                      <Textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder="Décrivez brièvement votre situation ou vos besoins..."
-                        rows={4}
-                      />
-                    </div>
-
-                    <Button type="submit" size="lg" className="w-full">
-                      Confirmer ma demande de rendez-vous
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </form>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
           )}
 
-          {/* Formulaire de Contact */}
+          {/* Formulaire de Message */}
           {selectedOption === 'message' && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -358,80 +364,73 @@ export default function Conseil() {
                 <CardHeader>
                   <CardTitle className="text-2xl">Envoyez-nous un message</CardTitle>
                   <CardDescription>
-                    Nous vous répondrons sous 24h avec une réponse détaillée
+                    Décrivez votre situation et nous vous répondrons sous 24h
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmitMessage} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid gap-4">
                       <div>
-                        <Label htmlFor="nom-msg">Nom complet *</Label>
+                        <Label htmlFor="nom">Nom complet *</Label>
                         <Input
-                          id="nom-msg"
-                          required
+                          id="nom"
                           value={formData.nom}
                           onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+                          required
                           placeholder="Jean Dupont"
                         />
                       </div>
+
                       <div>
-                        <Label htmlFor="email-msg">Email *</Label>
+                        <Label htmlFor="email">Email *</Label>
                         <Input
-                          id="email-msg"
+                          id="email"
                           type="email"
-                          required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          required
                           placeholder="jean.dupont@example.com"
                         />
                       </div>
-                    </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="telephone-msg">Téléphone *</Label>
+                        <Label htmlFor="telephone">Téléphone</Label>
                         <Input
-                          id="telephone-msg"
+                          id="telephone"
                           type="tel"
-                          required
                           value={formData.telephone}
                           onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
                           placeholder="+41 79 123 45 67"
                         />
                       </div>
+
                       <div>
-                        <Label htmlFor="typeClient-msg">Type de besoin *</Label>
-                        <Select
-                          value={formData.typeClient}
-                          onValueChange={(value) => setFormData({ ...formData, typeClient: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Sélectionnez..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="particulier">Particulier</SelectItem>
-                            <SelectItem value="entreprise">Entreprise</SelectItem>
-                            <SelectItem value="les-deux">Privé + Entreprise</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label htmlFor="message">Votre message *</Label>
+                        <Textarea
+                          id="message"
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          required
+                          rows={6}
+                          placeholder="Décrivez votre situation et vos besoins..."
+                        />
                       </div>
                     </div>
 
-                    <div>
-                      <Label htmlFor="message-msg">Votre message *</Label>
-                      <Textarea
-                        id="message-msg"
-                        required
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder="Décrivez votre situation, vos besoins ou vos questions..."
-                        rows={6}
-                      />
-                    </div>
-
-                    <Button type="submit" size="lg" className="w-full">
-                      Envoyer mon message
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full"
+                      disabled={sendContactRequest.isPending}
+                    >
+                      {sendContactRequest.isPending ? (
+                        <>Envoi en cours...</>
+                      ) : (
+                        <>
+                          <Mail className="mr-2 h-5 w-5" />
+                          Envoyer le message
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>
@@ -441,45 +440,22 @@ export default function Conseil() {
         </div>
       </section>
 
-      {/* Section Réassurance */}
-      <section className="py-16 bg-muted/30">
-        <div className="container max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Pourquoi nous contacter ?</h2>
-            <p className="text-lg text-muted-foreground">
-              Plus de 30 ans d'expérience au service de votre protection
-            </p>
-          </div>
-
+      {/* Section Confiance */}
+      <section className="py-16 bg-gradient-to-br from-primary/5 to-background">
+        <div className="container max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-6">Pourquoi nous faire confiance ?</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Conseils Personnalisés</h3>
-              <p className="text-sm text-muted-foreground">
-                Chaque situation est unique, nos recommandations aussi
-              </p>
+            <div>
+              <div className="text-4xl font-bold text-primary mb-2">30 ans</div>
+              <p className="text-muted-foreground">d'expérience en gestion d'assurances</p>
             </div>
-
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Sans Engagement</h3>
-              <p className="text-sm text-muted-foreground">
-                Aucune obligation, juste des conseils d'experts
-              </p>
+            <div>
+              <div className="text-4xl font-bold text-primary mb-2">500+</div>
+              <p className="text-muted-foreground">clients satisfaits</p>
             </div>
-
-            <div className="text-center">
-              <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2">Réponse Rapide</h3>
-              <p className="text-sm text-muted-foreground">
-                Nous nous engageons à vous répondre rapidement
-              </p>
+            <div>
+              <div className="text-4xl font-bold text-primary mb-2">98%</div>
+              <p className="text-muted-foreground">de satisfaction client</p>
             </div>
           </div>
         </div>
