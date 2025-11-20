@@ -215,7 +215,7 @@ Notification automatique - WIN WIN Finance Group
  * 
  * @param recordId - ID du record Airtable
  * @param statut - Nouveau statut
- */
+  */
 export async function updateLeadStatus(
   recordId: string,
   statut: 'Nouveau' | 'Contacté' | 'Qualifié' | 'Converti' | 'Perdu'
