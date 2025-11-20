@@ -1295,5 +1295,5 @@ Remplacer le stockage Manus par Cloudflare R2 pour rendre l'upload de fichiers i
 - [x] Installer dépendance @aws-sdk/s3-request-presigner
 - [ ] Configurer variables d'environnement Railway
 - [ ] Tester upload de fichiers
-- [ ] Push vers GitHub
+- [x] Push vers GitHub (commit cf1265a)
 - [ ] Vérifier déploiement Railway

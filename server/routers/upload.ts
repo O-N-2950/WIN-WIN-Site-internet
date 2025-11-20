@@ -1,14 +1,16 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../_core/trpc";
-import { storagePut } from "../storage";
+import { uploadToTmpFiles } from "../tmpfiles-upload";
 import { TRPCError } from "@trpc/server";
 
 /**
- * Router pour l'upload de fichiers vers S3
+ * Router pour l'upload de fichiers
+ * Utilise tmpfiles.org comme hébergement temporaire
+ * Airtable téléchargera ensuite le fichier et le stockera définitivement
  */
 export const uploadRouter = router({
   /**
-   * Upload un fichier en base64 vers S3
+   * Upload un fichier en base64 vers tmpfiles.org
    * Retourne l'URL publique du fichier
    */
   uploadFile: publicProcedure
@@ -21,23 +23,21 @@ export const uploadRouter = router({
     )
     .mutation(async ({ input }) => {
       try {
-        // Décoder le base64
-        const base64Data = input.fileData.split(',')[1] || input.fileData;
-        const buffer = Buffer.from(base64Data, 'base64');
+        console.log('[Upload File] Début upload:', input.fileName);
+        
+        // Upload vers tmpfiles.org
+        const result = await uploadToTmpFiles(
+          input.fileData,
+          input.fileName,
+          input.fileType
+        );
 
-        // Générer un nom de fichier unique
-        const timestamp = Date.now();
-        const randomSuffix = Math.random().toString(36).substring(2, 9);
-        const extension = input.fileName.split('.').pop();
-        const fileKey = `contact-attachments/${timestamp}-${randomSuffix}.${extension}`;
-
-        // Upload vers S3
-        const { url } = await storagePut(fileKey, buffer, input.fileType);
+        console.log('[Upload File] ✅ Upload réussi:', result.url);
 
         return {
           success: true,
-          url,
-          fileKey,
+          url: result.url,
+          fileName: result.fileName,
         };
       } catch (error) {
         console.error("[Upload File] Erreur:", error);
