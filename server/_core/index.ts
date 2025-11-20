@@ -79,6 +79,11 @@ async function startServer() {
   } else {
     console.warn('[OAuth] Routes disabled (OAUTH_SERVER_URL not configured)');
   }
+  
+  // Google Calendar OAuth callback
+  const calendarCallbackRouter = (await import('../routes/calendar-callback')).default;
+  app.use(calendarCallbackRouter);
+  console.log('[Google Calendar] Callback route registered');
   // tRPC API
   app.use(
     "/api/trpc",
