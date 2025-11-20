@@ -183,8 +183,8 @@ export default function Conseil() {
               transition={{ delay: 0.1 }}
             >
               <Card 
-                className={`h-full cursor-pointer transition-all hover:shadow-xl hover:scale-105 ${
-                  selectedOption === 'appel' ? 'ring-2 ring-primary' : ''
+                className={`h-full cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-2 ${
+                  selectedOption === 'appel' ? 'ring-2 ring-primary shadow-xl' : ''
                 }`}
                 onClick={() => setSelectedOption('appel')}
               >
@@ -207,11 +207,11 @@ export default function Conseil() {
                       {CONTACT_INFO.phone}
                     </Button>
                   </a>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     <Clock className="inline h-4 w-4 mr-1" />
                     Lun-Ven 8h-18h
                   </p>
-                  <div className="pt-4 space-y-2 text-sm text-muted-foreground">
+                  <div className="pt-4 space-y-2 text-sm text-gray-700">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4 text-green-600" />
                       <span>Réponse immédiate</span>
@@ -236,7 +236,7 @@ export default function Conseil() {
               transition={{ delay: 0.2 }}
             >
               <Card 
-                className={`h-full cursor-pointer transition-all hover:shadow-xl hover:scale-105 border-2 border-primary ${
+                className={`h-full cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-2 border-2 border-primary ${
                   selectedOption === 'rdv' ? 'ring-2 ring-primary shadow-xl' : ''
                 }`}
                 onClick={() => setSelectedOption('rdv')}
@@ -264,10 +264,10 @@ export default function Conseil() {
                     <Calendar className="mr-2 h-5 w-5" />
                     Choisir mon créneau
                   </Button>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Confirmation immédiate
                   </p>
-                  <div className="pt-4 space-y-2 text-sm text-muted-foreground">
+                  <div className="pt-4 space-y-2 text-sm text-gray-700">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4 text-primary" />
                       <span>Conseiller dédié</span>
@@ -292,8 +292,8 @@ export default function Conseil() {
               transition={{ delay: 0.3 }}
             >
               <Card 
-                className={`h-full cursor-pointer transition-all hover:shadow-xl hover:scale-105 ${
-                  selectedOption === 'message' ? 'ring-2 ring-primary' : ''
+                className={`h-full cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-2 ${
+                  selectedOption === 'message' ? 'ring-2 ring-primary shadow-xl' : ''
                 }`}
                 onClick={() => setSelectedOption('message')}
               >
@@ -316,10 +316,10 @@ export default function Conseil() {
                     <MessageSquare className="mr-2 h-5 w-5" />
                     Nous contacter
                   </Button>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Réponse sous 24h garantie
                   </p>
-                  <div className="pt-4 space-y-2 text-sm text-muted-foreground">
+                  <div className="pt-4 space-y-2 text-sm text-gray-700">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="h-4 w-4 text-blue-600" />
                       <span>Disponible 24/7</span>
