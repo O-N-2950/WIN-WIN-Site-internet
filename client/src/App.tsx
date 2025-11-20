@@ -14,6 +14,7 @@ import Talentis from "./pages/Talentis";
 import Durabilis from "./pages/Durabilis";
 import Synergis from "./pages/Synergis";
 import Contact from "./pages/Contact";
+import ProtectionJuridique from "./pages/ProtectionJuridique";
 import Questionnaire from "./pages/Questionnaire";
 import Signature from "./pages/Signature";
 import Paiement from "./pages/Paiement";
@@ -30,6 +31,7 @@ function Router() {
           <Route path={"/"} component={Home} />
           <Route path="/services" component={Services} />
           <Route path="/libre-passage" component={LibrePassage} />
+          <Route path="/protection-juridique" component={ProtectionJuridique} />
           <Route path="/tarifs" component={Pricing} />
           <Route path="/concepts/talentis" component={Talentis} />
           <Route path="/concepts/durabilis" component={Durabilis} />

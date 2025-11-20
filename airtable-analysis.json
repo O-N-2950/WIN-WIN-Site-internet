@@ -1,0 +1,2587 @@
+{
+  "Clients": {
+    "id": "tblWPcIpGmBZ3ASGI",
+    "total_fields": 221,
+    "field_types": {
+      "formula": 13,
+      "checkbox": 8,
+      "singleSelect": 18,
+      "dateTime": 7,
+      "url": 1,
+      "singleLineText": 50,
+      "date": 6,
+      "number": 6,
+      "email": 2,
+      "multipleRecordLinks": 46,
+      "rollup": 4,
+      "multipleLookupValues": 37,
+      "phoneNumber": 2,
+      "multipleAttachments": 2,
+      "count": 5,
+      "aiText": 2,
+      "currency": 5,
+      "multilineText": 2,
+      "lastModifiedTime": 2,
+      "singleCollaborator": 2,
+      "multipleSelects": 1
+    },
+    "select_fields": [
+      {
+        "name": "Statut mandat",
+        "type": "singleSelect",
+        "id": "fldJyubkkuL3sDDES",
+        "choices": [
+          "à générer",
+          "En cours de génération",
+          "Envoyé",
+          "Signé reçu",
+          "Archivé"
+        ]
+      },
+      {
+        "name": "Forme Juridique ",
+        "type": "singleSelect",
+        "id": "fldWun4m9bCq59yJm",
+        "choices": [
+          "Raison Individuelle",
+          "société anonyme (SA)",
+          "société à responsabilité limitée (Sàrl)",
+          "société en nom collectif (SNC)",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Type de client",
+        "type": "singleSelect",
+        "id": "flddoSiduFTUIciGX",
+        "choices": [
+          "Privé",
+          "Entreprise"
+        ]
+      },
+      {
+        "name": "Statut du client",
+        "type": "singleSelect",
+        "id": "fldw9QKnjkINjZ7kQ",
+        "choices": [
+          "Actif",
+          "En attente",
+          "Inactif",
+          "Mandat résilié",
+          "Prospect"
+        ]
+      },
+      {
+        "name": "Nouvelle entreprise",
+        "type": "singleSelect",
+        "id": "fldGWP6ONsXjeJuxw",
+        "choices": [
+          "OUI",
+          "NON"
+        ]
+      },
+      {
+        "name": "Canton",
+        "type": "singleSelect",
+        "id": "fldbblAIdYpzgLwzt",
+        "choices": [
+          "Appenzell Rhodes-Extérieures",
+          "Appenzell Rhodes-Intérieures",
+          "Argovie",
+          "Bâle_Campagne",
+          "Bâle_Ville",
+          "Berne",
+          "Fribourg",
+          "Genève",
+          "Glaris",
+          "Grisons",
+          "Jura",
+          "Lucerne",
+          "Neuchâtel",
+          "Nidwald",
+          "Obwald",
+          "Saint-Gall",
+          "Schaffhouse",
+          "Schwytz",
+          "Soleure",
+          "Tessin",
+          "Thurgovie",
+          "Uri",
+          "Valais",
+          "Vaud",
+          "Zoug",
+          "Zurich",
+          "jura"
+        ]
+      },
+      {
+        "name": "Language",
+        "type": "singleSelect",
+        "id": "fldNg0WEEyxJfWsRM",
+        "choices": [
+          "Français",
+          "Anglais",
+          "Espagnol",
+          "Allemand",
+          "Italien",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Y a-t-il une personne de contact ou fiduciaire par exemple ?",
+        "type": "singleSelect",
+        "id": "fldTAcFaM7FagbKpl",
+        "choices": [
+          "OUI",
+          "NON"
+        ]
+      },
+      {
+        "name": "Personne de contact Formule d'appel",
+        "type": "singleSelect",
+        "id": "fldmpTgRkBME6rgDY",
+        "choices": [
+          "Monsieur",
+          "Madame",
+          "Madame, Monsieur,"
+        ]
+      },
+      {
+        "name": "Nationalité",
+        "type": "singleSelect",
+        "id": "fldVg65SMc0XHY1Mk",
+        "choices": [
+          "Suisse",
+          "France",
+          "Italie",
+          "Espagne",
+          "Allemage",
+          "Belge",
+          "Autre",
+          "Portugal"
+        ]
+      },
+      {
+        "name": "Fumeur(se)",
+        "type": "singleSelect",
+        "id": "fldk0dWINP45m5Ke5",
+        "choices": [
+          "oui",
+          "non",
+          "?"
+        ]
+      },
+      {
+        "name": "Permis d'établissement",
+        "type": "singleSelect",
+        "id": "fldIdRxIxDkjmAEx8",
+        "choices": [
+          "Permis C (autorisation d’établissement)",
+          "Permis B (autorisation de séjour)",
+          "Permis L (autorisation de courte durée)",
+          "Permis G (autorisation frontalière)"
+        ]
+      },
+      {
+        "name": "Situation familiale",
+        "type": "singleSelect",
+        "id": "fldqzL6AoJctcRgqP",
+        "choices": [
+          "Célibataire",
+          "Marié(e)",
+          "En couple",
+          "Divorcé(e)",
+          "Veuf(ve)",
+          "Séparé(e)"
+        ]
+      },
+      {
+        "name": "Statut professionnel",
+        "type": "singleSelect",
+        "id": "fldzNfnDClJntpk6v",
+        "choices": [
+          "Employé(e)",
+          "Indépendant(e)",
+          "Retraité(e)",
+          "Sans Emploi",
+          "Au chômage",
+          "Ai",
+          "Etudiant(e)",
+          "Enfant",
+          "?"
+        ]
+      },
+      {
+        "name": "Formule d'appel",
+        "type": "singleSelect",
+        "id": "fldIfovsDPqFdj1wm",
+        "choices": [
+          "Monsieur",
+          "Madame"
+        ]
+      },
+      {
+        "name": "Taux d'activité %",
+        "type": "singleSelect",
+        "id": "fld0KfsYTRsx6rktS",
+        "choices": [
+          "100 %",
+          "90 %",
+          "80 %",
+          "70 %",
+          "60 %",
+          "50 %",
+          "40 %",
+          "30 %",
+          "20 %",
+          "10 %"
+        ]
+      },
+      {
+        "name": "Banque ",
+        "type": "singleSelect",
+        "id": "fldw6I8XnJpdGWiFa",
+        "choices": [
+          "Banque Cantonale Bernoise (BCBE)",
+          "Banque Cantonale de Genève (BCGE)",
+          "Banque Cantonale de Zurich (Zürcher Kantonalbank)",
+          "Banque Cantonale du Jura (BCJ)",
+          "Banque Cantonale du Valais (BCVS)",
+          "Banque Cantonale Neuchâteloise (BCN)",
+          "Banque Cantonale Vaudoise (BCV)",
+          "Banque Cler",
+          "Banque COOP",
+          "Banque Migros",
+          "Banque RAIFFEISEN",
+          "Crédit Suisse",
+          "PostFinance",
+          "UBS SA",
+          "Valiant",
+          "SB Saanen Bank",
+          "Zuger Kantonal Bank",
+          "Banque cantonale de Fribourg (BCF)"
+        ]
+      },
+      {
+        "name": "Rôle dans le Groupe",
+        "type": "singleSelect",
+        "id": "fldD1lmFJEQbxAaby",
+        "choices": [
+          "Membre principal",
+          "Membre famille"
+        ]
+      },
+      {
+        "name": "Relations familiales",
+        "type": "multipleSelects",
+        "id": "fldXEhXcXbV40f6zM",
+        "choices": [
+          "père",
+          "mère",
+          "épouse",
+          "époux",
+          "fils",
+          "fille",
+          "frère",
+          "sœur",
+          "autre",
+          "Entreprise de "
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Parrainé par",
+        "id": "fldwwD2OCerxa7dtz",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "lien client avec contrats",
+        "id": "fldwmIuKAXL3RbUvP",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Linked Tasks",
+        "id": "fldyrDljqxP92bSMb",
+        "linkedTable": "tblD8QLAXGhQmpTrU"
+      },
+      {
+        "name": "Linked Partners",
+        "id": "fldGR9m1kUIvaVoeM",
+        "linkedTable": "tblrIhrj1WoIFUkmk"
+      },
+      {
+        "name": "Statistiques",
+        "id": "fldgHnJYFUVEobkCs",
+        "linkedTable": "tblZ8IwIvCF51Wszk"
+      },
+      {
+        "name": "Rapports",
+        "id": "fldYOakKaSiGptdsC",
+        "linkedTable": "tbl6J0BRdHC4VFrnF"
+      },
+      {
+        "name": "Contrats",
+        "id": "fldwAso1lUHvP7m3v",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Contrats 2",
+        "id": "fldK3np0eygjyE8hA",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Mandats de gestion",
+        "id": "fldXPN65izWp0lsIL",
+        "linkedTable": "tbleKBSc1RHzeUAs2"
+      },
+      {
+        "name": "Dépenses personnelles 2",
+        "id": "fldi4JH0ZChXWreJ2",
+        "linkedTable": "tblZ5FZO1JCpyTMtn"
+      },
+      {
+        "name": "Mandats de gestion 2",
+        "id": "fldnPFC28TlOLOPYu",
+        "linkedTable": "tbleKBSc1RHzeUAs2"
+      },
+      {
+        "name": "Mandats de gestion 3",
+        "id": "fld5XpRzFbJDTFxKc",
+        "linkedTable": "tbleKBSc1RHzeUAs2"
+      },
+      {
+        "name": "Mandats de gestion 4",
+        "id": "fldtdPI4LXl14rR6q",
+        "linkedTable": "tbleKBSc1RHzeUAs2"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldnRDI2hNkeYmTQz",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Lien vers Accès Clients (ne pas effacer)",
+        "id": "fldtygKzoW19jEQz0",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Contrats 3",
+        "id": "fldzHCBeljkLv26FP",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Sinistres 2",
+        "id": "flddroSgG6p29HcGI",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Documents",
+        "id": "fldvHQHCJgN2V8KqS",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Statistiques 2",
+        "id": "fldky9EzdMib0YIut",
+        "linkedTable": "tblZ8IwIvCF51Wszk"
+      },
+      {
+        "name": "Accès clients 5",
+        "id": "fldL6B3PxsUTXeslT",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Prestations",
+        "id": "fldgVJBh9IkG9Bldc",
+        "linkedTable": "tbl9wu7X2zrX9o2SU"
+      },
+      {
+        "name": "Dépenses personnelles 4",
+        "id": "fldtANVLD85ylNYXf",
+        "linkedTable": "tblZ5FZO1JCpyTMtn"
+      },
+      {
+        "name": "Tâches",
+        "id": "fldVMCmUrE8nVyw7K",
+        "linkedTable": "tblD8QLAXGhQmpTrU"
+      },
+      {
+        "name": "Connexion",
+        "id": "fld4ouIBTQjAiCOYx",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "Connexion 2",
+        "id": "fldBeqcdp6QL5zcFU",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "Contrats 6",
+        "id": "fldXhp7l7eh0MxsvY",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Sinistres 3",
+        "id": "fldgiaJMjvQ6XN2qB",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Documents 2",
+        "id": "fldTGzxI3z2HwMt51",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Tâches 2",
+        "id": "fld90OWyceQJk8FNS",
+        "linkedTable": "tblD8QLAXGhQmpTrU"
+      },
+      {
+        "name": "Dépenses personnelles 5",
+        "id": "fldDfZxNGaKCQqbMf",
+        "linkedTable": "tblZ5FZO1JCpyTMtn"
+      },
+      {
+        "name": "Contrats 7",
+        "id": "fldqCAg2SJE8gxfO4",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Décomptes de Primes 7",
+        "id": "fldwn8IMAQIy0TrqR",
+        "linkedTable": "tblWkdQ9GcXptNdFS"
+      },
+      {
+        "name": "Décomptes de Primes 8",
+        "id": "fldRlIcJe31AxuF8O",
+        "linkedTable": "tblWkdQ9GcXptNdFS"
+      },
+      {
+        "name": "Contrats 10",
+        "id": "fldj7CC57Ylb92g7B",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Documents 3",
+        "id": "fld3JGDgerCMt9yIf",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Sinistres 4",
+        "id": "fldEXsUFMC7MdCulE",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Documents 4",
+        "id": "fldVxbKvFTGHVQim5",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Inventaire Ménage",
+        "id": "fldLkxfcwjKZHfq7Y",
+        "linkedTable": "tblC1KLByYbWB6zA2"
+      },
+      {
+        "name": "Communications",
+        "id": "fld420SBdSSNMJ9HT",
+        "linkedTable": "tblhJWJNsZCqyikDd"
+      },
+      {
+        "name": "Membre Principal du Groupe",
+        "id": "fldiv3CYn14mj03XP",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "From field: Membre Principal du Groupe",
+        "id": "fld0bp4mskZMo7LWl",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Lié à (famille)",
+        "id": "fldt6pklPvJmGq5FJ",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "From field: Lié à (famille)",
+        "id": "fldkF82txvc6xaWLS",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Tâches 3",
+        "id": "fldozXEonLatDXH4t",
+        "linkedTable": "tblD8QLAXGhQmpTrU"
+      },
+      {
+        "name": "Abonnements 10",
+        "id": "fldMT9XupHPK5mJQW",
+        "linkedTable": "tbl80qS74TCNxjip5"
+      },
+      {
+        "name": "📋 Déclarations",
+        "id": "fldDmGF4zlkspDqTz",
+        "linkedTable": "tbleVL1OSSoDCO3tL"
+      }
+    ]
+  },
+  "Contrats": {
+    "id": "tblDOIQM3zt7QkZd4",
+    "total_fields": 175,
+    "field_types": {
+      "singleLineText": 20,
+      "autoNumber": 1,
+      "multipleLookupValues": 58,
+      "multilineText": 9,
+      "multipleRecordLinks": 22,
+      "multipleSelects": 1,
+      "multipleAttachments": 13,
+      "checkbox": 15,
+      "dateTime": 6,
+      "singleSelect": 4,
+      "formula": 14,
+      "number": 2,
+      "date": 3,
+      "lastModifiedTime": 1,
+      "button": 1,
+      "count": 2,
+      "rollup": 1,
+      "aiText": 2
+    },
+    "select_fields": [
+      {
+        "name": "types de contrats",
+        "type": "multipleSelects",
+        "id": "fld6WoCEuhzx6F7p4",
+        "choices": [
+          "",
+          "Appareils auditifs ",
+          "ART et collections",
+          "Assurance VIE 3a (déductible)",
+          "Assurance VIE 3b (libre)",
+          "AVS",
+          "Bateau",
+          "Cautions et garanties",
+          "COMMERCE",
+          "Dégât d'eau bâtiment",
+          "Électronique ",
+          "Garantie de loyer",
+          "IJM (perte de gain MALADIE)",
+          "Incendie et dommage naturel Bâtiment",
+          "LAA",
+          "LAA Complémentaire",
+          "LAMal (base obligatoire)",
+          "LCA (complémentaires)",
+          "LPP",
+          "Ménage ",
+          "Mobilhome / Caravane",
+          "Montres",
+          "Perte de revenus locatifs",
+          "Photovoltaïque",
+          "Protection Juridique",
+          "RC immeuble",
+          "RC Privée ",
+          "RC Professionnelle",
+          "Téléphones mobiles et smartphones ",
+          "Transport",
+          "Véhicule",
+          "Vélos",
+          "Assistance / Dépannage",
+          "Plan de versement",
+          "Compte 3a",
+          "Assurance en cas de décès",
+          "Animaux",
+          "Maladie et Accident de l'indépendant(e)",
+          "Aéronef",
+          "RC Locataire de chevaux",
+          "Casco ménage",
+          "Garantie de Construction/Ouvrage",
+          "Cyberassurance",
+          "Libre Passage LPP",
+          "Voyage/Annulation/Assistance",
+          "Incendie et dommage naturel Ménage"
+        ]
+      },
+      {
+        "name": "Statut caisse maladie 2026 ",
+        "type": "singleSelect",
+        "id": "fldbP6HjlZ3Ni2sLJ",
+        "choices": [
+          "Réglé",
+          "En cours ",
+          "URGENT"
+        ]
+      },
+      {
+        "name": "Mode de paiement",
+        "type": "singleSelect",
+        "id": "fldkvkg5B5E4GZzzj",
+        "choices": [
+          "Annuel",
+          "Semestriel",
+          "Trimestriel",
+          "Mensuel",
+          "Prime Unique",
+          "Bimestriel"
+        ]
+      },
+      {
+        "name": "Raison révision",
+        "type": "singleSelect",
+        "id": "fldfcQkBrRC4693a2",
+        "choices": [
+          "Augmentation prime ",
+          "Service insuffisant",
+          "Meilleur tarif possible ailleurs",
+          "Changement situation client",
+          "À comparer systématiquement",
+          "Client pas content de cette compagnie",
+          "Problème pour le règlement d'un sinistre",
+          "Cessation activité du client",
+          "Disparition du risque ",
+          "pas de convention avec la compagnie",
+          "Echéance Police VIE",
+          "CAP"
+        ]
+      },
+      {
+        "name": "Statut du contrat",
+        "type": "singleSelect",
+        "id": "fldmXfYu2FAgq2HL7",
+        "choices": [
+          "Actif",
+          "En attente du contrat",
+          "Résilié",
+          "Libéré des primes",
+          "Racheté",
+          "Mandat Résilié",
+          "Résilié pour échéance",
+          "OFFRE",
+          "Confirmation de résiliation en attente"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Compagnie",
+        "id": "fldHzk8EcrK8dDC5Q",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Prestations",
+        "id": "fldtLHxDR7Xcyh5dp",
+        "linkedTable": "tbl9wu7X2zrX9o2SU"
+      },
+      {
+        "name": "Clients",
+        "id": "fldSK4wAp8KJOPpHr",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Recherche Client",
+        "id": "fld8KvmIaAESs1lOD",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Prédécesseur",
+        "id": "fldlW4mwiErqYaurV",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Sinistres 4",
+        "id": "fldMiGen0G8ZuOY1e",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Sinistres 5",
+        "id": "fldlEcQ8kMbugGPLY",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldNEn91M5dVGnVEd",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "lien table client depuis contrats",
+        "id": "fld17gl8JqUnyXPD1",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "mail du client",
+        "id": "fldcCHMAJWnj3aYNl",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Décomptes de Primes 13",
+        "id": "fldk74OfslwDIlKBn",
+        "linkedTable": "tblWkdQ9GcXptNdFS"
+      },
+      {
+        "name": "Clients 3",
+        "id": "fldljgt8Fq6BZMWD7",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "adresse compagnie depuis contrat",
+        "id": "fldADYlpfiduPNycE",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Décomptes de Primes 15",
+        "id": "fldQaSYcyoxlbmY5Z",
+        "linkedTable": "tblWkdQ9GcXptNdFS"
+      },
+      {
+        "name": "Décomptes de Primes 16",
+        "id": "fldoIlsDFhwrEm4fj",
+        "linkedTable": "tblWkdQ9GcXptNdFS"
+      },
+      {
+        "name": "Communications",
+        "id": "fldd77b2mNNj8npBc",
+        "linkedTable": "tblhJWJNsZCqyikDd"
+      },
+      {
+        "name": "Compagnies",
+        "id": "fldcdobRIsvYV4Utg",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Nom du clients",
+        "id": "fldFrMK1g1Q0FMCgH",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Statistiques",
+        "id": "fldTG4zuEXpUNfcaR",
+        "linkedTable": "tblZ8IwIvCF51Wszk"
+      },
+      {
+        "name": "Rapports",
+        "id": "fldFaUnSVl1a0YF2S",
+        "linkedTable": "tbl6J0BRdHC4VFrnF"
+      },
+      {
+        "name": "Partenaires",
+        "id": "fldXmP1EkLIyTjgDb",
+        "linkedTable": "tblrIhrj1WoIFUkmk"
+      },
+      {
+        "name": "Accès clients",
+        "id": "fldr8crlZGHIWU8RV",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      }
+    ]
+  },
+  "Décomptes de Primes": {
+    "id": "tblWkdQ9GcXptNdFS",
+    "total_fields": 49,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleAttachments": 7,
+      "checkbox": 5,
+      "dateTime": 5,
+      "multipleRecordLinks": 5,
+      "multipleLookupValues": 11,
+      "multilineText": 1,
+      "date": 4,
+      "formula": 4,
+      "singleSelect": 2,
+      "number": 2,
+      "singleLineText": 1,
+      "createdBy": 1
+    },
+    "select_fields": [
+      {
+        "name": "Mode de paiement",
+        "type": "singleSelect",
+        "id": "fldQqXeDBfapa2Qjj",
+        "choices": [
+          "Annuel",
+          "Semestriel",
+          "Trimestriel",
+          "Mensuel"
+        ]
+      },
+      {
+        "name": "Status du paiement",
+        "type": "singleSelect",
+        "id": "fldj26Ja1npAHyVwO",
+        "choices": [
+          "à payer",
+          "payé",
+          "en retard",
+          "annulé",
+          "?"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldwTajwOH5gXCHSv",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Contrats",
+        "id": "flds7ASAnMJpr3CtR",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Contrats 2",
+        "id": "fldKWV2fXmNBsgvtS",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "E-mail du client pour envoi",
+        "id": "fldaGD0LCI5Ed38DI",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Contrats 3",
+        "id": "fldgZTRwuCVyvo1aA",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      }
+    ]
+  },
+  "Sinistres": {
+    "id": "tblNJRSmiVCyAahht",
+    "total_fields": 134,
+    "field_types": {
+      "singleLineText": 4,
+      "multipleRecordLinks": 14,
+      "multipleLookupValues": 50,
+      "singleSelect": 2,
+      "multilineText": 9,
+      "date": 3,
+      "formula": 8,
+      "dateTime": 12,
+      "currency": 3,
+      "multipleAttachments": 7,
+      "checkbox": 12,
+      "richText": 1,
+      "aiText": 5,
+      "lastModifiedTime": 1,
+      "url": 1,
+      "count": 1,
+      "createdBy": 1
+    },
+    "select_fields": [
+      {
+        "name": "Type de sinistre",
+        "type": "singleSelect",
+        "id": "fldwMOhcvSmlQPg8C",
+        "choices": [
+          "Autre",
+          "Bris de glace véhicule",
+          "Collision",
+          "Dégât d'eau bâtiment",
+          "Dommage de Parc",
+          "Incendie",
+          "Protection Juridique",
+          "RC véhicule",
+          "Vol externe",
+          "Indemnité journalière MALADIE",
+          "Indeminité journalière ACCIDENT",
+          "MénagePlus",
+          "Bris de glace",
+          "Dégât de fouine",
+          "Dépannage",
+          "ACCIDENT",
+          "VOL au domicile"
+        ]
+      },
+      {
+        "name": "Status du sinistre",
+        "type": "singleSelect",
+        "id": "fldXS2FWiNKsce9m0",
+        "choices": [
+          "Ouvert",
+          "En cours",
+          "Terminé",
+          "Refusé"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldMa5ZwlQ2VDYhzL",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients 4",
+        "id": "fldC7w94aqBUxT08Z",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Contrats (sous sinistre)",
+        "id": "fldDk9zLeMJgSqrRF",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Contrats",
+        "id": "fldf5T1hDIUBfQ2p5",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldhgEhPsNZ2341YG",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients 3",
+        "id": "fldPTyinJNU7A57UA",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Garagiste OU réparateur",
+        "id": "fld3Rzv9e0nhXQcrt",
+        "linkedTable": "tblqnmaZCVNx0PsdJ"
+      },
+      {
+        "name": "Communications",
+        "id": "fldNwS0pvsXntSUpu",
+        "linkedTable": "tblhJWJNsZCqyikDd"
+      },
+      {
+        "name": "Email sinistre compagnie",
+        "id": "fld1Tp2HLGay8Ttha",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Statistiques",
+        "id": "fldXH9rBBqvS8Zt8n",
+        "linkedTable": "tblZ8IwIvCF51Wszk"
+      },
+      {
+        "name": "Rapports",
+        "id": "fldtdzXYv2r01fjA1",
+        "linkedTable": "tbl6J0BRdHC4VFrnF"
+      },
+      {
+        "name": "Accès clients",
+        "id": "fldjaIZYgizMP9gwj",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Connexion",
+        "id": "fldQKylel9Bj5LMn6",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "Connexion 2",
+        "id": "fldCoC3sS5ljV7N3E",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      }
+    ]
+  },
+  "Compagnies": {
+    "id": "tblwnkQFK63KKjFEY",
+    "total_fields": 30,
+    "field_types": {
+      "singleLineText": 6,
+      "multilineText": 2,
+      "number": 1,
+      "multipleAttachments": 1,
+      "email": 2,
+      "phoneNumber": 2,
+      "multipleSelects": 1,
+      "count": 1,
+      "rollup": 2,
+      "aiText": 2,
+      "formula": 1,
+      "multipleRecordLinks": 9
+    },
+    "select_fields": [
+      {
+        "name": "types de contrats",
+        "type": "multipleSelects",
+        "id": "fldIv2bWvqqoIG54S",
+        "choices": [
+          "Véhicule",
+          "Ménage",
+          "Vie",
+          "Voyage/annulation/assistance",
+          "RC Privée",
+          "Dégât d'eau bâtiment",
+          "RC Immeuble",
+          "COMMERCE",
+          "RC Entreprise",
+          "Protection juridique Privée",
+          "Protection juridique Entreprise",
+          "Perte de gain MALADIE",
+          "LAA (Accident)",
+          "LAAComplémentaire",
+          "LPP (2e pilier)",
+          "AVS (1er pilier)",
+          "Photovoltaïque",
+          "Caisse maladie LAMal (base)",
+          "Garantie de Loyer",
+          "Animaux",
+          "Incendie - dommage naturel / Bâtiment",
+          "Incendie mobilier",
+          "Caisse maladie LCA (Complémentaire)",
+          "Transport",
+          "ART et collections",
+          "Cautions et garanties"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Contacts",
+        "id": "fldPGoVYetiTGM8vM",
+        "linkedTable": "tbl5R3b8umCo7yyXi"
+      },
+      {
+        "name": "Contacts 2",
+        "id": "fldbp8KAGacz7lWTL",
+        "linkedTable": "tbl5R3b8umCo7yyXi"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldaxVs0Iq7RP1ye9",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Contrats 2",
+        "id": "fldgXNogiUzPTjrcO",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Contrats 3",
+        "id": "fldjcOFECjI8XaGtJ",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Accès clients",
+        "id": "fldTvqL3RdmYeOdn2",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Contrats 4",
+        "id": "fldW60I0M25k7MMiV",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Garagistes",
+        "id": "fldA16zUnbSYnrKyO",
+        "linkedTable": "tblqnmaZCVNx0PsdJ"
+      },
+      {
+        "name": "Communications",
+        "id": "fldaiU7w74is84Hlz",
+        "linkedTable": "tblhJWJNsZCqyikDd"
+      }
+    ]
+  },
+  "Documents": {
+    "id": "tblu9lEv2cr8nq4sW",
+    "total_fields": 236,
+    "field_types": {
+      "formula": 4,
+      "multipleRecordLinks": 7,
+      "multipleLookupValues": 171,
+      "multipleAttachments": 2,
+      "date": 2,
+      "singleSelect": 14,
+      "createdBy": 1,
+      "aiText": 2,
+      "createdTime": 1,
+      "singleLineText": 4,
+      "number": 2,
+      "multilineText": 3,
+      "email": 1,
+      "phoneNumber": 1,
+      "checkbox": 21
+    },
+    "select_fields": [
+      {
+        "name": "Catégorie de document",
+        "type": "singleSelect",
+        "id": "fld8Lct3BSHDVATGw",
+        "choices": [
+          "Pièces d’identité et autorisations",
+          "Justificatifs de domicile",
+          "Documents fiscaux",
+          "Documents immobiliers & hypothécaires",
+          "Situation familiale & personnelle",
+          "Santé & assurances sociales",
+          "Véhicules & mobilité",
+          "Autres documents"
+        ]
+      },
+      {
+        "name": "Nom du document – Pièces d’identité et autorisations",
+        "type": "singleSelect",
+        "id": "fld7kPP70dxVogCEO",
+        "choices": [
+          "Carte d’identité suisse",
+          "Passeport",
+          "Permis de séjour",
+          "Permis de travail",
+          "Autorisation de travail",
+          "Procurations",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Justificatifs de domicile",
+        "type": "singleSelect",
+        "id": "fldRWfVDBTbgB78zC",
+        "choices": [
+          "Attestation de domicile",
+          "Contrat de bail",
+          "Quittance de loyer",
+          "Facture d’électricité / gaz",
+          "État des lieux d’entrée",
+          "État des lieux de sortie",
+          "Inventaire Ménage",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Documents fiscaux",
+        "type": "singleSelect",
+        "id": "fldenS9mVHH30o8Nv",
+        "choices": [
+          "Déclaration d’impôt",
+          "État des revenus",
+          "Certificat de salaire",
+          "Attestation de déductions",
+          "Historique des versements 3ème pilier",
+          "Autre",
+          "Décision de taxation"
+        ]
+      },
+      {
+        "name": "Nom du document – Documents immobiliers & hypothécaires",
+        "type": "singleSelect",
+        "id": "fldciElDIJ4xBozxf",
+        "choices": [
+          "Contrat d’achat",
+          "Offre de prêt",
+          "Extrait RF",
+          "Plan de financement",
+          "Évaluation bancaire",
+          "Tableau d’amortissement",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Situation familiale & personnelle",
+        "type": "singleSelect",
+        "id": "fldBOXgUpi7Jd0tjX",
+        "choices": [
+          "Contrat de mariage",
+          "Jugement de divorce",
+          "Convention de séparation",
+          "Convention de garde",
+          "Preuve de naissance / livret de famille",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Santé & assurances sociales",
+        "type": "singleSelect",
+        "id": "fldnNlt0zqNWQQAYD",
+        "choices": [
+          "Police LAMal",
+          "Police assurance complémentaire",
+          "Attestation de prime",
+          "Attestation de subvention",
+          "Preuve de paiement",
+          "Relevé de prestations",
+          "Certificat LPP (2e pilier)",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Véhicules & mobilité",
+        "type": "singleSelect",
+        "id": "fldF5VHetcQJn6Ia4",
+        "choices": [
+          "Permis de circulation",
+          "Attestation d’assurance",
+          "Contrôle technique",
+          "Contrat de leasing",
+          "Facture d’entretien",
+          "Facture garagiste",
+          "Détail du véhicule pour Offre assurance / 13.20",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Nom du document – Autres documents",
+        "type": "singleSelect",
+        "id": "fldetGqzyXkREOT2K",
+        "choices": [
+          "Relevé bancaire",
+          "Carte AVS",
+          "RIB / IBAN",
+          "Relevé de fortune",
+          "Autre document administratif"
+        ]
+      },
+      {
+        "name": "Visibility",
+        "type": "singleSelect",
+        "id": "fld1bWGKKmztvzqSv",
+        "choices": [
+          "Internal",
+          "Client"
+        ]
+      },
+      {
+        "name": "📋 Type de document fiscal",
+        "type": "singleSelect",
+        "id": "fldoRnc6hpRSF83ZW",
+        "choices": [
+          "📄 Certificat de salaire",
+          "🏦 Relevé bancaire",
+          "🏠 Attestation hypothécaire",
+          "💳 Attestation 3ème pilier",
+          "🏥 Attestation assurance maladie",
+          "🚆 Justificatif transport",
+          "📚 Attestation formation",
+          "👶 Attestation garde enfants",
+          "📊 Bilan comptable",
+          "🧾 Factures déductibles",
+          "📋 Autre document"
+        ]
+      },
+      {
+        "name": "⚙️ Statut traitement",
+        "type": "singleSelect",
+        "id": "fldTitoleGlhvNdsd",
+        "choices": [
+          "📥 Reçu",
+          "🔍 En analyse",
+          "✅ Traité",
+          "⚠️ Erreur",
+          "❌ Rejeté"
+        ]
+      },
+      {
+        "name": "🏛️ Canton soumis (formulaire)",
+        "type": "singleSelect",
+        "id": "fldD5FuFcKCXFtos9",
+        "choices": [
+          "Jura",
+          "Berne",
+          "Neuchâtel",
+          "Vaud",
+          "Genève",
+          "Valais",
+          "Fribourg",
+          "Zürich",
+          "Autre"
+        ]
+      },
+      {
+        "name": "🤖 Statut traitement prospect",
+        "type": "singleSelect",
+        "id": "fldNCKMRWYBQGPAe7",
+        "choices": [
+          "📥 À traiter",
+          "✅ Client lié",
+          "🆕 Prospect créé",
+          "⚠️ Erreur"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldxBPE10Rj2sMPFb",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Connexion",
+        "id": "fldXi8ZhUBXm6dtrk",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "lien vers table client depuis Documents",
+        "id": "fldE8K3lrOEq4b5Aj",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Client concerné",
+        "id": "fldXsHZxxdDGUDmde",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Accès clients",
+        "id": "fld9CXezAepoPpl2t",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldgLIj6IrJ7UbElR",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "📋 Déclarations",
+        "id": "fld0zb6OFusmeiVV1",
+        "linkedTable": "tbleVL1OSSoDCO3tL"
+      }
+    ]
+  },
+  "Tâches": {
+    "id": "tblD8QLAXGhQmpTrU",
+    "total_fields": 36,
+    "field_types": {
+      "singleLineText": 1,
+      "multilineText": 1,
+      "multipleRecordLinks": 5,
+      "date": 3,
+      "multipleAttachments": 1,
+      "singleSelect": 2,
+      "email": 1,
+      "multipleLookupValues": 12,
+      "formula": 3,
+      "aiText": 2,
+      "richText": 1,
+      "createdBy": 1,
+      "dateTime": 1,
+      "url": 1,
+      "checkbox": 1
+    },
+    "select_fields": [
+      {
+        "name": "Priorité",
+        "type": "singleSelect",
+        "id": "fld6AHlytvhQUKEsN",
+        "choices": [
+          "basse",
+          "moyenne",
+          "haute"
+        ]
+      },
+      {
+        "name": "Statut",
+        "type": "singleSelect",
+        "id": "fldlOVX7LUuzmxIPy",
+        "choices": [
+          "non démarré",
+          "en cours",
+          "terminé",
+          "en attente",
+          "Agendé"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Client",
+        "id": "fldVdHLyDx5uLDSVz",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients",
+        "id": "fldktDQhZsP2TEsXh",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Connexion",
+        "id": "fldncpMByUJI45r97",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "Lien vers table client depuis Tâches",
+        "id": "fld7mi53H1oqykDhq",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Assigné à qui ?",
+        "id": "fldfJJd2NWi9W183J",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "Contacts": {
+    "id": "tbl5R3b8umCo7yyXi",
+    "total_fields": 18,
+    "field_types": {
+      "autoNumber": 1,
+      "singleLineText": 2,
+      "multipleRecordLinks": 2,
+      "multipleLookupValues": 6,
+      "email": 1,
+      "phoneNumber": 2,
+      "multipleSelects": 1,
+      "multilineText": 1,
+      "singleCollaborator": 1,
+      "singleSelect": 1
+    },
+    "select_fields": [
+      {
+        "name": "Domaine d'expertise du contact",
+        "type": "multipleSelects",
+        "id": "fldHhK5db75Rdanuu",
+        "choices": [
+          "Ménage",
+          "RC privée",
+          "Dégât d'eau bâtiment",
+          "Véhicule",
+          "Commerce",
+          "RC Entreprise/Professionnelle",
+          "Photovoltaïque",
+          "Assurance Vie individuelle",
+          "LPP",
+          "Perte de gain maladie (IJM)",
+          "LAA",
+          "LAA Complémentaire",
+          ""
+        ]
+      },
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fld907lirV5gZjB78",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Lien compagnie",
+        "id": "fldR49BCbL0ayx0nj",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Compagnies",
+        "id": "fldESjiCDt3L5rENi",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      }
+    ]
+  },
+  "Statistiques": {
+    "id": "tblZ8IwIvCF51Wszk",
+    "total_fields": 21,
+    "field_types": {
+      "singleLineText": 3,
+      "currency": 1,
+      "rollup": 5,
+      "multipleRecordLinks": 5,
+      "aiText": 2,
+      "multipleLookupValues": 5
+    },
+    "select_fields": [],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldhZ0G6pEAuodr24",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Contrats",
+        "id": "fld7l9C5kPUVOW3SH",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldqwu0IGCraWMZA5",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldrDJ1z3cqZ9kUtw",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Connexion",
+        "id": "fldcPrgIk0nVLQic7",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      }
+    ]
+  },
+  "Communications": {
+    "id": "tblhJWJNsZCqyikDd",
+    "total_fields": 16,
+    "field_types": {
+      "singleLineText": 3,
+      "multilineText": 1,
+      "dateTime": 1,
+      "multipleRecordLinks": 4,
+      "checkbox": 2,
+      "multipleAttachments": 1,
+      "singleSelect": 3,
+      "date": 1
+    },
+    "select_fields": [
+      {
+        "name": "Type de destinataire",
+        "type": "singleSelect",
+        "id": "flddJJ9fignKI6vHp",
+        "choices": [
+          "Client",
+          "Compagnie",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Type de communication",
+        "type": "singleSelect",
+        "id": "fld6mWUeDd3ObPRjv",
+        "choices": [
+          "Attestation RC/ménage",
+          "Changement d’adresse",
+          "Demande générale au client",
+          "Message à la compagnie",
+          "Autre"
+        ]
+      },
+      {
+        "name": "Statut de la communication",
+        "type": "singleSelect",
+        "id": "flddz55J3haZ3RH3m",
+        "choices": [
+          "À envoyer",
+          "En attente de réponse",
+          "Attestation reçue",
+          "Envoyé",
+          "Terminé"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Client lié",
+        "id": "fld3ZhdkbaQOXq33R",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Contrat lié",
+        "id": "fldL2Il4NvoZ9VmFf",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Sinistre lié",
+        "id": "fldFSB0AO7wsN7dZH",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Compagnie (liée)",
+        "id": "fldEIzTEkA39p8OEV",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      }
+    ]
+  },
+  "Accès clients": {
+    "id": "tbl02SRVtTJmY6frT",
+    "total_fields": 34,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleRecordLinks": 7,
+      "multipleLookupValues": 11,
+      "formula": 1,
+      "singleLineText": 4,
+      "singleSelect": 2,
+      "date": 1,
+      "multilineText": 1,
+      "count": 3,
+      "aiText": 2,
+      "lastModifiedTime": 1
+    },
+    "select_fields": [
+      {
+        "name": "Access Level",
+        "type": "singleSelect",
+        "id": "fldWTr8EkRgGO3H2z",
+        "choices": [
+          "Full",
+          "Limited",
+          "None"
+        ]
+      },
+      {
+        "name": "Access Status",
+        "type": "singleSelect",
+        "id": "fldbsrYIKUOLF1Q9T",
+        "choices": [
+          "Active",
+          "Inactive"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldFru7ROZqpx5o0y",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Visible Contracts",
+        "id": "fldG0dB2fhPtc3lLV",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Visible Documents",
+        "id": "fldBmRZvT6olobS0h",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Compagnies",
+        "id": "fldl0gNIcKlocxAyU",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldtsRyjQhMsFYQhx",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldlIUFxkuTnWhs6d",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Connexion",
+        "id": "fldLZlQWwk19m7d5m",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      }
+    ]
+  },
+  "Connexion": {
+    "id": "tblqUIOkFO3xgZsip",
+    "total_fields": 24,
+    "field_types": {
+      "autoNumber": 1,
+      "singleLineText": 8,
+      "multipleRecordLinks": 10,
+      "checkbox": 1,
+      "multipleLookupValues": 1,
+      "lastModifiedTime": 1,
+      "multipleAttachments": 1,
+      "aiText": 1
+    },
+    "select_fields": [],
+    "relation_fields": [
+      {
+        "name": "client connecté",
+        "id": "fld1Tv1Zgn9pA4TFo",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients",
+        "id": "fldywjRAf1xbhXEQt",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldHjyoEXNYEkmf1i",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Statistiques",
+        "id": "fldMP66Zi4aouRMvA",
+        "linkedTable": "tblZ8IwIvCF51Wszk"
+      },
+      {
+        "name": "Accès clients",
+        "id": "fldHChIvzC12RjWfN",
+        "linkedTable": "tbl02SRVtTJmY6frT"
+      },
+      {
+        "name": "Sinistres 2",
+        "id": "fldScAZtxmwRfsk7x",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      },
+      {
+        "name": "Documents 2",
+        "id": "fldukMWcIKAitPoo9",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      },
+      {
+        "name": "Tâches 2",
+        "id": "fldcDXsIVEfbBd2zG",
+        "linkedTable": "tblD8QLAXGhQmpTrU"
+      },
+      {
+        "name": "Dépenses personnelles 2",
+        "id": "fldUTueCvQuEaArd7",
+        "linkedTable": "tblZ5FZO1JCpyTMtn"
+      },
+      {
+        "name": "Dossiers (imbriqués)",
+        "id": "fldo25RKnMs5waGMw",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      }
+    ]
+  },
+  "Partenaires": {
+    "id": "tblrIhrj1WoIFUkmk",
+    "total_fields": 12,
+    "field_types": {
+      "singleLineText": 3,
+      "singleSelect": 1,
+      "multilineText": 1,
+      "multipleRecordLinks": 2,
+      "count": 2,
+      "aiText": 2,
+      "formula": 1
+    },
+    "select_fields": [
+      {
+        "name": "Partner Type",
+        "type": "singleSelect",
+        "id": "fldhCbBVdIdK17wXy",
+        "choices": [
+          "Bank",
+          "Notary"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Linked Clients",
+        "id": "fldI2HxQUYFaMXGsZ",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Linked Contracts",
+        "id": "fldE9PMY3XgD5r9z2",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      }
+    ]
+  },
+  "Rapports": {
+    "id": "tbl6J0BRdHC4VFrnF",
+    "total_fields": 17,
+    "field_types": {
+      "singleLineText": 2,
+      "date": 1,
+      "multilineText": 4,
+      "multipleRecordLinks": 3,
+      "multipleAttachments": 1,
+      "count": 1,
+      "rollup": 2,
+      "aiText": 2,
+      "formula": 1
+    },
+    "select_fields": [],
+    "relation_fields": [
+      {
+        "name": "Related Client",
+        "id": "fldebE4F3OsMoyI15",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Related Contract",
+        "id": "fld3KufYWCdKThgjV",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Related Claims",
+        "id": "fldr7P4GjkGOn0dSz",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      }
+    ]
+  },
+  "Prestations": {
+    "id": "tbl9wu7X2zrX9o2SU",
+    "total_fields": 20,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleRecordLinks": 2,
+      "singleLineText": 1,
+      "multipleAttachments": 2,
+      "multipleLookupValues": 9,
+      "multilineText": 1,
+      "singleCollaborator": 1,
+      "singleSelect": 1,
+      "aiText": 1,
+      "lastModifiedTime": 1
+    },
+    "select_fields": [
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fldGPxQ720QcLbZmO",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Détail",
+        "id": "fld9AgPqNE02NmgQc",
+        "linkedTable": "tblDOIQM3zt7QkZd4"
+      },
+      {
+        "name": "Clients",
+        "id": "fldrl3cHwxXtreK8L",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "Journal": {
+    "id": "tblgKL11ZUKRaPGWs",
+    "total_fields": 6,
+    "field_types": {
+      "singleLineText": 1,
+      "multilineText": 1,
+      "singleCollaborator": 1,
+      "singleSelect": 1,
+      "multipleAttachments": 1,
+      "aiText": 1
+    },
+    "select_fields": [
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fldoOLu0xG6KFXj0K",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": []
+  },
+  "Abonnements": {
+    "id": "tbl80qS74TCNxjip5",
+    "total_fields": 45,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleRecordLinks": 1,
+      "multipleLookupValues": 33,
+      "number": 1,
+      "dateTime": 2,
+      "singleSelect": 2,
+      "url": 2,
+      "singleLineText": 3
+    },
+    "select_fields": [
+      {
+        "name": "Statut envoi mandat de gestion",
+        "type": "singleSelect",
+        "id": "fldzhwhMuEKMCDaxS",
+        "choices": [
+          "à envoyer",
+          "envoyé en attente de signature",
+          "signé et facturé",
+          "Erreur"
+        ]
+      },
+      {
+        "name": "Statut facturation",
+        "type": "singleSelect",
+        "id": "flddgJv8pDDl8Q7VJ",
+        "choices": [
+          "à facturer",
+          "facture envoyée",
+          "payé",
+          "ERREUR"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldo1fnR8khbogX9J",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "Mandats de gestion": {
+    "id": "tbleKBSc1RHzeUAs2",
+    "total_fields": 64,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleRecordLinks": 4,
+      "multipleLookupValues": 45,
+      "multipleAttachments": 2,
+      "singleSelect": 2,
+      "date": 2,
+      "singleLineText": 3,
+      "multilineText": 1,
+      "singleCollaborator": 1,
+      "aiText": 1,
+      "createdTime": 1,
+      "lastModifiedTime": 1
+    },
+    "select_fields": [
+      {
+        "name": "Statut du mandat",
+        "type": "singleSelect",
+        "id": "fldZoj15Nsp5t5iVL",
+        "choices": [
+          "Envoyé",
+          "Signé",
+          "Expiré",
+          "Renouvelé",
+          "À envoyer"
+        ]
+      },
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fldqhevGAhkwc2jIl",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Client",
+        "id": "fld3s88e21SgQuvUY",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients",
+        "id": "fldEDf7nIsTaXBJV3",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients 3",
+        "id": "fldPMyaTpnMCpgmd7",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fldyV1Yb5wXE2KhKo",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "Dépenses personnelles": {
+    "id": "tblZ5FZO1JCpyTMtn",
+    "total_fields": 40,
+    "field_types": {
+      "singleLineText": 1,
+      "multipleRecordLinks": 4,
+      "multipleLookupValues": 11,
+      "singleSelect": 16,
+      "currency": 1,
+      "date": 1,
+      "formula": 1,
+      "multilineText": 1,
+      "singleCollaborator": 1,
+      "multipleAttachments": 1,
+      "aiText": 1,
+      "createdBy": 1
+    },
+    "select_fields": [
+      {
+        "name": "Catégorie principale",
+        "type": "singleSelect",
+        "id": "fldncSC8sZxE6MG4O",
+        "choices": [
+          "Logement",
+          "Energie et services",
+          "Transport",
+          "Santé",
+          "Alimentation",
+          "Education",
+          "Loisirs et bien-être",
+          "Famille",
+          "Finances",
+          "Abonnements",
+          "Impôts",
+          "Divers"
+        ]
+      },
+      {
+        "name": "Type de dépense logement",
+        "type": "singleSelect",
+        "id": "fldtMI2ZLhcL79H8j",
+        "choices": [
+          "Loyer/hypothèque",
+          "Charges de copropriété",
+          "Taxe immobilière",
+          "Entretien et réparations",
+          "Décoration/Ameublement"
+        ]
+      },
+      {
+        "name": "Type de dépense Energie et services",
+        "type": "singleSelect",
+        "id": "fld50moT88yPSSEJ0",
+        "choices": [
+          "Loyer/hypothèque",
+          "Charges de copropriété",
+          "Taxe immobilière",
+          "Entretien et réparations",
+          "Décoration/Ameublement",
+          "Electricité",
+          "Gaz",
+          "Eau",
+          "Chauffage",
+          "Internet",
+          "Téléphone fixe",
+          "Mobile",
+          "Télévision/Streaming",
+          "Leasing véhicule",
+          "Carburant",
+          "Entretien et réparations du véhicule",
+          "Transports en commun/Abonnements transport",
+          "Péages et stationnement",
+          "Taxi/VTC",
+          "Frais médicaux non remboursés",
+          "Médicaments",
+          "Soins dentaires",
+          "Optique",
+          "Consultations spécialistes",
+          "Courses alimentaires",
+          "Repas au restaurant",
+          "Repas au travail/cantine",
+          "Frais de scolarité",
+          "Fournitures scolaires",
+          "Activités extrascolaires",
+          "Formation continue",
+          "Livres et matériel pédagogique",
+          "Abonnements sportifs",
+          "Sorties culturelles",
+          "Vacances",
+          "Coiffeur et soins personnels",
+          "Vêtements",
+          "Cadeaux",
+          "Garde d'enfants",
+          "Pension alimentaire",
+          "Activités enfants",
+          "Jouets et équipements",
+          "Épargne régulière",
+          "Placements",
+          "Remboursements de prêts personnels",
+          "Cotisations diverses",
+          "Frais bancaires",
+          "Services de streaming (musique, vidéo)",
+          "Abonnements à des logiciels",
+          "Services de stockage cloud",
+          "Abonnements à des magazines/journaux",
+          "Abonnements divers",
+          "Impôt sur le revenu",
+          "Autres impôts et taxes",
+          "Dons réguliers",
+          "Frais imprévus",
+          "Autres dépenses"
+        ]
+      },
+      {
+        "name": "Type de dépense Transport",
+        "type": "singleSelect",
+        "id": "fldcq40g0JDsW9j5s",
+        "choices": [
+          "Leasing véhicule",
+          "Carburant",
+          "Entretien et réparations du véhicule",
+          "Transports en commun/Abonnements transport",
+          "Péages et stationnement",
+          "Taxi/VTC"
+        ]
+      },
+      {
+        "name": "Type de dépense Santé",
+        "type": "singleSelect",
+        "id": "fldrVspApyzXKIb2r",
+        "choices": [
+          "Frais médicaux non remboursés",
+          "Médicaments",
+          "Soins dentaires",
+          "Optique",
+          "Consultations spécialistes"
+        ]
+      },
+      {
+        "name": "Type de dépense Alimentation",
+        "type": "singleSelect",
+        "id": "fld2RChboq250vXSm",
+        "choices": [
+          "Courses alimentaires",
+          "Repas au restaurant",
+          "Repas au travail/cantine"
+        ]
+      },
+      {
+        "name": "Type de dépense Education",
+        "type": "singleSelect",
+        "id": "fldTuEfPOmVwiTsxD",
+        "choices": [
+          "Frais de scolarité",
+          "Fournitures scolaires",
+          "Activités extrascolaires",
+          "Formation continue",
+          "Livres et matériel pédagogique"
+        ]
+      },
+      {
+        "name": "Type de dépense Loisirs et bien-être",
+        "type": "singleSelect",
+        "id": "fldX1wkv8rgNRf4tt",
+        "choices": [
+          "Abonnements sportifs",
+          "Sorties culturelles",
+          "Vacances",
+          "Coiffeur et soins personnels",
+          "Vêtements",
+          "Cadeaux"
+        ]
+      },
+      {
+        "name": "Type de dépense Famille",
+        "type": "singleSelect",
+        "id": "fldPsagbm7C3pEgqe",
+        "choices": [
+          "Garde d'enfants",
+          "Pension alimentaire",
+          "Activités enfants",
+          "Jouets et équipements"
+        ]
+      },
+      {
+        "name": "Type de dépense Finances",
+        "type": "singleSelect",
+        "id": "fldqRsRUWwx7zvB1H",
+        "choices": [
+          "Épargne régulière",
+          "Placements",
+          "Remboursements de prêts personnels",
+          "Cotisations diverses",
+          "Frais bancaires"
+        ]
+      },
+      {
+        "name": "Type de dépense Abonnements",
+        "type": "singleSelect",
+        "id": "fldbqX0BGwsnTQqQc",
+        "choices": [
+          "Services de streaming (musique, vidéo)",
+          "Abonnements à des logiciels",
+          "Services de stockage cloud",
+          "Abonnements à des magazines/journaux",
+          "Abonnements divers"
+        ]
+      },
+      {
+        "name": "Type de dépense Impôts",
+        "type": "singleSelect",
+        "id": "fldobyRoNy7KKU70h",
+        "choices": [
+          "Impôt sur le revenu",
+          "Autres impôts et taxes"
+        ]
+      },
+      {
+        "name": "Type de dépense Divers",
+        "type": "singleSelect",
+        "id": "fld5wJcOug1h29BW0",
+        "choices": [
+          "Dons réguliers",
+          "Frais imprévus",
+          "Autres dépenses"
+        ]
+      },
+      {
+        "name": "Périodicité",
+        "type": "singleSelect",
+        "id": "fldOkhtz3qcFgN4h0",
+        "choices": [
+          "Ponctuelle",
+          "Mensuelle",
+          "Trimestrielle",
+          "Semestrielle",
+          "Annuelle"
+        ]
+      },
+      {
+        "name": "Statut du paiement",
+        "type": "singleSelect",
+        "id": "fldCiBMG5eIOvgZk0",
+        "choices": [
+          "A payer",
+          "Payé",
+          "En retard"
+        ]
+      },
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fldz8xtA2AeMbF88R",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Clients",
+        "id": "fldy0znUiZOfT9q4g",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Clients 2",
+        "id": "fld7BX3VjfpB8VMPi",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "Connexion",
+        "id": "fld2UJ6vsR7Y7wPL9",
+        "linkedTable": "tblqUIOkFO3xgZsip"
+      },
+      {
+        "name": "Clients 3",
+        "id": "fldvC2iH3YD4N6YIW",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "Erreur de Traitement de Dossiers": {
+    "id": "tbladkl5iklrftd1H",
+    "total_fields": 9,
+    "field_types": {
+      "autoNumber": 1,
+      "multilineText": 2,
+      "dateTime": 1,
+      "multipleAttachments": 2,
+      "singleCollaborator": 1,
+      "singleSelect": 1,
+      "aiText": 1
+    },
+    "select_fields": [
+      {
+        "name": "Status",
+        "type": "singleSelect",
+        "id": "fldBd5osv0jOaVBCa",
+        "choices": [
+          "Todo",
+          "In progress",
+          "Done"
+        ]
+      }
+    ],
+    "relation_fields": []
+  },
+  "Garagistes ou réparateur": {
+    "id": "tblqnmaZCVNx0PsdJ",
+    "total_fields": 10,
+    "field_types": {
+      "singleLineText": 2,
+      "multilineText": 1,
+      "number": 1,
+      "email": 1,
+      "phoneNumber": 2,
+      "url": 1,
+      "multipleRecordLinks": 2
+    },
+    "select_fields": [],
+    "relation_fields": [
+      {
+        "name": "Compagnie Associée",
+        "id": "fldqnfCSlfuzZelgD",
+        "linkedTable": "tblwnkQFK63KKjFEY"
+      },
+      {
+        "name": "Sinistres",
+        "id": "fldQlamZVuTJByndx",
+        "linkedTable": "tblNJRSmiVCyAahht"
+      }
+    ]
+  },
+  "Inventaire Ménage": {
+    "id": "tblC1KLByYbWB6zA2",
+    "total_fields": 88,
+    "field_types": {
+      "autoNumber": 1,
+      "multipleRecordLinks": 1,
+      "multipleLookupValues": 6,
+      "multipleSelects": 10,
+      "number": 58,
+      "formula": 1,
+      "date": 1,
+      "singleLineText": 10
+    },
+    "select_fields": [
+      {
+        "name": "Salon - Objets",
+        "type": "multipleSelects",
+        "id": "fldiy2L6vr985jxew",
+        "choices": [
+          "canapé",
+          "table basse",
+          "télévision",
+          "meuble TV",
+          "tapis",
+          "rideaux",
+          "lampes",
+          "console de jeu",
+          "chaîne hi-fi",
+          "horloge murale",
+          "fauteuil",
+          "bibliothèque",
+          "tableaux",
+          "plantes décoratives"
+        ]
+      },
+      {
+        "name": "Cuisine - Objets",
+        "type": "multipleSelects",
+        "id": "fldqw95f20o0itPXD",
+        "choices": [
+          "table",
+          "chaises",
+          "réfrigérateur (non encastré)",
+          "four micro-ondes",
+          "machine à café",
+          "machine à glaçons",
+          "machine à thé",
+          "vaisselle (assiettes",
+          "verres)",
+          "casseroles",
+          "poêles",
+          "fourchettes",
+          "couteaux",
+          "couteau électrique",
+          "robot cuisine",
+          "mixeur",
+          "grille-pain",
+          "bouilloire",
+          "plats à service",
+          "balances",
+          "tabourets"
+        ]
+      },
+      {
+        "name": "Chambre parents - Objets",
+        "type": "multipleSelects",
+        "id": "fldMpXVMzAWT0PJtp",
+        "choices": [
+          "lit double",
+          "matelas",
+          "armoire",
+          "commode",
+          "linge de lit",
+          "couette",
+          "oreillers",
+          "lampes de chevet",
+          "rideaux",
+          "cadre photo",
+          "radio réveil"
+        ]
+      },
+      {
+        "name": "Chambre enfant 1 - Objets",
+        "type": "multipleSelects",
+        "id": "fldvGM9lV2729LERn",
+        "choices": [
+          "lit",
+          "jouets",
+          "armoire",
+          "bureau",
+          "chaise",
+          "lampe",
+          "tapis",
+          "livres",
+          "décoration murale"
+        ]
+      },
+      {
+        "name": "Chambre enfant 2 - Objets",
+        "type": "multipleSelects",
+        "id": "fldZc7BPqtmVlKGPA",
+        "choices": [
+          "lit",
+          "jouets",
+          "armoire",
+          "bureau",
+          "chaise",
+          "lampe",
+          "tapis",
+          "livres",
+          "décoration murale"
+        ]
+      },
+      {
+        "name": "Salle de bains - Objets",
+        "type": "multipleSelects",
+        "id": "fldG0k8kzyRYmYkJO",
+        "choices": [
+          "serviettes",
+          "tapis de bain",
+          "sèche-cheveux",
+          "balance",
+          "accessoires de toilette",
+          "brosse à dents électrique",
+          "rasoir",
+          "trousse à pharmacie",
+          "armoire"
+        ]
+      },
+      {
+        "name": "Bureau - Objets",
+        "type": "multipleSelects",
+        "id": "fldUBvS6iBTpaQ7gI",
+        "choices": [
+          "bureau",
+          "chaise",
+          "ordinateur",
+          "écran",
+          "imprimante",
+          "bibliothèque",
+          "classeurs",
+          "lampe",
+          "scanner"
+        ]
+      },
+      {
+        "name": "Garage / Cave - Objets",
+        "type": "multipleSelects",
+        "id": "fldYXjS5Lcm3WkXRr",
+        "choices": [
+          "tondeuse à gazon",
+          "robot de tonte",
+          "outils de jardin",
+          "taille-haies",
+          "tronçonneuse",
+          "débroussailleuse",
+          "vélo",
+          "skis",
+          "outils divers",
+          "barbecue",
+          "parasol",
+          "chaises de jardin",
+          "caisse à outils",
+          "étagères"
+        ]
+      },
+      {
+        "name": "Habits & Chaussures - Objets",
+        "type": "multipleSelects",
+        "id": "fldMpxtVkT6jkHNO1",
+        "choices": [
+          "habits homme",
+          "habits femme",
+          "habits enfants",
+          "chaussures homme",
+          "femme et enfants",
+          "vêtements de sport",
+          "sacs",
+          "valises"
+        ]
+      },
+      {
+        "name": "Divers / Loisirs - Objets",
+        "type": "multipleSelects",
+        "id": "fldjZ7Bc2Vc4CifJX",
+        "choices": [
+          "instruments de musique",
+          "livres",
+          "jeux de société",
+          "matériel de camping",
+          "décoration saisonnière",
+          "accessoires animaux"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "Nom du Client",
+        "id": "fldNY0W87t4QgwmBW",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      }
+    ]
+  },
+  "📋 Déclarations": {
+    "id": "tbleVL1OSSoDCO3tL",
+    "total_fields": 47,
+    "field_types": {
+      "number": 2,
+      "singleSelect": 5,
+      "currency": 27,
+      "percent": 1,
+      "multilineText": 4,
+      "checkbox": 5,
+      "multipleRecordLinks": 2,
+      "date": 1
+    },
+    "select_fields": [
+      {
+        "name": "🏛️ Canton",
+        "type": "singleSelect",
+        "id": "fldDexctsu96ptsoM",
+        "choices": [
+          "Jura",
+          "Berne",
+          "Neuchâtel",
+          "Vaud",
+          "Genève",
+          "Valais"
+        ]
+      },
+      {
+        "name": "📊 Statut",
+        "type": "singleSelect",
+        "id": "fldKrlWAr48rqxyt9",
+        "choices": [
+          "📥 Documents reçus",
+          "🤖 En traitement",
+          "👀 À vérifier",
+          "✅ Validé",
+          "📤 Envoyé au client",
+          "✔️ Terminé",
+          "⚠️ En attente info"
+        ]
+      },
+      {
+        "name": "🔧 Type déduction professionnelle",
+        "type": "singleSelect",
+        "id": "fldkrGmrIyP1hOQJS",
+        "choices": [
+          "Forfaitaire",
+          "Effective",
+          "Non déterminé"
+        ]
+      },
+      {
+        "name": "👥 Statut civil",
+        "type": "singleSelect",
+        "id": "fldkV8bsNjDadttF9",
+        "choices": [
+          "Célibataire",
+          "Marié(e)",
+          "Séparé(e)",
+          "Divorcé(e)",
+          "Veuf/Veuve",
+          "Partenariat enregistré",
+          "Concubinage"
+        ]
+      },
+      {
+        "name": "🏠 Situation garde enfants",
+        "type": "singleSelect",
+        "id": "fld9iXndv0Gmf7oSt",
+        "choices": [
+          "Garde exclusive",
+          "Garde alternée 50/50",
+          "Non-gardien (droit de visite)",
+          "Non applicable"
+        ]
+      }
+    ],
+    "relation_fields": [
+      {
+        "name": "👤 Client",
+        "id": "fldAoKOzplW4cqyOh",
+        "linkedTable": "tblWPcIpGmBZ3ASGI"
+      },
+      {
+        "name": "📎 Documents liés",
+        "id": "fldbZ0cOLQNdlCw1S",
+        "linkedTable": "tblu9lEv2cr8nq4sW"
+      }
+    ]
+  }
+}

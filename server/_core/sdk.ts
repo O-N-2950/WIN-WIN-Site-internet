@@ -30,10 +30,10 @@ const GET_USER_INFO_WITH_JWT_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserI
 
 class OAuthService {
   constructor(private client: ReturnType<typeof axios.create>) {
-    console.log("[OAuth] Initialized with baseURL:", ENV.oAuthServerUrl);
+    console.log("[OAuth] Initialized with baseURL:", ENV.oAuthServerUrl || "(disabled)");
     if (!ENV.oAuthServerUrl) {
-      console.error(
-        "[OAuth] ERROR: OAUTH_SERVER_URL is not configured! Set OAUTH_SERVER_URL environment variable."
+      console.warn(
+        "[OAuth] WARNING: OAUTH_SERVER_URL is not configured. Authentication will be disabled."
       );
     }
   }
@@ -257,6 +257,12 @@ class SDKServer {
   }
 
   async authenticateRequest(req: Request): Promise<User> {
+    // If OAuth is not configured, skip authentication
+    if (!ENV.oAuthServerUrl) {
+      console.warn("[Auth] OAuth disabled, skipping authentication");
+      throw ForbiddenError("Authentication is disabled");
+    }
+
     // Regular authentication flow
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);

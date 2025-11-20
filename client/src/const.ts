@@ -2,7 +2,7 @@ export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 export const APP_TITLE = import.meta.env.VITE_APP_TITLE || "WIN WIN Finance Group";
 
-export const APP_LOGO = "/logo-winwin-official.jpg";
+export const APP_LOGO = "/logo-winwin.png";
 
 // Generate login URL at runtime so redirect URI reflects the current origin.
 export const getLoginUrl = () => {
@@ -70,7 +70,7 @@ export const COMPANY_INFO = {
 // Services Links
 export const SERVICES_LINKS = {
   talentis: "https://gamma.app/docs/Fidelisez-vos-Talents-Cles-et-Boostez-la-Croissance-de-votre-Entr-fk5evlthz6inbea?mode=doc",
-  durabilis: "https://gamma.app/docs/Durabilis-Anticipez-Protegez-et-Perennisez-votre-entreprise-vc33u0xgshpbadd",
+  durabilis: "https://durabilis-anticipez-prot-42qcd6c.gamma.site/",
   parentsEnfants: "https://gamma.app/docs/Securisez-lavenir-de-vos-enfants-Notre-solution-unique-a-partir-d-j23lr0vrn1ejl20?mode=doc",
   lppSearch: "https://winwin.recherche-libre-passage.ch",
   airtableClient: "https://airtable.com/appZTQkRJ7PwOtdQ3O/tblWPclpGmB23ASGI/viw3oNghavPmO9cP?blocks=hide",

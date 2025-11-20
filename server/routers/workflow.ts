@@ -2,6 +2,7 @@ import { z } from "zod";
 import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { calculatePrice, getAllPricing } from "../pricing";
 import { ENV } from "../_core/env";
+import { generateMandatPDF, addSignatureToPDF, type ClientData } from "../pdfGenerator";
 
 /**
  * Router pour le workflow d'onboarding client
@@ -158,6 +159,67 @@ export const workflowRouter = router({
       return {
         airtableId: record.id,
         mandatNumber,
+      };
+    }),
+
+  /**
+   * Générer le PDF du mandat pré-rempli avec les données du client
+   */
+  generateMandatPDF: publicProcedure
+    .input(
+      z.object({
+        nom: z.string(),
+        prenom: z.string(),
+        adresse: z.string(),
+        npa: z.string(),
+        localite: z.string(),
+        telephone: z.string().optional(),
+        email: z.string().email().optional(),
+        dateNaissance: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const clientData: ClientData = {
+        nom: input.nom,
+        prenom: input.prenom,
+        adresse: input.adresse,
+        npa: input.npa,
+        localite: input.localite,
+        telephone: input.telephone,
+        email: input.email,
+        dateNaissance: input.dateNaissance,
+      };
+      
+      const pdfBuffer = await generateMandatPDF(clientData);
+      
+      // Convertir le buffer en base64 pour l'envoyer au client
+      const base64Pdf = pdfBuffer.toString('base64');
+      
+      return {
+        pdfBase64: base64Pdf,
+        filename: `Mandat_${input.nom}_${input.prenom}.pdf`,
+      };
+    }),
+
+  /**
+   * Ajouter la signature au PDF du mandat
+   */
+  addSignatureToPDF: publicProcedure
+    .input(
+      z.object({
+        pdfBase64: z.string(),
+        signatureDataUrl: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const pdfBuffer = Buffer.from(input.pdfBase64, 'base64');
+      const signedPdfBuffer = await addSignatureToPDF(pdfBuffer, input.signatureDataUrl);
+      
+      // Convertir le buffer en base64
+      const base64SignedPdf = signedPdfBuffer.toString('base64');
+      
+      return {
+        pdfBase64: base64SignedPdf,
       };
     }),
 

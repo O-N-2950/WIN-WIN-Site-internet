@@ -107,7 +107,7 @@
 
 ### Stripe
 - ✅ **Compte existant** (même que JurisAI)
-- ✅ **Clé secrète** : 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
+- ✅ **Clé secrète** : [REDACTED - Voir variables d'environnement]
 - ⏳ **Clé publique** : À récupérer
 - ⏳ **Secret webhook** : À créer
 - ✅ **Prix mandat** : Variable selon profil client (voir grille tarifaire)
@@ -572,3 +572,317 @@ Déployer le site WIN WIN Finance Group en production sur winwin.swiss via Swiss
 - [ ] Tester performance (Google PageSpeed)
 - [ ] Vérifier SEO (meta tags, sitemap)
 - [ ] Rapport final utilisateur
+
+
+## 🚀 Déploiement Railway et Intégration Emilia (19 nov 2025)
+
+### Phase 1 : Déploiement Backend Railway
+- [x] Créer compte Railway
+- [x] Connecter GitHub repository WIN-WIN-Site-internet
+- [x] Build et déploiement initial réussi
+- [x] Générer domaine public Railway (win-win-site-internet-production.up.railway.app)
+- [x] Vérifier que le site est accessible publiquement
+
+### Phase 2 : PostgreSQL et Variables d'Environnement
+- [ ] Ajouter base de données PostgreSQL sur Railway
+- [ ] Configurer DATABASE_URL automatiquement
+- [ ] Configurer variables OAuth (OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, etc.)
+- [ ] Configurer variables Stripe (STRIPE_SECRET_KEY, VITE_STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET)
+- [ ] Configurer variables Google Cloud Vision (GOOGLE_CLOUD_VISION_KEY)
+- [ ] Configurer RESEND_API_KEY
+- [ ] Configurer VITE_APP_TITLE="WIN WIN Finance Group"
+- [ ] Configurer VITE_APP_LOGO
+- [ ] Exécuter migration database (pnpm db:push via Railway)
+- [ ] Redéployer et vérifier que tout fonctionne
+
+### Phase 3 : Intégration Emilia Protection Juridique
+- [ ] Se connecter au compte courtier Emilia (contact@winwin.swiss / One4you11)
+- [ ] Récupérer lien d'affiliation "Personne seule privée" (français)
+- [ ] Récupérer lien d'affiliation "Famille/Ménage" (français)
+- [ ] Récupérer lien d'affiliation "Entreprise" (français)
+- [ ] Créer page dédiée /protection-juridique-emilia
+- [ ] Ajouter section Emilia sur page d'accueil (après services)
+- [ ] Créer 3 boutons CTA avec liens d'affiliation
+- [ ] Design professionnel cohérent avec le reste du site
+- [ ] Ajouter "Protection Juridique" au menu navigation
+- [ ] Tester les liens d'affiliation (vérifier tracking)
+
+### Phase 4 : Configuration Domaine winwin.swiss
+- [ ] Ajouter custom domain winwin.swiss sur Railway
+- [ ] Obtenir paramètres DNS (CNAME/A record) depuis Railway
+- [ ] Se connecter à SwissCenter (registrar du domaine)
+- [ ] Configurer DNS chez SwissCenter (pointer vers Railway)
+- [ ] Attendre propagation DNS (24-48h max)
+- [ ] Vérifier accès via https://winwin.swiss
+- [ ] Vérifier SSL automatique
+
+### Phase 5 : Tests Finaux et Validation
+- [ ] Tester toutes les pages du site
+- [ ] Tester workflow complet (questionnaire → signature → paiement → merci)
+- [ ] Tester liens d'affiliation Emilia (3 types)
+- [ ] Tester formulaire de contact
+- [ ] Vérifier responsive mobile/tablette
+- [ ] Vérifier performances (Lighthouse)
+- [ ] Créer checkpoint Railway final
+- [ ] Documentation déploiement Railway
+
+### Informations Emilia
+- ✅ **URL connexion courtier** : https://broker.emilia.ch/mein-konto#affiliate
+- ✅ **Email** : contact@winwin.swiss
+- ✅ **Mot de passe** : One4you11
+- ⏳ **3 liens d'affiliation à récupérer** :
+  1. Personne seule (privé)
+  2. Famille/Ménage
+  3. Entreprise
+- ⏳ **Langues futures** : Allemand et Anglais (après validation français)
+
+### Architecture Railway
+- ✅ **Frontend + Backend** : Déployé sur Railway (Node.js 22 + pnpm)
+- ✅ **URL temporaire** : win-win-site-internet-production.up.railway.app
+- ⏳ **PostgreSQL** : À ajouter
+- ⏳ **Variables d'environnement** : À configurer
+- ⏳ **Domaine final** : winwin.swiss (à pointer)
+
+### Budget Railway
+- ✅ **Essai gratuit** : 30 jours ou $5.00 de crédits
+- ✅ **Coût mensuel estimé** : $5-10/mois (très raisonnable)
+- ✅ **PostgreSQL inclus** : Pas de coût supplémentaire
+
+
+## 🚀 Déploiement Railway et Intégration Emilia (19 nov 2025)
+
+### Phase 1 : Déploiement Backend sur Railway
+- [x] Créer compte Railway
+- [x] Connecter repository GitHub (WIN-WIN-Site-internet)
+- [x] Déployer le projet (build réussi)
+- [x] Générer domaine public (win-win-site-internet-production.up.railway.app)
+- [x] Vérifier site accessible
+
+### Phase 2 : PostgreSQL et Variables d'Environnement
+- [x] Ajouter PostgreSQL sur Railway
+- [x] Configurer DATABASE_URL (référence automatique)
+- [ ] Redéployer avec DATABASE_URL (en cours - Building 00:52)
+- [ ] Ajouter VITE_APP_TITLE=WIN WIN Finance Group
+- [ ] Ajouter VITE_APP_LOGO=/logo.svg
+- [ ] Ajouter NODE_ENV=production
+- [ ] Ajouter GAMMA_API_KEY
+- [ ] Tester connexion PostgreSQL
+- [ ] Exécuter migrations Drizzle (pnpm db:push)
+
+### Phase 3 : Intégration Emilia Protection Juridique
+- [ ] Se connecter à broker.emilia.ch (contact@winwin.swiss / One4you11)
+- [ ] Récupérer 3 liens d'affiliation en français :
+  - Personne seule (privé)
+  - Famille/Ménage
+  - Entreprise
+- [ ] Créer page /emilia ou section dédiée
+- [ ] Ajouter au menu de navigation
+- [ ] Design section Emilia :
+  - Titre : "Protection Juridique Emilia"
+  - Description : "La meilleure protection juridique de Suisse"
+  - 3 boutons CTA avec liens d'affiliation
+- [ ] Tester les liens d'affiliation
+- [ ] Créer checkpoint après intégration
+
+### Phase 4 : Configuration Domaine winwin.swiss
+- [ ] Ajouter custom domain sur Railway
+- [ ] Obtenir paramètres DNS (CNAME ou A record)
+- [ ] Configurer DNS chez SwissCenter
+- [ ] Attendre propagation DNS (24-48h)
+- [ ] Vérifier SSL automatique
+- [ ] Tester site sur winwin.swiss
+
+### Phase 5 : Tests et Validation
+- [ ] Tester toutes les fonctionnalités du site
+- [ ] Vérifier connexion PostgreSQL
+- [ ] Tester formulaires (Contact, Questionnaire)
+- [ ] Vérifier responsive design
+- [ ] Tester performance (Lighthouse)
+- [ ] Créer checkpoint final
+
+### Phase 6 : Documentation Notion
+- [ ] Créer page principale "WIN WIN - Déploiement Railway"
+- [ ] Documenter architecture (Railway + PostgreSQL + Emilia)
+- [ ] Guide d'utilisation du site
+- [ ] Procédures de maintenance
+- [ ] Variables d'environnement
+- [ ] Améliorations futures (Vercel + N8N + Airtable)
+- [ ] Tutoriels pas à pas
+- [ ] Troubleshooting et FAQ
+
+---
+
+## 🎯 Améliorations Futures (À discuter)
+
+### Option 1 : Migration Vercel + Railway
+- [ ] Séparer frontend (React) et backend (Node.js)
+- [ ] Déployer frontend sur Vercel (CDN mondial, ultra-rapide)
+- [ ] Garder backend sur Railway
+- [ ] Configurer CORS entre Vercel et Railway
+- [ ] Avantages : Performance maximale, scaling indépendant
+
+### Option 2 : Automatisations N8N
+- [ ] Installer N8N sur Railway
+- [ ] Créer workflows automatisés
+- [ ] Connecter à Airtable
+- [ ] Webhooks et scheduling
+- [ ] Avantages : Automatisation puissante, sans code
+
+### Option 3 : Intégration Airtable Avancée
+- [ ] Utiliser Airtable comme base de données principale
+- [ ] Synchronisation bidirectionnelle
+- [ ] Interface visuelle pour gestion données
+- [ ] Avantages : Simplicité, collaboration
+
+### Option 4 : Multi-langues Emilia
+- [ ] Ajouter liens d'affiliation en allemand
+- [ ] Ajouter liens d'affiliation en anglais
+- [ ] Système de sélection de langue
+- [ ] Avantages : Élargir la clientèle
+
+
+## 🔗 Intégration Emilia Protection Juridique (19 nov 2025 - Railway)
+
+- [x] Se connecter au compte courtier Emilia
+- [x] Récupérer les 3 liens d'affiliation en français
+- [ ] Créer une page dédiée "Protection Juridique Emilia"
+- [ ] Ajouter la section Emilia sur la page d'accueil
+- [ ] Ajouter "Protection Juridique" dans le menu de navigation
+- [ ] Créer 3 boutons CTA avec les liens d'affiliation
+- [ ] Tester les liens d'affiliation
+- [ ] Déployer sur Railway
+
+
+## 🛡️ Page Protection Juridique Emilia (19 nov 2025)
+- [x] Ajouter section "Pourquoi passer par WIN WIN Finance Group ?" en haut de page
+- [x] Expliquer que WIN WIN est le point de contact unique (même en cas de sinistre)
+- [x] Ajouter CTA principal "Demandez conseil à WIN WIN" (lien vers /contact)
+- [x] Ajouter argument unique : "Droit privé + Circulation automatiquement inclus" (contrairement aux autres assurances)
+- [x] Repositionner les liens Emilia comme option "Souscription directe" (secondaire)
+- [ ] Commit et push vers GitHub
+- [ ] Vérifier déploiement Railway
+- [ ] Tester page en production
+
+
+## 📋 Mise en Avant Mandat de Gestion (19 nov 2025)
+- [x] Extraire prestations exactes du PDF mandat de gestion
+- [x] Créer section "Mandat de Gestion" sur page d'accueil (après Hero)
+- [x] Lister les 10 prestations incluses
+- [x] Mettre en avant "CONSEIL INDÉPENDANT" et "30 ans d'expérience"
+- [x] Différencier Entreprises vs Privés
+- [x] Copier template PDF "WIN WIN" dans server/templates/
+- [ ] Améliorer générateur PDF pour pré-remplir avec données client (nom, adresse)
+- [ ] Améliorer page /signature pour afficher PDF pré-rempli
+- [ ] Implémenter fusion PDF + signature avec pdf-lib
+- [ ] Email automatique PDF signé à contact@winwin.swiss
+- [ ] Notification "Nouveau mandat signé ✅"
+- [ ] Commit et push
+- [ ] Vérifier déploiement Railway
+
+
+## ✅ Session Finalisation - 19 nov 2025
+
+### Accomplissements
+- [x] Analyse CGA Emilia et extraction arguments clés
+- [x] Page Protection Juridique complètement refaite :
+  - Section "Pourquoi passer par WIN WIN Finance Group ?" (point de contact unique)
+  - Section "L'avantage unique d'Emilia" (Droit privé + Circulation inclus automatiquement)
+  - Repositionnement liens Emilia en "Souscription directe (optionnelle)"
+  - Tous les CTA pointent vers WIN WIN (pas directement vers Emilia)
+- [x] Section Mandat de Gestion ajoutée sur page d'accueil :
+  - Positionnée juste après le Hero (très visible)
+  - 2 colonnes : Clients Privés vs Clients Entreprises
+  - 10 prestations incluses listées
+  - Tarifs affichés clairement
+  - Arguments clés : CONSEIL INDÉPENDANT, 30 ans d'expérience, Autorisé FINMA
+  - CTA "Devenir client" vers /questionnaire-info
+- [x] Template PDF "WIN WIN" copié dans server/templates/
+- [x] Module pdfGenerator.ts créé (backend) pour génération future
+- [x] Procédures tRPC ajoutées (generateMandatPDF, addSignatureToPDF)
+- [x] Charte graphique documentée (codes couleurs, polices)
+- [x] Prestations mandat documentées (10 prestations détaillées)
+
+### À faire plus tard (optionnel)
+- [ ] Affichage PDF pré-rempli sur page /signature
+- [ ] Fusion automatique signature + PDF
+- [ ] Email automatique du PDF signé à contact@winwin.swiss
+- [ ] Tests end-to-end du workflow complet
+
+### Prochaines étapes immédiates
+- [ ] Créer checkpoint
+- [ ] Commit et push vers GitHub
+- [ ] Vérifier déploiement Railway
+- [ ] Tester le site en production
+
+
+## 🔧 Correction Erreur 500 Railway - OAuth Optionnel (19 nov 2025)
+- [ ] Modifier server/_core/sdk.ts pour rendre OAuth optionnel
+- [ ] Modifier server/_core/index.ts pour désactiver routes OAuth si non configuré
+- [ ] Ajouter variable DISABLE_AUTH pour bypass complet
+- [ ] Tester en local sans variables OAuth
+- [ ] Commit et push vers GitHub
+- [ ] Vérifier déploiement automatique Railway
+- [ ] Configurer domaine personnalisé winwin.swiss sur Railway
+- [ ] Tester winwin.swiss et www.winwin.swiss
+- [ ] Créer documentation finale DNS + déploiement
+
+
+## 🔀 Redirection winwin.swiss → www.winwin.swiss (19 nov 2025)
+- [x] Implémenter middleware Express pour rediriger winwin.swiss vers www.winwin.swiss
+- [ ] Tester la redirection HTTP 301
+- [x] Commiter et pousser sur GitHub
+- [ ] Vérifier le déploiement Railway
+
+
+## 🔗 Correction Liens Emilia (19 nov 2025)
+- [x] Identifier tous les liens Emilia sur le site
+- [x] Corriger les liens avec paramètre d'affiliation Olivier Neukomm
+- [ ] Vérifier que "Votre personne de contact : Olivier Neukomm" s'affiche (après déploiement)
+- [ ] Tester tous les liens (après déploiement)
+- [x] Commiter et déployer
+
+
+## 🐛 Correction Erreur 404 Formulaire (19 nov 2025)
+- [x] Identifier tous les liens vers /formulaire
+- [x] Corriger les liens pour pointer vers /contact
+- [x] Vérifier les routes dans App.tsx
+- [ ] Tester les liens (après déploiement)
+- [x] Commiter et déployer
+
+
+## 📝 Correction Texte Analyse PEP's (19 nov 2025)
+- [x] Trouver le texte incorrect sur l'analyse PEP's
+- [x] Corriger : "offerte gratuitement aux membres actifs de l'application PEP's"
+- [x] Vérifier qu'il n'y a pas d'autres mentions incorrectes
+- [x] Commiter et déployer
+
+
+## 🎨 Intégration Logo WIN WIN (20 nov 2025)
+- [x] Extraire le logo du PDF
+- [x] Générer les versions PNG/SVG du logo
+- [x] Intégrer le logo sur la page d'accueil
+- [x] Mettre à jour APP_LOGO dans const.ts
+- [ ] Tester l'affichage
+- [ ] Commiter et déployer
+
+## 📋 Système Questionnaire Complet (20 nov 2025)
+- [ ] Analyser les recommandations Genspark
+- [ ] Concevoir l'architecture 2 versions (Rapide + Complet)
+- [ ] Définir les champs pour chaque version
+- [ ] Concevoir le système d'upload catégorisé (5 catégories)
+- [ ] Définir l'analyse IA (documents + réponses → rapport PDF)
+- [ ] Créer le document de spécifications
+- [ ] Implémenter le questionnaire rapide
+- [ ] Implémenter le questionnaire complet
+- [ ] Intégrer Airtable (tables Clients, Contrats, Documents)
+- [ ] Implémenter l'upload catégorisé
+- [ ] Implémenter l'analyse IA avec génération PDF
+- [ ] Tester le workflow complet
+- [ ] Commiter et déployer
+
+
+## 🔗 Correction Lien Durabilis (20 nov 2025)
+- [x] Rechercher le lien Durabilis actuel dans le code
+- [x] Remplacer par https://durabilis-anticipez-prot-42qcd6c.gamma.site/
+- [x] Tester le lien
+- [x] Commiter et déployer

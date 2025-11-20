@@ -363,7 +363,7 @@ export default function Pricing() {
               },
               {
                 question: "Y a-t-il des frais cachés ?",
-                answer: "Non, le tarif annuel inclut toutes les prestations listées. La seule exception est l'analyse prévoyance PEP's (CHF 250.-) qui est facturée séparément sur demande."
+                answer: "Non, le tarif annuel inclut toutes les prestations listées. L'analyse prévoyance PEP's (d'une valeur de CHF 250.-) est offerte gratuitement aux membres actifs de l'application PEP's."
               },
               {
                 question: "Comment se fait le paiement ?",

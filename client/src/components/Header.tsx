@@ -8,6 +8,7 @@ const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Services", href: "/services" },
   { name: "Libre Passage", href: "/libre-passage" },
+  { name: "Protection Juridique", href: "/protection-juridique" },
   { 
     name: "Concepts", 
     href: "/concepts/talentis",

@@ -74,6 +74,183 @@ export default function Home() {
       {/* Hero Section Spectaculaire */}
       <SpectacularHero />
 
+      {/* Section Mandat de Gestion - Offre Principale */}
+      <section className="py-24 bg-gradient-to-br from-primary to-primary/90 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse delay-1000" />
+        </div>
+
+        <div className="container relative z-10">
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="max-w-6xl mx-auto"
+          >
+            {/* Badge */}
+            <motion.div variants={fadeInUp} className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30">
+                <Award className="w-5 h-5" />
+                <span className="font-semibold">Autorisé FINMA F01042365 • 30 ans d'expérience</span>
+              </div>
+            </motion.div>
+
+            {/* Titre */}
+            <motion.h2 variants={fadeInUp} className="text-4xl md:text-6xl font-bold text-center mb-6">
+              📄 Mandat de Gestion de Portefeuille d'Assurances
+            </motion.h2>
+
+            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-center mb-4 text-white/90">
+              Confiez-nous la gestion complète de vos assurances.
+            </motion.p>
+
+            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-center mb-12 text-white/80 max-w-3xl mx-auto">
+              <strong>Conseil indépendant</strong>, contrôle des décomptes, accompagnement sinistres, appels d'offres, suivi des échéances. <strong>Zéro souci pour vous.</strong>
+            </motion.p>
+
+            {/* Grille 2 colonnes : Entreprises vs Privés */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {/* Clients Privés */}
+              <motion.div variants={fadeInUp}>
+                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Users className="w-10 h-10" />
+                      <CardTitle className="text-2xl">Clients Privés</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/70 text-base">
+                      Protection et sérénité pour vous et votre famille
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3 mb-6">
+                      {[
+                        "Contrôle des décomptes de primes",
+                        "Gestion des sinistres (santé, accidents, RC)",
+                        "Recherche gratuite avoirs LPP (2e pilier)",
+                        "Analyse de prévoyance (PEP's)",
+                        "Conseil indépendant pour optimiser vos primes"
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-4 mb-4">
+                      <p className="text-sm font-semibold mb-2">💰 Tarifs Privés :</p>
+                      <ul className="text-sm space-y-1">
+                        <li>• {'<'} 18 ans : <strong>Gratuit</strong></li>
+                        <li>• 18-22 ans : <strong>CHF 85.-/an</strong></li>
+                        <li>• {'>'} 22 ans : <strong>CHF 185.-/an</strong></li>
+                      </ul>
+                    </div>
+                    <Link href={ROUTES.questionnaireInfo}>
+                      <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold">
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        Devenir client
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Clients Entreprises */}
+              <motion.div variants={fadeInUp}>
+                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Building2 className="w-10 h-10" />
+                      <CardTitle className="text-2xl">Clients Entreprises</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/70 text-base">
+                      Solutions professionnelles pour votre entreprise
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3 mb-6">
+                      {[
+                        "Appels d'offres et mise en concurrence",
+                        "Gestion LPP collective (prévoyance employés)",
+                        "Contrôle décomptes (LAA, IJM, RC entreprise)",
+                        "Gestion sinistres professionnels",
+                        "Conseil stratégique en prévoyance d'entreprise"
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-4 mb-4">
+                      <p className="text-sm font-semibold mb-2">💰 Tarifs Entreprises :</p>
+                      <ul className="text-sm space-y-1">
+                        <li>• 0 employé : <strong>CHF 160.-/an</strong></li>
+                        <li>• 1-2 employés : <strong>CHF 260-360.-/an</strong></li>
+                        <li>• 3-10 employés : <strong>CHF 460-560.-/an</strong></li>
+                        <li>• 11+ employés : <strong>CHF 660-860.-/an</strong></li>
+                      </ul>
+                    </div>
+                    <Link href={ROUTES.questionnaireInfo}>
+                      <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold">
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        Devenir client
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* 10 Prestations Incluses */}
+            <motion.div variants={fadeInUp} className="bg-white/10 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+                ✅ 10 Prestations Incluses dans le Mandat
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { icon: Phone, text: "Conseils professionnels (agence, téléphone, domicile)" },
+                  { icon: Target, text: "Appels d'offres et mise en concurrence" },
+                  { icon: CheckCircle2, text: "Réception et contrôle des primes" },
+                  { icon: Shield, text: "Gestion complète des sinistres" },
+                  { icon: FileText, text: "Archivage informatique et réexpédition" },
+                  { icon: Clock, text: "Accès Web via Airtable 24h/24" },
+                  { icon: Mail, text: "Correspondance avec les compagnies" },
+                  { icon: TrendingUp, text: "Mise à jour budget assurances et échéancier" },
+                  { icon: Star, text: "Recherche gratuite avoirs LPP (2e pilier)" },
+                  { icon: Award, text: "Analyse de prévoyance offerte (PEP's - CHF 250.-)" }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-start gap-3 bg-white/5 rounded-lg p-4">
+                    <item.icon className="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* CTA Final */}
+            <motion.div variants={fadeInUp} className="text-center mt-12">
+              <p className="text-lg mb-6 text-white/90">
+                <strong>Conseil indépendant</strong> • <strong>30 ans d'expérience</strong> • <strong>Autorisé FINMA</strong>
+              </p>
+              <Link href={ROUTES.questionnaireInfo}>
+                <Button size="lg" className="bg-white text-primary hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold">
+                  <Sparkles className="w-6 h-6 mr-2" />
+                  Souscrire au mandat de gestion
+                  <ArrowRight className="w-6 h-6 ml-2" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container">
