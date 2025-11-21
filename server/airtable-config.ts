@@ -30,6 +30,9 @@ export const AIRTABLE_CONFIG = {
         mandatSigne: 'fldaw7xjEZyjiFDWR',
         dateCreation: 'fldJfGM8wGOZeEtSy',
         signatureClient: 'fldXxORXbvcHPVTio', // Attachment (pièce jointe)
+        relationsFamiliales: 'fldXEhXcXbV40f6zM', // Single select (Membre fondateur, Épouse, Fils, etc.)
+        groupeFamilial: 'fld7adFgijiW0Eqhj', // Single line text (FAMILLE-NOM-2024)
+        codeParrainage: 'fldEx4ytlCnqPoSDM', // Single line text (DUPO-1234)
       },
     },
     contrats: {

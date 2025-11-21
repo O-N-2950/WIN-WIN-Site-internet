@@ -1421,3 +1421,12 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Corriger positionnement adresse client dans PDF (trop basse)
 - [x] Corriger positionnement signature dans PDF (zone verte en bas gauche)
 - [x] Tester génération PDF avec bonnes coordonnées
+
+## 🎯 Système de Parrainage et Rabais Famille (21 nov 2025)
+- [x] Ajouter champs Relations familiales, Groupe Familial, Code Parrainage dans airtable-config.ts
+- [x] Implémenter génération automatique code parrainage (format: NOM-1234)
+- [x] Créer groupe familial automatiquement pour nouveau client sans parrainage
+- [x] Attribuer rôle "Membre fondateur" au premier client du groupe
+- [x] Implémenter logique de parrainage (rejoindre groupe existant)
+- [x] Calculer rabais famille automatiquement (2% par membre, max 20%)
+- [x] Tester workflow complet de parrainage

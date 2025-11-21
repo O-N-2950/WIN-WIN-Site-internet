@@ -27,6 +27,11 @@ export interface CreateClientInput {
   signatureUrl?: string;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
+  // Champs parrainage et famille
+  relationsFamiliales?: string; // Membre fondateur, Épouse, Fils, etc.
+  groupeFamilial?: string; // FAMILLE-NOM-2024
+  codeParrainage?: string; // DUPO-1234
+  codeParrainageUtilise?: string; // Code du parrain (si rejoint un groupe)
 }
 
 export interface AirtableClientRecord {
@@ -72,6 +77,11 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
       }
     ];
   }
+  
+  // Champs parrainage et famille
+  if (input.relationsFamiliales) fields[clients.fields.relationsFamiliales] = input.relationsFamiliales;
+  if (input.groupeFamilial) fields[clients.fields.groupeFamilial] = input.groupeFamilial;
+  if (input.codeParrainage) fields[clients.fields.codeParrainage] = input.codeParrainage;
   
   // Appeler MCP Airtable pour créer le record
   const mcpInput = JSON.stringify({

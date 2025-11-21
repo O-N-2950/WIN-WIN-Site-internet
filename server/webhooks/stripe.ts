@@ -9,6 +9,7 @@ import { ENV } from '../_core/env';
 import { createClientInAirtable } from '../airtable';
 import { notifyOwner } from '../_core/notification';
 import { sendWelcomeEmail, sendOwnerNotificationEmail } from '../email';
+import { enrichClientWithReferral } from '../lib/family-referral';
 
 const stripe = new Stripe(ENV.stripeSecretKey, {
   apiVersion: '2025-10-29.clover',
@@ -62,6 +63,8 @@ export async function handleStripeWebhook(req: Request, res: Response) {
       const annualPrice = session.metadata?.annualPrice ? parseFloat(session.metadata.annualPrice) : 0;
       const isFree = session.metadata?.isFree === 'true';
       const signatureUrl = session.metadata?.signatureUrl;
+      const codeParrainageUtilise = session.metadata?.codeParrainageUtilise;
+      const lienParente = session.metadata?.lienParente;
       
       // Séparer nom et prénom (format "Prénom Nom")
       const nameParts = clientName.split(' ');
@@ -69,12 +72,12 @@ export async function handleStripeWebhook(req: Request, res: Response) {
       const nom = nameParts.slice(1).join(' ') || '';
       
       try {
-        // Créer le client dans Airtable
-        const airtableRecord = await createClientInAirtable({
+        // Préparer les données client de base
+        const baseClientData = {
           nom,
           prenom,
           email: clientEmail,
-          typeClient: clientType === 'particulier' ? 'Particulier' : 'Entreprise',
+          typeClient: (clientType === 'particulier' ? 'Particulier' : 'Entreprise') as 'Particulier' | 'Entreprise',
           age: clientAge,
           nbEmployes: clientEmployeeCount,
           tarifApplicable: annualPrice,
@@ -83,7 +86,17 @@ export async function handleStripeWebhook(req: Request, res: Response) {
           signatureUrl, // URL S3 de la signature
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
-        });
+        };
+        
+        // Enrichir avec le système de parrainage
+        const clientDataWithReferral = await enrichClientWithReferral(
+          baseClientData,
+          codeParrainageUtilise,
+          lienParente
+        );
+        
+        // Créer le client dans Airtable
+        const airtableRecord = await createClientInAirtable(clientDataWithReferral);
         
         const mandatNumber = `WW-${new Date().getFullYear()}-${airtableRecord.id.substring(3, 8).toUpperCase()}`;
         
