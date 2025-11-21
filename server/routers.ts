@@ -7,6 +7,7 @@ import { mandatRouter } from "./routers/mandat";
 import { appointmentRouter } from "./routers/appointment";
 import { uploadRouter } from "./routers/upload";
 import { parrainageRouter } from "./routers/parrainage";
+import { contactRouter } from "./routers/contact";
 // import { stripeWebhookRouter } from "./routers/stripe-webhook"; // Non utilisé - webhook géré par Express directement
 
 export const appRouter = router({
@@ -17,6 +18,7 @@ export const appRouter = router({
   appointment: appointmentRouter,
   upload: uploadRouter,
   parrainage: parrainageRouter,
+  contact: contactRouter,
   // stripeWebhook: stripeWebhookRouter, // Non utilisé - webhook géré par Express directement
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

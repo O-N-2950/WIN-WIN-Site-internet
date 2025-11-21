@@ -1344,6 +1344,31 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Identifier les fichiers avec texte blanc
 - [x] Corriger le fond de la section Mandat de Gestion (style inline)
 - [x] Tester en local
-- [ ] Pousser sur GitHub
-- [ ] Forcer redéploiement Railway
+- [x] Pousser sur GitHub
+- [ ] Attendre redéploiement Railway (2-3 min)
 - [ ] Vérifier www.winwin.swiss
+
+
+## 🔍 Phase AUDIT COMPLET SITE (Session 20 nov 19h30 - FINAL)
+
+### Audit de toutes les pages
+- [ ] Page Accueil - Identifier texte invisible
+- [ ] Page Services - Identifier texte invisible
+- [ ] Page Libre Passage - Identifier texte invisible
+- [ ] Page Protection Juridique - Identifier texte invisible
+- [ ] Page Talentis - Identifier texte invisible
+- [ ] Page Durabilis - Identifier texte invisible
+- [ ] Page Synergis - Identifier texte invisible
+- [ ] Page À propos - Identifier texte invisible
+- [ ] Page Contact - Identifier texte invisible
+- [ ] Page Tarifs - Identifier texte invisible
+
+### Corrections
+- [ ] Corriger tous les problèmes identifiés
+- [ ] Améliorer design champ upload (drag & drop, icônes, hover)
+- [ ] Corriger erreur upload fichier formulaire contact
+- [ ] Implémenter upload vers tmpfiles.org + Airtable
+- [ ] Tester le build local
+- [ ] Pousser sur GitHub
+- [ ] Vérifier déploiement Railway
+- [ ] Sauvegarder checkpoint final
