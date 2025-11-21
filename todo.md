@@ -1319,3 +1319,31 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Configurer compte bancaire Raiffeisen dans Stripe
 - [x] Activer virements automatiques quotidiens
 - [ ] Vérifier réception du premier virement de test
+
+
+## 🔧 Phase CORRECTION BUILD RAILWAY (Session 20 nov 2025 - 18h)
+
+### Correction Erreur Build
+- [x] Analyser les logs Railway pour identifier les erreurs
+- [x] Corriger les erreurs dans le code
+- [x] Vérifier que le build passe en local
+- [x] Pousser sur GitHub
+- [x] Vérifier déploiement Railway réussi
+- [ ] Tester www.winwin.swiss
+
+### Correction Texte Blanc (URGENT)
+- [ ] Identifier les fichiers avec texte blanc
+- [ ] Corriger les couleurs de texte (text-gray-900 ou text-foreground)
+- [ ] Tester en local
+- [ ] Pousser sur GitHub
+- [ ] Forcer redéploiement Railway
+- [ ] Vérifier www.winwin.swiss
+
+
+### Correction Texte Blanc (URGENT - Session 20 nov 18h30)
+- [x] Identifier les fichiers avec texte blanc
+- [x] Corriger le fond de la section Mandat de Gestion (style inline)
+- [x] Tester en local
+- [ ] Pousser sur GitHub
+- [ ] Forcer redéploiement Railway
+- [ ] Vérifier www.winwin.swiss

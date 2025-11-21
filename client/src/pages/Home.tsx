@@ -75,7 +75,12 @@ export default function Home() {
       <SpectacularHero />
 
       {/* Section Mandat de Gestion - Offre Principale */}
-      <section className="py-24 bg-gradient-to-br from-primary to-primary/90 text-white relative overflow-hidden">
+      <section 
+        className="py-24 text-white relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 44%))'
+        }}
+      >
         {/* Background decorative elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse" />
