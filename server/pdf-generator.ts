@@ -5,7 +5,12 @@
 
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+// Pour ESM (pas de __dirname par défaut)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export interface MandatData {
   // Informations client
@@ -44,7 +49,9 @@ export interface MandatData {
 export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
   try {
     // 1. Charger le template PDF officiel
-    const templatePath = join(__dirname, 'templates', 'mandat-template.pdf');
+    const templatePath = __dirname 
+      ? join(__dirname, 'templates', 'mandat-template.pdf')
+      : '/home/ubuntu/winwin-website/server/templates/mandat-template.pdf';
     const templateBytes = await readFile(templatePath);
     const pdfDoc = await PDFDocument.load(templateBytes);
     
@@ -60,7 +67,7 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     // 4. Définir les positions pour le texte (basé sur l'analyse du template)
     // Section "Le Mandant" (en haut à gauche, dans le cadre bleu clair)
     const mandantX = 85;
-    const mandantY = height - 220; // Position approximative du début de la section
+    const mandantY = height - 160; // Position remontée dans le cadre
     
     // 5. Ajouter les informations du client dans la section "Le Mandant"
     let currentY = mandantY;
@@ -182,10 +189,10 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     // 6. Intégrer la signature du client
     // Position de la signature (en bas à gauche dans la section "Le Mandant")
     // Basé sur le template, la zone de signature est vers le bas de la page
-    const signatureX = 120; // Centré dans le cadre gauche
-    const signatureY = 140; // Position approximative au-dessus du texte "signature"
-    const signatureWidth = 180;
-    const signatureHeight = 70;
+    const signatureX = 90; // Aligné avec le cadre gauche
+    const signatureY = 115; // Juste au-dessus de la ligne "signature"
+    const signatureWidth = 200;
+    const signatureHeight = 60;
     
     // Convertir le data URL en bytes
     const signatureBase64 = data.signatureDataUrl.split(',')[1];
@@ -223,7 +230,7 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     const dateText = `Signé le ${new Date(data.dateSignature).toLocaleDateString('fr-CH')}`;
     firstPage.drawText(dateText, {
       x: signatureX + 10,
-      y: signatureY - 12,
+      y: 125, // Entre signature et trait
       size: 8,
       font: font,
       color: rgb(0.4, 0.4, 0.4),

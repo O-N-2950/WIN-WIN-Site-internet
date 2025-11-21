@@ -1417,3 +1417,7 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Intégrer signature dans le PDF
 - [x] Envoyer signature + PDF à Airtable lors création client
 - [x] Tester workflow complet (Questionnaire → Signature → PDF → Airtable)
+
+- [x] Corriger positionnement adresse client dans PDF (trop basse)
+- [x] Corriger positionnement signature dans PDF (zone verte en bas gauche)
+- [x] Tester génération PDF avec bonnes coordonnées
