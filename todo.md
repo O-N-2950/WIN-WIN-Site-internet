@@ -1380,5 +1380,32 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Identifier toutes les mentions "IA" ou "analyse automatique par IA"
 - [x] Remplacer par texte neutre sans mention IA
 - [x] Vérifier toutes les pages du questionnaire
+- [x] Pousser sur GitHub
+- [ ] Vérifier déploiement Railway (2-3 min)
+
+
+## 🎯 REFONTE QUESTIONNAIRE INTUITIF (Session 20 nov 20h)
+
+### Checklists Adaptées
+- [ ] Créer checklist clients privés (LAMal, LCA, RC, Ménage, etc.)
+- [ ] Créer checklist entreprises (LAA, LPP, RC Pro, IJM, etc.)
+- [ ] Adapter le flow selon le type de client
+
+### Flow Logique et Humour
+- [ ] Refaire l'intro avec une touche d'humour
+- [ ] Questions progressives et logiques
+- [ ] Explications claires pour chaque type de contrat
+- [ ] Transitions fluides entre les étapes
+
+### Fonctionnalités Sauvegarde
+- [ ] Ajouter bouton "Sauvegarder et continuer plus tard"
+- [ ] Ajouter option "Ajouter mes documents plus tard"
+- [ ] Message clair "Sauvegarde automatique activée"
+- [ ] Indicateur visuel de sauvegarde
+
+### Tests et Déploiement
+- [ ] Tester le questionnaire complet
+- [ ] Vérifier sauvegarde/reprise
 - [ ] Pousser sur GitHub
 - [ ] Vérifier déploiement Railway
+- [ ] Sauvegarder checkpoint final

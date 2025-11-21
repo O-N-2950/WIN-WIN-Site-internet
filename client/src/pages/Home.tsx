@@ -245,7 +245,7 @@ export default function Home() {
                 <strong>Conseil indépendant</strong> • <strong>30 ans d'expérience</strong> • <strong>Autorisé FINMA</strong>
               </p>
               <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-white text-primary hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold">
+                <Button size="lg" className="bg-[#D4AF37] text-white hover:bg-[#C19F2F] text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 hover:scale-105 font-bold">
                   <Sparkles className="w-6 h-6 mr-2" />
                   Souscrire au mandat de gestion
                   <ArrowRight className="w-6 h-6 ml-2" />
