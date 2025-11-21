@@ -297,11 +297,11 @@ export default function Questionnaire() {
       pdfFile: file,
       pdfFileName: file.name,
     });
-    toast.success(`📄 ${file.name} uploadé ! L'IA va extraire les données...`);
+    toast.success(`📄 ${file.name} uploadé avec succès !`);
     
     // TODO: Appeler l'API OCR ici
     setTimeout(() => {
-      toast.success("✨ Analyse IA terminée !");
+      toast.success("✨ Analyse terminée !");
     }, 2000);
   };
 
@@ -878,7 +878,7 @@ export default function Questionnaire() {
                         Vos polices d'assurance actuelles
                       </h2>
                       <p className="text-lg text-muted-foreground">
-                        Uploadez vos polices pour une analyse automatique par IA
+                        Uploadez vos polices d'assurance actuelles pour une analyse complète
                       </p>
                     </div>
 
@@ -1106,7 +1106,7 @@ export default function Questionnaire() {
                       {data.polices[currentPoliceIndex]?.pdfFileName || "Cliquez pour uploader"}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      L'IA extraira automatiquement les données
+                      Nous analyserons votre contrat pour vous proposer les meilleures solutions
                     </p>
                   </label>
                 </div>

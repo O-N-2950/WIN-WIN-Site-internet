@@ -1368,7 +1368,17 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Améliorer design champ upload (drag & drop, icônes, hover)
 - [ ] Corriger erreur upload fichier formulaire contact
 - [ ] Implémenter upload vers tmpfiles.org + Airtable
-- [ ] Tester le build local
+- [x] Tester le build local
+- [x] Pousser sur GitHub
+- [ ] Vérifier déploiement Railway (2-3 min)
+- [ ] Sauvegarder checkpoint final
+
+
+## 🚨 URGENT - Suppression Mentions IA (Session 20 nov 19h45)
+
+### Corrections Questionnaire
+- [x] Identifier toutes les mentions "IA" ou "analyse automatique par IA"
+- [x] Remplacer par texte neutre sans mention IA
+- [x] Vérifier toutes les pages du questionnaire
 - [ ] Pousser sur GitHub
 - [ ] Vérifier déploiement Railway
-- [ ] Sauvegarder checkpoint final
