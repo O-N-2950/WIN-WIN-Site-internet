@@ -80,6 +80,7 @@ export async function handleStripeWebhook(req: Request, res: Response) {
           tarifApplicable: annualPrice,
           mandatOffert: isFree,
           dateSignatureMandat: new Date().toISOString().split('T')[0],
+          signatureUrl, // URL S3 de la signature
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
         });

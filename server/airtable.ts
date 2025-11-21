@@ -24,6 +24,7 @@ export interface CreateClientInput {
   tarifApplicable: number;
   mandatOffert: boolean;
   dateSignatureMandat?: string;
+  signatureUrl?: string;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
 }
@@ -62,6 +63,15 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   if (input.age) fields[clients.fields.age] = input.age;
   if (input.nbEmployes !== undefined) fields[clients.fields.nbEmployes] = input.nbEmployes;
   if (input.dateSignatureMandat) fields[clients.fields.dateSignatureMandat] = input.dateSignatureMandat;
+  
+  // Signature (format Airtable Attachment)
+  if (input.signatureUrl) {
+    fields[clients.fields.signatureClient] = [
+      {
+        url: input.signatureUrl,
+      }
+    ];
+  }
   
   // Appeler MCP Airtable pour créer le record
   const mcpInput = JSON.stringify({

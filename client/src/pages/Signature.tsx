@@ -120,11 +120,13 @@ export default function Signature() {
         signatureDate: new Date().toISOString(),
       });
       
-      // Upload vers S3 (optionnel, pour le moment on garde juste le dataURL)
-      // const result = await uploadSignatureMutation.mutateAsync({
-      //   signatureDataUrl,
-      // });
-      // updateWorkflow({ signatureS3Url: result.url });
+      // Upload vers S3 pour stockage permanent
+      const email = workflow.questionnaireData?.email || 'client@example.com';
+      const result = await uploadSignatureMutation.mutateAsync({
+        signatureDataUrl,
+        clientEmail: email,
+      });
+      updateWorkflow({ signatureS3Url: result.url });
       
       toast.success("Signature enregistrée avec succès !");
       

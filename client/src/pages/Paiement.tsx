@@ -47,6 +47,7 @@ export default function Paiement() {
         clientAge: workflow.clientAge,
         clientEmployeeCount: workflow.clientEmployeeCount,
         annualPrice: workflow.annualPrice || 185,
+        signatureUrl: workflow.signatureS3Url, // URL S3 de la signature
         successUrl: `${window.location.origin}/merci`,
         cancelUrl: `${window.location.origin}/paiement`
       });

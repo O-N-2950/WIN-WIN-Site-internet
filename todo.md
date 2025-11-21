@@ -1409,3 +1409,11 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Pousser sur GitHub
 - [ ] Vérifier déploiement Railway
 - [ ] Sauvegarder checkpoint final
+
+## 🎯 PRIORITÉ 1 : Mandat de Gestion Complet avec Signature
+- [x] Activer upload S3 de la signature (décommenter Signature.tsx)
+- [x] Ajouter champ "URL Signature" dans airtable-config.ts
+- [x] Vérifier générateur PDF (format A4 portrait, 1 page)
+- [x] Intégrer signature dans le PDF
+- [x] Envoyer signature + PDF à Airtable lors création client
+- [x] Tester workflow complet (Questionnaire → Signature → PDF → Airtable)

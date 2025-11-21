@@ -29,6 +29,7 @@ export const AIRTABLE_CONFIG = {
         mandatOffert: 'flda7YHZTqwxL9zdr',
         mandatSigne: 'fldaw7xjEZyjiFDWR',
         dateCreation: 'fldJfGM8wGOZeEtSy',
+        signatureClient: 'fldXxORXbvcHPVTio', // Attachment (pièce jointe)
       },
     },
     contrats: {
