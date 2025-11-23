@@ -1335,3 +1335,10 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Ajouter les prestations en cas d'invalidité de l'employé clé
 - [x] Préciser que les prestations sont versées sous certaines conditions
 - [x] Préciser que les conditions doivent être respectées par l'employé "clé"
+
+## Modification Page Talentis (23 nov 2025)
+- [x] Supprimer l'exemple concret avec les chiffres (Prime annuelle, Durée, etc.)
+- [x] Corriger le lien "En savoir plus" de la carte Talentis dans Services.tsx
+- [x] Le lien doit pointer vers https://talentis-les-indemnites--xaf5by0.gamma.site/ (externe)
+- [x] Remplacer la section exemple concret par un lien vers la présentation Gamma
+- [x] Garder "Demandez conseil" et le numéro 032 466 11 00

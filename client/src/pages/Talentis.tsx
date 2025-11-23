@@ -235,7 +235,7 @@ export default function Talentis() {
         </div>
       </section>
 
-      {/* Exemple Concret */}
+      {/* Plus de détails */}
       <section className="py-20 bg-muted/30">
         <div className="container">
           <motion.div
@@ -243,46 +243,30 @@ export default function Talentis() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl font-bold mb-8 text-center">Exemple Concret</h2>
-            <Card className="p-8 md:p-12">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4 text-primary">Cas Pratique</h3>
-                  <p className="text-lg text-muted-foreground">
-                    Une PME souhaite fidéliser son directeur commercial, élément clé de son développement.
-                  </p>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-8 py-6 border-t border-b">
-                  <div>
-                    <h4 className="font-bold mb-3 text-lg">Paramètres</h4>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Prime annuelle : CHF 10'000.-</li>
-                      <li>• Durée : 10 ans</li>
-                      <li>• Total versé : CHF 100'000.-</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold mb-3 text-lg">Résultats</h4>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Capital garanti à 10 ans : ~CHF 110'000.-</li>
-                      <li>• Économie fiscale entreprise : ~CHF 15'000.-</li>
-                      <li>• Coût net : CHF 85'000.-</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="bg-accent/10 rounded-lg p-6">
-                  <p className="text-lg">
-                    <strong className="text-accent">Résultat :</strong> Le collaborateur reçoit un capital de CHF 110'000.- 
-                    après 10 ans, tout en étant protégé en cas de décès. L'entreprise fidélise son talent clé pour un coût 
-                    net de seulement CHF 8'500.- par an.
-                  </p>
-                </div>
-              </div>
-            </Card>
+            <h2 className="text-4xl font-bold mb-6">Besoin de Plus de Détails ?</h2>
+            <p className="text-xl text-muted-foreground mb-8">
+              Découvrez notre présentation complète du Concept Talentis avec des exemples concrets et des cas pratiques.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a 
+                href="https://talentis-les-indemnites--xaf5by0.gamma.site/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <Button size="lg" className="text-lg">
+                  Voir la Présentation Complète
+                </Button>
+              </a>
+              <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>
+                <Button size="lg" variant="outline" className="text-lg">
+                  <Phone className="mr-2 w-5 h-5" />
+                  {CONTACT_INFO.phone}
+                </Button>
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
