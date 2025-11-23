@@ -98,22 +98,34 @@ export const workflowRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { storagePut } = await import('../storage');
-      
-      // Convertir data URL en Buffer
-      const base64Data = input.signatureDataUrl.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-      
-      // Générer une clé unique pour éviter l'énumération
-      const randomSuffix = Math.random().toString(36).substring(2, 15);
-      const fileKey = `signatures/${input.clientEmail.replace('@', '-at-')}-${Date.now()}-${randomSuffix}.png`;
-      
-      const { url } = await storagePut(fileKey, buffer, 'image/png');
-      
-      return {
-        url,
-        key: fileKey,
-      };
+      try {
+        console.log('[Upload Signature] Début upload pour:', input.clientEmail);
+        
+        const { storagePut } = await import('../storage');
+        
+        // Convertir data URL en Buffer
+        const base64Data = input.signatureDataUrl.replace(/^data:image\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+        
+        console.log('[Upload Signature] Buffer créé, taille:', buffer.length, 'bytes');
+        
+        // Générer une clé unique pour éviter l'énumération
+        const randomSuffix = Math.random().toString(36).substring(2, 15);
+        const fileKey = `signatures/${input.clientEmail.replace('@', '-at-')}-${Date.now()}-${randomSuffix}.png`;
+        
+        console.log('[Upload Signature] Upload vers S3:', fileKey);
+        const { url } = await storagePut(fileKey, buffer, 'image/png');
+        
+        console.log('[Upload Signature] Upload réussi:', url);
+        
+        return {
+          url,
+          key: fileKey,
+        };
+      } catch (error) {
+        console.error('[Upload Signature] Erreur:', error);
+        throw new Error(`Échec de l'upload de signature: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      }
     }),
 
   /**

@@ -20,6 +20,7 @@ import Conseil from "./pages/Conseil";
 import Signature from "./pages/Signature";
 import Paiement from "./pages/Paiement";
 import Merci from "./pages/Merci";
+import Confirmation from "./pages/Confirmation";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -45,6 +46,7 @@ function Router() {
           <Route path="/signature" component={Signature} />
           <Route path="/paiement" component={Paiement} />
           <Route path="/merci" component={Merci} />
+          <Route path="/confirmation" component={Confirmation} />
           <Route path={"/404"} component={NotFound} />
           {/* Final fallback route */}
           <Route component={NotFound} />

@@ -1342,3 +1342,32 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Le lien doit pointer vers https://talentis-les-indemnites--xaf5by0.gamma.site/ (externe)
 - [x] Remplacer la section exemple concret par un lien vers la présentation Gamma
 - [x] Garder "Demandez conseil" et le numéro 032 466 11 00
+
+## 🐛 Bugs Processus Inscription (23 nov 2025)
+- [ ] Corriger l'erreur "Erreur lors de la sauvegarde" lors de la validation du mandat
+- [ ] Investiguer les logs backend pour identifier la cause
+- [ ] Vérifier la configuration des variables d'environnement
+- [ ] Tester la connexion à la base de données
+
+## 📄 Page Confirmation Mandat (23 nov 2025)
+- [ ] Créer une page de confirmation après signature du mandat
+- [ ] Afficher le code de parrainage unique du client
+- [ ] Expliquer le système de rabais familial (2% par membre, max 20%)
+- [ ] Afficher le tableau des rabais (2 membres = 2%, 3 = 4%, etc.)
+- [ ] Ajouter un bouton de partage du lien de parrainage
+- [ ] Permettre l'envoi du lien par email/WhatsApp/copier
+
+
+## Améliorations UX Questionnaire (23 nov 2025)
+- [x] Rendre le message "Pas de souci !" plus visible dans l'étape upload de polices
+- [x] Augmenter la taille de la police du message
+- [x] Améliorer le contraste et la couleur du fond
+- [x] Ajouter une icône plus visible (CheckCircle2)
+
+## Page Confirmation Parrainage (23 nov 2025)
+- [x] Créer page de confirmation après paiement réussi
+- [x] Afficher le code de parrainage unique du nouveau client
+- [x] Expliquer le système de rabais familial avec tableau
+- [x] Ajouter bouton de partage du lien de parrainage (Email, WhatsApp, Copier)
+- [x] Permettre copie du code de parrainage
+- [x] Afficher le calcul du rabais (2% par membre, max 20%)

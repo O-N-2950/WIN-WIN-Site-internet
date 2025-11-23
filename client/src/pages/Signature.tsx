@@ -103,38 +103,58 @@ export default function Signature() {
   };
 
   const saveSignature = async () => {
-    if (isEmpty) return;
+    if (isEmpty) {
+      toast.error("Veuillez signer avant de continuer");
+      return;
+    }
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) {
+      toast.error("Erreur technique: canvas non trouvé");
+      return;
+    }
 
     setIsSaving(true);
 
     try {
+      console.log('[Signature] Début de la sauvegarde...');
+      
       // Convertir le canvas en data URL
       const signatureDataUrl = canvas.toDataURL("image/png");
+      console.log('[Signature] Signature convertie en data URL');
       
       // Sauvegarder dans le workflow
       updateWorkflow({
         signatureDataUrl,
         signatureDate: new Date().toISOString(),
       });
+      console.log('[Signature] Workflow mis à jour');
       
       // Upload vers S3 pour stockage permanent
       const email = workflow.questionnaireData?.email || 'client@example.com';
+      console.log(`[Signature] Upload vers S3 pour ${email}...`);
+      
       const result = await uploadSignatureMutation.mutateAsync({
         signatureDataUrl,
         clientEmail: email,
       });
+      
+      console.log('[Signature] Upload S3 réussi:', result.url);
       updateWorkflow({ signatureS3Url: result.url });
       
       toast.success("Signature enregistrée avec succès !");
       
       // Redirection vers la page de paiement
+      console.log('[Signature] Redirection vers /paiement...');
       setTimeout(() => setLocation("/paiement"), 500);
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde de la signature:", error);
-      toast.error("Erreur lors de la sauvegarde. Veuillez réessayer.");
+      console.error("[Signature] Erreur lors de la sauvegarde:", error);
+      
+      // Message d'erreur détaillé
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      console.error('[Signature] Détails:', errorMessage);
+      
+      toast.error(`Erreur lors de la sauvegarde: ${errorMessage}`);
     } finally {
       setIsSaving(false);
     }

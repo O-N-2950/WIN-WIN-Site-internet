@@ -240,10 +240,20 @@ export default function PoliceModal({ isOpen, onClose, policeIndex, police, onSa
               exit={{ opacity: 0, x: 20 }}
               className="space-y-6"
             >
-              <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
-                <p className="text-sm text-green-800 dark:text-green-200">
-                  😊 <span className="font-semibold">Pas de souci !</span> Avec votre mandat signé, nous obtiendrons tous vos contrats et décomptes de primes auprès de cette compagnie.
-                </p>
+              <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-2 border-green-300 dark:border-green-700 rounded-xl shadow-sm">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                    <CheckCircle2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold text-green-900 dark:text-green-100 mb-1">
+                      Pas de souci !
+                    </p>
+                    <p className="text-sm text-green-800 dark:text-green-200">
+                      Avec votre mandat signé, nous obtiendrons tous vos contrats et décomptes de primes auprès de cette compagnie.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div>
