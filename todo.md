@@ -1329,3 +1329,9 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Corriger le lien "En savoir plus" de la carte "Recherche de Libre Passage" dans Services.tsx
 - [x] Le lien doit pointer vers https://winwin.recherche-libre-passage.ch/fr/homepage (externe)
 - [x] Vérifier que external: true est bien configuré
+
+## Correction Informations Talentis (23 nov 2025)
+- [x] Supprimer la mention de durée des contrats vie (5-10 ans)
+- [x] Ajouter les prestations en cas d'invalidité de l'employé clé
+- [x] Préciser que les prestations sont versées sous certaines conditions
+- [x] Préciser que les conditions doivent être respectées par l'employé "clé"

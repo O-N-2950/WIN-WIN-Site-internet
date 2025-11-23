@@ -137,8 +137,8 @@ export default function Talentis() {
                   <h3 className="text-2xl font-bold mb-4">Comment ça marche ?</h3>
                   <p className="text-lg text-muted-foreground mb-6">
                     Talentis est une assurance vie collective qui permet à l'entreprise de constituer un capital 
-                    pour ses collaborateurs clés. Ce capital est versé au collaborateur après une période définie 
-                    (généralement 5 à 10 ans), créant ainsi un puissant levier de fidélisation.
+                    pour ses collaborateurs clés. Les prestations sont versées sous certaines conditions qui doivent 
+                    être respectées par l'employé "clé", créant ainsi un puissant levier de fidélisation.
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="flex items-start gap-3">
@@ -151,22 +151,22 @@ export default function Talentis() {
                     <div className="flex items-start gap-3">
                       <Check className="w-6 h-6 text-accent shrink-0 mt-1" />
                       <div>
-                        <strong className="block mb-1">Capital garanti</strong>
-                        <span className="text-sm text-muted-foreground">Le collaborateur reçoit un capital garanti à l'échéance</span>
+                        <strong className="block mb-1">Prestations sous conditions</strong>
+                        <span className="text-sm text-muted-foreground">Versement du capital si les conditions sont respectées par l'employé clé</span>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <Check className="w-6 h-6 text-accent shrink-0 mt-1" />
                       <div>
-                        <strong className="block mb-1">Protection décès</strong>
-                        <span className="text-sm text-muted-foreground">En cas de décès, le capital est versé aux bénéficiaires</span>
+                        <strong className="block mb-1">Protection décès et invalidité</strong>
+                        <span className="text-sm text-muted-foreground">Prestations en cas de décès ou d'invalidité de l'employé clé</span>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <Check className="w-6 h-6 text-accent shrink-0 mt-1" />
                       <div>
                         <strong className="block mb-1">Flexibilité</strong>
-                        <span className="text-sm text-muted-foreground">Durée et montants adaptables selon vos besoins</span>
+                        <span className="text-sm text-muted-foreground">Montants adaptables selon vos besoins</span>
                       </div>
                     </div>
                   </div>
