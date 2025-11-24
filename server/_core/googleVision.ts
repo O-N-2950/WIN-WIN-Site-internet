@@ -20,9 +20,11 @@ const client = new vision.ImageAnnotatorClient({
 export interface ExtractedPolicyData {
   compagnie?: string;
   numeroPolice?: string;
-  typeContrat?: 'LAMal' | 'LCA' | 'LAMal+LCA' | 'Protection Juridique' | 'Entreprise' | 'Autre';
+  typeContrat?: string;
   nomAssure?: string;
-  primeAnnuelle?: number;
+  montantPrime?: number; // Montant payé selon la fréquence
+  frequencePaiement?: 'Annuel' | 'Semestriel' | 'Trimestriel' | 'Mensuel';
+  primeAnnuelle?: number; // Calculée automatiquement
   dateDebut?: string;
   dateFin?: string;
   confidence: number; // Score de confiance global (0-100)
@@ -219,20 +221,34 @@ export function parsePolicyData(text: string): ExtractedPolicyData {
  * Analyser une police d'assurance complète (extraction + parsing)
  * 
  * @param fileUrl - URL du fichier PDF/image de la police
+ * @param availableCompanies - Liste des compagnies disponibles dans Airtable (optionnel)
+ * @param availableTypes - Liste des types de contrats disponibles dans Airtable (optionnel)
  * @returns Données structurées extraites
  */
-export async function analyzePolicyDocument(fileUrl: string): Promise<ExtractedPolicyData> {
+export async function analyzePolicyDocument(
+  fileUrl: string,
+  availableCompanies?: string[],
+  availableTypes?: string[]
+): Promise<ExtractedPolicyData> {
   console.log('[Google Vision] Analyse de la police:', fileUrl);
   
   // Étape 1: Extraire le texte via OCR
   const rawText = await extractTextFromDocument(fileUrl);
   
-  // Étape 2: Parser les données
-  const policyData = parsePolicyData(rawText);
+  // Étape 2: Parser les données avec LLM (Gemini 2.5 Flash)
+  const { parsePolicyDataWithLLM } = await import('./googleVisionLLM');
+  const policyData = await parsePolicyDataWithLLM(
+    rawText,
+    availableCompanies,
+    availableTypes
+  );
   
   console.log('[Google Vision] Analyse terminée:', {
     compagnie: policyData.compagnie,
     type: policyData.typeContrat,
+    montant: policyData.montantPrime,
+    frequence: policyData.frequencePaiement,
+    primeAnnuelle: policyData.primeAnnuelle,
     confidence: `${policyData.confidence}%`,
   });
   

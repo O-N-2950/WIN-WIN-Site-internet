@@ -21,6 +21,7 @@ import Signature from "./pages/Signature";
 import Paiement from "./pages/Paiement";
 import Merci from "./pages/Merci";
 import Confirmation from "./pages/Confirmation";
+import Inscription from "./pages/Inscription";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -43,6 +44,7 @@ function Router() {
           <Route path="/conseil" component={Conseil} />
           <Route path="/espace-client" component={ClientSpace} />
           <Route path="/questionnaire-info" component={Questionnaire} />
+          <Route path="/inscription" component={Inscription} />
           <Route path="/signature" component={Signature} />
           <Route path="/paiement" component={Paiement} />
           <Route path="/merci" component={Merci} />

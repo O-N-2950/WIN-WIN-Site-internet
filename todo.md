@@ -1421,3 +1421,35 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Implémenter relances automatiques pour prospects non payés (optionnel)
 - [ ] Tester transitions de statuts avec Jean Dupont
 - [ ] Créer checkpoint après implémentation
+
+
+## Phase 8 : Formulaire d'Inscription avec OCR Intelligent - 23 nov 2025
+- [ ] Créer page /inscription avec formulaire multi-étapes (5 étapes)
+- [ ] Étape 1 : Informations personnelles (prénom, nom, email, téléphone, adresse)
+- [ ] Étape 2 : Upload drag & drop de polices d'assurance (PDF/images)
+- [ ] Étape 3 : OCR intelligent avec détection automatique (compagnie, type, montant, fréquence)
+- [ ] Étape 4 : Validation des contrats extraits (cartes éditables)
+- [ ] Étape 5 : Récapitulatif avant signature
+- [ ] Améliorer OCR pour détecter montant + fréquence de paiement (Mensuel/Semestriel/Trimestriel/Annuel)
+- [ ] Calculer automatiquement prime annuelle selon fréquence
+- [ ] Intégrer dropdowns dynamiques Compagnies et Types (avec option "Autre")
+- [ ] Animations Framer Motion (progress bar, fade-in, confettis)
+- [ ] Design "Wahooo" avec glassmorphism et micro-interactions
+- [ ] Appel trpc.client.create pour créer client (statut "Prospect")
+- [ ] Appel trpc.contract.createMultiple pour créer contrats
+- [ ] Redirection vers /signature après inscription
+- [ ] Tests responsive et cross-browser
+
+
+## Phase 9 : Implémentation OCR Réel avec Google Cloud Vision (23 nov 2025)
+- [x] Créer endpoint tRPC `ocr.analyzeDocument` pour analyser les polices
+- [x] Intégrer Google Cloud Vision OCR pour extraction texte brut
+- [x] Créer module googleVisionLLM.ts avec Gemini 2.5 Flash
+- [x] Créer prompt LLM pour structurer les données extraites (compagnie, type, montant, fréquence, dates)
+- [x] Implémenter matching avec listes Airtable (compagnies et types de contrats)
+- [x] Calculer automatiquement la prime annuelle selon la fréquence
+- [x] Retourner données structurées avec score de confiance
+- [x] Créer tests unitaires (3/3 passent avec 95% confiance)
+- [ ] Mettre à jour frontend Inscription.tsx pour appeler l'endpoint réel
+- [ ] Tester workflow complet avec upload de vraie police
+- [ ] Gérer les erreurs et cas limites (PDF non lisible, données manquantes)
