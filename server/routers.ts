@@ -11,6 +11,7 @@ import { contactRouter } from "./routers/contact";
 import { ocrRouter } from "./routers/ocr";
 import { airtableRouter } from "./routers/airtable";
 import { clientRouter } from "./routers/client";
+import { clientRouterV2 } from "./routers/client-v2";
 import { contractRouter } from "./routers/contract";
 // import { stripeWebhookRouter } from "./routers/stripe-webhook"; // Non utilisé - webhook géré par Express directement
 
@@ -26,6 +27,7 @@ export const appRouter = router({
   ocr: ocrRouter,
   airtable: airtableRouter,
   client: clientRouter,
+  clientV2: clientRouterV2,
   contract: contractRouter,
   // stripeWebhook: stripeWebhookRouter, // Non utilisé - webhook géré par Express directement
   auth: router({

@@ -1453,3 +1453,191 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [ ] Mettre à jour frontend Inscription.tsx pour appeler l'endpoint réel
 - [ ] Tester workflow complet avec upload de vraie police
 - [ ] Gérer les erreurs et cas limites (PDF non lisible, données manquantes)
+
+
+## Phase 10 : Amélioration Visibilité Bouton CTA (23 nov 2025)
+- [ ] Augmenter la taille du bouton "Commencer maintenant"
+- [ ] Améliorer le contraste et les couleurs
+- [ ] Ajouter ombre portée et effets visuels
+- [ ] Ajouter animation au survol
+- [ ] Tester sur différentes résolutions
+
+- [ ] Remplacer dropdown forme juridique par cartes cliquables avec icônes
+
+- [ ] Corriger boutons "Demandez conseil" invisibles (blancs sur fond bleu) sur page d'accueil
+
+
+## 🔧 Modification Workflow Inscription (24 nov 2025)
+- [ ] Modifier page Signature pour créer client Airtable immédiatement (statut "Prospect")
+- [ ] Créer endpoint tRPC client.createFromSignature avec données questionnaire + signature
+- [ ] Générer PDF mandat et uploader vers S3 lors de la signature
+- [ ] Rediriger vers page paiement avec client_id Airtable
+- [ ] Modifier webhook Stripe pour mettre à jour statut "Prospect" → "Actif" (au lieu de créer)
+- [ ] Tester workflow complet sans Stripe activé (mode développement)
+- [ ] Vérifier création client dans Airtable avec tous les champs
+
+
+## 🎯 Système Parrainage Familial + Double Mandat (24 nov 2025)
+
+### Parrainage Familial avec Rabais Dynamique
+- [ ] Générer code parrainage unique après paiement Stripe (format: NOM-XXXX)
+- [ ] Page /confirmation : Afficher code parrainage + boutons partage (Email, WhatsApp, Copier)
+- [ ] Fonction calculateFamilyDiscount() : Calcul rabais dynamique basé sur membres ACTIFS uniquement
+- [ ] Fonction countActiveFamilyMembers() : Compter membres avec statut "Actif" dans Airtable
+- [ ] Afficher liste membres famille sur facture Stripe (avec statut ✅/❌)
+- [ ] Email notification automatique à tous les membres lors résiliation d'un membre
+- [ ] Dashboard client : Afficher compteur parrainages en temps réel
+- [ ] Tableau rabais : 1 membre = -2%, 5 membres = -10%, 10 membres = -20% MAX
+
+### Double Mandat (Privé + Entreprise)
+- [ ] Détecter typeClient = "les_deux" dans le questionnaire
+- [ ] Créer 2 enregistrements clients dans Airtable :
+  - [ ] Client 1 : Type "Privé" (CHF 185.-/an)
+  - [ ] Client 2 : Type "Entreprise" (CHF 160-860.-/an selon nb employés)
+- [ ] Générer 2 PDF mandats distincts avec signatures
+- [ ] Uploader 2 PDFs vers S3 avec noms différents
+- [ ] Créer 2 sessions Stripe Checkout séparées (ou 1 session avec 2 produits)
+- [ ] Afficher récapitulatif des 2 mandats sur page /signature
+
+### Tests Automatisés
+- [ ] Test création client Airtable depuis signature (statut "Prospect")
+- [ ] Test génération PDF mandat avec signature intégrée
+- [ ] Test upload S3 du PDF mandat
+- [ ] Test calcul rabais familial (scénarios 0, 1, 5, 10 membres)
+- [ ] Test résiliation membre : impact sur rabais famille
+- [ ] Test double mandat : vérifier 2 clients créés dans Airtable
+- [ ] Test workflow complet : Questionnaire → Signature → Paiement → Confirmation
+
+### Modifications Backend
+- [ ] Modifier endpoint client.createFromSignature pour supporter double mandat
+- [ ] Créer fonction generateFamilyCode() pour codes uniques
+- [ ] Créer fonction notifyFamilyMembers() pour emails automatiques
+- [ ] Modifier webhook Stripe pour gérer résiliations (notification famille)
+- [ ] Ajouter champ "Liste membres famille" dans metadata facture Stripe
+
+### Modifications Frontend
+- [ ] Page /confirmation : Section parrainage avec code + boutons partage
+- [ ] Page /signature : Afficher 2 récapitulatifs si typeClient = "les_deux"
+- [ ] Composant FamilyDiscountDisplay : Afficher rabais actuel + économies
+- [ ] Composant ShareButtons : Email, WhatsApp, Copier lien
+
+### Documentation
+- [ ] Guide utilisateur : Comment fonctionne le parrainage familial
+- [ ] Documentation technique : Calcul rabais dynamique
+- [ ] Exemples de scénarios : Famille de 10 membres, résiliation, etc.
+
+
+## 🎯 Système Multi-Mandats + IBAN + Paiements Séparés (24 nov 2025 - v2)
+
+### Gestion du Conjoint (Marié)
+- [ ] Ajouter champs dans WorkflowContext : conjointPrenom, conjointNom, conjointDateNaissance, conjointHasContracts
+- [ ] Ajouter étape questionnaire "Conjoint" (si situationFamiliale = "Marié(e)")
+- [ ] Question : "Des contrats d'assurance sont-ils au nom de votre conjoint(e) ?"
+- [ ] Si OUI : Créer mandat pour conjoint (statut "Actif") + Demander IBAN conjoint
+- [ ] Si NON : Créer entrée Airtable (statut "Mandat offert") + PAS de facturation
+
+### Validation IBAN Stricte (CH + 19 chiffres)
+- [ ] Créer composant IbanInput avec validation temps réel
+- [ ] Regex validation : ^CH\d{19}$ (21 caractères total)
+- [ ] Auto-formatage avec espaces : CH93 0076 2011 6238 5295 7
+- [ ] Messages d'erreur clairs : "X caractères manquants", "Doit commencer par CH", etc.
+- [ ] Validation backend (Zod) : ibanSchema avec regex
+- [ ] Validation frontend avant passage étape suivante
+
+### Informations Bancaires (Questionnaire Étape 6/7)
+- [ ] IBAN personnel (obligatoire pour tous)
+- [ ] Nom de la banque personnelle (obligatoire)
+- [ ] IBAN entreprise (si typeClient = "entreprise" ou "les_deux")
+- [ ] Nom de la banque entreprise (si typeClient = "entreprise" ou "les_deux")
+- [ ] IBAN conjoint (si marié ET conjointHasContracts = true)
+- [ ] Nom de la banque conjoint (si marié ET conjointHasContracts = true)
+- [ ] Message explicatif : "Nécessaire pour le paiement des prestations en cas de sinistre"
+
+### Adresse Entreprise Séparée
+- [ ] Ajouter champs : adresseEntreprise, npaEntreprise, localiteEntreprise
+- [ ] Afficher formulaire adresse entreprise si typeClient = "entreprise" ou "les_deux"
+- [ ] Stocker adresse entreprise dans Airtable (différente de l'adresse personnelle)
+
+### Création Multi-Mandats (1 à 3 mandats)
+- [ ] Modifier createFromSignature pour détecter le nombre de mandats à créer
+- [ ] CAS 1 : Personne seule → 1 mandat (rabais 2%)
+- [ ] CAS 2 : Couple (conjoint sans contrats) → 1 mandat + 1 entrée "Mandat offert" (rabais 2%)
+- [ ] CAS 3 : Couple (conjoint avec contrats) → 2 mandats (rabais 4%)
+- [ ] CAS 4 : Personne + Entreprise → 2 mandats (rabais 4%)
+- [ ] CAS 5 : Couple + Entreprise → 3 mandats (rabais 6%)
+- [ ] Générer N PDF mandats distincts (1 par mandat actif)
+- [ ] Upload N PDFs vers S3 avec noms différents
+- [ ] Créer N clients dans Airtable (statut "Prospect")
+- [ ] Retourner tableau : [{ clientId, pdfUrl, type, nom, montant }]
+
+### Paiements Stripe Séparés (1 paiement par client)
+- [ ] Créer endpoint createMultipleSessions (génère N sessions Stripe)
+- [ ] Chaque session Stripe contient metadata: { clientId, type }
+- [ ] Créer page /paiements avec liste des paiements à effectuer
+- [ ] Afficher statut de chaque paiement : "⏳ En attente" ou "✅ Payé"
+- [ ] Vérification statut en temps réel (polling toutes les 5s)
+- [ ] Bouton "Payer maintenant" pour chaque paiement
+- [ ] Redirection vers /confirmation uniquement quand TOUS les paiements sont effectués
+- [ ] Webhook Stripe : Mise à jour statut "Actif" pour chaque clientId individuellement
+
+### Calcul Rabais Familial Dynamique
+- [ ] Corriger calculateFamilyDiscount : 1 mandat = 2%, 2 mandats = 4%, ..., 10 mandats = 20%
+- [ ] Appliquer rabais sur TOUS les mandats actifs (privé + entreprise)
+- [ ] Afficher récapitulatif avec rabais avant signature :
+  - [ ] Liste des mandats à créer
+  - [ ] Prix de base par mandat
+  - [ ] Rabais familial appliqué (%)
+  - [ ] Prix final par mandat
+  - [ ] Total famille
+
+### Schéma Airtable (Nouveaux Champs)
+- [ ] IBAN (texte, 21 caractères)
+- [ ] Nom de la banque (texte)
+- [ ] Adresse entreprise (texte)
+- [ ] NPA entreprise (nombre)
+- [ ] Localité entreprise (texte)
+- [ ] Prénom conjoint (texte)
+- [ ] Nom conjoint (texte)
+- [ ] Date naissance conjoint (date)
+- [ ] Conjoint a des contrats (checkbox)
+- [ ] Statut du client : "Actif" | "Prospect" | "Mandat offert"
+
+### Tests Automatisés
+- [ ] Test validation IBAN : valides et invalides
+- [ ] Test création 1 mandat (personne seule)
+- [ ] Test création 2 mandats (couple avec contrats)
+- [ ] Test création 2 mandats (personne + entreprise)
+- [ ] Test création 3 mandats (couple + entreprise)
+- [ ] Test entrée "Mandat offert" (conjoint sans contrats)
+- [ ] Test calcul rabais : 1 mandat = 2%, 2 mandats = 4%, 3 mandats = 6%
+- [ ] Test sessions Stripe multiples
+- [ ] Test webhook Stripe (mise à jour individuelle)
+
+### Documentation
+- [ ] Guide utilisateur : Système multi-mandats
+- [ ] Exemples de cas : Couple, Entreprise, Couple + Entreprise
+- [ ] Documentation technique : Validation IBAN, Paiements séparés
+
+
+## 🎯 Configuration Rabais Familial Automatique Airtable (24 nov 2025)
+
+- [ ] Analyser champs existants table Clients
+- [ ] Créer/modifier champ "Groupe Familial" (lookup depuis parrain)
+- [ ] Créer/modifier champ "Nb membres famille" (rollup count)
+- [ ] Créer/modifier formule "Rabais familial %" : (membres-1)×2+2, max 20%
+- [ ] Créer/modifier formule "Prix final avec rabais"
+- [ ] Tester avec famille Bussat (4 mandats = 8%)
+- [ ] Documenter système pour clients existants
+
+
+## 🎯 Système Groupes Familiaux (Format Unique) - 24 nov 2025
+
+- [ ] Modifier `generateFamilyGroupId` pour format FAMILLE-NOM-CODE
+- [ ] Mettre à jour tous les appels à `generateFamilyGroupId`
+- [ ] Créer script migration Airtable pour groupes existants
+- [ ] Configurer champ "Membres de la famille" (bidirectionnel)
+- [ ] Créer formule "Liste membres pour facture Stripe"
+- [ ] Tester avec famille Bussat (4 mandats = 8% rabais)
+- [ ] Vérifier unicité des groupes familiaux
+- [ ] Documenter le système
+

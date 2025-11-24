@@ -15,6 +15,9 @@ import {
   findClientByEmail,
   type ClientData,
 } from '../lib/airtable';
+import { generateMandatPDF, type MandatData } from '../pdf-generator';
+import { storagePut } from '../storage';
+import { generateFamilyCode } from '../lib/parrainage';
 
 export const clientRouter = router({
   /**
@@ -94,6 +97,214 @@ export const clientRouter = router({
         clientId: recordId,
         message: 'Client créé avec succès (statut: Prospect)',
       };
+    }),
+
+  /**
+   * Crée un client depuis la signature (workflow simplifié)
+   * Combine: création client + génération PDF + upload S3
+   */
+  createFromSignature: publicProcedure
+    .input(
+      z.object({
+        // Données du questionnaire
+        prenom: z.string().optional(),
+        nom: z.string().optional(),
+        nomEntreprise: z.string().optional(),
+        typeClient: z.enum(['prive', 'entreprise', 'les_deux']),
+        email: z.string().email(),
+        telMobile: z.string().optional(),
+        adresse: z.string(),
+        npa: z.string(),
+        localite: z.string(),
+        dateNaissance: z.string().optional(),
+        formeJuridique: z.enum(['entreprise_individuelle', 'sarl', 'sa', 'autre']).optional(),
+        nombreEmployes: z.string().optional(),
+        codeParrainage: z.string().optional(),
+        
+        // Données de la signature
+        signatureDataUrl: z.string(),
+        signatureS3Url: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      console.log('[Client Router] Creating client from signature:', input.email);
+      
+      try {
+        // 1. Vérifier si le client existe déjà
+        const existingClientId = await findClientByEmail(input.email);
+        if (existingClientId) {
+          console.log('[Client Router] Client already exists:', existingClientId);
+          return {
+            success: true,
+            clientId: existingClientId,
+            clientId2: null,
+            message: 'Client existant retrouvé',
+            pdfUrl: null,
+            pdfUrl2: null,
+          };
+        }
+        
+        // 1.5 Générer le code de parrainage unique
+        const nom = input.nom || input.nomEntreprise || 'CLIENT';
+        const codeParrainageGenere = generateFamilyCode(nom);
+        console.log('[Client Router] Generated referral code:', codeParrainageGenere);
+        
+        // 2. Générer le PDF mandat
+        console.log('[Client Router] Generating PDF mandat...');
+        const mandatData: MandatData = {
+          prenom: input.prenom,
+          nom: input.nom,
+          nomEntreprise: input.nomEntreprise,
+          email: input.email,
+          adresse: input.adresse,
+          npa: input.npa,
+          localite: input.localite,
+          typeClient: input.typeClient,
+          formeJuridique: input.formeJuridique,
+          nombreEmployes: input.nombreEmployes,
+          signatureDataUrl: input.signatureDataUrl,
+          dateSignature: new Date().toLocaleDateString('fr-CH'),
+        };
+        
+        const pdfBuffer = await generateMandatPDF(mandatData);
+        console.log('[Client Router] PDF generated, size:', pdfBuffer.length, 'bytes');
+        
+        // 3. Upload PDF vers S3
+        const fileName = `mandat-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
+        const { url: pdfUrl } = await storagePut(
+          `mandats/${fileName}`,
+          pdfBuffer,
+          'application/pdf'
+        );
+        console.log('[Client Router] PDF uploaded to S3:', pdfUrl);
+        
+        // 4. Gérer le double mandat si typeClient = 'les_deux'
+        if (input.typeClient === 'les_deux') {
+          console.log('[Client Router] Creating DOUBLE mandat (Privé + Entreprise)...');
+          
+          // 4a. Créer le client PRIVÉ
+          const clientDataPrive: ClientData = {
+            Prénom: input.prenom,
+            Nom: input.nom,
+            'Type de client': 'Privé',
+            'Date de naissance': input.dateNaissance,
+            'Email du client (table client)': input.email,
+            'Tél. Mobile': input.telMobile,
+            'Adresse et no': input.adresse,
+            NPA: parseInt(input.npa),
+            Localité: input.localite,
+            'Statut du client': 'Prospect',
+            'Date signature mandat': new Date().toISOString().split('T')[0],
+            'Code Parrainage': codeParrainageGenere,
+            'Code de parrainage utilisé': input.codeParrainage,
+            Language: 'Français',
+          };
+          
+          const recordIdPrive = await createAirtableClient(clientDataPrive);
+          console.log('[Client Router] Client PRIVÉ created:', recordIdPrive);
+          
+          // 4b. Générer PDF mandat PRIVÉ
+          const mandatDataPrive: MandatData = {
+            ...mandatData,
+            typeClient: 'prive',
+            nomEntreprise: undefined,
+            formeJuridique: undefined,
+            nombreEmployes: undefined,
+          };
+          const pdfBufferPrive = await generateMandatPDF(mandatDataPrive);
+          const fileNamePrive = `mandat-prive-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
+          const { url: pdfUrlPrive } = await storagePut(
+            `mandats/${fileNamePrive}`,
+            pdfBufferPrive,
+            'application/pdf'
+          );
+          console.log('[Client Router] PDF PRIVÉ uploaded:', pdfUrlPrive);
+          
+          // 4c. Créer le client ENTREPRISE
+          const clientDataEntreprise: ClientData = {
+            Prénom: input.prenom,
+            Nom: input.nom,
+            'Type de client': 'Entreprise',
+            'Email du client (table client)': input.email,
+            'Tél. Mobile': input.telMobile,
+            'Adresse et no': input.adresse,
+            NPA: parseInt(input.npa),
+            Localité: input.localite,
+            'Statut du client': 'Prospect',
+            'Nom de l\'entreprise': input.nomEntreprise,
+            'Nombre d\'employés': input.nombreEmployes ? parseInt(input.nombreEmployes) : undefined,
+            'Date signature mandat': new Date().toISOString().split('T')[0],
+            'Code Parrainage': codeParrainageGenere,
+            'Code de parrainage utilisé': input.codeParrainage,
+            Language: 'Français',
+          };
+          
+          const recordIdEntreprise = await createAirtableClient(clientDataEntreprise);
+          console.log('[Client Router] Client ENTREPRISE created:', recordIdEntreprise);
+          
+          // 4d. Générer PDF mandat ENTREPRISE
+          const mandatDataEntreprise: MandatData = {
+            ...mandatData,
+            typeClient: 'entreprise',
+            prenom: undefined,
+            dateNaissance: undefined,
+          };
+          const pdfBufferEntreprise = await generateMandatPDF(mandatDataEntreprise);
+          const fileNameEntreprise = `mandat-entreprise-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
+          const { url: pdfUrlEntreprise } = await storagePut(
+            `mandats/${fileNameEntreprise}`,
+            pdfBufferEntreprise,
+            'application/pdf'
+          );
+          console.log('[Client Router] PDF ENTREPRISE uploaded:', pdfUrlEntreprise);
+          
+          return {
+            success: true,
+            clientId: recordIdPrive,
+            clientId2: recordIdEntreprise,
+            pdfUrl: pdfUrlPrive,
+            pdfUrl2: pdfUrlEntreprise,
+            codeParrainage: codeParrainageGenere,
+            message: 'Double mandat créé avec succès (Privé + Entreprise)',
+          };
+        }
+        
+        // 4. Créer le client unique dans Airtable
+        const clientData: ClientData = {
+          Prénom: input.prenom,
+          Nom: input.nom,
+          'Type de client': input.typeClient === 'prive' ? 'Privé' : 'Entreprise',
+          'Date de naissance': input.dateNaissance,
+          'Email du client (table client)': input.email,
+          'Tél. Mobile': input.telMobile,
+          'Adresse et no': input.adresse,
+          NPA: parseInt(input.npa),
+          Localité: input.localite,
+          'Statut du client': 'Prospect',
+          'Nom de l\'entreprise': input.nomEntreprise,
+          'Nombre d\'employés': input.nombreEmployes ? parseInt(input.nombreEmployes) : undefined,
+          'Date signature mandat': new Date().toISOString().split('T')[0],
+          'Code Parrainage': codeParrainageGenere,
+          'Code de parrainage utilisé': input.codeParrainage,
+          Language: 'Français',
+        };
+        
+        const recordId = await createAirtableClient(clientData);
+        console.log('[Client Router] Client created in Airtable:', recordId);
+        
+        return {
+          success: true,
+          clientId: recordId,
+          clientId2: null,
+          pdfUrl,
+          pdfUrl2: null,
+          codeParrainage: codeParrainageGenere,
+          message: 'Client créé avec succès (statut: Prospect)',
+        };
+      } catch (error) {
+        console.error('[Client Router] Error creating client from signature:', error);
+        throw new Error(`Erreur lors de la création du client: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      }
     }),
 
   /**

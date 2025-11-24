@@ -17,6 +17,7 @@ export default function Signature() {
   const { workflow, updateWorkflow } = useWorkflow();
   
   const uploadSignatureMutation = trpc.workflow.uploadSignature.useMutation();
+  const createClientMutation = trpc.client.createFromSignature.useMutation();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -114,6 +115,13 @@ export default function Signature() {
       return;
     }
 
+    // Vérifier que les données du questionnaire sont présentes
+    if (!workflow.questionnaireData?.email) {
+      toast.error("Données du questionnaire manquantes. Veuillez recommencer.");
+      setLocation("/questionnaire-info");
+      return;
+    }
+
     setIsSaving(true);
 
     try {
@@ -130,23 +138,52 @@ export default function Signature() {
       });
       console.log('[Signature] Workflow mis à jour');
       
-      // Upload vers S3 pour stockage permanent
-      const email = workflow.questionnaireData?.email || 'client@example.com';
-      console.log(`[Signature] Upload vers S3 pour ${email}...`);
+      // Upload signature vers S3 (pour affichage immédiat)
+      const email = workflow.questionnaireData.email;
+      console.log(`[Signature] Upload signature vers S3 pour ${email}...`);
       
-      const result = await uploadSignatureMutation.mutateAsync({
+      const signatureResult = await uploadSignatureMutation.mutateAsync({
         signatureDataUrl,
         clientEmail: email,
       });
       
-      console.log('[Signature] Upload S3 réussi:', result.url);
-      updateWorkflow({ signatureS3Url: result.url });
+      console.log('[Signature] Upload S3 signature réussi:', signatureResult.url);
+      updateWorkflow({ signatureS3Url: signatureResult.url });
       
-      toast.success("Signature enregistrée avec succès !");
+      // Créer le client dans Airtable + générer PDF mandat
+      console.log('[Signature] Création du client dans Airtable...');
+      const clientResult = await createClientMutation.mutateAsync({
+        prenom: workflow.questionnaireData.prenom,
+        nom: workflow.questionnaireData.nom,
+        nomEntreprise: workflow.questionnaireData.nomEntreprise,
+        typeClient: workflow.questionnaireData.typeClient,
+        email: workflow.questionnaireData.email,
+        telMobile: workflow.questionnaireData.telMobile,
+        adresse: workflow.questionnaireData.adresse || '',
+        npa: workflow.questionnaireData.npa || '',
+        localite: workflow.questionnaireData.localite || '',
+        dateNaissance: workflow.questionnaireData.dateNaissance,
+        formeJuridique: workflow.questionnaireData.formeJuridique,
+        nombreEmployes: workflow.questionnaireData.nombreEmployes,
+        codeParrainage: workflow.questionnaireData.codeParrainage,
+        signatureDataUrl,
+        signatureS3Url: signatureResult.url,
+      });
+      
+      console.log('[Signature] Client créé:', clientResult.clientId);
+      console.log('[Signature] PDF mandat généré:', clientResult.pdfUrl);
+      
+      // Sauvegarder les infos dans le workflow
+      updateWorkflow({
+        clientId: clientResult.clientId,
+        mandatPdfUrl: clientResult.pdfUrl || undefined,
+      });
+      
+      toast.success("✅ Client créé dans Airtable (statut: Prospect)");
       
       // Redirection vers la page de paiement
       console.log('[Signature] Redirection vers /paiement...');
-      setTimeout(() => setLocation("/paiement"), 500);
+      setTimeout(() => setLocation("/paiement"), 1000);
     } catch (error) {
       console.error("[Signature] Erreur lors de la sauvegarde:", error);
       
@@ -154,7 +191,7 @@ export default function Signature() {
       const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
       console.error('[Signature] Détails:', errorMessage);
       
-      toast.error(`Erreur lors de la sauvegarde: ${errorMessage}`);
+      toast.error(`Erreur: ${errorMessage}`);
     } finally {
       setIsSaving(false);
     }

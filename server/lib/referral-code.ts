@@ -2,7 +2,7 @@
  * Génération de codes de parrainage et identifiants de groupe familial
  * 
  * Format code parrainage : NOM-1234 (4 lettres + 4 chiffres)
- * Format groupe familial : FAMILLE-NOM-ANNEE
+ * Format groupe familial : FAMILLE-NOM-CODE (garantit l'unicité)
  */
 
 /**
@@ -32,9 +32,10 @@ export function generateReferralCode(nom: string): string {
  * Générer un identifiant de groupe familial
  * 
  * @param nom - Nom de famille
- * @returns Identifiant groupe (ex: FAMILLE-DUPONT-2024)
+ * @param codeParrainage - Code de parrainage du membre fondateur
+ * @returns Identifiant groupe (ex: FAMILLE-BUSSAT-ANTO-QC2V)
  */
-export function generateFamilyGroupId(nom: string): string {
+export function generateFamilyGroupId(nom: string, codeParrainage: string): string {
   // Nettoyer le nom
   const cleanNom = nom
     .normalize('NFD')
@@ -42,10 +43,7 @@ export function generateFamilyGroupId(nom: string): string {
     .replace(/[^a-zA-Z]/g, '')
     .toUpperCase();
 
-  // Année actuelle
-  const year = new Date().getFullYear();
-
-  return `FAMILLE-${cleanNom}-${year}`;
+  return `FAMILLE-${cleanNom}-${codeParrainage}`;
 }
 
 /**

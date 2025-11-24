@@ -403,10 +403,10 @@ export default function Questionnaire() {
                 <Button 
                   size="lg" 
                   onClick={() => setShowIntro(false)}
-                  className="group"
+                  className="group px-12 py-7 text-lg font-bold shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-primary to-[#D4AF37] hover:from-[#D4AF37] hover:via-primary hover:to-primary"
                 >
                   Commencer maintenant
-                  <Zap className="ml-2 w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  <Zap className="ml-3 w-6 h-6 group-hover:rotate-12 group-hover:scale-125 transition-all duration-300" />
                 </Button>
                 <p className="text-sm text-muted-foreground mt-4">
                   À partir de CHF 185.-/an • Résiliable annuellement • Satisfaction garantie
@@ -764,21 +764,33 @@ export default function Questionnaire() {
                         </div>
                         
                         <div>
-                          <Label htmlFor="formeJuridique" className="text-lg">Forme juridique</Label>
-                          <Select
-                            value={data.formeJuridique || ""}
-                            onValueChange={(value) => setData({ ...data, formeJuridique: value })}
-                          >
-                            <SelectTrigger className="mt-2 text-lg h-14">
-                              <SelectValue placeholder="Sélectionnez la forme juridique" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="entreprise_individuelle">Entreprise individuelle</SelectItem>
-                              <SelectItem value="sarl">Sàrl</SelectItem>
-                              <SelectItem value="sa">SA</SelectItem>
-                              <SelectItem value="autre">Autre</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Label className="text-lg mb-3 block">Forme juridique</Label>
+                          <div className="grid grid-cols-2 gap-3">
+                            {[
+                              { value: 'entreprise_individuelle', label: 'Entreprise individuelle', icon: '👤', desc: 'Raison individuelle' },
+                              { value: 'sarl', label: 'Sàrl', icon: '🤝', desc: 'Société à responsabilité limitée' },
+                              { value: 'sa', label: 'SA', icon: '🏢', desc: 'Société Anonyme' },
+                              { value: 'autre', label: 'Autre', icon: '💼', desc: 'Association, Fondation...' },
+                            ].map((forme) => (
+                              <button
+                                key={forme.value}
+                                type="button"
+                                onClick={() => setData({ ...data, formeJuridique: forme.value })}
+                                className={`
+                                  p-4 rounded-lg border-2 transition-all duration-200 text-left
+                                  hover:border-primary hover:shadow-md
+                                  ${data.formeJuridique === forme.value 
+                                    ? 'border-primary bg-primary/5 shadow-md' 
+                                    : 'border-border bg-background'
+                                  }
+                                `}
+                              >
+                                <div className="text-3xl mb-2">{forme.icon}</div>
+                                <div className="font-semibold text-base">{forme.label}</div>
+                                <div className="text-xs text-muted-foreground mt-1">{forme.desc}</div>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         
                         <div>

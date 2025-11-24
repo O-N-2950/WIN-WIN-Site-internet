@@ -37,7 +37,7 @@ export async function setupReferralForNewClient(
   
   // CAS 1 : Client SANS code parrainage → Créer nouveau groupe
   if (!codeParrainageUtilise) {
-    const groupeFamilial = generateFamilyGroupId(nom);
+    const groupeFamilial = generateFamilyGroupId(nom, codeParrainage);
     
     return {
       relationsFamiliales: 'Membre fondateur',
@@ -54,7 +54,7 @@ export async function setupReferralForNewClient(
     if (!parrainGroupeFamilial) {
       console.warn(`[Referral] Code parrainage invalide: ${codeParrainageUtilise}`);
       // Fallback : créer nouveau groupe
-      const groupeFamilial = generateFamilyGroupId(nom);
+      const groupeFamilial = generateFamilyGroupId(nom, codeParrainage);
       return {
         relationsFamiliales: 'Membre fondateur',
         groupeFamilial,
@@ -71,7 +71,7 @@ export async function setupReferralForNewClient(
   } catch (error) {
     console.error('[Referral] Erreur lors de la recherche du parrain:', error);
     // Fallback : créer nouveau groupe
-    const groupeFamilial = generateFamilyGroupId(nom);
+    const groupeFamilial = generateFamilyGroupId(nom, codeParrainage);
     return {
       relationsFamiliales: 'Membre fondateur',
       groupeFamilial,
