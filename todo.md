@@ -181,6 +181,16 @@
 - **Workflow** : 100% automatisé (0 intervention manuelle)
 
 
+## Phase 5 TER : Intégration Airtable Dynamique - Compagnies et Types de Contrats (NOUVEAU - 23 nov 2025)
+- [x] Créer endpoint tRPC airtable.getCompanies (table Compagnies, colonne "Nom de la Compagnie")
+- [x] Créer endpoint tRPC airtable.getContractTypes (options colonne "types de contrats")
+- [ ] Remplacer liste hardcodée des compagnies dans questionnaire par appel API
+- [ ] Remplacer liste hardcodée des types de contrats dans questionnaire par appel API
+- [ ] Mettre à jour PoliceModalOCR.tsx avec dropdowns dynamiques
+- [ ] Tester chargement des données depuis Airtable
+- [ ] Vérifier que l'OCR peut matcher avec les données Airtable
+- [ ] Déployer sur Railway
+
 ## Phase 5 BIS : Intégration Google Cloud Vision OCR (NOUVEAU)
 - [x] Configuration clé API Google Cloud Vision (fichier JSON reçu)
 - [x] Installation package @google-cloud/vision
@@ -1371,3 +1381,43 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Ajouter bouton de partage du lien de parrainage (Email, WhatsApp, Copier)
 - [x] Permettre copie du code de parrainage
 - [x] Afficher le calcul du rabais (2% par membre, max 20%)
+
+
+## 🔍 Implémentation OCR Google Vision Production (23 nov 2025)
+- [ ] Sauvegarder la clé Google Cloud Vision dans le projet
+- [ ] Installer le package @google-cloud/vision
+- [ ] Créer le module server/_core/googleVision.ts
+- [ ] Créer l'endpoint tRPC ocr.analyzeDocument
+- [ ] Créer les parsers par compagnie d'assurance
+- [ ] Intégrer l'OCR dans le workflow questionnaire (après upload PDF)
+- [ ] Créer automatiquement les contrats dans Airtable après extraction
+- [ ] Tester l'extraction sur différentes polices (AXA, Swiss Life, etc.)
+
+## Phase 6 : Formulaire Web Intégré Client + Contrats (NOUVEAU - 23 nov 2025)
+- [ ] Créer client test "Jean Dupont" dans formulaire Airtable
+- [ ] Créer contrat test (Emmental, police 1234, prime 1000 CHF, semestriel)
+- [ ] Analyser tous les champs de relation Client dans table Contrats
+- [ ] Documenter la structure exacte des données à envoyer
+- [ ] Créer endpoint tRPC pour créer un client dans Airtable
+- [ ] Créer endpoint tRPC pour créer des contrats liés à un client
+- [ ] Créer page /inscription avec formulaire client
+- [ ] Intégrer dropdowns dynamiques (compagnies, types de contrats)
+- [ ] Ajouter upload de polices avec OCR
+- [ ] Lier automatiquement contrats au client (tous les champs de relation)
+- [ ] Tester workflow complet : Inscription → Upload polices → Vérification Airtable
+- [ ] Déployer sur Railway
+
+
+## Phase 7 : Gestion Statuts Clients (Prospect → En attente → Actif) - 23 nov 2025
+- [x] Créer helper MCP `createAirtableClient` dans server/lib/airtable.ts
+- [x] Créer helper MCP `updateAirtableClient` dans server/lib/airtable.ts
+- [x] Créer helper MCP `createAirtableContract` dans server/lib/airtable.ts
+- [x] Créer endpoint tRPC `client.create` (statut initial "Prospect")
+- [x] Créer endpoint tRPC `client.updateStatus` (transitions de statuts)
+- [x] Créer endpoint tRPC `contract.createMultiple` (avec relations automatiques)
+- [ ] Modifier page /signature pour mettre à jour statut → "En attente"
+- [ ] Modifier webhook Stripe pour mettre à jour statut → "Actif" après paiement
+- [ ] Ajouter champs Stripe dans Airtable (Customer ID, Subscription ID)
+- [ ] Implémenter relances automatiques pour prospects non payés (optionnel)
+- [ ] Tester transitions de statuts avec Jean Dupont
+- [ ] Créer checkpoint après implémentation
