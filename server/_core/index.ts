@@ -45,6 +45,11 @@ async function startServer() {
   
   app.use(cors({
     origin: (origin, callback) => {
+      // In development, allow all origins
+      if (process.env.NODE_ENV === 'development') {
+        return callback(null, true);
+      }
+      
       // Allow requests with no origin (mobile apps, Postman, etc.)
       if (!origin) return callback(null, true);
       
