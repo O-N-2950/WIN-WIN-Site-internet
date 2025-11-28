@@ -39,24 +39,23 @@ export default function Contact() {
       let attachmentUrl: string | undefined;
       let attachmentFilename: string | undefined;
 
-      // 1. Upload du fichier si présent
+      // 1. Upload du fichier si présent (via backend pour sécurité)
       if (selectedFile) {
-        const formDataUpload = new FormData();
-        formDataUpload.append("file", selectedFile);
-
-        const uploadResponse = await fetch("https://tmpfiles.org/api/v1/upload", {
-          method: "POST",
-          body: formDataUpload,
+        // Convertir le fichier en base64
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(selectedFile);
         });
 
-        if (!uploadResponse.ok) {
-          throw new Error("Erreur lors de l'upload du fichier");
-        }
+        // Uploader via le backend (qui utilise Cloudinary)
+        const uploadResult = await trpc.contact.uploadAttachment.mutate({
+          base64Data: base64,
+          filename: selectedFile.name,
+        });
 
-        const uploadData = await uploadResponse.json();
-        // tmpfiles.org retourne une URL du type: https://tmpfiles.org/123456
-        // Il faut la transformer en: https://tmpfiles.org/dl/123456
-        attachmentUrl = uploadData.data.url.replace("tmpfiles.org/", "tmpfiles.org/dl/");
+        attachmentUrl = uploadResult.url;
         attachmentFilename = selectedFile.name;
       }
 

@@ -1,6 +1,7 @@
 import { publicProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { createLeadInAirtable } from "../airtable-crm";
+import { uploadToCloudinary, isCloudinaryConfigured } from "../lib/cloudinary-upload";
 
 export const contactRouter = router({
   sendMessage: publicProcedure
@@ -44,41 +45,43 @@ export const contactRouter = router({
       }
     }),
 
-  uploadFile: publicProcedure
+  /**
+   * Upload d'une pièce jointe vers Cloudinary
+   * Remplaçant de tmpfiles.org qui est bloqué par les adblockers
+   */
+  uploadAttachment: publicProcedure
     .input(
       z.object({
-        file: z.instanceof(File),
+        base64Data: z.string(),
+        filename: z.string(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        // Upload vers tmpfiles.org
-        const formData = new FormData();
-        formData.append("file", input.file);
-
-        const response = await fetch("https://tmpfiles.org/api/v1/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'upload du fichier");
+        // Vérifier que Cloudinary est configuré
+        if (!isCloudinaryConfigured()) {
+          throw new Error(
+            "Cloudinary n'est pas configuré. Veuillez configurer CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY et CLOUDINARY_API_SECRET dans Railway."
+          );
         }
 
-        const data = await response.json();
-        
-        // tmpfiles.org retourne une URL du type: https://tmpfiles.org/123456
-        // Il faut la transformer en: https://tmpfiles.org/dl/123456
-        const fileUrl = data.data.url.replace("tmpfiles.org/", "tmpfiles.org/dl/");
+        // Upload vers Cloudinary
+        const url = await uploadToCloudinary(
+          input.base64Data,
+          input.filename,
+          'winwin-contact-attachments'
+        );
 
         return {
           success: true,
-          url: fileUrl,
-          filename: input.file.name,
+          url,
+          filename: input.filename,
         };
       } catch (error) {
         console.error("[Contact] Erreur lors de l'upload du fichier:", error);
-        throw new Error("Erreur lors de l'upload du fichier. Veuillez réessayer.");
+        throw new Error(
+          `Erreur lors de l'upload du fichier: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+        );
       }
     }),
 });

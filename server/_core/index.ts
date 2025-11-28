@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { createServer } from "http";
 import net from "net";
 import session from "express-session";
@@ -33,6 +34,33 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  
+  // CORS configuration - MUST be before all routes
+  const allowedOrigins = [
+    'https://www.winwin.swiss',
+    'https://winwin.swiss',
+    'http://localhost:3000',
+    'http://localhost:5173',
+  ];
+  
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`[CORS] Blocked origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+  
+  console.log('[CORS] Configured for origins:', allowedOrigins);
   
   // Redirect winwin.swiss to www.winwin.swiss
   app.use((req, res, next) => {
@@ -97,6 +125,21 @@ async function startServer() {
       createContext,
     })
   );
+  
+  // Global error handler - MUST be after all routes
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error('[Server Error]', {
+      message: err.message,
+      stack: err.stack,
+      url: req.url,
+      method: req.method,
+    });
+    
+    res.status(err.status || 500).json({
+      error: 'Internal Server Error',
+      message: process.env.NODE_ENV === 'production' ? 'Une erreur est survenue' : err.message,
+    });
+  });
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
