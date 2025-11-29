@@ -296,7 +296,7 @@ export default function Signature() {
                   <div>
                     <p className="text-muted-foreground">Type de client</p>
                     <p className="font-medium">
-                      {workflow.questionnaireData?.typeClient === "particulier" && "Particulier"}
+                      {workflow.questionnaireData?.typeClient === "prive" && "Particulier"}
                       {workflow.questionnaireData?.typeClient === "entreprise" && (
                         workflow.questionnaireData?.nombreEmployes !== undefined
                           ? `Entreprise (${workflow.questionnaireData.nombreEmployes} employé${workflow.questionnaireData.nombreEmployes > 1 ? 's' : ''})`

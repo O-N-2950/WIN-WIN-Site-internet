@@ -108,7 +108,7 @@ export default function Conseil() {
       nom: formData.nom,
       email: formData.email,
       telephone: formData.telephone,
-      typeClient: "particulier", // Valeur par défaut pour les messages
+      typeClient: "prive", // Valeur par défaut pour les messages
       message: formData.message,
       attachmentUrl,
     });

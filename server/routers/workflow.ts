@@ -22,7 +22,7 @@ export const workflowRouter = router({
   calculatePrice: publicProcedure
     .input(
       z.object({
-        type: z.enum(["particulier", "entreprise"]),
+        type: z.enum(["prive", "entreprise"]),
         age: z.number().optional(),
         employeeCount: z.number().optional(),
         isFree: z.boolean().optional(),
@@ -41,7 +41,7 @@ export const workflowRouter = router({
         priceId: z.string(),
         clientEmail: z.string().email(),
         clientName: z.string(),
-        clientType: z.enum(['particulier', 'entreprise']),
+        clientType: z.enum(['prive', 'entreprise']),
         clientAge: z.number().optional(),
         clientEmployeeCount: z.number().optional(),
         annualPrice: z.number(),
@@ -138,7 +138,7 @@ export const workflowRouter = router({
         prenom: z.string(),
         email: z.string().email(),
         phone: z.string().optional(),
-        type: z.enum(["particulier", "entreprise"]),
+        type: z.enum(["prive", "entreprise"]),
         age: z.number().optional(),
         employeeCount: z.number().optional(),
         annualPrice: z.number(),
@@ -157,7 +157,7 @@ export const workflowRouter = router({
         prenom: input.prenom,
         email: input.email,
         telMobile: input.phone,
-        typeClient: input.type === 'particulier' ? 'Particulier' : 'Entreprise',
+        typeClient: input.type === 'prive' ? 'Particulier' : 'Entreprise',
         age: input.age,
         nbEmployes: input.employeeCount,
         tarifApplicable: input.annualPrice,

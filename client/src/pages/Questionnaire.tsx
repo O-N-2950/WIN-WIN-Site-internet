@@ -194,7 +194,7 @@ export default function Questionnaire() {
         updateWorkflow({
           clientName: `${data.prenom} ${data.nom}`,
           clientEmail: data.email,
-          clientType: data.typeClient === "prive" ? "particulier" : "entreprise",
+          clientType: data.typeClient === "prive" ? "prive" : "entreprise",
           clientAddress: `${data.adresse}, ${data.npa} ${data.localite}`,
           clientEmployeeCount: data.nombreEmployes,
           questionnaireData: data,
@@ -310,7 +310,7 @@ export default function Questionnaire() {
     updateWorkflow({
       clientName: `${data.prenom} ${data.nom}`,
       clientEmail: data.email,
-      clientType: data.typeClient === "prive" ? "particulier" : "entreprise",
+      clientType: data.typeClient === "prive" ? "prive" : "entreprise",
       clientAddress: `${data.adresse}, ${data.npa} ${data.localite}`,
       clientEmployeeCount: data.nombreEmployes,
       questionnaireData: data,

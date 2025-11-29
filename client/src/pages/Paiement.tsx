@@ -25,7 +25,7 @@ export default function Paiement() {
   
   // Récupérer les données du workflow
   const clientData = {
-    type: workflow.clientType || "particulier",
+    type: workflow.clientType || "prive",
     age: workflow.clientAge || 25,
     tarif: workflow.annualPrice || 185,
     isFree: workflow.isFree || false
@@ -45,7 +45,7 @@ export default function Paiement() {
       // Calculer dynamiquement le priceId selon le tarif
       let priceId: string;
       
-      if (workflow.questionnaireData?.typeClient === "particulier") {
+      if (workflow.questionnaireData?.typeClient === "prive") {
         // Calculer l'âge depuis la date de naissance
         const birthDate = workflow.questionnaireData.dateNaissance;
         const age = birthDate ? new Date().getFullYear() - new Date(birthDate).getFullYear() : 25;
@@ -86,7 +86,7 @@ export default function Paiement() {
         priceId,
         clientName: workflow.clientName || "Client Test",
         clientEmail: workflow.clientEmail || "test@example.com",
-        clientType: workflow.clientType || "particulier",
+        clientType: workflow.clientType || "prive",
         clientAge: workflow.clientAge,
         clientEmployeeCount: workflow.clientEmployeeCount,
         annualPrice: workflow.annualPrice || 185,
@@ -120,7 +120,7 @@ export default function Paiement() {
         nom: workflow.clientName?.split(' ')[1] || "Test",
         prenom: workflow.clientName?.split(' ')[0] || "Client",
         email: workflow.clientEmail || "test@example.com",
-        type: workflow.clientType || "particulier",
+        type: workflow.clientType || "prive",
         age: workflow.clientAge,
         employeeCount: workflow.clientEmployeeCount,
         annualPrice: 0,
@@ -182,7 +182,7 @@ export default function Paiement() {
                   <div>
                     <p className="font-medium">Mandat de Gestion Annuel</p>
                     <p className="text-sm text-muted-foreground">
-                      {clientData.type === "particulier" 
+                      {clientData.type === "prive" 
                         ? `Particulier (${clientData.age} ans)` 
                         : `Entreprise (${clientData.age} employés)`}
                     </p>

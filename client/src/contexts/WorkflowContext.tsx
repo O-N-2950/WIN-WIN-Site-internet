@@ -15,7 +15,7 @@ export interface WorkflowData {
   firstName?: string;
   lastName?: string;
   clientEmail: string;
-  clientType: 'particulier' | 'entreprise';
+  clientType: 'prive' | 'entreprise';
   clientAge?: number;
   clientEmployeeCount?: number;
   clientAddress?: string;
@@ -49,7 +49,7 @@ const defaultWorkflowData: WorkflowData = {
   questionnaireCompleted: false,
   clientName: '',
   clientEmail: '',
-  clientType: 'particulier',
+  clientType: 'prive',
   annualPrice: 0,
   isFree: false,
   paymentCompleted: false,

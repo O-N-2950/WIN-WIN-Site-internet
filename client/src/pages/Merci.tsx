@@ -29,7 +29,7 @@ export default function Merci() {
     isFree: workflow.isFree || false,
     mandatNumber: workflow.mandatNumber || "WW-2025-XXXXX",
     startDate: new Date().toLocaleDateString("fr-CH", { day: '2-digit', month: '2-digit', year: 'numeric' }),
-    clientType: workflow.clientType || "particulier",
+    clientType: workflow.clientType || "prive",
   };
   
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);

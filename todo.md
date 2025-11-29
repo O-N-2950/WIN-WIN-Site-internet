@@ -1863,3 +1863,13 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 
 - [x] Corriger mapping `telephone` → `telMobile` dans le questionnaire
 - [x] Rendre "Nombre d'employés" obligatoire pour les entreprises (nécessaire pour calcul tarif)
+
+
+### Correction Incohérence typeClient (29 novembre 2025, 18:00)
+
+- [x] Standardiser l'utilisation de "prive" au lieu de "particulier"
+  - Identifier toutes les occurrences dans le code
+  - Remplacer dans le frontend (Questionnaire.tsx, Signature.tsx, etc.)
+  - Mettre à jour les schémas backend (workflow.ts)
+  - Tester le workflow complet
+  - Créer checkpoint et déployer
