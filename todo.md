@@ -1652,3 +1652,6 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Remplacer le formulaire Contact.tsx par ContactSimple.tsx (version basique sans composants fancy)
 
 - [ ] Corriger l'envoi de fichier PDF via formulaire de contact (fichier non envoyé à Airtable)
+
+- [x] Corriger le problème de pièce jointe qui ne s'envoie toujours pas à Airtable (suppression du champ filename)
+- [x] Rendre le champ téléphone obligatoire dans le formulaire de contact

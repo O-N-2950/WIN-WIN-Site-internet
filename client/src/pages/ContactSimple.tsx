@@ -18,8 +18,29 @@ export default function ContactSimple() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.nom || !formData.email || !formData.message) {
-      alert('Remplissez tous les champs obligatoires');
+    // Validation manuelle (car noValidate désactive HTML5 validation)
+    if (!formData.nom?.trim()) {
+      alert('❌ Le nom est requis');
+      return;
+    }
+
+    if (!formData.email?.trim() || !formData.email.includes('@')) {
+      alert('❌ Email invalide');
+      return;
+    }
+
+    if (!formData.telephone?.trim()) {
+      alert('❌ Le téléphone est requis');
+      return;
+    }
+
+    if (!formData.sujet?.trim()) {
+      alert('❌ Le sujet est requis');
+      return;
+    }
+
+    if (!formData.message?.trim()) {
+      alert('❌ Le message est requis');
       return;
     }
 

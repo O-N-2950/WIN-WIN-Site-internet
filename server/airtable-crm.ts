@@ -90,12 +90,14 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
   }
 
   if (data.attachmentUrl) {
-    console.log('[Airtable] Ajout pièce jointe:', data.attachmentUrl, data.attachmentFilename);
+    console.log('[Airtable] Ajout pièce jointe:', data.attachmentUrl);
     fields['Pièce jointe'] = [{
-      url: data.attachmentUrl,
-      filename: data.attachmentFilename || 'attachment.pdf'
+      url: data.attachmentUrl
+      // Airtable télécharge automatiquement et extrait le filename
     }];
   }
+
+  console.log('[Airtable] Payload complet:', JSON.stringify({ fields }, null, 2));
 
   try {
     const controller = new AbortController();
