@@ -1648,3 +1648,5 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 ## 🚨 URGENT - Problèmes à Corriger (28 nov 2025)
 - [x] Formulaire de contact ne fonctionne toujours pas malgré corrections CORS + Cloudinary - CORRIGÉ (CORS en dev mode)
 - [x] Mauvaise localisation Google Maps (affiche mauvais endroit au lieu de Bellevue 7, 2950 Courgenay) - CORRIGÉ
+
+- [x] Remplacer le formulaire Contact.tsx par ContactSimple.tsx (version basique sans composants fancy)

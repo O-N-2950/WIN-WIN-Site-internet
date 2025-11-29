@@ -13,7 +13,7 @@ import Pricing from "./pages/Pricing";
 import Talentis from "./pages/Talentis";
 import Durabilis from "./pages/Durabilis";
 import Synergis from "./pages/Synergis";
-import Contact from "./pages/Contact";
+import ContactSimple from "./pages/ContactSimple";
 import ProtectionJuridique from "./pages/ProtectionJuridique";
 import Questionnaire from "./pages/Questionnaire";
 import Conseil from "./pages/Conseil";
@@ -40,7 +40,7 @@ function Router() {
           <Route path="/concepts/durabilis" component={Durabilis} />
           <Route path="/concepts/synergis" component={Synergis} />
           <Route path="/a-propos" component={About} />
-          <Route path="/contact" component={Contact} />
+          <Route path="/contact" component={ContactSimple} />
           <Route path="/conseil" component={Conseil} />
           <Route path="/espace-client" component={ClientSpace} />
           <Route path="/questionnaire-info" component={Questionnaire} />
