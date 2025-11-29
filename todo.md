@@ -1840,3 +1840,26 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 ---
 
 **Dernière mise à jour** : 29 novembre 2025, 17:45
+
+### Nouvelle Amélioration Demandée (29 novembre 2025, 17:15)
+
+- [x] Rendre les champs d'adresse obligatoires dans le questionnaire
+  - Ajouter validation `required` sur les champs adresse, NPA, localité
+  - Empêcher la soumission si les champs sont vides
+  - Afficher message d'erreur clair si validation échoue
+
+### Clarification des Champs Obligatoires (29 novembre 2025, 17:20)
+
+**Règles de validation** :
+- [x] Adresse obligatoire (déjà fait)
+- [x] NPA obligatoire (déjà fait)
+- [x] Localité obligatoire (déjà fait)
+- [x] Nom obligatoire (fait)
+- [x] Prénom OPTIONNEL (confirmé - sociétés n'ont pas de prénom)
+- [x] Email obligatoire (fait)
+- [x] Téléphone mobile obligatoire (fait)
+
+### Corrections Supplémentaires (29 novembre 2025, 17:25)
+
+- [x] Corriger mapping `telephone` → `telMobile` dans le questionnaire
+- [x] Rendre "Nombre d'employés" obligatoire pour les entreprises (nécessaire pour calcul tarif)

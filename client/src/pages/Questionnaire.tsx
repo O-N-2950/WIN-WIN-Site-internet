@@ -136,6 +136,7 @@ interface QuestionnaireData {
   dateNaissance: string;
   situationFamiliale: "celibataire" | "marie" | "divorce" | "veuf" | "";
   typeClient: "prive" | "entreprise" | "les_deux" | "";
+  telMobile: string;
   
   // Données privé
   adresse: string;
@@ -165,7 +166,7 @@ export default function Questionnaire() {
     prenom: "",
     nom: "",
     email: workflow.clientEmail || "",
-    telephone: "",
+    telMobile: "",
     dateNaissance: "",
     situationFamiliale: "",
     typeClient: "",
@@ -530,7 +531,7 @@ export default function Questionnaire() {
                       </div>
 
                       <div>
-                        <Label htmlFor="nom" className="text-lg">Nom</Label>
+                        <Label htmlFor="nom" className="text-lg">Nom *</Label>
                         <Input
                           id="nom"
                           value={data.nom}
@@ -538,6 +539,7 @@ export default function Questionnaire() {
                           placeholder="Dupont"
                           className="mt-2 text-lg h-14"
                           onKeyPress={(e) => e.key === 'Enter' && nextStep()}
+                          required
                         />
                       </div>
                     </div>
@@ -568,7 +570,7 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
-                        <Label htmlFor="email" className="text-lg">Email</Label>
+                        <Label htmlFor="email" className="text-lg">Email *</Label>
                         <Input
                           id="email"
                           type="email"
@@ -577,19 +579,21 @@ export default function Questionnaire() {
                           placeholder="jean.dupont@example.com"
                           className="mt-2 text-lg h-14"
                           autoFocus
+                          required
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="telephone" className="text-lg">Téléphone</Label>
+                        <Label htmlFor="telMobile" className="text-lg">Téléphone *</Label>
                         <Input
-                          id="telephone"
+                          id="telMobile"
                           type="tel"
-                          value={data.telephone}
-                          onChange={(e) => setData({ ...data, telephone: e.target.value })}
+                          value={data.telMobile}
+                          onChange={(e) => setData({ ...data, telMobile: e.target.value })}
                           placeholder="+41 79 123 45 67"
                           className="mt-2 text-lg h-14"
                           onKeyPress={(e) => e.key === 'Enter' && nextStep()}
+                          required
                         />
                       </div>
                     </div>
@@ -794,7 +798,7 @@ export default function Questionnaire() {
                         </div>
                         
                         <div>
-                          <Label htmlFor="nombreEmployes" className="text-lg">Nombre d'employés</Label>
+                          <Label htmlFor="nombreEmployes" className="text-lg">Nombre d'employés *</Label>
                           <Input
                             id="nombreEmployes"
                             type="number"
@@ -802,6 +806,8 @@ export default function Questionnaire() {
                             onChange={(e) => setData({ ...data, nombreEmployes: parseInt(e.target.value) || 0 })}
                             placeholder="0"
                             className="mt-2 text-lg h-14"
+                            required
+                            min="0"
                           />
                         </div>
                       </motion.div>
@@ -833,7 +839,7 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
-                        <Label htmlFor="adresse" className="text-lg">Adresse</Label>
+                        <Label htmlFor="adresse" className="text-lg">Adresse *</Label>
                         <Input
                           id="adresse"
                           value={data.adresse}
@@ -841,23 +847,25 @@ export default function Questionnaire() {
                           placeholder="Rue de la Gare 15"
                           className="mt-2 text-lg h-14"
                           autoFocus
+                          required
                         />
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <Label htmlFor="npa" className="text-lg">NPA</Label>
+                          <Label htmlFor="npa" className="text-lg">NPA *</Label>
                           <Input
                             id="npa"
                             value={data.npa}
                             onChange={(e) => setData({ ...data, npa: e.target.value })}
                             placeholder="2950"
                             className="mt-2 text-lg h-14"
+                            required
                           />
                         </div>
 
                         <div>
-                          <Label htmlFor="localite" className="text-lg">Localité</Label>
+                          <Label htmlFor="localite" className="text-lg">Localité *</Label>
                           <Input
                             id="localite"
                             value={data.localite}
@@ -865,6 +873,7 @@ export default function Questionnaire() {
                             placeholder="Courgenay"
                             className="mt-2 text-lg h-14"
                             onKeyPress={(e) => e.key === 'Enter' && nextStep()}
+                            required
                           />
                         </div>
                       </div>
