@@ -1689,7 +1689,7 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 ### Corrections à Faire (Priorité)
 - [x] Corriger le priceId dynamique dans Paiement.tsx (BUG #5) - URGENT
 - [x] Corriger la redirection immédiate dans Signature.tsx (BUG #4) - URGENT
-- [ ] Déployer les corrections sur Railway
+- [x] Créer un checkpoint (version: 925c5256)
 - [ ] Tester le workflow complet
 - [ ] Corriger le type de client affiché (BUG #1) - HAUTE
 - [ ] Corriger l'activation du bouton signature (BUG #3) - HAUTE
