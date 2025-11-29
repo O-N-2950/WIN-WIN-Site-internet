@@ -30,11 +30,17 @@ export default function ContactSimple() {
 
       // Upload fichier si présent
       if (file) {
+        console.log('📎 [ContactSimple] Fichier détecté:', file.name, file.size, 'bytes');
+        console.log('📎 [ContactSimple] Début conversion base64...');
+        
         const base64 = await new Promise<string>((resolve) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result as string);
           reader.readAsDataURL(file);
         });
+
+        console.log('📎 [ContactSimple] Base64 converti, longueur:', base64.length);
+        console.log('📎 [ContactSimple] Début upload Cloudinary...');
 
         const result = await uploadFile.mutateAsync({
           base64Data: base64,
@@ -42,14 +48,20 @@ export default function ContactSimple() {
         });
         
         attachmentUrl = result.url;
+        console.log('✅ [ContactSimple] Upload Cloudinary réussi!');
+        console.log('✅ [ContactSimple] URL Cloudinary:', attachmentUrl);
+      } else {
+        console.log('ℹ️ [ContactSimple] Aucun fichier attaché');
       }
 
       // Envoyer message
+      console.log('📧 [ContactSimple] Envoi du message avec attachmentUrl:', attachmentUrl);
       await sendMessage.mutateAsync({
         ...formData,
         attachmentUrl,
         attachmentFilename: file?.name
       });
+      console.log('✅ [ContactSimple] Message envoyé avec succès!');
 
       alert('✅ Message envoyé avec succès !');
       

@@ -1650,3 +1650,5 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Mauvaise localisation Google Maps (affiche mauvais endroit au lieu de Bellevue 7, 2950 Courgenay) - CORRIGÉ
 
 - [x] Remplacer le formulaire Contact.tsx par ContactSimple.tsx (version basique sans composants fancy)
+
+- [ ] Corriger l'envoi de fichier PDF via formulaire de contact (fichier non envoyé à Airtable)
