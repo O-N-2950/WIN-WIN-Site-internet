@@ -11,7 +11,7 @@ export const contactRouter = router({
         email: z.string().email("Email invalide"),
         telephone: z.string().optional(),
         sujet: z.string().min(3, "Le sujet doit contenir au moins 3 caractères"),
-        message: z.string().min(10, "Le message doit contenir au moins 10 caractères"),
+        message: z.string().min(1, "Le message est requis"),
         attachmentUrl: z.string().url().optional(),
         attachmentFilename: z.string().optional(),
       })
@@ -58,12 +58,19 @@ export const contactRouter = router({
     )
     .mutation(async ({ input }) => {
       try {
+        console.log('[Contact] Upload attachment request received');
+        console.log('[Contact] Filename:', input.filename);
+        console.log('[Contact] Base64 length:', input.base64Data.length);
+
         // Vérifier que Cloudinary est configuré
         if (!isCloudinaryConfigured()) {
+          console.error('[Contact] Cloudinary not configured!');
           throw new Error(
             "Cloudinary n'est pas configuré. Veuillez configurer CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY et CLOUDINARY_API_SECRET dans Railway."
           );
         }
+
+        console.log('[Contact] Cloudinary is configured, starting upload...');
 
         // Upload vers Cloudinary
         const url = await uploadToCloudinary(
@@ -71,6 +78,8 @@ export const contactRouter = router({
           input.filename,
           'winwin-contact-attachments'
         );
+
+        console.log('[Contact] Upload successful, URL:', url);
 
         return {
           success: true,

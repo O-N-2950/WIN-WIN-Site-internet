@@ -365,6 +365,8 @@
 - [ ] Rapport final utilisateur
 
 
+- [x] Supprimer la validation "minimum 10 caractères" du message dans le backend
+
 ## 🎯 Finalisation Production (15 nov 2025 - Session 4)
 
 ### Phase 1 : Configuration Clés API

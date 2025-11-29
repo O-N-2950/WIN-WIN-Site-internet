@@ -32,8 +32,16 @@ export async function uploadToCloudinary(
   folder: string = 'winwin-attachments'
 ): Promise<string> {
   try {
+    console.log('[Cloudinary] Starting upload...');
+    console.log('[Cloudinary] Config check:', {
+      hasCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
+      hasApiKey: !!process.env.CLOUDINARY_API_KEY,
+      hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
+    });
+
     // Vérifier que Cloudinary est configuré
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error('[Cloudinary] Missing credentials!');
       throw new Error('Cloudinary not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in Railway.');
     }
 
@@ -43,6 +51,8 @@ export async function uploadToCloudinary(
       : `${folder}/file_${Date.now()}`;
 
     console.log('[Cloudinary] Uploading file:', publicId);
+    console.log('[Cloudinary] Base64 data length:', base64Data.length);
+    console.log('[Cloudinary] Folder:', folder);
 
     // Upload vers Cloudinary
     const result = await cloudinary.uploader.upload(base64Data, {
@@ -56,6 +66,10 @@ export async function uploadToCloudinary(
     return result.secure_url;
   } catch (error) {
     console.error('[Cloudinary] Upload error:', error);
+    console.error('[Cloudinary] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     throw new Error(`Failed to upload file to Cloudinary: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }

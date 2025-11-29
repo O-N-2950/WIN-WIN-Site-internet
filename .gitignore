@@ -105,3 +105,4 @@ temp/
 *.db
 *.sqlite
 *.sqlite3
+google-cloud-vision-key.json

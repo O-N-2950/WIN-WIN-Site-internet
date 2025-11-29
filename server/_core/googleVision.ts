@@ -1,5 +1,4 @@
 import vision from '@google-cloud/vision';
-import path from 'path';
 
 /**
  * Module Google Cloud Vision OCR pour extraction de données de polices d'assurance
@@ -8,11 +7,40 @@ import path from 'path';
  * et parser les informations clés (compagnie, numéro, type, prime, etc.)
  */
 
-// Initialiser le client Google Vision avec la clé de service
-const keyFilePath = path.join(process.cwd(), 'google-cloud-vision-key.json');
-const client = new vision.ImageAnnotatorClient({
-  keyFilename: keyFilePath,
-});
+// Initialiser le client Google Vision avec les credentials depuis la variable d'environnement
+let client: vision.ImageAnnotatorClient | null = null;
+
+const initializeVisionClient = () => {
+  const credentialsJson = process.env.GOOGLE_CLOUD_VISION_KEY_JSON;
+  
+  if (!credentialsJson) {
+    console.warn(
+      '[Google Vision] GOOGLE_CLOUD_VISION_KEY_JSON n\'est pas configuré. '
+      + 'L\'OCR sera désactivé. Veuillez ajouter la clé JSON complète dans les variables d\'environnement Railway.'
+    );
+    return null;
+  }
+  
+  try {
+    const credentials = JSON.parse(credentialsJson);
+    console.log('[Google Vision] Client initialisé avec succès');
+    return new vision.ImageAnnotatorClient({ credentials });
+  } catch (error) {
+    console.error(
+      '[Google Vision] Erreur lors du parsing de GOOGLE_CLOUD_VISION_KEY_JSON. '
+      + 'L\'OCR sera désactivé. Vérifiez que la valeur est un JSON valide.',
+      error
+    );
+    return null;
+  }
+};
+
+try {
+  client = initializeVisionClient();
+} catch (error) {
+  console.error('[Google Vision] Échec de l\'initialisation:', error);
+  client = null;
+}
 
 /**
  * Interface pour les données extraites d'une police d'assurance
@@ -38,6 +66,13 @@ export interface ExtractedPolicyData {
  * @returns Texte brut extrait
  */
 export async function extractTextFromDocument(fileUrl: string): Promise<string> {
+  if (!client) {
+    throw new Error(
+      'Google Cloud Vision n\'est pas configuré. '
+      + 'Veuillez configurer GOOGLE_CLOUD_VISION_KEY_JSON dans les variables d\'environnement.'
+    );
+  }
+  
   try {
     console.log('[Google Vision] Extraction du texte depuis:', fileUrl);
     

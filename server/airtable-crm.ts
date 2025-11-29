@@ -51,9 +51,10 @@ const AIRTABLE_CONFIG: AirtableConfig = {
 };
 
 /**
- * Timeout pour les appels Airtable API (10 secondes)
+ * Timeout pour les appels Airtable API (30 secondes)
+ * Augmenté pour éviter les timeouts sur Railway
  */
-const AIRTABLE_TIMEOUT = 10000;
+const AIRTABLE_TIMEOUT = 30000;
 
 /**
  * Créer un lead dans Airtable
@@ -88,7 +89,7 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
   }
 
   if (data.attachmentUrl) {
-    fields['Pièce jointe'] = data.attachmentUrl;
+    fields['Pièce jointe']  = [{ url: data.attachmentUrl }];
   }
 
   try {

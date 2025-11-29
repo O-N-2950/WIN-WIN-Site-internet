@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Upload, X, FileText, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button"; // Remplacé par <button> HTML natif
 import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
@@ -52,8 +52,11 @@ export default function FileUpload({
     }
 
     if (validateFile(file)) {
+      console.log('📎 [FileUpload] Fichier validé:', file.name, file.size, 'bytes');
       setSelectedFile(file);
+      console.log('📎 [FileUpload] Appel onFileSelect avec:', file);
       onFileSelect(file);
+      console.log('📎 [FileUpload] onFileSelect appelé avec succès');
     }
   };
 
@@ -169,15 +172,13 @@ export default function FileUpload({
               </p>
             </div>
 
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
               onClick={handleRemove}
-              className="flex-shrink-0 hover:bg-destructive/10 hover:text-destructive"
+              className="flex-shrink-0 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-destructive/10 hover:text-destructive h-10 w-10"
             >
               <X className="w-4 h-4" />
-            </Button>
+            </button>
           </div>
         </div>
       )}

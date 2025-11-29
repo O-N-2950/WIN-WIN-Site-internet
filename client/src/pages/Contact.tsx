@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button"; // Remplacé par <button> HTML natif
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,7 +32,40 @@ export default function Contact() {
   const sendMessageMutation = trpc.contact.sendMessage.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    // LOG AVANT TOUT pour vérifier si la fonction s'exécute
+    console.log('🚀 [Contact] handleSubmit APPELÉ !');
+    console.log('🚀 [Contact] Event type:', e.type);
+    console.log('🚀 [Contact] Event target:', e.target);
+    
+    // CRITIQUE : empêcher le comportement par défaut
     e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('=== DÉBUT SUBMIT ===');
+    console.log('[Contact] FormData:', formData);
+    console.log('[Contact] Selected file:', selectedFile);
+    
+    // Validation manuelle (car noValidate désactive HTML5 validation)
+    if (!formData.nom?.trim()) {
+      toast.error('Le nom est requis');
+      return;
+    }
+    
+    if (!formData.email?.trim() || !formData.email.includes('@')) {
+      toast.error('Email invalide');
+      return;
+    }
+    
+    if (!formData.sujet?.trim()) {
+      toast.error('Le sujet est requis');
+      return;
+    }
+    
+    if (!formData.message?.trim()) {
+      toast.error('Le message est requis');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -40,8 +73,11 @@ export default function Contact() {
       let attachmentFilename: string | undefined;
 
       // 1. Upload du fichier si présent (via backend pour sécurité)
+      console.log('[Contact] Selected file:', selectedFile);
       if (selectedFile) {
+        console.log('[Contact] Starting file upload...');
         // Convertir le fichier en base64
+        console.log('[Contact] Converting file to base64...');
         const base64 = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result as string);
@@ -50,13 +86,17 @@ export default function Contact() {
         });
 
         // Uploader via le backend (qui utilise Cloudinary)
-        const uploadResult = await trpc.contact.uploadAttachment.mutate({
+        console.log('[Contact] Base64 length:', base64.length);
+        console.log('[Contact] Calling uploadAttachment...');
+        const uploadResult = await trpc.contact.uploadAttachment.mutateAsync({
           base64Data: base64,
           filename: selectedFile.name,
         });
 
+        console.log('[Contact] Upload result:', uploadResult);
         attachmentUrl = uploadResult.url;
         attachmentFilename = selectedFile.name;
+        console.log('[Contact] Attachment URL:', attachmentUrl);
       }
 
       // 2. Envoyer le message via tRPC
@@ -80,12 +120,17 @@ export default function Contact() {
       });
       setSelectedFile(null);
     } catch (error) {
-      console.error("Erreur lors de l'envoi:", error);
+      console.error('[Contact] ERREUR DÉTAILLÉE:', error);
+      if (error instanceof Error) {
+        console.error('[Contact] Error message:', error.message);
+        console.error('[Contact] Error stack:', error.stack);
+      }
       toast.error("Erreur", {
         description: "Une erreur est survenue. Veuillez réessayer.",
       });
     } finally {
       setIsSubmitting(false);
+      console.log('=== FIN SUBMIT ===');
     }
   };
 
@@ -134,7 +179,7 @@ export default function Contact() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} noValidate className="space-y-6">
                     <div className="space-y-2">
                       <Label htmlFor="nom">Nom complet *</Label>
                       <Input
@@ -211,11 +256,10 @@ export default function Contact() {
                       </p>
                     </div>
 
-                    <Button
+                    <button
                       type="submit"
-                      size="lg"
-                      className="w-full"
                       disabled={isSubmitting}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
                     >
                       {isSubmitting ? (
                         <>
@@ -228,7 +272,7 @@ export default function Contact() {
                           Envoyer le Message
                         </>
                       )}
-                    </Button>
+                    </button>
 
                     <p className="text-sm text-muted-foreground text-center">
                       * Champs obligatoires
@@ -388,13 +432,14 @@ export default function Contact() {
 
           <div className="rounded-xl overflow-hidden shadow-xl">
             <iframe
-              src="https://www.google.com/maps/embed/v1/place?key=&q=Bellevue+7,+2950+Courgenay,+Switzerland&zoom=15"
+              src="https://www.google.com/maps?q=Bellevue+7,+2950+Courgenay,+Switzerland&output=embed&z=15"
               width="100%"
               height="450"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="Carte Google Maps - WIN WIN Finance Group"
             ></iframe>
           </div>
         </div>
