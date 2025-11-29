@@ -27,6 +27,7 @@ export const contactRouter = router({
           source: "Formulaire Contact" as const,
           message: `Sujet: ${input.sujet}\n\nMessage:\n${input.message}`,
           attachmentUrl: input.attachmentUrl,
+          attachmentFilename: input.attachmentFilename,
         };
 
         await createLeadInAirtable(leadData);

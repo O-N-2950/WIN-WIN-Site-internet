@@ -23,6 +23,7 @@ interface LeadData {
   dateRdv?: string;
   heureRdv?: string;
   attachmentUrl?: string;
+  attachmentFilename?: string;
 }
 
 interface CalBookingData {
@@ -89,7 +90,11 @@ export async function createLeadInAirtable(data: LeadData): Promise<string> {
   }
 
   if (data.attachmentUrl) {
-    fields['Pièce jointe']  = [{ url: data.attachmentUrl }];
+    console.log('[Airtable] Ajout pièce jointe:', data.attachmentUrl, data.attachmentFilename);
+    fields['Pièce jointe'] = [{
+      url: data.attachmentUrl,
+      filename: data.attachmentFilename || 'attachment.pdf'
+    }];
   }
 
   try {
