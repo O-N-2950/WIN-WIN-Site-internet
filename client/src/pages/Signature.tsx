@@ -79,6 +79,11 @@ export default function Signature() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // S'assurer que isEmpty est bien à false pendant le dessin
+    if (isEmpty) {
+      setIsEmpty(false);
+    }
+
     const rect = canvas.getBoundingClientRect();
     const x = "touches" in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
     const y = "touches" in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
@@ -291,14 +296,21 @@ export default function Signature() {
                   <div>
                     <p className="text-muted-foreground">Type de client</p>
                     <p className="font-medium">
-                      {workflow.questionnaireData?.typeClient === "prive" && "Particulier (> 22 ans)"}
-                      {workflow.questionnaireData?.typeClient === "entreprise" && "Entreprise"}
-                      {workflow.questionnaireData?.typeClient === "les_deux" && "Privé + Entreprise"}
+                      {workflow.questionnaireData?.typeClient === "particulier" && "Particulier"}
+                      {workflow.questionnaireData?.typeClient === "entreprise" && (
+                        workflow.questionnaireData?.nombreEmployes !== undefined
+                          ? `Entreprise (${workflow.questionnaireData.nombreEmployes} employé${workflow.questionnaireData.nombreEmployes > 1 ? 's' : ''})`
+                          : "Entreprise"
+                      )}
                     </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Tarif annuel</p>
-                    <p className="font-medium">CHF 185.-/an</p>
+                    <p className="font-medium">
+                      {workflow.calculatedPrice?.annualPrice !== undefined
+                        ? `CHF ${workflow.calculatedPrice.annualPrice}.-/an`
+                        : "À calculer"}
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Durée du mandat</p>
