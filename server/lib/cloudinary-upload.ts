@@ -58,7 +58,7 @@ export async function uploadToCloudinary(
     const result = await cloudinary.uploader.upload(base64Data, {
       public_id: publicId,
       resource_type: 'auto', // Détecte automatiquement le type (image, pdf, etc.)
-      folder: folder,
+      // folder: folder, // ← Supprimé car publicId contient déjà le chemin complet
     });
 
     console.log('[Cloudinary] Upload successful:', result.secure_url);

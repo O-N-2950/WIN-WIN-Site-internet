@@ -1655,3 +1655,5 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 
 - [x] Corriger le problème de pièce jointe qui ne s'envoie toujours pas à Airtable (suppression du champ filename)
 - [x] Rendre le champ téléphone obligatoire dans le formulaire de contact
+
+- [x] Corriger le problème de chemin dupliqué dans l'URL Cloudinary (winwin-contact-attachments apparaît 2 fois)
