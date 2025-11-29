@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, Building2, Calendar, Check, FileText, HelpCircle } from "lucide-react";
+import { X, Upload, Building2, Calendar, Check, FileText, HelpCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

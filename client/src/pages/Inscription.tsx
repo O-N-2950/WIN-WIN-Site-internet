@@ -92,7 +92,7 @@ export default function Inscription() {
   const { data: compagnies } = trpc.airtable.getCompanies.useQuery();
   const { data: typesContratsData } = trpc.airtable.getContractTypes.useQuery();
   const typesContrats = typesContratsData?.contractTypes || [];
-  const createClientMutation = trpc.client.create.useMutation();
+  const createClientMutation = trpc.customers.create.useMutation();
   const createContractsMutation = trpc.contract.createMultiple.useMutation();
 
   // Calculer la prime annuelle selon la fréquence

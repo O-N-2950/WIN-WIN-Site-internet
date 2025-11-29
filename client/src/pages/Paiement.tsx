@@ -35,9 +35,52 @@ export default function Paiement() {
     setIsProcessing(true);
 
     try {
+      console.log('🔵 Paiement déclenché');
+      console.log('📊 Données client:', {
+        type: workflow.questionnaireData?.typeClient,
+        age: workflow.questionnaireData?.dateNaissance,
+        employeeCount: workflow.questionnaireData?.nombreEmployes
+      });
+      
+      // Calculer dynamiquement le priceId selon le tarif
+      let priceId: string;
+      
+      if (workflow.questionnaireData?.typeClient === "particulier") {
+        // Calculer l'âge depuis la date de naissance
+        const birthDate = workflow.questionnaireData.dateNaissance;
+        const age = birthDate ? new Date().getFullYear() - new Date(birthDate).getFullYear() : 25;
+        
+        if (age >= 18 && age <= 22) {
+          priceId = "price_1STlgKDevWYEIiJ8QqZu9R52"; // Particulier 18-22 ans : CHF 85.-/an
+        } else {
+          priceId = "price_1STlgKDevWYEIiJ8ExMQznN7"; // Particulier > 22 ans : CHF 185.-/an
+        }
+      } else {
+        // Entreprise
+        const employeeCount = workflow.questionnaireData?.nombreEmployes || 0;
+        
+        if (employeeCount === 0) {
+          priceId = "price_1STlgLDevWYEIiJ8fpjNpgAn"; // 0 employé : CHF 160.-/an
+        } else if (employeeCount === 1) {
+          priceId = "price_1STlgLDevWYEIiJ8TtUOdeBY"; // 1 employé : CHF 260.-/an
+        } else if (employeeCount === 2) {
+          priceId = "price_1STlgMDevWYEIiJ8LcVUCBzI"; // 2 employés : CHF 360.-/an
+        } else if (employeeCount >= 3 && employeeCount <= 5) {
+          priceId = "price_1STlgMDevWYEIiJ8lnbNPxVe"; // 3-5 employés : CHF 460.-/an
+        } else if (employeeCount >= 6 && employeeCount <= 10) {
+          priceId = "price_1STlgNDevWYEIiJ8WHVYyo0l"; // 6-10 employés : CHF 560.-/an
+        } else if (employeeCount >= 11 && employeeCount <= 20) {
+          priceId = "price_1STlgNDevWYEIiJ8jQRDvTuS"; // 11-20 employés : CHF 660.-/an
+        } else if (employeeCount >= 21 && employeeCount <= 30) {
+          priceId = "price_1STlgNDevWYEIiJ8r1Ysxivn"; // 21-30 employés : CHF 760.-/an
+        } else {
+          priceId = "price_1STlgODevWYEIiJ8vMjiO56u"; // 31+ employés : CHF 860.-/an
+        }
+      }
+      
+      console.log('✅ PriceId calculé:', priceId);
+      
       // Créer Stripe Checkout Session via tRPC
-      // TODO: Calculer le priceId selon le tarif
-      const priceId = "price_1S4IHpClI3EKhVGDCpJKmqEz"; // Par défaut: Particulier > 22 ans
       
       const session = await createCheckoutMutation.mutateAsync({
         priceId,

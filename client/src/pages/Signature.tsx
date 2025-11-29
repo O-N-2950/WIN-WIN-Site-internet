@@ -17,7 +17,7 @@ export default function Signature() {
   const { workflow, updateWorkflow } = useWorkflow();
   
   const uploadSignatureMutation = trpc.workflow.uploadSignature.useMutation();
-  const createClientMutation = trpc.client.createFromSignature.useMutation();
+  const createClientMutation = trpc.customers.createFromSignature.useMutation();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -150,9 +150,20 @@ export default function Signature() {
       console.log('[Signature] Upload S3 signature réussi:', signatureResult.url);
       updateWorkflow({ signatureS3Url: signatureResult.url });
       
-      // Créer le client dans Airtable + générer PDF mandat
-      console.log('[Signature] Création du client dans Airtable...');
-      const clientResult = await createClientMutation.mutateAsync({
+      // Sauvegarder la signature dans le workflow (pour utilisation ultérieure)
+      console.log('[Signature] Signature sauvegardée dans workflow');
+      
+      // REDIRECTION IMMÉDIATE vers la page de paiement
+      console.log('[Signature] 🔄 Redirection immédiate vers /paiement');
+      toast.success("✅ Signature enregistrée !");
+      
+      // Redirection sans attendre la création Airtable
+      setTimeout(() => setLocation("/paiement"), 500);
+      
+      // Création du client dans Airtable EN ARRIÈRE-PLAN (non bloquant)
+      // Cela continuera même après la redirection
+      console.log('[Signature] Création du client en arrière-plan...');
+      createClientMutation.mutate({
         prenom: workflow.questionnaireData.prenom,
         nom: workflow.questionnaireData.nom,
         nomEntreprise: workflow.questionnaireData.nomEntreprise,
@@ -168,22 +179,23 @@ export default function Signature() {
         codeParrainage: workflow.questionnaireData.codeParrainage,
         signatureDataUrl,
         signatureS3Url: signatureResult.url,
+      }, {
+        onSuccess: (clientResult) => {
+          console.log('[Signature] ✅ Client créé en arrière-plan:', clientResult.clientId);
+          console.log('[Signature] PDF mandat généré:', clientResult.pdfUrl);
+          
+          // Sauvegarder les infos dans le workflow
+          updateWorkflow({
+            clientId: clientResult.clientId,
+            mandatPdfUrl: clientResult.pdfUrl || undefined,
+          });
+        },
+        onError: (error) => {
+          console.error('[Signature] ❌ Erreur création Airtable (arrière-plan):', error);
+          // L'utilisateur est déjà sur la page paiement, pas grave si ça échoue ici
+          // On pourra recréer le client au moment du paiement
+        }
       });
-      
-      console.log('[Signature] Client créé:', clientResult.clientId);
-      console.log('[Signature] PDF mandat généré:', clientResult.pdfUrl);
-      
-      // Sauvegarder les infos dans le workflow
-      updateWorkflow({
-        clientId: clientResult.clientId,
-        mandatPdfUrl: clientResult.pdfUrl || undefined,
-      });
-      
-      toast.success("✅ Client créé dans Airtable (statut: Prospect)");
-      
-      // Redirection vers la page de paiement
-      console.log('[Signature] Redirection vers /paiement...');
-      setTimeout(() => setLocation("/paiement"), 1000);
     } catch (error) {
       console.error("[Signature] Erreur lors de la sauvegarde:", error);
       

@@ -12,6 +12,8 @@ export interface WorkflowData {
   
   // Étape 2: Informations client
   clientName: string;
+  firstName?: string;
+  lastName?: string;
   clientEmail: string;
   clientType: 'particulier' | 'entreprise';
   clientAge?: number;

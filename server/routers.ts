@@ -26,7 +26,7 @@ export const appRouter = router({
   contact: contactRouter,
   ocr: ocrRouter,
   airtable: airtableRouter,
-  client: clientRouter,
+  customers: clientRouter,
   clientV2: clientRouterV2,
   contract: contractRouter,
   // stripeWebhook: stripeWebhookRouter, // Non utilisé - webhook géré par Express directement

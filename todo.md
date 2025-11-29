@@ -1657,3 +1657,40 @@ Remplacer le formulaire de RDV manuel par Cal.com pour permettre aux clients de 
 - [x] Rendre le champ téléphone obligatoire dans le formulaire de contact
 
 - [x] Corriger le problème de chemin dupliqué dans l'URL Cloudinary (winwin-contact-attachments apparaît 2 fois)
+
+
+## 🐛 Débogage Workflow (29 nov 2025)
+
+### Bugs Critiques Identifiés
+- [x] Corriger le conflit router 'client' en 'customers'
+- [ ] Corriger le bouton de paiement Stripe qui ne répond pas
+- [ ] Corriger le type de client affiché (Entreprise → Particulier)
+- [ ] Corriger la redirection après signature (questionnaire → paiement)
+- [ ] Tester le workflow complet de bout en bout
+- [ ] Vérifier la création automatique du client dans Airtable après paiement
+
+### Tâches Précédentes Complétées
+- [x] Corriger le problème de chemin dupliqué dans l'URL Cloudinary
+- [x] Documenter la solution Cloudinary dans Notion pour référence future
+
+
+## 🐛 Débogage Workflow (29 nov 2025)
+- [x] Corriger le conflit router 'client' en 'customers'
+- [x] Tester le workflow complet (questionnaire + signature + paiement)
+- [x] Documenter tous les bugs identifiés
+
+### Bugs Critiques Identifiés
+- ❌ **BUG #1** : Type de client incorrect (affiche "Entreprise" au lieu de "Particulier")
+- ❌ **BUG #2** : Données d'adresse manquantes sur page signature
+- ❌ **BUG #3** : Bouton "Valider et Continuer" ne s'active pas automatiquement après signature
+- ❌ **BUG #4** : Redirection après signature ne fonctionne pas (reste sur /signature)
+- ❌ **BUG #5** : Bouton "Payer CHF 185.-" ne répond pas (BLOQUANT)
+
+### Corrections à Faire (Priorité)
+- [x] Corriger le priceId dynamique dans Paiement.tsx (BUG #5) - URGENT
+- [x] Corriger la redirection immédiate dans Signature.tsx (BUG #4) - URGENT
+- [ ] Déployer les corrections sur Railway
+- [ ] Tester le workflow complet
+- [ ] Corriger le type de client affiché (BUG #1) - HAUTE
+- [ ] Corriger l'activation du bouton signature (BUG #3) - HAUTE
+- [ ] Ajouter les champs d'adresse (BUG #2) - MOYENNE
