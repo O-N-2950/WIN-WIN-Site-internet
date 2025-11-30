@@ -1893,3 +1893,56 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Déployer sur Railway et valider en production
 
 **Raison** : manus-mcp-cli n'existe pas sur Railway → Création client impossible en production
+
+
+## 🎯 Email de Bienvenue et Système de Parrainage (30 nov 2025)
+
+### Phase 1 : Email de Bienvenue Automatique
+- [x] Installer Resend (resend@6.4.2)
+- [x] Créer service email (server/lib/email-service.ts)
+- [x] Configurer domaine winwin.swiss dans Resend
+- [x] Vérifier enregistrements DNS (SPF, DKIM)
+- [x] Intégrer envoi email dans webhook Stripe
+- [x] Template HTML professionnel avec informations client
+- [x] Tests envoi email (contact@winwin.swiss vérifié)
+
+### Phase 2 : Système de Parrainage Viral
+- [x] Créer section parrainage dans email de bienvenue
+- [x] Code de parrainage récupéré depuis Airtable
+- [x] 3 boutons de partage (WhatsApp, Email, SMS)
+- [x] Messages pré-remplis avec code de parrainage
+- [x] Tableau des rabais de groupe (2-10+ membres)
+- [x] Calcul dynamique des prix selon montant payé
+- [x] Textes adaptés pour particuliers ET entreprises
+- [x] Ajouter "ami(e)" dans relations familiales Airtable
+
+### Phase 3 : Pages Explicatives Rabais de Groupe
+- [x] Section complète sur /pricing (tarifs)
+- [x] Tableau des rabais avec exemples concrets
+- [x] Exemples famille (5 personnes = CHF 92.50 d'économie)
+- [x] Exemples entreprise (5 membres = CHF 36.- d'économie)
+- [x] Call-to-action "Parlez-en à votre entourage"
+- [x] Encadré rappel sur /paiement (avant bouton)
+- [x] Lien vers section rabais sur /pricing
+
+### Résumé des Modifications
+- ✅ Email de bienvenue envoyé automatiquement après paiement
+- ✅ Code de parrainage unique par client (depuis Airtable)
+- ✅ Système de rabais : 4% (2 membres) → 20% MAX (10+ membres)
+- ✅ Tableau dynamique adapté au montant payé (CHF 185.-, CHF 260.-, etc.)
+- ✅ Messages de partage universels (famille + amis + collaborateurs)
+- ✅ Explication du système AVANT le paiement (pages /pricing et /paiement)
+- ✅ Domaine winwin.swiss vérifié dans Resend
+
+### Tests Réalisés
+- ✅ Email test envoyé à olivier.neukomm@bluewin.ch
+- ✅ Code de parrainage correct (OLIV-SELS)
+- ✅ Tableau dynamique CHF 260.- (entreprise)
+- ✅ Boutons WhatsApp/Email/SMS fonctionnels
+- ✅ Serveur de développement opérationnel
+
+### Prochaines Étapes
+- [ ] Déployer sur GitHub → Railway
+- [ ] Tester workflow complet en production
+- [ ] Vérifier réception emails clients réels
+- [ ] Monitorer taux de conversion parrainage

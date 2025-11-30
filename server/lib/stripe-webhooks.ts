@@ -1,7 +1,8 @@
 import Stripe from "stripe";
 import { ENV } from "../_core/env";
 import { sendOwnerNotificationEmail } from "../email";
-import { updateClientAfterPayment } from "../airtable-crm";
+import { updateClientAfterPayment, getClientByEmail } from "../airtable-crm";
+import { sendWelcomeEmail } from "./email-service";
 
 const stripe = new Stripe(ENV.stripeSecretKey, {
   apiVersion: "2025-10-29.clover",
@@ -102,9 +103,36 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
     console.error(`[Stripe Webhook] Erreur mise à jour Airtable pour ${customerEmail}:`, error);
   }
 
+  // Récupérer les données complètes du client depuis Airtable
+  let clientData: any = null;
+  try {
+    clientData = await getClientByEmail(customerEmail);
+    if (!clientData) {
+      console.error(`[Stripe Webhook] Impossible de récupérer les données du client ${customerEmail}`);
+    }
+  } catch (error) {
+    console.error(`[Stripe Webhook] Erreur récupération données client:`, error);
+  }
+
+  // Envoyer l'email de bienvenue au client
+  if (clientData) {
+    try {
+      await sendWelcomeEmail({
+        email: customerEmail,
+        prenom: clientData.prenom || '',
+        nom: clientData.nom || '',
+        pdfMandatUrl: clientData.pdfMandatUrl || '',
+        codeParrainage: clientData.codeParrainage || '',
+        montantPaye: amount,
+      });
+      console.log(`[Stripe Webhook] Email de bienvenue envoyé à ${customerEmail}`);
+    } catch (error) {
+      console.error(`[Stripe Webhook] Erreur envoi email de bienvenue:`, error);
+    }
+  }
+
   // Envoyer notification email à Olivier
   try {
-    // TODO: Récupérer le nom du client depuis Airtable pour personnaliser
     console.log(`[Stripe Webhook] Notification: Paiement reçu de ${customerEmail} - CHF ${amount.toFixed(2)}`);
     console.log(`[Stripe Webhook] Prochaine facturation: ${nextBillingDate.toLocaleDateString("fr-CH")}`);
     // Note: sendOwnerNotificationEmail nécessite 6 paramètres, à implémenter après récupération des données client

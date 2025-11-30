@@ -543,3 +543,84 @@ export async function updateClientAfterPayment(data: PaymentUpdateData): Promise
     throw error;
   }
 }
+
+/**
+ * Interface pour les données client récupérées depuis Airtable
+ */
+export interface ClientRecord {
+  id: string;
+  prenom?: string;
+  nom?: string;
+  email: string;
+  telMobile?: string;
+  adresse?: string;
+  npa?: number;
+  localite?: string;
+  typeClient?: string;
+  codeParrainage?: string;
+  pdfMandatUrl?: string;
+  montantPaye?: number;
+}
+
+/**
+ * Récupérer les données complètes d'un client par email
+ * 
+ * @param email - Email du client
+ * @returns Les données du client ou null si non trouvé
+ */
+export async function getClientByEmail(email: string): Promise<ClientRecord | null> {
+  const filterFormula = `{Email}='${email.replace(/'/g, "\\'")}'`;
+  const searchUrl = `https://api.airtable.com/v0/${CLIENTS_TABLE_CONFIG.baseId}/${encodeURIComponent(CLIENTS_TABLE_CONFIG.tableId)}?filterByFormula=${encodeURIComponent(filterFormula)}`;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), AIRTABLE_TIMEOUT);
+    
+    const response = await fetch(searchUrl, {
+      headers: {
+        'Authorization': `Bearer ${CLIENTS_TABLE_CONFIG.apiKey}`,
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur recherche client:', errorText);
+      return null;
+    }
+
+    const result = await response.json();
+
+    if (result.records.length === 0) {
+      console.log(`[Airtable] Client non trouvé avec email: ${email}`);
+      return null;
+    }
+
+    const record = result.records[0];
+    const fields = record.fields;
+
+    return {
+      id: record.id,
+      prenom: fields['Prénom'] || '',
+      nom: fields['Nom'] || '',
+      email: fields['Email'] || email,
+      telMobile: fields['Tél. Mobile'] || '',
+      adresse: fields['Adresse et no'] || '',
+      npa: fields['NPA'],
+      localite: fields['Localité'] || '',
+      typeClient: fields['Type de client'] || '',
+      codeParrainage: fields['Code Parrainage'] || '',
+      pdfMandatUrl: fields['Mandat signé']?.[0]?.url || '',
+      montantPaye: fields['Montant dernier paiement'] || 0,
+    };
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.error('[Airtable] Timeout lors de la recherche du client');
+      return null;
+    }
+    console.error('[Airtable] Erreur:', error);
+    return null;
+  }
+}
