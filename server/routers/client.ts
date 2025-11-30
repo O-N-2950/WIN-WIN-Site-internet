@@ -10,11 +10,11 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../_core/trpc';
 import {
-  createAirtableClient,
-  updateAirtableClient,
+  createClientInAirtable,
+  updateClientInAirtable,
   findClientByEmail,
   type ClientData,
-} from '../lib/airtable';
+} from '../lib/airtable-crm';
 import { generateMandatPDF, type MandatData } from '../pdf-generator';
 import { storagePut } from '../storage';
 import { generateFamilyCode } from '../lib/parrainage';
@@ -88,7 +88,7 @@ export const clientRouter = router({
       };
       
       // Créer le client dans Airtable
-      const recordId = await createAirtableClient(clientData);
+      const recordId = await createClientInAirtable(clientData);
       
       console.log('[Client Router] Client created successfully:', recordId);
       
@@ -200,7 +200,7 @@ export const clientRouter = router({
             Language: 'Français',
           };
           
-          const recordIdPrive = await createAirtableClient(clientDataPrive);
+          const recordIdPrive = await createClientInAirtable(clientDataPrive);
           console.log('[Client Router] Client PRIVÉ created:', recordIdPrive);
           
           // 4b. Générer PDF mandat PRIVÉ
@@ -239,7 +239,7 @@ export const clientRouter = router({
             Language: 'Français',
           };
           
-          const recordIdEntreprise = await createAirtableClient(clientDataEntreprise);
+          const recordIdEntreprise = await createClientInAirtable(clientDataEntreprise);
           console.log('[Client Router] Client ENTREPRISE created:', recordIdEntreprise);
           
           // 4d. Générer PDF mandat ENTREPRISE
@@ -289,7 +289,7 @@ export const clientRouter = router({
           Language: 'Français',
         };
         
-        const recordId = await createAirtableClient(clientData);
+        const recordId = await createClientInAirtable(clientData);
         console.log('[Client Router] Client created in Airtable:', recordId);
         
         return {
@@ -342,7 +342,7 @@ export const clientRouter = router({
         updates['Stripe Subscription ID'] = input.stripeSubscriptionId;
       }
       
-      await updateAirtableClient(input.clientId, updates);
+      await updateClientInAirtable(input.clientId, updates);
       
       console.log('[Client Router] Client status updated successfully');
       

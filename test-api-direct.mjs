@@ -4,7 +4,7 @@
  * Test API direct du workflow - appel aux procédures tRPC via HTTP
  */
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'https://www.winwin.swiss';
 
 console.log('🧪 Test API Direct WIN WIN\n');
 

@@ -13,4 +13,5 @@ export const ENV = {
   backendUrl: process.env.BACKEND_URL ?? "http://localhost:3000",
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+  airtableApiKey: process.env.AIRTABLE_API_KEY ?? "",
 };

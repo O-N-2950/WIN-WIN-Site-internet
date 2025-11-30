@@ -1882,3 +1882,14 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
   - Corriger le chemin dans pdf-generator.ts
   - Vérifier que le fichier est bien inclus dans le build
   - Tester en local puis déployer
+
+
+### 🚨 CORRECTION CRITIQUE - Airtable MCP → API REST (30 novembre 2025, 19:00)
+
+- [x] Créer server/lib/airtable-crm.ts avec API REST native
+- [x] Remplacer tous les appels MCP dans client.ts
+- [x] Configurer AIRTABLE_API_KEY dans les variables d'environnement
+- [ ] Tester la création de client en local
+- [ ] Déployer sur Railway et valider en production
+
+**Raison** : manus-mcp-cli n'existe pas sur Railway → Création client impossible en production
