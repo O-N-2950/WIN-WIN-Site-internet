@@ -219,6 +219,16 @@ export default function Questionnaire() {
   };
 
   const validateCurrentStep = (): boolean => {
+    console.log('🔍 VALIDATION STEP', currentStep);
+    console.log('📊 État data complet:', data);
+    console.log('📧 Email:', data.email, '| Type:', typeof data.email, '| Length:', data.email?.length);
+    console.log('📱 TelMobile:', data.telMobile, '| Type:', typeof data.telMobile, '| Length:', data.telMobile?.length);
+    console.log('✅ Conditions:', {
+      hasEmail: !!data.email,
+      hasTelMobile: !!data.telMobile,
+      willPass: !!(data.email && data.telMobile)
+    });
+    
     switch (currentStep) {
       case 1:
         if (!data.prenom || !data.nom) {
