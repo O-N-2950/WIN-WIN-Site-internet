@@ -24,7 +24,7 @@ export interface ClientData {
 export async function generateMandatPDF(clientData: ClientData): Promise<Buffer> {
   try {
     // Charger le template PDF
-    const templatePath = path.join(__dirname, 'templates', 'mandat-template.pdf');
+    const templatePath = path.join(process.cwd(), 'server', 'templates', 'mandat-template.pdf');
     const templateBytes = await fs.readFile(templatePath);
     
     // Charger le PDF

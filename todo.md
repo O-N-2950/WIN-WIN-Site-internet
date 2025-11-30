@@ -1873,3 +1873,12 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
   - Mettre à jour les schémas backend (workflow.ts)
   - Tester le workflow complet
   - Créer checkpoint et déployer
+
+
+### Correction Fichier Manquant Déploiement (29 novembre 2025, 18:15)
+
+- [x] Corriger le problème de mandat-template.pdf manquant dans Railway
+  - Identifier la cause (chemin incorrect ou fichier non copié)
+  - Corriger le chemin dans pdf-generator.ts
+  - Vérifier que le fichier est bien inclus dans le build
+  - Tester en local puis déployer

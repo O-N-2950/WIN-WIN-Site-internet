@@ -49,9 +49,8 @@ export interface MandatData {
 export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
   try {
     // 1. Charger le template PDF officiel
-    const templatePath = __dirname 
-      ? join(__dirname, 'templates', 'mandat-template.pdf')
-      : '/home/ubuntu/winwin-website/server/templates/mandat-template.pdf';
+    // Utiliser process.cwd() pour fonctionner en dev et prod
+    const templatePath = join(process.cwd(), 'server', 'templates', 'mandat-template.pdf');
     const templateBytes = await readFile(templatePath);
     const pdfDoc = await PDFDocument.load(templateBytes);
     
