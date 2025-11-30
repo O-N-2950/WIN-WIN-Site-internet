@@ -373,7 +373,7 @@ export default function Services() {
               className="flex flex-col sm:flex-row gap-4 justify-center pt-6"
             >
               <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground group">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white group">
                   Souscrire au Mandat
                   <Zap className="ml-2 w-5 h-5 group-hover:rotate-12 transition-transform" />
                 </Button>

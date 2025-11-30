@@ -101,7 +101,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link href={ROUTES.questionnaire}>
-                  <Button className="w-full">Commencer</Button>
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white">Commencer</Button>
                 </Link>
               </Card>
             </motion.div>
@@ -138,7 +138,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link href={ROUTES.questionnaire}>
-                  <Button className="w-full">Commencer</Button>
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white">Commencer</Button>
                 </Link>
               </Card>
             </motion.div>
@@ -175,7 +175,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link href={ROUTES.questionnaire}>
-                  <Button className="w-full">Commencer</Button>
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white">Commencer</Button>
                 </Link>
               </Card>
             </motion.div>
@@ -247,7 +247,7 @@ export default function Pricing() {
               className="mt-8 text-center"
             >
               <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Demandez Conseil
                 </Button>
               </Link>
@@ -633,7 +633,7 @@ export default function Pricing() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={ROUTES.questionnaire}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Demandez Conseil
                 </Button>
               </Link>

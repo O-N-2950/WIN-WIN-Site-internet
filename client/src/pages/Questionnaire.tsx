@@ -228,7 +228,7 @@ export default function Questionnaire() {
         }
         return true;
       case 2:
-        if (!data.email || !data.telephone) {
+        if (!data.email || !data.telMobile) {
           toast.error("Veuillez renseigner votre email et téléphone");
           return false;
         }

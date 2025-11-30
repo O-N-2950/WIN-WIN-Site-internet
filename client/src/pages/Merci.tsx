@@ -223,7 +223,7 @@ export default function Merci() {
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
-                  <Button className="w-full" variant="default">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white" variant="default">
                     Ouvrir l'Espace Client
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>

@@ -35,7 +35,7 @@ export default function Durabilis() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Demandez Conseil
                 </Button>
               </Link>
@@ -406,7 +406,7 @@ export default function Durabilis() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Demandez Conseil
                 </Button>
               </Link>

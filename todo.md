@@ -1946,3 +1946,25 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Tester workflow complet en production
 - [ ] Vérifier réception emails clients réels
 - [ ] Monitorer taux de conversion parrainage
+
+
+## 🚨 BUG CRITIQUE - Contraste Boutons (30 nov 2025)
+
+### Problème Identifié
+- [ ] Boutons d'action invisibles (texte blanc sur fond blanc)
+- [ ] Affecte page /tarifs (boutons "Devenir Client")
+- [ ] Vérifier toutes les autres pages du site
+- [ ] Corriger les classes CSS des boutons
+- [ ] Tester sur mobile et desktop
+- [ ] Déployer les corrections
+
+
+## 🚨 BUG BLOQUANT - Questionnaire Étape 2 (30 nov 2025)
+
+### Problème Identifié
+- [ ] Étape 2 bloquée malgré email et téléphone remplis
+- [ ] Bouton "Suivant" ne s'active pas
+- [ ] Vérifier logique de validation des champs
+- [ ] Tester après correction
+
+- [ ] Améliorer visibilité bouton "Joindre document" dans formulaire contact

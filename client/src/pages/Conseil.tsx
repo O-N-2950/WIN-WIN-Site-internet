@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTACT_INFO } from "@/const";
-import { Phone, Calendar, Mail, ArrowRight, CheckCircle2, Clock, MessageSquare } from "lucide-react";
+import { Phone, Calendar, Mail, ArrowRight, CheckCircle2, Clock, MessageSquare, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -489,17 +489,20 @@ export default function Conseil() {
                         />
                       </div>
 
-                      <div>
-                        <Label htmlFor="file">Joindre un document (optionnel)</Label>
+                      <div className="p-4 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 hover:border-primary/50 transition-colors">
+                        <Label htmlFor="file" className="text-base font-semibold flex items-center gap-2">
+                          <Upload className="w-5 h-5 text-primary" />
+                          Joindre un document (optionnel)
+                        </Label>
                         <Input
                           id="file"
                           type="file"
                           accept=".pdf,.jpg,.jpeg,.png"
                           onChange={handleFileChange}
-                          className="cursor-pointer"
+                          className="cursor-pointer mt-2 border-primary/30"
                         />
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Formats acceptés : PDF, JPG, PNG (max 10 MB)
+                        <p className="text-sm text-muted-foreground mt-2">
+                          📎 Formats acceptés : PDF, JPG, PNG (max 10 MB)
                         </p>
                         
                         {selectedFile && (
