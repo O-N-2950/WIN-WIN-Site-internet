@@ -132,11 +132,10 @@ interface QuestionnaireData {
   prenom: string;
   nom: string;
   email: string;
-  telephone: string;
+  telMobile: string;
   dateNaissance: string;
   situationFamiliale: "celibataire" | "marie" | "divorce" | "veuf" | "";
   typeClient: "prive" | "entreprise" | "les_deux" | "";
-  telMobile: string;
   
   // Données privé
   adresse: string;
@@ -995,7 +994,7 @@ export default function Questionnaire() {
                         <p className="text-sm text-muted-foreground">
                           {data.prenom} {data.nom}<br />
                           {data.email}<br />
-                          {data.telephone}
+                          {data.telMobile}
                         </p>
                       </div>
 

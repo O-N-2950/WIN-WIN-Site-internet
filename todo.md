@@ -1968,3 +1968,5 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Tester après correction
 
 - [ ] Améliorer visibilité bouton "Joindre document" dans formulaire contact
+
+- [ ] Supprimer champ 'telephone' obsolète de l'interface QuestionnaireData
