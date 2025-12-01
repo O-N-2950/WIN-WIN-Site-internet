@@ -2046,5 +2046,5 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Design professionnel avec couleurs WIN WIN
 - [x] Inclure total, détails par catégorie, marge sécurité
 - [x] Styles CSS @media print pour impression propre
-- [ ] Créer checkpoint
+- [x] Créer checkpoint
 - [ ] Push sur GitHub
