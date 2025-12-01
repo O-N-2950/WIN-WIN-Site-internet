@@ -2026,6 +2026,6 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Bouton désactivé si champs manquants
 - [x] Améliorer format email (Version 1 Professionnelle)
 - [x] Corriger format date (JJ.MM.AAAA)
-- [ ] Créer checkpoint
+- [x] Créer checkpoint
 - [ ] Push sur GitHub
 - [ ] Railway déploiement automatique
