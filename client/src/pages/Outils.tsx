@@ -259,6 +259,36 @@ export default function Outils() {
           {step === 4 && (
             <div className="step-animation">
               
+              {/* BOUTON RETOUR EN HAUT */}
+              <div style={{ marginBottom: '20px' }}>
+                <button 
+                  onClick={() => navigate(1)} 
+                  style={{ 
+                    background: 'white', 
+                    border: `2px solid ${THEME.primary}`, 
+                    color: THEME.primary, 
+                    padding: '12px 24px', 
+                    borderRadius: '10px', 
+                    fontWeight: 'bold', 
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = THEME.primary;
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.color = THEME.primary;
+                  }}
+                >
+                  ← Modifier l'inventaire
+                </button>
+              </div>
+
               {/* CARD RESULTAT */}
               <div style={{ textAlign: 'center', padding: '30px', background: `linear-gradient(135deg, ${THEME.primary} 0%, #1e40af 100%)`, color: 'white', borderRadius: '20px', marginBottom: '20px' }}>
                 <div style={{ opacity: 0.8, fontSize: '0.9rem' }}>VALEUR À ASSURER (Sécurité incluse)</div>

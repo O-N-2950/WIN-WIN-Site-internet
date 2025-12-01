@@ -2027,5 +2027,13 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Améliorer format email (Version 1 Professionnelle)
 - [x] Corriger format date (JJ.MM.AAAA)
 - [x] Créer checkpoint
-- [ ] Push sur GitHub
+- [x] Push sur GitHub
 - [ ] Railway déploiement automatique
+
+### Phase 6 : Correction UX - Bouton Retour Étape 4
+- [x] Ajouter bouton "← Modifier l'inventaire" à l'étape 4
+- [x] Permettre retour aux étapes 1-3 depuis l'étape 4
+- [x] Conserver les valeurs du formulaire si retour en arrière (state React)
+- [x] Tester le parcours complet (aller-retour)
+- [ ] Créer checkpoint
+- [ ] Push sur GitHub
