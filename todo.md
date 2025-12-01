@@ -2035,5 +2035,5 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Permettre retour aux étapes 1-3 depuis l'étape 4
 - [x] Conserver les valeurs du formulaire si retour en arrière (state React)
 - [x] Tester le parcours complet (aller-retour)
-- [ ] Créer checkpoint
+- [x] Créer checkpoint
 - [ ] Push sur GitHub
