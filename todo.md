@@ -2036,4 +2036,15 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Conserver les valeurs du formulaire si retour en arrière (state React)
 - [x] Tester le parcours complet (aller-retour)
 - [x] Créer checkpoint
+- [x] Push sur GitHub
+
+### Phase 7 : Récapitulatif Détaillé + PDF
+- [x] Ajouter tableau récapitulatif par catégorie à l'étape 4
+- [x] Afficher les montants de chaque catégorie (Salon, Cuisine, Loisirs)
+- [x] Implémenter génération PDF côté client (window.print)
+- [x] Bouton "📄 Télécharger mon estimation PDF"
+- [x] Design professionnel avec couleurs WIN WIN
+- [x] Inclure total, détails par catégorie, marge sécurité
+- [x] Styles CSS @media print pour impression propre
+- [ ] Créer checkpoint
 - [ ] Push sur GitHub

@@ -299,6 +299,71 @@ export default function Outils() {
                 </div>
               </div>
 
+              {/* RÉCAPITULATIF DÉTAILLÉ */}
+              <div style={{ background: 'white', borderRadius: '16px', padding: '20px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
+                <h3 style={{ color: THEME.primary, fontSize: '1.1rem', marginBottom: '15px', borderBottom: '2px solid #f1f5f9', paddingBottom: '10px' }}>
+                  📋 Détail de votre inventaire
+                </h3>
+                <div style={{ display: 'grid', gap: '8px' }}>
+                  {[
+                    { label: '🛋️ Salon & Séjour', categories: [{ name: 'Canapés & Fauteuils', val: values.canape }, { name: 'Multimédia (TV, PC)', val: values.media }, { name: 'Meubles & Déco', val: values.meubles }] },
+                    { label: '👗 Dressing & Cuisine', categories: [{ name: 'Cuisine (Vaisselle, Robots)', val: values.cuisine }, { name: 'Habits & Chaussures', val: values.habits }] },
+                    { label: '🚲 Loisirs & Cave', categories: [{ name: 'Matériel de Sport', val: values.sport }, { name: 'Vins & Spiritueux', val: values.vin }, { name: 'Divers (Cave, Outils)', val: values.autre }] }
+                  ].map((section, idx) => (
+                    <div key={idx} style={{ marginBottom: '15px' }}>
+                      <div style={{ fontWeight: 'bold', color: THEME.text, marginBottom: '8px', fontSize: '0.9rem' }}>{section.label}</div>
+                      {section.categories.map((cat, i) => (
+                        cat.val > 0 && (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: '#f8fafc', borderRadius: '6px', marginBottom: '4px', fontSize: '0.85rem' }}>
+                            <span style={{ color: THEME.textLight }}>{cat.name}</span>
+                            <span style={{ fontWeight: 'bold', color: THEME.primary }}>{cat.val.toLocaleString('fr-CH')} CHF</span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  ))}
+                  <div style={{ borderTop: '2px solid #e2e8f0', paddingTop: '10px', marginTop: '10px', display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1rem' }}>
+                    <span>Total (avant marge)</span>
+                    <span style={{ color: THEME.primary }}>{total.toLocaleString('fr-CH')} CHF</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: THEME.textLight }}>
+                    <span>Marge de sécurité (+10%)</span>
+                    <span>+{Math.round(total * 0.10).toLocaleString('fr-CH')} CHF</span>
+                  </div>
+                </div>
+
+                {/* BOUTON PDF */}
+                <button 
+                  onClick={() => window.print()}
+                  style={{ 
+                    width: '100%', 
+                    marginTop: '20px', 
+                    background: 'white', 
+                    border: `2px solid ${THEME.primary}`, 
+                    color: THEME.primary, 
+                    padding: '14px', 
+                    borderRadius: '10px', 
+                    fontWeight: 'bold', 
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = THEME.primary;
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.color = THEME.primary;
+                  }}
+                >
+                  📄 Télécharger mon estimation PDF
+                </button>
+              </div>
+
               {!actionType && <LossSimulator realValue={finalAmount} />}
 
               {/* SELECTEUR D'ACTION */}
@@ -417,7 +482,19 @@ export default function Outils() {
           )}
         </div>
       </div>
-      <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } .step-animation { animation: fadeIn 0.5s ease-out; } body { margin: 0; } input:focus { outline: none; }`}</style>
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
+        .step-animation { animation: fadeIn 0.5s ease-out; } 
+        body { margin: 0; } 
+        input:focus { outline: none; }
+        
+        @media print {
+          body * { visibility: hidden; }
+          .step-animation, .step-animation * { visibility: visible; }
+          .step-animation { position: absolute; left: 0; top: 0; width: 100%; }
+          button { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
