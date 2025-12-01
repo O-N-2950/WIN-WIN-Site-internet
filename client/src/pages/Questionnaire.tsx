@@ -186,6 +186,12 @@ export default function Questionnaire() {
   const [currentPoliceIndex, setCurrentPoliceIndex] = useState(0);
   const [showPoliceForm, setShowPoliceForm] = useState(false);
 
+  // Logger les changements de email et telMobile pour debug
+  useEffect(() => {
+    console.log('📧 Email changed:', data.email);
+    console.log('📱 TelMobile changed:', data.telMobile);
+  }, [data.email, data.telMobile]);
+
   // Sauvegarde automatique
   useEffect(() => {
     if (!showIntro) {
@@ -205,11 +211,18 @@ export default function Questionnaire() {
   }, [data, showIntro]);
 
   const nextStep = () => {
-    if (validateCurrentStep()) {
-      setDirection(1);
-      setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    // Forcer un petit délai pour s'assurer que le state est à jour
+    setTimeout(() => {
+      console.log('🚀 NEXT STEP - Avant validation');
+      console.log('Current step:', currentStep);
+      console.log('Data state:', { email: data.email, telMobile: data.telMobile });
+      
+      if (validateCurrentStep()) {
+        setDirection(1);
+        setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 50); // Petit délai de 50ms pour s'assurer que onChange a fini
   };
 
   const prevStep = () => {

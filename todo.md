@@ -1972,3 +1972,5 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Supprimer champ 'telephone' obsolète de l'interface QuestionnaireData
 
 - [ ] Ajouter logs diagnostic validation étape 2 questionnaire
+
+- [ ] Corriger synchronisation state React inputs étape 2
