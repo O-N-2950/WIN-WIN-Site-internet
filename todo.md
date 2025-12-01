@@ -1978,3 +1978,37 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Corriger erreur paiement Stripe sur page de paiement
 
 - [ ] Corriger TOUS les boutons blancs sur fond blanc (Pricing, Services, etc.)
+
+- [ ] Bug questionnaire étape 2 revenu - Investigation urgente
+
+
+## 🛠️ Onglet "Outils" avec Calculateur d'Inventaire (01 déc 2025)
+
+### Objectif
+Créer un onglet "Outils" dans le menu principal pour offrir des outils pratiques aux visiteurs et augmenter l'engagement du site
+
+### Phase 1 : Page Outils avec Calculateur d'Inventaire
+- [x] Créer page /outils (Outils.tsx)
+- [x] Intégrer le calculateur d'inventaire ménage (HTML/CSS/JS)
+- [x] Adapter le design aux couleurs WIN WIN (#3176A6, #8CB4D2)
+- [x] Convertir le code HTML standalone en composant React
+- [x] Gérer le state avec useState/useReducer
+- [x] Tester le calculateur (sliders, calculs, progression)
+
+### Phase 2 : Navigation et Header
+- [x] Ajouter onglet "Outils" dans Header.tsx
+- [x] Positionner entre "Concepts" et "À propos"
+- [x] Ajouter route /outils dans App.tsx
+- [x] Import Outils.tsx dans App.tsx
+
+### Phase 3 : Structure pour Futurs Outils
+- [ ] Créer page index des outils avec cartes cliquables
+- [ ] Préparer structure pour ajouter d'autres outils facilement
+- [ ] Idées futures : calculateur primes, simulateur épargne, etc.
+
+### Phase 4 : Tests et Checkpoint
+- [ ] Tester responsive (mobile, tablette, desktop)
+- [ ] Vérifier calculs du calculateur
+- [ ] Vérifier navigation et liens
+- [ ] Créer checkpoint après intégration
+- [ ] Déployer sur Railway

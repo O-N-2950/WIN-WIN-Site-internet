@@ -22,6 +22,7 @@ import Paiement from "./pages/Paiement";
 import Merci from "./pages/Merci";
 import Confirmation from "./pages/Confirmation";
 import Inscription from "./pages/Inscription";
+import Outils from "./pages/Outils";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -35,6 +36,7 @@ function Router() {
           <Route path="/services" component={Services} />
           <Route path="/libre-passage" component={LibrePassage} />
           <Route path="/protection-juridique" component={ProtectionJuridique} />
+          <Route path="/outils" component={Outils} />
           <Route path="/tarifs" component={Pricing} />
           <Route path="/concepts/talentis" component={Talentis} />
           <Route path="/concepts/durabilis" component={Durabilis} />

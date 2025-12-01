@@ -18,6 +18,7 @@ const navigation = [
       { name: "Synergis", href: "/concepts/synergis" },
     ]
   },
+  { name: "Outils", href: "/outils" },
   { name: "À propos", href: "/a-propos" },
   { name: "Contact", href: "/contact" },
   { name: "Tarifs", href: "/tarifs" },
