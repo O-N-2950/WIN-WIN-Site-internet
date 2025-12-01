@@ -2007,8 +2007,25 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Idées futures : calculateur primes, simulateur épargne, etc.
 
 ### Phase 4 : Tests et Checkpoint
-- [ ] Tester responsive (mobile, tablette, desktop)
-- [ ] Vérifier calculs du calculateur
-- [ ] Vérifier navigation et liens
-- [ ] Créer checkpoint après intégration
+- [x] Tester responsive (mobile, tablette, desktop)
+- [x] Vérifier calculs du calculateur
+- [x] Vérifier navigation et liens
+- [x] Créer checkpoint après intégration
 - [ ] Déployer sur Railway
+
+### Phase 5 : Remplacement par Version V8 Finale
+- [x] Créer version HTML standalone V8
+- [x] Convertir en composant React
+- [x] Remplacer Outils.tsx par la nouvelle version
+- [x] Corriger email : info@winwin-finance.ch → contact@winwin.swiss
+- [x] Intégrer message de déculpabilisation (investissement vs coûte)
+- [x] Intégrer module RC Privée intelligent
+- [x] Question RC véhicule tiers (+38 CHF/an)
+- [x] Adresse détaillée (Rue, NPA, Localité, Canton)
+- [x] Validation stricte du formulaire
+- [x] Bouton désactivé si champs manquants
+- [x] Améliorer format email (Version 1 Professionnelle)
+- [x] Corriger format date (JJ.MM.AAAA)
+- [ ] Créer checkpoint
+- [ ] Push sur GitHub
+- [ ] Railway déploiement automatique
