@@ -1974,3 +1974,7 @@ Corriger les 3 bugs restants du workflow client par ordre de priorité.
 - [ ] Ajouter logs diagnostic validation étape 2 questionnaire
 
 - [ ] Corriger synchronisation state React inputs étape 2
+
+- [ ] Corriger erreur paiement Stripe sur page de paiement
+
+- [ ] Corriger TOUS les boutons blancs sur fond blanc (Pricing, Services, etc.)
