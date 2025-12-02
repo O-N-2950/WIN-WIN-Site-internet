@@ -2047,4 +2047,15 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Inclure total, détails par catégorie, marge sécurité
 - [x] Styles CSS @media print pour impression propre
 - [x] Créer checkpoint
+- [x] Push sur GitHub
+
+
+### Phase 8 : Remplacement Cal.com par Google Calendar
+- [x] Identifier l'intégration Cal.com actuelle (page Conseil)
+- [x] Supprimer le code Cal.com (useEffect + widgets)
+- [x] Intégrer Google Calendar Appointment Scheduling
+- [x] Créer composant GoogleCalendar.tsx
+- [x] Ajouter instructions pour obtenir le lien Google Calendar (GOOGLE_CALENDAR_SETUP.md)
+- [x] Remplacer les 2 widgets (15min + 30min)
+- [ ] Créer checkpoint
 - [ ] Push sur GitHub

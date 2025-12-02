@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
-import GoogleCalendar from "@/components/GoogleCalendar";
 
 export default function Conseil() {
   const [selectedOption, setSelectedOption] = useState<'appel' | 'rdv' | 'message' | null>(null);
@@ -115,11 +114,43 @@ export default function Conseil() {
     });
   };
 
-  // Google Calendar Appointment Scheduling URLs
-  // TODO: Remplacer par vos URLs de réservation Google Calendar
-  // Instructions: Voir le composant GoogleCalendar.tsx
-  const GOOGLE_CALENDAR_15MIN = "https://calendar.google.com/calendar/appointments/schedules/YOUR_SCHEDULE_ID_15MIN";
-  const GOOGLE_CALENDAR_30MIN = "https://calendar.google.com/calendar/appointments/schedules/YOUR_SCHEDULE_ID_30MIN";
+  // Charger le script Cal.com
+  useEffect(() => {
+    // Vérifier si le script est déjà chargé
+    if (document.querySelector('script[src="https://app.cal.com/embed/embed.js"]')) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://app.cal.com/embed/embed.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      // @ts-ignore
+      if (window.Cal) {
+        // @ts-ignore
+        window.Cal("init", { origin: "https://cal.com" });
+        
+        // Configuration UI pour les couleurs WIN WIN
+        // @ts-ignore
+        window.Cal("ui", {
+          theme: "light",
+          styles: {
+            branding: {
+              brandColor: "#3176A6" // Bleu WIN WIN
+            }
+          },
+          hideEventTypeDetails: false,
+          layout: "month_view"
+        });
+      }
+    };
+
+    return () => {
+      // Nettoyage si nécessaire
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -334,10 +365,12 @@ export default function Conseil() {
                         15 min
                       </div>
                     </div>
-                    <GoogleCalendar 
-                      bookingUrl={GOOGLE_CALENDAR_15MIN}
-                      minHeight="600px"
-                    />
+                    <div
+                      data-cal-link="winwin/15min"
+                      data-cal-config='{"layout":"month_view","theme":"light"}'
+                      style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                      className="min-h-[600px]"
+                    ></div>
                   </div>
 
                   {/* Séparateur */}
@@ -367,13 +400,27 @@ export default function Conseil() {
                         30 min
                       </div>
                     </div>
-                    <GoogleCalendar 
-                      bookingUrl={GOOGLE_CALENDAR_30MIN}
-                      minHeight="600px"
-                    />
+                    <div
+                      data-cal-link="winwin/30min"
+                      data-cal-config='{"layout":"month_view","theme":"light"}'
+                      style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                      className="min-h-[600px]"
+                    ></div>
                   </div>
 
-
+                  {/* Informations complémentaires */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+                    <div className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div className="space-y-2">
+                        <p className="font-semibold text-blue-900">Vous ne voyez que les créneaux disponibles</p>
+                        <p className="text-blue-700">
+                          Notre système vérifie automatiquement les disponibilités en temps réel. 
+                          Après réservation, vous recevrez une confirmation par email avec un lien Google Meet.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
