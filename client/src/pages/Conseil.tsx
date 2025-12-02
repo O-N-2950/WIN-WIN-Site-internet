@@ -116,10 +116,8 @@ export default function Conseil() {
   };
 
   // Google Calendar Appointment Scheduling URLs
-  // TODO: Remplacer par vos URLs de réservation Google Calendar
-  // Instructions: Voir le composant GoogleCalendar.tsx
-  const GOOGLE_CALENDAR_15MIN = "https://calendar.google.com/calendar/appointments/schedules/YOUR_SCHEDULE_ID_15MIN";
-  const GOOGLE_CALENDAR_30MIN = "https://calendar.google.com/calendar/appointments/schedules/YOUR_SCHEDULE_ID_30MIN";
+  const GOOGLE_CALENDAR_15MIN = "https://calendar.app.google/eSBUtmkHmUETRwfw5";
+  const GOOGLE_CALENDAR_30MIN = "https://calendar.app.google/nwyU9gAbNe4vPmHUA";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">

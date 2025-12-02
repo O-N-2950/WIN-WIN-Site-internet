@@ -2058,4 +2058,13 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter instructions pour obtenir le lien Google Calendar (GOOGLE_CALENDAR_SETUP.md)
 - [x] Remplacer les 2 widgets (15min + 30min)
 - [x] Créer checkpoint
+- [x] Push sur GitHub
+
+
+### Phase 9 : Intégration URLs Google Calendar
+- [x] Remplacer les URLs placeholder par les vraies URLs
+- [x] URL 15 min : https://calendar.app.google/eSBUtmkHmUETRwfw5
+- [x] URL 30 min : https://calendar.app.google/nwyU9gAbNe4vPmHUA
+- [x] Tester l'affichage des calendriers (URLs intégrées)
+- [ ] Créer checkpoint
 - [ ] Push sur GitHub
