@@ -2066,5 +2066,5 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] URL 15 min : https://calendar.app.google/eSBUtmkHmUETRwfw5
 - [x] URL 30 min : https://calendar.app.google/nwyU9gAbNe4vPmHUA
 - [x] Tester l'affichage des calendriers (URLs intégrées)
-- [ ] Créer checkpoint
+- [x] Créer checkpoint
 - [ ] Push sur GitHub
