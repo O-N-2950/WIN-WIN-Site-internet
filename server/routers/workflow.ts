@@ -49,6 +49,7 @@ export const workflowRouter = router({
         signatureUrl: z.string().url().optional(),
         successUrl: z.string().url(),
         cancelUrl: z.string().url(),
+        clientId: z.string().optional(), // Airtable Record ID pour récupérer le groupe familial
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -57,12 +58,116 @@ export const workflowRouter = router({
         apiVersion: '2025-10-29.clover',
       });
       
+      // Calculer le rabais familial si clientId est fourni
+      let familyDiscount = 0;
+      let familyMembersCount = 1;
+      let groupeFamilial: string | undefined;
+      let finalPrice = input.annualPrice;
+      let familyMembers: Array<{ nom: string; prenom?: string }> = [];
+      let descriptionDetaillée = '';
+      
+      if (input.clientId) {
+        try {
+          const { getClientById } = await import('../airtable');
+          const { calculateFamilyDiscount, applyFamilyDiscount, getFamilyMembers } = await import('../lib/parrainage');
+          
+          const clientData = await getClientById(input.clientId);
+          
+          if (clientData && clientData['Groupe Familial']) {
+            groupeFamilial = clientData['Groupe Familial'] as string;
+            familyMembersCount = (clientData['Nb membres famille actifs'] as number) || 1;
+            
+            // Récupérer la liste des membres du groupe
+            familyMembers = await getFamilyMembers(groupeFamilial);
+            
+            // Calculer le rabais
+            familyDiscount = calculateFamilyDiscount(familyMembersCount);
+            finalPrice = applyFamilyDiscount(input.annualPrice, familyDiscount);
+            
+            // Construire la description détaillée pour la facture Stripe
+            const membersList = familyMembers
+              .map(m => `${m.prenom || ''} ${m.nom}`.trim())
+              .join(', ');
+            
+            descriptionDetaillée = [
+              `Mandat de Gestion Annuel - ${input.clientName}`,
+              '',
+              `👥 GROUPE FAMILIAL: ${groupeFamilial}`,
+              `Membres actifs (${familyMembersCount}): ${membersList}`,
+              '',
+              `💰 CALCUL DU PRIX:`,
+              `Prix de base: CHF ${input.annualPrice.toFixed(2)}`,
+              `Rabais familial: -${familyDiscount}% (${familyMembersCount} membres)`,
+              `Économie: CHF ${(input.annualPrice - finalPrice).toFixed(2)}`,
+              `Prix final: CHF ${finalPrice.toFixed(2)}`,
+            ].join('\n');
+            
+            console.log('[Stripe Checkout] Rabais familial appliqué:');
+            console.log(`  Groupe: ${groupeFamilial}`);
+            console.log(`  Membres actifs: ${familyMembersCount}`);
+            console.log(`  Liste: ${membersList}`);
+            console.log(`  Rabais: ${familyDiscount}%`);
+            console.log(`  Prix base: ${input.annualPrice} CHF`);
+            console.log(`  Prix final: ${finalPrice} CHF`);
+          }
+        } catch (error) {
+          console.error('[Stripe Checkout] Erreur calcul rabais familial:', error);
+          // Continuer sans rabais en cas d'erreur
+        }
+      }
+      
+      // Créer un Price ID dynamique avec le prix final si rabais familial > 0
+      let priceIdToUse = input.priceId;
+      let customPriceCreated = false;
+      
+      if (familyDiscount > 0 && descriptionDetaillée) {
+        try {
+          // Récupérer le produit original pour obtenir ses infos
+          const originalPrice = await stripe.prices.retrieve(input.priceId, {
+            expand: ['product'],
+          });
+          
+          const product = originalPrice.product as any;
+          
+          // Créer un nouveau Price avec le prix final (après rabais)
+          const customPrice = await stripe.prices.create({
+            currency: 'chf',
+            unit_amount: Math.round(finalPrice * 100), // Convertir en centimes
+            recurring: {
+              interval: 'year',
+            },
+            product_data: {
+              name: `${product.name} - Rabais Familial ${familyDiscount}%`,
+              description: descriptionDetaillée,
+              metadata: {
+                originalProductId: product.id,
+                originalPriceId: input.priceId,
+                groupeFamilial: groupeFamilial || '',
+                familyMembersCount: familyMembersCount.toString(),
+                familyDiscount: familyDiscount.toString(),
+                basePrice: input.annualPrice.toString(),
+                finalPrice: finalPrice.toString(),
+              },
+            },
+          });
+          
+          priceIdToUse = customPrice.id;
+          customPriceCreated = true;
+          console.log(`[Stripe Checkout] Price personnalisé créé: ${customPrice.id}`);
+          console.log(`  Prix final: ${finalPrice} CHF (au lieu de ${input.annualPrice} CHF)`);
+        } catch (error) {
+          console.error('[Stripe Checkout] Erreur création price personnalisé:', error);
+          // Fallback: utiliser le price original sans rabais
+          console.warn('[Stripe Checkout] Fallback: utilisation du price original');
+        }
+      }
+      
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         payment_method_types: ['card'],
         line_items: [
           {
-            price: input.priceId,
+            price: priceIdToUse,
             quantity: 1,
           },
         ],
@@ -78,12 +183,25 @@ export const workflowRouter = router({
           annualPrice: input.annualPrice.toString(),
           isFree: input.isFree ? 'true' : 'false',
           signatureUrl: input.signatureUrl || '',
+          clientId: input.clientId || '',
+          groupeFamilial: groupeFamilial || '',
+          familyMembersCount: familyMembersCount.toString(),
+          familyDiscount: familyDiscount.toString(),
+          finalPrice: finalPrice.toString(),
+          familyMembersList: familyMembers.map(m => `${m.prenom || ''} ${m.nom}`.trim()).join(', '),
+          customPriceCreated: customPriceCreated.toString(),
         },
       });
       
       return {
         sessionId: session.id,
         url: session.url,
+        familyDiscount,
+        familyMembersCount,
+        finalPrice,
+        groupeFamilial,
+        familyMembers: familyMembers.map(m => ({ nom: m.nom, prenom: m.prenom })),
+        descriptionDetaillée,
       };
     }),
 

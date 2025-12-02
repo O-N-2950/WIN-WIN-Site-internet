@@ -2142,3 +2142,15 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Vérifier calcul rabais
 - [ ] Documenter le processus complet
 - [ ] Créer checkpoint final
+
+
+## 💰 Amélioration Facture Stripe - Rabais Familial (2 déc 2025)
+- [x] Modifier createCheckoutSession pour afficher le prix final APRÈS rabais
+- [x] Ajouter description détaillée sur la facture Stripe avec :
+  - [x] Liste complète des membres du groupe familial
+  - [x] Calcul transparent : Prix base → Rabais X% → Prix final
+  - [x] Nom du groupe familial
+- [x] Créer un Price ID dynamique avec le prix déjà calculé (au lieu d'un coupon)
+- [x] Enrichir les métadonnées Stripe avec toutes les infos du groupe
+- [x] Tester l'affichage de la facture Stripe en mode test (tests unitaires validés)
+- [x] Vérifier que le montant facturé correspond au prix RT Bull (148 CHF pour 12 membres)
