@@ -2057,5 +2057,5 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Créer composant GoogleCalendar.tsx
 - [x] Ajouter instructions pour obtenir le lien Google Calendar (GOOGLE_CALENDAR_SETUP.md)
 - [x] Remplacer les 2 widgets (15min + 30min)
-- [ ] Créer checkpoint
+- [x] Créer checkpoint
 - [ ] Push sur GitHub
