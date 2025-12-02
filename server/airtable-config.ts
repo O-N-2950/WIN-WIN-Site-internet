@@ -27,7 +27,7 @@ export const AIRTABLE_CONFIG = {
         statutClient: 'fldw9QKnjkINjZ7kQ',
         dateSignatureMandat: 'fldzZyuW5mElq0NAX',
         mandatOffert: 'flda7YHZTqwxL9zdr',
-        mandatSigne: 'fldaw7xjEZyjiFDWR',
+        mandatSigne: 'fldFlOqiGic9Yv3on', // MANDAT DE GESTION signé (Attachment)
         dateCreation: 'fldJfGM8wGOZeEtSy',
         signatureClient: 'fldXxORXbvcHPVTio', // Attachment (pièce jointe)
         relationsFamiliales: 'fldXEhXcXbV40f6zM', // Single select (Membre fondateur, Épouse, Fils, etc.)

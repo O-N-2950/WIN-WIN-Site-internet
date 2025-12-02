@@ -13,8 +13,9 @@ import {
   createClientInAirtable,
   updateClientInAirtable,
   findClientByEmail,
-  type ClientData,
-} from '../lib/airtable-crm';
+  uploadSignatureToAirtable,
+  uploadPdfToAirtable,
+} from '../airtable';
 import { generateMandatPDF, type MandatData } from '../pdf-generator';
 import { storagePut } from '../storage';
 import { generateFamilyCode } from '../lib/parrainage';
@@ -203,6 +204,12 @@ export const clientRouter = router({
           const recordIdPrive = await createClientInAirtable(clientDataPrive);
           console.log('[Client Router] Client PRIVÉ created:', recordIdPrive);
           
+          // Upload signature vers Airtable
+          if (input.signatureDataUrl) {
+            await uploadSignatureToAirtable(recordIdPrive.id, input.signatureDataUrl);
+            console.log('[Client Router] Signature uploadée pour client PRIVÉ');
+          }
+          
           // 4b. Générer PDF mandat PRIVÉ
           const mandatDataPrive: MandatData = {
             ...mandatData,
@@ -219,6 +226,10 @@ export const clientRouter = router({
             'application/pdf'
           );
           console.log('[Client Router] PDF PRIVÉ uploaded:', pdfUrlPrive);
+          
+          // Upload PDF PRIVÉ vers Airtable
+          await uploadPdfToAirtable(recordIdPrive.id, pdfBufferPrive, fileNamePrive);
+          console.log('[Client Router] PDF PRIVÉ uploadé vers Airtable');
           
           // 4c. Créer le client ENTREPRISE
           const clientDataEntreprise: ClientData = {
@@ -242,6 +253,12 @@ export const clientRouter = router({
           const recordIdEntreprise = await createClientInAirtable(clientDataEntreprise);
           console.log('[Client Router] Client ENTREPRISE created:', recordIdEntreprise);
           
+          // Upload signature vers Airtable
+          if (input.signatureDataUrl) {
+            await uploadSignatureToAirtable(recordIdEntreprise.id, input.signatureDataUrl);
+            console.log('[Client Router] Signature uploadée pour client ENTREPRISE');
+          }
+          
           // 4d. Générer PDF mandat ENTREPRISE
           const mandatDataEntreprise: MandatData = {
             ...mandatData,
@@ -257,6 +274,10 @@ export const clientRouter = router({
             'application/pdf'
           );
           console.log('[Client Router] PDF ENTREPRISE uploaded:', pdfUrlEntreprise);
+          
+          // Upload PDF ENTREPRISE vers Airtable
+          await uploadPdfToAirtable(recordIdEntreprise.id, pdfBufferEntreprise, fileNameEntreprise);
+          console.log('[Client Router] PDF ENTREPRISE uploadé vers Airtable');
           
           return {
             success: true,
@@ -291,6 +312,16 @@ export const clientRouter = router({
         
         const recordId = await createClientInAirtable(clientData);
         console.log('[Client Router] Client created in Airtable:', recordId);
+        
+        // Upload signature vers Airtable
+        if (input.signatureDataUrl) {
+          await uploadSignatureToAirtable(recordId.id, input.signatureDataUrl);
+          console.log('[Client Router] Signature uploadée pour client');
+        }
+        
+        // Upload PDF mandat vers Airtable
+        await uploadPdfToAirtable(recordId.id, pdfBuffer, fileName);
+        console.log('[Client Router] PDF mandat uploadé vers Airtable');
         
         return {
           success: true,

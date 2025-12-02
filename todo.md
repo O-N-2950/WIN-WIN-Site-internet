@@ -2067,4 +2067,50 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] URL 30 min : https://calendar.app.google/nwyU9gAbNe4vPmHUA
 - [x] Tester l'affichage des calendriers (URLs intégrées)
 - [x] Créer checkpoint
+- [x] Push sur GitHub
+
+
+### Phase 10 : Tests Workflow Mandat + Signature
+- [ ] Créer une signature PNG de test
+- [ ] Tester API uploadSignature (tRPC workflow.uploadSignature)
+- [ ] Vérifier upload S3 et URL retournée
+- [ ] Tester API createClient (tRPC workflow.createClient)
+- [ ] Vérifier création record Airtable avec signature
+- [ ] Vérifier que la signature PNG est visible dans Airtable
+- [ ] Documenter les résultats des tests
+- [ ] Corriger les bugs éventuels
+- [ ] Créer checkpoint
 - [ ] Push sur GitHub
+
+
+### Phase 11 : Correction Configuration Airtable (2 déc 2025)
+- [ ] Corriger Base ID dans airtable-config.ts (appBIZdLCHqWFhBIY → appZQkRJ7PwOtdQ3O)
+- [ ] Lister les tables de ERP Clients WW
+- [ ] Vérifier le Table ID correct
+- [ ] Relancer test création client Airtable
+- [ ] Vérifier signature PNG dans Airtable
+- [ ] Créer checkpoint
+- [ ] Push sur GitHub
+
+
+### Phase 12 : Correction Parsing JSON Airtable (2 déc 2025)
+- [x] Corriger server/airtable.ts pour extraire le JSON de la sortie MCP
+- [x] Gérer le préfixe "Tool execution result:"
+- [ ] Relancer test création client avec signature
+- [ ] Vérifier signature PNG dans Airtable
+- [ ] Créer checkpoint
+- [ ] Push sur GitHub
+
+
+### Phase 13 : Test Workflow Complet Inscription Client (2 déc 2025)
+- [ ] Ouvrir winwin.swiss et cliquer sur "Demandez Conseil"
+- [ ] Remplir le questionnaire Genspark (20 questions)
+- [ ] Dessiner une signature sur la page /signature
+- [ ] Vérifier l'upload S3 de la signature PNG
+- [ ] Vérifier la création du client dans Airtable
+- [ ] Vérifier que la signature PNG est visible dans Airtable
+- [ ] Tester la page de paiement (Stripe ou Mandat offert)
+- [ ] Vérifier la page de confirmation /merci
+- [ ] Documenter les résultats
+- [ ] Créer checkpoint si corrections nécessaires
+- [ ] Push sur GitHub si corrections

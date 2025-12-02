@@ -6,6 +6,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { AIRTABLE_CONFIG } from './airtable-config';
+import { storageGetBuffer } from './storage';
 
 const execAsync = promisify(exec);
 
@@ -17,7 +18,7 @@ export interface CreateClientInput {
   adresse?: string;
   npa?: string;
   localite?: string;
-  typeClient: 'Particulier' | 'Entreprise';
+  typeClient: 'Privé' | 'Entreprise';
   dateNaissance?: string;
   age?: number;
   nbEmployes?: number;
@@ -25,6 +26,7 @@ export interface CreateClientInput {
   mandatOffert: boolean;
   dateSignatureMandat?: string;
   signatureUrl?: string;
+  signatureDataUrl?: string; // Base64 data URL (data:image/png;base64,...)
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
   // Champs parrainage et famille
@@ -50,33 +52,26 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   const fields: Record<string, any> = {};
   
   // Champs obligatoires
-  fields[clients.fields.nomClient] = `${input.prenom} ${input.nom}`;
+  // Note: nomClient ("NOM du client") est un champ calculé dans Airtable, ne pas l'envoyer
   fields[clients.fields.nom] = input.nom;
   fields[clients.fields.prenom] = input.prenom;
   fields[clients.fields.email] = input.email;
   fields[clients.fields.typeClient] = input.typeClient;
-  fields[clients.fields.tarifApplicable] = input.tarifApplicable;
+  // Note: tarifApplicable est un champ calculé dans Airtable, ne pas l'envoyer
   fields[clients.fields.mandatOffert] = input.mandatOffert;
-  fields[clients.fields.statutClient] = 'Client sous gestion';
+  fields[clients.fields.statutClient] = 'NOUVEAU CLIENT';
   
   // Champs optionnels
   if (input.telMobile) fields[clients.fields.telMobile] = input.telMobile;
   if (input.adresse) fields[clients.fields.adresse] = input.adresse;
-  if (input.npa) fields[clients.fields.npa] = input.npa;
+  if (input.npa) fields[clients.fields.npa] = parseInt(input.npa, 10); // NPA est un champ number dans Airtable
   if (input.localite) fields[clients.fields.localite] = input.localite;
   if (input.dateNaissance) fields[clients.fields.dateNaissance] = input.dateNaissance;
-  if (input.age) fields[clients.fields.age] = input.age;
+  // Note: age est un champ calculé dans Airtable, ne pas l'envoyer
   if (input.nbEmployes !== undefined) fields[clients.fields.nbEmployes] = input.nbEmployes;
   if (input.dateSignatureMandat) fields[clients.fields.dateSignatureMandat] = input.dateSignatureMandat;
   
-  // Signature (format Airtable Attachment)
-  if (input.signatureUrl) {
-    fields[clients.fields.signatureClient] = [
-      {
-        url: input.signatureUrl,
-      }
-    ];
-  }
+  // Note: La signature sera uploadée après la création du record via uploadSignatureToAirtable()
   
   // Champs parrainage et famille
   if (input.relationsFamiliales) fields[clients.fields.relationsFamiliales] = input.relationsFamiliales;
@@ -91,12 +86,31 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   });
   
   try {
-    const { stdout } = await execAsync(
+    const { stdout, stderr } = await execAsync(
       `manus-mcp-cli tool call create_record --server airtable --input '${mcpInput.replace(/'/g, "\\'")}'`
     );
     
-    // Parser la réponse MCP
-    const response = JSON.parse(stdout);
+    console.log('[Airtable] Sortie MCP (stdout):', stdout.substring(0, 500));
+    if (stderr) {
+      console.log('[Airtable] Sortie MCP (stderr):', stderr.substring(0, 500));
+    }
+    
+    // Extraire le JSON de la sortie MCP (ignorer le préfixe "Tool execution result:")
+    const jsonMatch = stdout.match(/Tool execution result:\s*([\s\S]+)/);
+    if (!jsonMatch) {
+      console.error('[Airtable] Impossible d\'extraire le JSON. Sortie complète:', stdout);
+      throw new Error('Impossible d\'extraire le JSON de la réponse MCP');
+    }
+    
+    const jsonString = jsonMatch[1].trim();
+    
+    // Vérifier si c'est une erreur
+    if (jsonString.startsWith('Error:')) {
+      console.error('[Airtable] Erreur MCP:', jsonString);
+      throw new Error(`Erreur MCP Airtable: ${jsonString}`);
+    }
+    
+    const response = JSON.parse(jsonString);
     
     return {
       id: response.id,
@@ -105,6 +119,117 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   } catch (error) {
     console.error('[Airtable] Erreur lors de la création du client:', error);
     throw new Error('Impossible de créer le client dans Airtable');
+  }
+}
+
+/**
+ * Uploader une signature vers un record Airtable existant
+ * Utilise l'endpoint officiel Airtable pour upload direct via base64
+ */
+export async function uploadSignatureToAirtable(
+  recordId: string,
+  signatureDataUrl: string
+): Promise<void> {
+  const { baseId, tables } = AIRTABLE_CONFIG;
+  const { clients } = tables;
+  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+  
+  if (!AIRTABLE_API_KEY) {
+    throw new Error('AIRTABLE_API_KEY non configurée');
+  }
+  
+  try {
+    // Extraire le base64 depuis le data URL
+    // Format: data:image/png;base64,iVBORw0KGgo...
+    const base64Match = signatureDataUrl.match(/^data:image\/png;base64,(.+)$/);
+    if (!base64Match) {
+      throw new Error('Format de signatureDataUrl invalide');
+    }
+    
+    const base64Data = base64Match[1];
+    
+    // Endpoint officiel Airtable pour upload d'attachments
+    const uploadUrl = `https://content.airtable.com/v0/${baseId}/${recordId}/${clients.fields.signatureClient}/uploadAttachment`;
+    
+    console.log('[Airtable] Upload signature vers:', uploadUrl);
+    
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contentType: 'image/png',
+        file: base64Data,
+        filename: 'signature.png',
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur upload signature:', response.status, errorText);
+      throw new Error(`Erreur upload signature: ${response.status} ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('[Airtable] Signature uploadée avec succès:', result);
+  } catch (error) {
+    console.error('[Airtable] Erreur lors de l\'upload de la signature:', error);
+    throw error;
+  }
+}
+
+/**
+ * Uploader un PDF vers un record Airtable existant
+ * Utilise l'endpoint officiel Airtable pour upload direct via base64
+ */
+export async function uploadPdfToAirtable(
+  recordId: string,
+  pdfBuffer: Buffer,
+  filename: string
+): Promise<void> {
+  const { baseId, tables } = AIRTABLE_CONFIG;
+  const { clients } = tables;
+  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+  
+  if (!AIRTABLE_API_KEY) {
+    throw new Error('AIRTABLE_API_KEY non configurée');
+  }
+  
+  try {
+    // Convertir le Buffer en base64
+    const base64Data = pdfBuffer.toString('base64');
+    
+    // Endpoint officiel Airtable pour upload d'attachments
+    const uploadUrl = `https://content.airtable.com/v0/${baseId}/${recordId}/${clients.fields.mandatSigne}/uploadAttachment`;
+    
+    console.log('[Airtable] Upload PDF mandat vers:', uploadUrl);
+    
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contentType: 'application/pdf',
+        file: base64Data,
+        filename,
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] Erreur upload PDF:', response.status, errorText);
+      throw new Error(`Erreur upload PDF: ${response.status} ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('[Airtable] PDF uploadé avec succès:', result);
+  } catch (error) {
+    console.error('[Airtable] Erreur lors de l\'upload du PDF:', error);
+    throw error;
   }
 }
 
