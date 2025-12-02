@@ -55,6 +55,7 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   // Note: nomClient ("NOM du client") est un champ calculé dans Airtable, ne pas l'envoyer
   fields[clients.fields.nom] = input.nom;
   fields[clients.fields.prenom] = input.prenom;
+  if (input.nomEntreprise) fields[clients.fields.nomEntreprise] = input.nomEntreprise;
   fields[clients.fields.email] = input.email;
   fields[clients.fields.typeClient] = input.typeClient;
   // Note: tarifApplicable est un champ calculé dans Airtable, ne pas l'envoyer
@@ -74,7 +75,18 @@ export async function createClientInAirtable(input: CreateClientInput): Promise<
   // Note: La signature sera uploadée après la création du record via uploadSignatureToAirtable()
   
   // Champs parrainage et famille
-  if (input.relationsFamiliales) fields[clients.fields.relationsFamiliales] = input.relationsFamiliales;
+  if (input.relationsFamiliales) {
+    // Relations familiales est un champ multipleSelects, il faut un tableau
+    fields[clients.fields.relationsFamiliales] = Array.isArray(input.relationsFamiliales) 
+      ? input.relationsFamiliales 
+      : [input.relationsFamiliales];
+  }
+  if (input.lieAFamille) {
+    // Lié à (famille) est un champ multipleRecordLinks, il faut un tableau d'IDs
+    fields[clients.fields.lieAFamille] = Array.isArray(input.lieAFamille)
+      ? input.lieAFamille
+      : [input.lieAFamille];
+  }
   if (input.groupeFamilial) fields[clients.fields.groupeFamilial] = input.groupeFamilial;
   if (input.codeParrainage) fields[clients.fields.codeParrainage] = input.codeParrainage;
   
@@ -236,6 +248,37 @@ export async function uploadPdfToAirtable(
 /**
  * Rechercher un client par email
  */
+/**
+ * Récupérer un client par son ID
+ */
+export async function getClientById(recordId: string): Promise<Record<string, any> | null> {
+  const { baseId, tables } = AIRTABLE_CONFIG;
+  const { clients } = tables;
+  
+  const mcpInput = JSON.stringify({
+    baseId,
+    tableId: clients.id,
+    recordId,
+  });
+  
+  try {
+    const { stdout } = await execAsync(
+      `manus-mcp-cli tool call get_record --server airtable --input '${mcpInput.replace(/'/g, "\\'")}'`
+    );
+    
+    const response = JSON.parse(stdout);
+    
+    if (response && response.fields) {
+      return response.fields;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('[Airtable] Erreur lors de la récupération du client:', error);
+    return null;
+  }
+}
+
 export async function findClientByEmail(email: string): Promise<AirtableClientRecord | null> {
   const { baseId, tables } = AIRTABLE_CONFIG;
   const { clients } = tables;

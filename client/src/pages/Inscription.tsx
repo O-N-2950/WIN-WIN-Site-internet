@@ -44,6 +44,7 @@ interface ClientFormData {
   fumeur?: 'oui' | 'non';
   nomEntreprise?: string;
   nombreEmployes?: number;
+  codeParrainage?: string;  // Code de parrainage optionnel
 }
 
 interface ExtractedContract {
@@ -380,6 +381,53 @@ function StepInformations({
   clientData: ClientFormData;
   setClientData: React.Dispatch<React.SetStateAction<ClientFormData>>;
 }) {
+  const [isValidatingCode, setIsValidatingCode] = useState(false);
+  const [referrerInfo, setReferrerInfo] = useState<{ nom: string; prenom?: string } | null>(null);
+  const [codeError, setCodeError] = useState<string | null>(null);
+  const validateCodeMutation = trpc.parrainage.validateCode.useMutation();
+
+  const validateCode = async (code: string) => {
+    if (!code || code.trim().length === 0) {
+      setReferrerInfo(null);
+      setCodeError(null);
+      return;
+    }
+
+    setIsValidatingCode(true);
+    setCodeError(null);
+
+    try {
+      const result = await validateCodeMutation.mutateAsync({ code });
+      
+      if (result.valid && result.referrer) {
+        setReferrerInfo(result.referrer);
+        setCodeError(null);
+      } else {
+        setReferrerInfo(null);
+        setCodeError('Code de parrainage invalide');
+      }
+    } catch (error) {
+      setReferrerInfo(null);
+      setCodeError('Erreur lors de la validation');
+    } finally {
+      setIsValidatingCode(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!clientData.codeParrainage) {
+      setReferrerInfo(null);
+      setCodeError(null);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      validateCode(clientData.codeParrainage!);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [clientData.codeParrainage]);
+
   return (
     <Card>
       <CardHeader>
@@ -492,6 +540,48 @@ function StepInformations({
               onChange={(e) => setClientData({ ...clientData, dateNaissance: e.target.value })}
             />
           </div>
+        </div>
+
+        <div>
+          <Label htmlFor="codeParrainage">Code de Parrainage (optionnel)</Label>
+          <div className="relative">
+            <Input
+              id="codeParrainage"
+              value={clientData.codeParrainage || ''}
+              onChange={(e) => setClientData({ ...clientData, codeParrainage: e.target.value.toUpperCase() })}
+              placeholder="OLIV-SeLs"
+              className={`font-mono ${
+                codeError ? 'border-red-500' : 
+                referrerInfo ? 'border-green-500' : ''
+              }`}
+            />
+            {isValidatingCode && (
+              <div className="absolute right-3 top-3">
+                <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+              </div>
+            )}
+            {referrerInfo && !isValidatingCode && (
+              <div className="absolute right-3 top-3">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+              </div>
+            )}
+          </div>
+          {referrerInfo && (
+            <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3" />
+              Code valide ! Vous rejoignez {referrerInfo.prenom} {referrerInfo.nom}
+            </p>
+          )}
+          {codeError && (
+            <p className="text-xs text-red-500 mt-1">
+              {codeError}
+            </p>
+          )}
+          {!referrerInfo && !codeError && (
+            <p className="text-xs text-muted-foreground mt-1">
+              Si vous avez été parrainé par un membre, saisissez son code ici pour bénéficier du rabais familial
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -54,6 +54,9 @@ export const clientRouter = router({
         // Autres
         avs: z.string().optional(),
         language: z.enum(['Français', 'Anglais', 'Allemand', 'Italien', 'Espagnol', 'Autre']).optional(),
+        
+        // Parrainage
+        codeParrainage: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -63,6 +66,49 @@ export const clientRouter = router({
       const existingClientId = await findClientByEmail(input.email);
       if (existingClientId) {
         throw new Error('Un client avec cet email existe déjà');
+      }
+      
+      // Gérer le parrainage et le groupe familial
+      let groupeFamilial: string | undefined;
+      let relationsFamiliales: string | undefined;
+      
+      if (input.codeParrainage) {
+        console.log('[Client Router] Code de parrainage fourni:', input.codeParrainage);
+        
+        // Valider le code et récupérer les infos du parrain
+        const { validateReferralCode } = await import('../lib/parrainage');
+        const referrer = await validateReferralCode(input.codeParrainage);
+        
+        if (referrer) {
+          console.log('[Client Router] Parrain trouvé:', referrer.nom);
+          
+          // Récupérer le groupe familial du parrain depuis Airtable
+          const { getClientById } = await import('../airtable');
+          const referrerData = await getClientById(referrer.id);
+          
+          if (referrerData && referrerData['Groupe Familial']) {
+            // Scénario 1: Le parrain a déjà un groupe familial
+            groupeFamilial = referrerData['Groupe Familial'] as string;
+            console.log('[Client Router] Rejoindre groupe existant:', groupeFamilial);
+          } else {
+            // Scénario 2: Le parrain n'a pas de groupe, créer un nouveau groupe
+            const { generateFamilyCode } = await import('../lib/parrainage');
+            groupeFamilial = `FAMILLE-${generateFamilyCode(referrer.nom)}`;
+            console.log('[Client Router] Création nouveau groupe:', groupeFamilial);
+            
+            // Mettre à jour le parrain avec le nouveau groupe et le marquer comme fondateur
+            await updateClientInAirtable(referrer.id, {
+              'Groupe Familial': groupeFamilial,
+              'Relations familiales': 'Membre fondateur',
+            });
+            console.log('[Client Router] Parrain mis à jour comme fondateur');
+          }
+          
+          // Le nouveau client rejoint le groupe (pas fondateur)
+          relationsFamiliales = undefined; // Sera défini manuellement dans Airtable
+        } else {
+          console.warn('[Client Router] Code de parrainage invalide:', input.codeParrainage);
+        }
       }
       
       // Préparer les données pour Airtable
@@ -86,6 +132,8 @@ export const clientRouter = router({
         'Nombre d\'employés': input.nombreEmployes,
         AVS: input.avs,
         Language: input.language || 'Français',
+        'Groupe Familial': groupeFamilial,
+        'Relations familiales': relationsFamiliales,
       };
       
       // Créer le client dans Airtable

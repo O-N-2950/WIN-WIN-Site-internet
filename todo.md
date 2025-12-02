@@ -2114,3 +2114,31 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Documenter les résultats
 - [ ] Créer checkpoint si corrections nécessaires
 - [ ] Push sur GitHub si corrections
+
+
+## 🔄 Système de Groupe Familial Automatique (Nouveau - Décembre 2025)
+
+### Phase 1 : Automation Airtable
+- [x] Créer script d'automation Airtable pour rabais familial
+- [x] Configurer champ "Groupe Familial" (texte)
+- [x] Configurer champ "Membres de la famille" (liens bidirectionnels)
+- [x] Tester automation avec famille Neukomm (8 membres)
+- [x] Vérifier calcul rabais (16% pour 8 membres)
+
+### Phase 2 : Backend - Gestion Automatique Groupe Familial
+- [ ] Modifier server/lib/parrainage.ts pour gérer les groupes familiaux
+- [ ] Cas 1 : Parrain avec groupe existant → nouveau client rejoint le groupe
+- [ ] Cas 2 : Parrain seul → devient fondateur + nouveau client rejoint
+- [ ] Générer code groupe familial automatiquement (FAMILLE-NOM-XXXX)
+- [ ] Mettre à jour champ "Groupe Familial" dans Airtable
+- [ ] Mettre à jour champ "Relations familiales" = "Membre fondateur"
+- [ ] Tester avec inscriptions réelles
+
+### Phase 3 : Tests et Documentation
+- [ ] Tester inscription avec code parrainage (parrain avec groupe)
+- [ ] Tester inscription avec code parrainage (parrain seul)
+- [ ] Vérifier déclenchement automation Airtable
+- [ ] Vérifier création liens bidirectionnels
+- [ ] Vérifier calcul rabais
+- [ ] Documenter le processus complet
+- [ ] Créer checkpoint final

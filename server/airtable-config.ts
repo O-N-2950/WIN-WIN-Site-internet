@@ -13,6 +13,7 @@ export const AIRTABLE_CONFIG = {
         idClient: 'fldhozJVY3Qr3HXdb',
         nom: 'fldaADa3p1WhaIKhW',
         prenom: 'fldfhjuxTQwZipdOf',
+        nomEntreprise: 'fldZ8w4IDGJBKS35M', // Nom de l'entreprise
         email: 'fldI0sr2QLOJYsZR6',
         telMobile: 'fldVnQFYRxlHwbcAo',
         telFixe: 'fldIMSSTTlvwP0Uwl',
@@ -30,7 +31,8 @@ export const AIRTABLE_CONFIG = {
         mandatSigne: 'fldFlOqiGic9Yv3on', // MANDAT DE GESTION signé (Attachment)
         dateCreation: 'fldJfGM8wGOZeEtSy',
         signatureClient: 'fldXxORXbvcHPVTio', // Attachment (pièce jointe)
-        relationsFamiliales: 'fldXEhXcXbV40f6zM', // Single select (Membre fondateur, Épouse, Fils, etc.)
+        relationsFamiliales: 'fldXEhXcXbV40f6zM', // Multiple select (Membre fondateur, épouse, etc.)
+        lieAFamille: 'fldt6pklPvJmGq5FJ', // Lié à (famille) - multipleRecordLinks
         groupeFamilial: 'fld7adFgijiW0Eqhj', // Single line text (FAMILLE-NOM-2024)
         codeParrainage: 'fldEx4ytlCnqPoSDM', // Single line text (DUPO-1234)
       },
