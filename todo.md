@@ -2194,3 +2194,9 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Intégrer Parents-Enfants avec effet "Wahou" (design Dream & Grow)
 - [x] Mettre à jour les liens dans const.ts et Services.tsx pour pointer vers les pages internes
 - [x] Supprimer les flags external: true pour les 3 concepts
+
+
+## 🚨 URGENT - Corrections FAQ Tarifs (2 déc 2025)
+- [x] Corriger "Proposez-vous des mandats offerts ?" → Remplacé par "Proposez-vous des tarifs préférentiels ?" (gratuit <18 ans, CHF 85.-/an 18-22 ans, parrainage jusqu'à 20%)
+- [x] Corriger "Y a-t-il des frais cachés ?" → Ajouté liens PEP's (site + Apple Store + Google Play)
+- [x] Corriger "Que se passe-t-il si je change de situation ?" → Clarifié : suivi long terme, conseil sur mesure, tarif stable (sauf passage 22 ans)

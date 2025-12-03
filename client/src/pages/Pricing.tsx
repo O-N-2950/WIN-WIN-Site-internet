@@ -572,10 +572,15 @@ export default function Pricing() {
                     <a href="https://peps.swiss/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                       PEP's
                     </a>{" "}
-                    (d'une valeur de CHF 250.-) est offerte gratuitement aux membres actifs de l'application{" "}
-                    <a href="https://peps.swiss/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                      PEP's
-                    </a>.
+                    (d'une valeur de CHF 250.-) est offerte aux membres actifs de l'application PEP's.{" "}
+                    <br /><br />
+                    Téléchargez l'application :{" "}
+                    <a href="https://apps.apple.com/ch/app/peps-exclusive-partnerships/id6477572989" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      Apple Store
+                    </a>{" | "}
+                    <a href="https://play.google.com/store/apps/details?id=swiss.peps.altai&hl=fr_CH" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      Google Play
+                    </a>
                   </>
                 )
               },
@@ -585,11 +590,11 @@ export default function Pricing() {
               },
               {
                 question: "Que se passe-t-il si je change de situation ?",
-                answer: "Nous adaptons votre mandat en fonction de l'évolution de votre situation (changement d'âge, d'employeur, etc.). Le tarif peut être ajusté en conséquence."
+                answer: "Notre ambition est de vous suivre sur le long terme et de vous conseiller à chaque étape de votre vie, de votre parcours professionnel ou de l'évolution de votre entreprise. Nous faisons du sur mesure. Le tarif reste stable (sauf passage de 22 ans au tarif adulte)."
               },
               {
-                question: "Proposez-vous des mandats offerts ?",
-                answer: "Oui, dans certains cas particuliers (famille proche, situations spéciales), nous pouvons offrir le mandat gracieusement."
+                question: "Proposez-vous des tarifs préférentiels ?",
+                answer: "Oui ! Le mandat est gratuit pour les enfants jusqu'à 18 ans. Nous appliquons un tarif préférentiel pour les jeunes entre 18 et 22 ans (CHF 85.-/an). De plus, notre système de parrainage familial permet d'obtenir jusqu'à 20% de rabais chaque année."
               }
             ].map((faq, index) => (
               <motion.div
