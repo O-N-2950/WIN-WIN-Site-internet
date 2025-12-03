@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
+import { useLocation } from 'wouter';
 
 export default function ContactSimple() {
+  const [location] = useLocation();
+  
+  // Récupérer les données depuis l'URL (si provenant de Mapping360)
+  const urlParams = new URLSearchParams(window.location.search);
+  const prefilledMessage = urlParams.get('message');
+  const prefilledSubject = urlParams.get('sujet');
+  
   const [formData, setFormData] = useState({
     nom: '',
     email: '',
     telephone: '',
-    sujet: '',
-    message: ''
+    sujet: prefilledSubject || '',
+    message: prefilledMessage || ''
   });
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);

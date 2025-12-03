@@ -2200,3 +2200,45 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Corriger "Proposez-vous des mandats offerts ?" → Remplacé par "Proposez-vous des tarifs préférentiels ?" (gratuit <18 ans, CHF 85.-/an 18-22 ans, parrainage jusqu'à 20%)
 - [x] Corriger "Y a-t-il des frais cachés ?" → Ajouté liens PEP's (site + Apple Store + Google Play)
 - [x] Corriger "Que se passe-t-il si je change de situation ?" → Clarifié : suivi long terme, conseil sur mesure, tarif stable (sauf passage 22 ans)
+
+
+## 📋 Intégration Questionnaire "Simulation Mapping 360" (2 déc 2025)
+- [ ] Créer une page dédiée pour le questionnaire Mapping 360
+- [ ] Ajouter un lien visible dans le header/navigation
+- [ ] Ajouter un CTA sur la page d'accueil
+- [ ] Connecter les résultats au formulaire de contact backend
+- [ ] Tester le parcours complet questionnaire → contact
+
+
+## 🎯 Intégration Simulation Mapping 360° (3 décembre 2025)
+- [x] Copier le code React du questionnaire dans client/src/pages/Mapping360.tsx
+- [x] Ajouter la route /mapping-360 dans App.tsx
+- [x] Ajouter l'onglet "Mapping 360" dans le Header
+- [x] Créer une section CTA sur la page d'accueil (après Libre Passage)
+- [x] Modifier handleCopyAndRedirect pour rediriger vers /contact avec données en URL
+- [x] Modifier ContactSimple.tsx pour accepter les paramètres sujet et message en URL
+- [x] Tester le workflow complet (simulation → validation → redirection contact)
+- [x] Créer checkpoint après intégration
+
+### Fonctionnalités Mapping 360°
+- ✅ Simulateur interactif invalidité/décès/retraite
+- ✅ Calcul automatique des lacunes de prévoyance
+- ✅ 2 options : Standard (gratuit) ou Expert (250-350 CHF)
+- ✅ Redirection automatique vers formulaire de contact avec données pré-remplies
+- ✅ Design cohérent avec les couleurs WIN WIN (#3176A6, #8CB4D2, #D4AF37)
+- ✅ Animations et effets visuels professionnels
+
+### Workflow Utilisateur
+1. L'utilisateur remplit le simulateur (salaire, âge, statut, scénario)
+2. Il voit la projection graphique de ses revenus (1er pilier + 2e pilier + lacune)
+3. Il clique sur "Demander un conseil" et choisit Standard ou Expert
+4. Il remplit ses informations personnelles dans la modale
+5. Il clique sur "Valider la demande" ou "Lancer l'audit"
+6. Il est redirigé vers /contact avec le sujet et message pré-remplis
+7. Il complète le formulaire (nom, email, téléphone) et envoie
+
+### Avantages
+- 🎯 **Engagement client** : Simulateur interactif avant contact
+- 📊 **Qualification leads** : Données structurées dans le message
+- ⚡ **Conversion** : Formulaire pré-rempli (moins de friction)
+- 💼 **Upsell** : Option Expert visible dès le début

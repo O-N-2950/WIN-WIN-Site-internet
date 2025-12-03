@@ -490,6 +490,117 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Mapping 360 Section - Service Important */}
+      <section className="py-24 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5">
+        <div className="container">
+          <motion.div
+            className="max-w-5xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Card className="border-2 border-primary shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-primary to-primary/90 px-8 py-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Target className="h-8 w-8 text-white" />
+                    </div>
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/30 backdrop-blur-sm mb-2">
+                        <Sparkles className="w-4 h-4 text-white" />
+                        <span className="text-sm font-bold text-white">NOUVEAU SERVICE</span>
+                      </div>
+                      <h2 className="text-3xl md:text-4xl font-bold text-white">
+                        Simulation Mapping 360°
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Découvrez notre <strong className="text-foreground">simulateur interactif</strong> pour évaluer votre situation financière complète en cas d'<strong className="text-foreground">invalidité, décès ou retraite</strong>. 
+                    Obtenez une <strong className="text-foreground">analyse personnalisée</strong> de vos besoins en prévoyance et protection.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-6 my-8">
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Analyse Complète</h4>
+                        <p className="text-sm text-muted-foreground">Évaluation 360° de votre situation</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Scénarios Réalistes</h4>
+                        <p className="text-sm text-muted-foreground">Simulations basées sur vos données</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Shield className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Conseils Personnalisés</h4>
+                        <p className="text-sm text-muted-foreground">Recommandations adaptées à vous</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+                    <div className="flex items-start gap-3">
+                      <Award className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold text-lg mb-2">Pourquoi utiliser le Mapping 360° ?</h4>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-1">•</span>
+                            <span>Visualisez <strong className="text-foreground">vos revenus en cas d'invalidité ou décès</strong></span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-1">•</span>
+                            <span>Identifiez <strong className="text-foreground">les lacunes de votre prévoyance</strong></span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-1">•</span>
+                            <span>Planifiez <strong className="text-foreground">votre retraite avec précision</strong></span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Link href="/mapping-360" className="flex-1">
+                      <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-semibold text-lg px-8 py-6 h-auto shadow-lg hover:shadow-xl transition-all">
+                        <Target className="w-5 h-5 mr-2" />
+                        Lancer Ma Simulation 360°
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link href={ROUTES.conseil}>
+                      <Button size="lg" variant="outline" className="w-full sm:w-auto font-semibold text-lg px-8 py-6 h-auto">
+                        Demander Conseil
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Concepts Section */}
       <section className="py-24 bg-gradient-to-br from-accent/5 to-accent/10">
         <div className="container">
