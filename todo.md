@@ -2172,3 +2172,10 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter les boutons radio pour sélectionner le type de client
 - [ ] Tester l'envoi du formulaire avec pièce jointe
 - [ ] Vérifier que l'erreur "invalid_value" est résolue
+
+
+## 🔘 Correction Boutons Blancs Invisibles (2 déc 2025)
+- [x] Identifier les boutons "Devenir client" blancs dans les cartes (2 boutons dans Home.tsx)
+- [x] Remplacer bg-white par bg-accent (doré) pour meilleure visibilité
+- [ ] Vérifier que les boutons sont visibles sur fond bleu
+- [ ] Tester sur toutes les pages

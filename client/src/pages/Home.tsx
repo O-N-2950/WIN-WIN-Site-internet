@@ -154,7 +154,7 @@ export default function Home() {
                       </ul>
                     </div>
                     <Link href={ROUTES.questionnaireInfo}>
-                      <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold">
+                      <Button className="w-full bg-accent text-white hover:bg-accent/90 font-bold">
                         <Sparkles className="w-5 h-5 mr-2" />
                         Devenir client
                         <ArrowRight className="w-5 h-5 ml-2" />
@@ -201,7 +201,7 @@ export default function Home() {
                       </ul>
                     </div>
                     <Link href={ROUTES.questionnaireInfo}>
-                      <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold">
+                      <Button className="w-full bg-accent text-white hover:bg-accent/90 font-bold">
                         <Sparkles className="w-5 h-5 mr-2" />
                         Devenir client
                         <ArrowRight className="w-5 h-5 ml-2" />
