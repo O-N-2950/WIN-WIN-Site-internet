@@ -543,6 +543,119 @@ export default function Pricing() {
         </div>
       </section>
 
+      {/* Section Rabais de Groupe */}
+      <section id="rabais-groupe" className="py-20 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 bg-green-600/10 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-green-600/20 mb-6">
+              <Users className="w-5 h-5 text-green-600" />
+              <span className="text-sm font-bold text-green-600 uppercase tracking-wider">Économisez en Famille</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Rabais de Groupe Familial
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Invitez votre famille, vos amis ou vos collaborateurs à rejoindre WIN WIN Finance et bénéficiez tous d'un rabais automatique !
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {[
+                { membres: "2 membres", rabais: "-4%" },
+                { membres: "3 membres", rabais: "-6%" },
+                { membres: "4 membres", rabais: "-8%" },
+                { membres: "5 membres", rabais: "-10%" },
+                { membres: "6-9 membres", rabais: "-15%" },
+                { membres: "10+ membres", rabais: "-20% MAX" }
+              ].map((tier, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className={`p-6 text-center h-full ${
+                    tier.membres === "10+ membres" 
+                      ? "bg-gradient-to-br from-green-500 to-emerald-600 text-white border-green-600" 
+                      : "bg-white dark:bg-slate-900"
+                  }`}>
+                    <div className={`text-2xl font-bold mb-2 ${
+                      tier.membres === "10+ membres" ? "text-white" : "text-green-600"
+                    }`}>
+                      {tier.membres}
+                    </div>
+                    <div className={`text-4xl font-extrabold ${
+                      tier.membres === "10+ membres" ? "text-white" : "text-foreground"
+                    }`}>
+                      {tier.rabais}
+                    </div>
+                    {tier.membres === "10+ membres" && (
+                      <div className="mt-2 text-sm font-bold text-white/90">MAXIMUM</div>
+                    )}
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="p-8 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-6 text-center">Comment ça marche ?</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
+                      1
+                    </div>
+                    <div>
+                      <h4 className="font-bold mb-1">Invitez vos proches</h4>
+                      <p className="text-muted-foreground">Partagez votre lien de parrainage avec votre famille, amis ou collègues</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
+                      2
+                    </div>
+                    <div>
+                      <h4 className="font-bold mb-1">Ils deviennent clients</h4>
+                      <p className="text-muted-foreground">Chaque personne qui s'inscrit avec votre lien rejoint votre groupe familial</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
+                      3
+                    </div>
+                    <div>
+                      <h4 className="font-bold mb-1">Rabais automatique pour tous</h4>
+                      <p className="text-muted-foreground">Le rabais s'applique automatiquement sur le tarif annuel de chaque membre du groupe</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-6 bg-green-50 dark:bg-green-950/30 rounded-lg border-2 border-green-200 dark:border-green-800">
+                  <h4 className="font-bold mb-2 text-green-800 dark:text-green-400">💡 Exemple concret</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Une famille de 5 personnes (2 parents + 3 enfants de plus de 18 ans) bénéficie de <strong>-10% sur chaque mandat</strong>. 
+                    Soit une économie de <strong>18.50 CHF/an par personne</strong>, ou <strong>92.50 CHF/an pour toute la famille</strong> !
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Tarifs */}
       <section className="py-20 bg-muted/30">
         <div className="container">

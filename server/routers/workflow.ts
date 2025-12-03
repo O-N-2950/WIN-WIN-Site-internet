@@ -53,6 +53,12 @@ export const workflowRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      // Vérifier que la clé Stripe est configurée
+      if (!ENV.stripeSecretKey || ENV.stripeSecretKey === '') {
+        console.error('[Stripe Checkout] ERREUR: STRIPE_SECRET_KEY non configurée');
+        throw new Error('Configuration Stripe manquante. Veuillez contacter le support.');
+      }
+      
       const Stripe = (await import('stripe')).default;
       const stripe = new Stripe(ENV.stripeSecretKey, {
         apiVersion: '2025-10-29.clover',

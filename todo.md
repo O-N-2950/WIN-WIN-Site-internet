@@ -2253,3 +2253,19 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Design "Wahouuu" avec animations et effets visuels
 - [x] Tester le parcours utilisateur complet
 - [x] Créer checkpoint après corrections
+
+
+## 🚨 BUGS CRITIQUES À CORRIGER (3 décembre 2025 - URGENT)
+- [x] Corriger lien 404 "En savoir plus sur le rabais de groupe" dans page Paiement
+- [x] Corriger erreur de paiement Stripe "Erreur lors du paiement. Veuillez réessayer."
+- [x] Créer section #rabais-groupe dans Pricing.tsx avec explications complètes
+- [x] Améliorer gestion d'erreur Stripe (messages explicites)
+- [x] Vérifier intégration Stripe et clés API
+- [ ] Tester le workflow complet signature → paiement → confirmation
+- [ ] Pousser sur GitHub pour déploiement Railway immédiat
+
+
+## 🔄 Mise à jour Mapping 360 (3 décembre 2025)
+- [x] Remplacer le code Mapping360.tsx avec le nouveau fichier fourni
+- [x] Déployer sur GitHub (commit 5028684)
+- [x] Railway déploiera automatiquement sur www.winwin.swiss

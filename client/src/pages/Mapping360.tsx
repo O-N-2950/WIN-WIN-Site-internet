@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
 import { 
   Calculator, Coins, Hourglass, Briefcase, User, Users, 
   Activity, HeartPulse, Umbrella, ShieldCheck, AlertTriangle, 
   Info, Zap, SearchCheck, CheckCircle2, PenTool, CopyCheck, 
-  ArrowRight, TrendingDown, Target, FileCheck
+  ArrowRight, TrendingDown, Target, FileCheck, Calendar
 } from 'lucide-react';
 
-// --- CONSTANTES ---
-const MAX_AVS_RENTE = 2520;
-const MAX_LAA_SALARY = 12350;
-const COORDINATION_LPP = 2205;
-const RETIREMENT_AGE = 65;
+// --- CONSTANTES SUISSES ---
+const CONSTANTS = {
+  MAX_AVS_RENTE: 2520, // Mensuel
+  MAX_LAA_SALARY: 148200, // Annuel
+  COORDINATION_LPP: 25725, // Annuel
+  RETIREMENT_AGE: 65,
+  // Taux techniques pour calcul capital
+  TAUX_CAPITALISATION_DECES: 0.05, // 5%
+  TAUX_CAPITALISATION_RETRAITE: 0.06 // 6%
+};
 
 const ScenarioLabels = { invalidite: 'Invalidité', deces: 'Décès', retraite: 'Retraite' };
 const CauseLabels = { maladie: 'Maladie', accident: 'Accident', vie: 'Vie' };
@@ -57,7 +61,7 @@ export default function Mapping360() {
   const [empP2, setEmpP2] = useState({ name: '', loc: '', phone: '' });
 
   // --- STATE UI / CALCULS ---
-  const [results, setResults] = useState({ p1: 0, p2: 0, gap: 0, totalLoss: 0, text: '', alert: 'low' });
+  const [results, setResults] = useState({ p1: 0, p2: 0, gap: 0, capitalNeeded: 0, text: '', alert: 'low', labelCapital: '' });
   const [showToast, setShowToast] = useState(false);
 
   // --- EFFETS (Calculs Dynamiques) ---
@@ -79,28 +83,72 @@ export default function Mapping360() {
     });
   }, [p1.childrenCount]);
 
-  // --- LOGIQUE METIER ---
+  // --- LOGIQUE METIER MISE À JOUR ---
   const calculateResults = () => {
     let p1Amount = 0, p2Amount = 0;
     let text = "", alertLevel = "low";
+    let targetIncome = 0;
+    let capitalNeeded = 0;
+    let labelCapital = "Perte cumulée";
 
-    // 1er Pilier
-    if (scenario === 'deces') {
-      p1Amount = Math.min(salary * 0.6, MAX_AVS_RENTE * 0.8);
+    // Définition des cibles (Target)
+    if (scenario === 'invalidite') {
+        targetIncome = salary * 0.90; // Cible 90%
+        labelCapital = "Rente annuelle manquante"; 
     } else {
-      p1Amount = salary < 4000 ? salary * 0.7 : Math.min(salary * 0.8, MAX_AVS_RENTE);
+        targetIncome = salary * 0.80; // Cible 80% (Décès & Retraite)
     }
 
-    // 2e Pilier
+    // 1er Pilier (AVS/AI) - Calcul Mensuel
+    // L'AI verse toujours ses prestations, même en cas d'accident.
+    if (scenario === 'deces') {
+      p1Amount = Math.min(salary * 0.6, CONSTANTS.MAX_AVS_RENTE * 0.8);
+    } else {
+      // Invalidité ou Retraite
+      p1Amount = salary < 4000 ? salary * 0.7 : Math.min(salary * 0.8, CONSTANTS.MAX_AVS_RENTE);
+    }
+
+    // 2e Pilier (LPP/LAA)
     if (status === 'independent') {
       p2Amount = 0;
     } else {
       if (cause === 'accident' && scenario !== 'retraite') {
-        p2Amount = Math.min(salary, MAX_LAA_SALARY) * 0.9;
-        p1Amount = 0; // LAA englobe tout visuellement
+        // CORRECTION: Accident (LAA)
+        // La LAA complète l'AI pour atteindre 90% du salaire assuré (plafonné à 148'200)
+        const salaryAssureLAA = Math.min(salary, CONSTANTS.MAX_LAA_SALARY / 12);
+        const targetTotalAccident = salaryAssureLAA * 0.9;
+        
+        // La LAA paie la différence entre le Target (90%) et ce que l'AI paie déjà.
+        p2Amount = Math.max(0, targetTotalAccident - p1Amount);
       } else {
-        p2Amount = Math.max(0, salary - COORDINATION_LPP) * 0.4;
+        // Maladie / Retraite : LPP
+        const salaireAnnuel = salary * 12;
+        const salaireCoordonneAnnuel = Math.max(0, salaireAnnuel - CONSTANTS.COORDINATION_LPP);
+        p2Amount = (salaireCoordonneAnnuel * 0.4) / 12;
       }
+    }
+
+    // Calcul Lacune Mensuelle
+    const totalCovered = p1Amount + p2Amount;
+    const gapAmount = Math.max(0, targetIncome - totalCovered);
+    
+    // Pourcentages pour barres (Base = Salary)
+    const p1Percent = Math.min(100, (p1Amount / salary) * 100);
+    const p2Percent = Math.min(100, (p2Amount / salary) * 100);
+    const gapPercent = Math.min(100, (gapAmount / salary) * 100);
+
+    // Calcul Capital à Assurer (Méthode Expert)
+    if (gapAmount > 0) {
+        if (scenario === 'deces') {
+            capitalNeeded = (gapAmount * 12) / CONSTANTS.TAUX_CAPITALISATION_DECES;
+            labelCapital = "Capital Décès à assurer";
+        } else if (scenario === 'retraite') {
+            capitalNeeded = (gapAmount * 12) / CONSTANTS.TAUX_CAPITALISATION_RETRAITE;
+            labelCapital = "Capital Retraite à constituer";
+        } else {
+            capitalNeeded = gapAmount * 12;
+            labelCapital = "Manque à gagner par an";
+        }
     }
 
     // Textes & Alertes
@@ -117,10 +165,10 @@ export default function Mapping360() {
       }
     } else {
       if (cause === 'accident' && scenario !== 'retraite') {
-        text = "Couverture Excellente (LAA).";
+        text = "Couverture Excellente (LAA + AI = 90%).";
         alertLevel = "low";
       } else if (scenario === 'invalidite') {
-        text = "Piège 720j. Perte ~40% revenu après délai d'attente.";
+        text = "Piège 720j. Perte de revenu significative après délai d'attente.";
         alertLevel = "high";
       } else if (scenario === 'retraite') {
         text = "Mur de la Retraite. Perte brutale de pouvoir d'achat.";
@@ -131,16 +179,7 @@ export default function Mapping360() {
       }
     }
 
-    const p1Percent = Math.min(100, (p1Amount / salary) * 100);
-    const p2Percent = Math.min(100, (p2Amount / salary) * 100);
-    const gapAmount = Math.max(0, salary - p1Amount - p2Amount);
-    const gapPercent = Math.max(0, 100 - (p1Percent + p2Percent));
-    
-    // Perte Totale
-    const yearsLeft = Math.max(0, RETIREMENT_AGE - age);
-    const totalLoss = gapAmount * 12 * yearsLeft;
-
-    setResults({ p1: p1Percent, p2: p2Percent, gap: gapPercent, gapAmount, totalLoss, text, alert: alertLevel });
+    setResults({ p1: p1Percent, p2: p2Percent, gap: gapPercent, gapAmount, capitalNeeded, text, alert: alertLevel, labelCapital });
   };
 
   // --- HANDLERS ---
@@ -194,16 +233,14 @@ export default function Mapping360() {
     } else {
       // Message Standard
       let kidsTxt = p1.childrenCount > 0 ? `(${p1.childrenCount} enfants)` : "";
-      message = `Bonjour,\n\nVoici les résultats de ma simulation Mapping 360°.\n\n--- PROFIL ---\n• Statut : ${statusLabel}\n• Âge : ${age}\n• Né(e) le : ${formatDate(p1.dob)}\n• Prof : ${p1.profession}\n• Situation : ${p1.civil} ${kidsTxt}\n• Revenu : ${salary} CHF\n\n--- PROJET ---\n• Lacune : ${Math.round(results.gapAmount)} CHF/mois\n• Budget Investissement : ${investAmount} CHF / ${freqLabel}\n\nMerci de me recontacter.`;
+      message = `Bonjour,\n\nVoici les résultats de ma simulation Mapping 360°.\n\n--- PROFIL ---\n• Statut : ${statusLabel}\n• Âge : ${age}\n• Né(e) le : ${formatDate(p1.dob)}\n• Prof : ${p1.profession}\n• Situation : ${p1.civil} ${kidsTxt}\n• Revenu : ${salary} CHF\n\n--- PROJET ---\n• Lacune mensuelle : ${Math.round(results.gapAmount)} CHF\n• ${results.labelCapital} : ${Math.round(results.capitalNeeded).toLocaleString()} CHF\n• Budget Investissement : ${investAmount} CHF / ${freqLabel}\n\nMerci de me recontacter.`;
     }
 
-    // Redirection vers le formulaire de contact avec les données pré-remplies
-    const encodedMessage = encodeURIComponent(message);
-    const encodedSubject = encodeURIComponent(serviceType === 'expert' ? 'Bilan Global Expert - Mapping 360°' : 'Simulation Mapping 360°');
-    
-    // Rediriger vers le formulaire de contact (même fenêtre)
-    window.location.href = `/contact?sujet=${encodedSubject}&message=${encodedMessage}`;
-    
+    navigator.clipboard.writeText(message).then(() => {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
+      setTimeout(() => window.open("https://www.winwin.swiss/contact", "_blank"), 1500);
+    });
     setIsModalOpen(false);
   };
 
@@ -257,7 +294,7 @@ export default function Mapping360() {
               </div>
               <div className="text-right">
                 <div className="text-xs text-slate-400 font-bold uppercase">Horizon 65 ans</div>
-                <div className="text-[#3176A6] font-bold text-lg">{Math.max(0, RETIREMENT_AGE - age)} ans restants</div>
+                <div className="text-[#3176A6] font-bold text-lg">{Math.max(0, CONSTANTS.RETIREMENT_AGE - age)} ans restants</div>
               </div>
             </div>
             <input type="range" min="18" max="64" value={age} onChange={(e) => setAge(Number(e.target.value))} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#3176A6]" />
@@ -323,7 +360,7 @@ export default function Mapping360() {
           {/* GRAPHIQUE */}
           <div className="relative flex-grow flex flex-col justify-end min-h-[350px] mb-8">
             <div className="absolute top-0 w-full border-t-2 border-dashed border-slate-300 z-10">
-              <span className="absolute -top-7 right-0 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded">Objectif: {salary.toLocaleString()} CHF</span>
+              <span className="absolute -top-7 right-0 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded">Objectif: {(scenario === 'invalidite' ? salary * 0.9 : salary * 0.8).toLocaleString()} CHF</span>
             </div>
             
             <div className="flex items-end justify-center gap-2 md:gap-8 w-full z-10 pb-8 border-b border-slate-100">
@@ -354,12 +391,8 @@ export default function Mapping360() {
               <div className="flex flex-col items-center justify-end h-80 w-full md:w-28 gap-2">
                 <div className="text-center font-bold text-red-600 text-xl">{results.gap > 1 ? `-${Math.round(results.gap)}%` : ''}</div>
                 <div className="w-full h-64 bg-slate-50 rounded-t-lg relative flex items-end">
-                  <div style={{ 
-                      height: `${results.gap}%`, 
-                      backgroundImage: 'repeating-linear-gradient(45deg, #fee2e2, #fee2e2 10px, #fca5a5 10px, #fca5a5 20px)' 
-                    }} 
-                    className="w-full bg-[#fef2f2] border-2 border-red-500 shadow-xl flex items-center justify-center rounded-t-lg transition-all duration-1000 relative overflow-hidden" 
-                  >
+                  <div style={{ height: `${results.gap}%` }} className="w-full bg-[#fef2f2] border-2 border-red-500 shadow-xl flex items-center justify-center rounded-t-lg transition-all duration-1000 relative overflow-hidden" 
+                       css={{ backgroundImage: 'repeating-linear-gradient(45deg, #fee2e2, #fee2e2 10px, #fca5a5 10px, #fca5a5 20px)' }}>
                     {results.gap > 15 && <div className="bg-white/90 px-2 py-1 rounded text-red-600 font-bold text-xs -rotate-3 border border-red-100 shadow">LACUNE</div>}
                   </div>
                 </div>
@@ -379,22 +412,25 @@ export default function Mapping360() {
             </div>
           </div>
 
-          {/* TOTAL LOSS */}
-          {results.totalLoss > 0 && (
-            <div className="mb-6 p-4 bg-red-50 rounded-xl border border-red-100 flex items-center justify-between">
+          {/* CAPITAL NEEDED */}
+          {results.capitalNeeded > 0 && (
+            <div className="mb-6 p-4 bg-red-50 rounded-xl border-2 border-red-100 flex items-center justify-between shadow-inner">
               <div className="flex items-center gap-3">
-                <div className="bg-red-100 p-2 rounded-lg text-red-600"><TrendingDown /></div>
-                <div><div className="text-sm text-red-800 font-bold uppercase">Impact cumulé</div><div className="text-xs text-red-600">Jusqu'à 65 ans</div></div>
+                <div className="bg-red-100 p-3 rounded-full text-red-600"><Target size={24}/></div>
+                <div>
+                    <div className="text-sm text-red-800 font-bold uppercase">{results.labelCapital}</div>
+                    <div className="text-xs text-red-600">Objectif financier recommandé</div>
+                </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-black text-red-600">{results.totalLoss.toLocaleString()} CHF</div>
-                <div className="text-xs text-red-500">de perte potentielle</div>
+                <div className="text-3xl font-black text-red-600">{Math.round(results.capitalNeeded).toLocaleString()} CHF</div>
+                <div className="text-xs text-red-500 font-bold">à sécuriser maintenant</div>
               </div>
             </div>
           )}
 
           {/* CTA */}
-          <div className="bg-slate-900 rounded-2xl p-8">
+          <div className="bg-slate-900 rounded-2xl p-8 shadow-2xl">
             <h3 className="text-center text-xl font-bold text-white mb-6">Quel montant êtes-vous prêt(e) à investir ?</h3>
             <div className="flex justify-center gap-6 mb-8">
               <div className="bg-slate-800 p-1 rounded-lg flex">
@@ -407,7 +443,7 @@ export default function Mapping360() {
               </div>
             </div>
             <div className="flex justify-between items-center pt-6 border-t border-slate-700">
-              <div className="text-white"><div className="text-slate-400 text-sm font-bold uppercase">Votre Engagement</div><div className="text-lg">Combler lacune de <span className="text-yellow-400 font-bold">{Math.round(results.gapAmount).toLocaleString()} CHF</span></div></div>
+              <div className="text-white"><div className="text-slate-400 text-sm font-bold uppercase">Votre Engagement</div><div className="text-lg">Je souhaite combler ma lacune de <span className="text-yellow-400 font-bold">{Math.round(results.gapAmount).toLocaleString()} CHF</span></div></div>
               <button onClick={() => setIsModalOpen(true)} className="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold py-4 px-8 rounded-full shadow-lg flex items-center gap-2 transform hover:scale-105 transition-all"><Target /> Obtenir mon plan d'action</button>
             </div>
           </div>
@@ -427,42 +463,61 @@ export default function Mapping360() {
             <div className="p-6 space-y-6">
               {/* Choix Service */}
               <div className="space-y-3">
-                <ServiceOption 
-                  type="standard" title="Offre Ciblée (Standard)" price="Gratuit" 
-                  desc="Proposition simple basée sur cette simulation." 
-                  selected={serviceType} onSelect={setServiceType} icon={Zap} color="bg-green-100 text-green-700"
-                />
-                <ServiceOption 
-                  type="expert" title="Analyse Expert" price={isCouple ? "350.-" : "250.-"} 
-                  desc="Calcul réel sur pièces (AVS/LPP), optimisation & mandat." 
-                  selected={serviceType} onSelect={setServiceType} icon={SearchCheck} color="bg-yellow-100 text-yellow-800"
-                >
-                  <div className="mt-3 bg-slate-50 p-2 rounded flex justify-between items-center">
-                    <span className="text-xs font-bold text-slate-600">Formule :</span>
-                    <div className="flex bg-white rounded border border-slate-200">
-                      <button onClick={(e) => { e.stopPropagation(); setIsCouple(false); }} className={`px-3 py-1 text-xs font-bold rounded ${!isCouple ? 'bg-[#3176A6] text-white' : 'text-slate-500'}`}>Individuel (250.-)</button>
-                      <button onClick={(e) => { e.stopPropagation(); setIsCouple(true); }} className={`px-3 py-1 text-xs font-bold rounded ${isCouple ? 'bg-[#3176A6] text-white' : 'text-slate-500'}`}>Couple (350.-)</button>
+                <label className="cursor-pointer relative block">
+                    <input type="radio" name="serviceType" value="standard" className="peer sr-only" checked={serviceType === 'standard'} onChange={() => setServiceType('standard')} />
+                    <div className={`p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${serviceType === 'standard' ? 'border-[#3176A6] bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}>
+                        <div className="bg-slate-100 p-2 rounded-lg text-slate-600"><Zap size={20}/></div>
+                        <div className="flex-1">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="font-bold text-slate-800">Offre Ciblée (Standard)</span>
+                                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold mr-6">Gratuit</span>
+                            </div>
+                            <p className="text-xs text-slate-500">Proposition simple basée sur cette simulation.</p>
+                        </div>
+                        {serviceType === 'standard' && <CheckCircle2 className="absolute top-4 right-4 text-[#3176A6]" size={20} />}
                     </div>
-                  </div>
-                </ServiceOption>
+                </label>
+
+                <label className="cursor-pointer relative block">
+                    <input type="radio" name="serviceType" value="expert" className="peer sr-only" checked={serviceType === 'expert'} onChange={() => setServiceType('expert')} />
+                    <div className={`p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${serviceType === 'expert' ? 'border-[#3176A6] bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}>
+                        <div className="bg-yellow-50 p-2 rounded-lg text-yellow-600"><SearchCheck size={20}/></div>
+                        <div className="flex-1">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="font-bold text-slate-800">Analyse Expert</span>
+                                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-bold">{isCouple ? "350.-" : "250.-"}</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mb-2">Calcul réel sur pièces (AVS/LPP), optimisation & mandat.</p>
+                            
+                            <div className="mt-3 bg-slate-50 p-2 rounded flex justify-between items-center" onClick={(e) => e.preventDefault()}>
+                                <span className="text-xs font-bold text-slate-600">Formule :</span>
+                                <div className="flex bg-white rounded border border-slate-200">
+                                    <button type="button" onClick={() => setIsCouple(false)} className={`px-3 py-1 text-xs font-bold rounded ${!isCouple ? 'bg-[#3176A6] text-white' : 'text-slate-500'}`}>Individuel (250.-)</button>
+                                    <button type="button" onClick={() => setIsCouple(true)} className={`px-3 py-1 text-xs font-bold rounded ${isCouple ? 'bg-[#3176A6] text-white' : 'text-slate-500'}`}>Couple (350.-)</button>
+                                </div>
+                            </div>
+                        </div>
+                        {serviceType === 'expert' && <CheckCircle2 className="absolute top-4 right-4 text-[#3176A6]" size={20} />}
+                    </div>
+                </label>
               </div>
 
               {/* Formulaire P1 */}
               <div className="border-t border-slate-100 pt-4">
                 <h4 className="text-xs font-bold text-[#3176A6] uppercase mb-4 flex gap-2"><User size={16}/> Votre Profil (P1)</h4>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <Input label="Prénom" value={p1.fname} onChange={v => setP1({...p1, fname: v})} />
-                  <Input label="Nom" value={p1.lname} onChange={v => setP1({...p1, lname: v})} />
+                  <div><label className="text-xs font-bold text-slate-500 block mb-1">Prénom</label><input value={p1.fname} onChange={e => setP1({...p1, fname: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 block mb-1">Nom</label><input value={p1.lname} onChange={e => setP1({...p1, lname: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/></div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <Input label="Date naissance" type="date" value={p1.dob} onChange={v => setP1({...p1, dob: v})} />
-                  <Input label="Profession" value={p1.profession} onChange={v => setP1({...p1, profession: v})} />
+                  <div><label className="text-xs font-bold text-slate-500 block mb-1">Date naissance</label><input type="date" value={p1.dob} onChange={e => setP1({...p1, dob: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 block mb-1">Profession</label><input value={p1.profession} onChange={e => setP1({...p1, profession: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/></div>
                 </div>
                 <div className="mb-4">
                   <label className="block text-xs font-bold text-slate-500 mb-1">Fumeur ?</label>
                   <div className="flex gap-4">
-                    <Radio label="Oui" name="smoker1" checked={p1.smoker === 'oui'} onChange={() => setP1({...p1, smoker: 'oui'})} />
-                    <Radio label="Non" name="smoker1" checked={p1.smoker === 'non'} onChange={() => setP1({...p1, smoker: 'non'})} />
+                    <label className="flex items-center gap-2"><input type="radio" name="smoker1" checked={p1.smoker === 'oui'} onChange={() => setP1({...p1, smoker: 'oui'})} className="accent-[#3176A6]"/><span className="text-sm">Oui</span></label>
+                    <label className="flex items-center gap-2"><input type="radio" name="smoker1" checked={p1.smoker === 'non'} onChange={() => setP1({...p1, smoker: 'non'})} className="accent-[#3176A6]"/><span className="text-sm">Non</span></label>
                   </div>
                 </div>
               </div>
@@ -472,11 +527,11 @@ export default function Mapping360() {
                 <div className="border-t border-dashed border-slate-300 pt-4 mb-4">
                   <h4 className="text-xs font-bold text-purple-600 uppercase mb-4 flex gap-2"><Users size={16}/> Conjoint / Partenaire (P2)</h4>
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <Input label="Prénom" value={p2.fname} onChange={v => setP2({...p2, fname: v})} />
-                    <Input label="Nom" value={p2.lname} onChange={v => setP2({...p2, lname: v})} />
+                    <div><label className="text-xs font-bold text-slate-500 block mb-1">Prénom</label><input value={p2.fname} onChange={e => setP2({...p2, fname: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-purple-500"/></div>
+                    <div><label className="text-xs font-bold text-slate-500 block mb-1">Nom</label><input value={p2.lname} onChange={e => setP2({...p2, lname: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-purple-500"/></div>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <Input label="Date naissance" type="date" value={p2.dob} onChange={v => setP2({...p2, dob: v})} />
+                    <div><label className="text-xs font-bold text-slate-500 block mb-1">Date naissance</label><input type="date" value={p2.dob} onChange={e => setP2({...p2, dob: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-purple-500"/></div>
                     <div>
                       <label className="block text-xs font-bold text-slate-500 mb-1">Statut</label>
                       <select value={p2.status} onChange={e => setP2({...p2, status: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 outline-none focus:border-purple-500">
@@ -485,12 +540,12 @@ export default function Mapping360() {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <Input label="Profession" value={p2.profession} onChange={v => setP2({...p2, profession: v})} />
+                    <div><label className="text-xs font-bold text-slate-500 block mb-1">Profession</label><input value={p2.profession} onChange={e => setP2({...p2, profession: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-purple-500"/></div>
                     <div>
                       <label className="block text-xs font-bold text-slate-500 mb-1">Fumeur ?</label>
                       <div className="flex gap-4 mt-2">
-                        <Radio label="Oui" name="smoker2" checked={p2.smoker === 'oui'} onChange={() => setP2({...p2, smoker: 'oui'})} color="accent-purple-600" />
-                        <Radio label="Non" name="smoker2" checked={p2.smoker === 'non'} onChange={() => setP2({...p2, smoker: 'non'})} color="accent-purple-600" />
+                        <label className="flex items-center gap-1"><input type="radio" name="smoker2" checked={p2.smoker === 'oui'} onChange={() => setP2({...p2, smoker: 'oui'})} className="accent-purple-600"/><span className="text-xs">Oui</span></label>
+                        <label className="flex items-center gap-1"><input type="radio" name="smoker2" checked={p2.smoker === 'non'} onChange={() => setP2({...p2, smoker: 'non'})} className="accent-purple-600"/><span className="text-xs">Non</span></label>
                       </div>
                     </div>
                   </div>
@@ -506,12 +561,16 @@ export default function Mapping360() {
                       <option>Célibataire</option><option>Marié(e)</option><option>Partenariat</option><option>Divorcé(e)</option><option>Veuf/Veuve</option>
                     </select>
                   </div>
-                  <Input label="Nombre Enfants" type="number" value={p1.childrenCount} onChange={v => setP1({...p1, childrenCount: v})} />
+                  <div className="relative">
+                    <label className="block text-xs font-bold text-slate-500 mb-1">Nombre Enfants</label>
+                    <input type="number" value={p1.childrenCount} onChange={e => setP1({...p1, childrenCount: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/>
+                  </div>
                 </div>
                 
                 {(p1.civil === 'Marié(e)' || p1.civil === 'Partenariat') && (
                   <div className="mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <Input label="Date Mariage / Partenariat" type="date" value={p1.marriageDate} onChange={v => setP1({...p1, marriageDate: v})} />
+                    <label className="text-xs font-bold text-[#3176A6] block mb-1">Date Mariage</label>
+                    <input type="date" value={p1.marriageDate} onChange={e => setP1({...p1, marriageDate: e.target.value})} className="w-full border rounded p-2 text-sm outline-none focus:border-[#3176A6]"/>
                     <p className="text-[10px] text-slate-500 mt-1 italic">Règle des 5 ans.</p>
                   </div>
                 )}
@@ -570,29 +629,29 @@ export default function Mapping360() {
 
                   <label className="block text-xs font-bold text-slate-500 mb-2 uppercase">Documents requis</label>
                   <div className="space-y-2">
-                    <Checkbox label="Compte AVS (Vous)" checked={expertOpts.avs} onChange={c => setExpertOpts({...expertOpts, avs: c})} />
+                    <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.avs} onChange={e => setExpertOpts({...expertOpts, avs: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">Compte AVS (Vous)</span></label>
                     
                     {status === 'employee' ? (
                       <>
-                        <Checkbox label="Contrat Travail (Vous) - 720j" checked={expertOpts.contract} onChange={c => setExpertOpts({...expertOpts, contract: c})} />
-                        <Checkbox label="Certificat LPP (Vous)" checked={expertOpts.lpp} onChange={c => setExpertOpts({...expertOpts, lpp: c})} />
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.contract} onChange={e => setExpertOpts({...expertOpts, contract: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">Contrat Travail (Vous) - 720j</span></label>
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.lpp} onChange={e => setExpertOpts({...expertOpts, lpp: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">Certificat LPP (Vous)</span></label>
                       </>
                     ) : (
                       <>
-                        <Checkbox label="APG Maladie (Vous)" checked={expertOpts.apgMaladie} onChange={c => setExpertOpts({...expertOpts, apgMaladie: c})} />
-                        <Checkbox label="Assurance Accident (Vous)" checked={expertOpts.apgAccident} onChange={c => setExpertOpts({...expertOpts, apgAccident: c})} />
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.apgMaladie} onChange={e => setExpertOpts({...expertOpts, apgMaladie: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">APG Maladie (Vous)</span></label>
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.apgAccident} onChange={e => setExpertOpts({...expertOpts, apgAccident: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">Assurance Accident (Vous)</span></label>
                       </>
                     )}
 
                     {isCouple && (
                       <div className="pt-2 border-t border-slate-200">
                         <div className="text-[10px] font-bold text-purple-600 mb-1">PARTENAIRE</div>
-                        <Checkbox label="Compte AVS (P2)" checked={expertOpts.avsP2} onChange={c => setExpertOpts({...expertOpts, avsP2: c})} color="accent-purple-500" />
-                        <Checkbox label="LPP / APG (P2)" checked={expertOpts.lppP2} onChange={c => setExpertOpts({...expertOpts, lppP2: c})} color="accent-purple-500" />
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.avsP2} onChange={e => setExpertOpts({...expertOpts, avsP2: e.target.checked})} className="accent-purple-600"/><span className="text-xs">Compte AVS (P2)</span></label>
+                        <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.lppP2} onChange={e => setExpertOpts({...expertOpts, lppP2: e.target.checked})} className="accent-purple-600"/><span className="text-xs">LPP / APG (P2)</span></label>
                       </div>
                     )}
                     
-                    <Checkbox label="3e Piliers existants" checked={expertOpts.pilier3} onChange={c => setExpertOpts({...expertOpts, pilier3: c})} />
+                    <label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={expertOpts.pilier3} onChange={e => setExpertOpts({...expertOpts, pilier3: e.target.checked})} className="accent-[#3176A6]"/><span className="text-xs">3e Piliers existants</span></label>
                   </div>
                 </div>
               )}
@@ -619,39 +678,3 @@ export default function Mapping360() {
     </div>
   );
 }
-
-// --- SOUS-COMPOSANTS ---
-const ServiceOption = ({ type, title, price, desc, selected, onSelect, icon: Icon, color, children }) => (
-  <div onClick={() => onSelect(type)} className={`cursor-pointer p-4 rounded-xl border-2 transition-all relative ${selected === type ? 'border-[#3176A6] bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}>
-    <div className="flex items-start gap-4">
-      <div className={`p-2 rounded-lg ${color.split(' ')[0]} ${color.split(' ')[1]}`}><Icon size={20}/></div>
-      <div className="flex-1">
-        <div className="flex justify-between items-center mb-1"><span className="font-bold text-slate-800">{title}</span><span className={`text-xs px-2 py-1 rounded-full font-bold ${color}`}>{price}</span></div>
-        <p className="text-xs text-slate-500">{desc}</p>
-        {children}
-      </div>
-      {selected === type && <CheckCircle2 className="absolute top-4 right-4 text-[#3176A6]" size={20} />}
-    </div>
-  </div>
-);
-
-const Input = ({ label, type = "text", value, onChange }) => (
-  <div>
-    <label className="block text-xs font-bold text-slate-500 mb-1">{label}</label>
-    <input type={type} value={value} onChange={e => onChange(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 outline-none focus:border-[#3176A6]" />
-  </div>
-);
-
-const Radio = ({ label, name, checked, onChange, color = "accent-[#3176A6]" }) => (
-  <label className="flex items-center gap-2 cursor-pointer">
-    <input type="radio" name={name} checked={checked} onChange={onChange} className={color} />
-    <span className="text-sm">{label}</span>
-  </label>
-);
-
-const Checkbox = ({ label, checked, onChange, color = "accent-[#3176A6]" }) => (
-  <label className="flex items-center gap-3 p-2 border border-slate-200 rounded bg-white cursor-pointer hover:bg-slate-50 transition-colors">
-    <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)} className={`w-4 h-4 ${color}`} />
-    <span className="text-xs text-slate-600">{label}</span>
-  </label>
-);

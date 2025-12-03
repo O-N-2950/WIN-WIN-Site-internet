@@ -102,9 +102,19 @@ export default function Paiement() {
       if (session.url) {
         window.location.href = session.url;
       }
-    } catch (error) {
-      console.error("Erreur lors de la création de la session de paiement:", error);
-      toast.error("Erreur lors du paiement. Veuillez réessayer.");
+    } catch (error: any) {
+      console.error("❌ Erreur lors de la création de la session de paiement:", error);
+      
+      // Message d'erreur plus explicite
+      const errorMessage = error?.message || "Erreur lors du paiement. Veuillez réessayer.";
+      
+      if (errorMessage.includes('Configuration Stripe manquante')) {
+        toast.error("⚠️ Configuration Stripe manquante. Veuillez contacter le support.");
+      } else if (errorMessage.includes('No such price')) {
+        toast.error("⚠️ Tarif invalide. Veuillez contacter le support.");
+      } else {
+        toast.error(`❌ ${errorMessage}`);
+      }
     } finally {
       setIsProcessing(false);
     }
