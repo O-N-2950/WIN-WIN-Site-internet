@@ -1,425 +1,453 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { CONTACT_INFO, ROUTES, SERVICES_LINKS } from "@/const";
-import { motion } from "framer-motion";
-import { AlertTriangle, Check, FileText, Phone, Shield, TrendingUp, Users } from "lucide-react";
-import { Link } from "wouter";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Shield, 
+  Users, 
+  Scale, 
+  Banknote, 
+  FileSignature, 
+  ArrowRight, 
+  Check, 
+  AlertOctagon, 
+  HeartHandshake, 
+  Phone, 
+  Mail, 
+  Clock,
+  Landmark
+} from 'lucide-react';
+
+// --- Animations Config ---
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+};
+
+// --- Composants UI ---
+
+const SectionTitle = ({ children, subtitle, light = false }) => (
+  <div className="mb-16 text-center max-w-3xl mx-auto">
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className={`text-4xl md:text-5xl font-serif font-bold mb-4 ${light ? 'text-white' : 'text-slate-900'}`}
+    >
+      {children}
+    </motion.h2>
+    <div className={`h-1 w-24 mx-auto rounded-full mb-6 ${light ? 'bg-emerald-400' : 'bg-emerald-600'}`}></div>
+    {subtitle && (
+      <p className={`text-lg md:text-xl ${light ? 'text-slate-300' : 'text-slate-600'}`}>
+        {subtitle}
+      </p>
+    )}
+  </div>
+);
+
+const FeatureCard = ({ icon: Icon, title, desc, delay }) => (
+  <motion.div
+    variants={fadeInUp}
+    className="bg-white p-8 rounded-xl shadow-xl border-t-4 border-emerald-600 hover:shadow-2xl transition-all duration-300 group"
+  >
+    <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors duration-300">
+      <Icon className="w-7 h-7 text-emerald-700 group-hover:text-white transition-colors" />
+    </div>
+    <h3 className="text-xl font-bold text-slate-800 mb-3 font-serif">{title}</h3>
+    <p className="text-slate-600 leading-relaxed">{desc}</p>
+  </motion.div>
+);
+
+const ProcessStep = ({ number, title, desc }) => (
+  <motion.div 
+    variants={fadeInUp}
+    className="relative pl-12 md:pl-0 md:text-center flex flex-col md:items-center"
+  >
+    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-0 w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10">
+      {number}
+    </div>
+    <div className="md:mt-14 p-6 bg-slate-50 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow w-full">
+      <h4 className="text-lg font-bold text-slate-800 mb-2">{title}</h4>
+      <p className="text-slate-600 text-sm">{desc}</p>
+    </div>
+  </motion.div>
+);
+
+// --- Page Principale ---
 
 export default function Durabilis() {
+  const [activeTab, setActiveTab] = useState('problem');
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section 
-        className="relative py-32 text-white overflow-hidden"
-        style={{
-          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 45%), hsl(205, 40%, 69%))'
-        }}
-      >
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto text-center"
+    <div className="bg-slate-50 min-h-screen font-sans text-slate-900 overflow-x-hidden selection:bg-emerald-200">
+      
+      {/* HERO SECTION */}
+      <header className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
+            alt="Handshake Meeting" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900/60"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full mb-6">
-              <Shield className="w-5 h-5" />
-              <span className="font-medium">Concept Durabilis</span>
+            <div className="flex items-center gap-2 mb-6">
+              <span className="h-[1px] w-12 bg-amber-400"></span>
+              <span className="text-amber-400 font-bold tracking-widest uppercase text-sm">Concept Durabilis</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Protégez la Pérennité de Votre Entreprise
+            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+              Anticipez.<br/>
+              Protégez.<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+                Transmettez.
+              </span>
             </h1>
-            <p className="text-2xl mb-8 text-white/90">
-              Anticipez, protégez et assurez la continuité de votre entreprise en cas d'imprévu
+            <p className="text-xl text-slate-300 mb-8 max-w-lg leading-relaxed">
+              Assurez la pérennité de votre entreprise et la paix financière de vos familles en cas de coup dur entre associés.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
-                  Demandez Conseil
-                </Button>
-              </Link>
-              <a href={SERVICES_LINKS.durabilis} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-primary border-white/30">
-                  Voir la Présentation Complète
-                </Button>
-              </a>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-emerald-600 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
+                onClick={() => document.getElementById('context').scrollIntoView({ behavior: 'smooth' })}
+              >
+                Comprendre l'enjeu <ArrowRight size={20}/>
+              </motion.button>
             </div>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Le Risque */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center mb-16"
+          {/* Abstract Visual Element */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="hidden md:block relative"
           >
-            <h2 className="text-4xl font-bold mb-6">Le Risque Souvent Ignoré</h2>
-            <p className="text-xl text-muted-foreground">
-              Le décès d'un associé peut mettre en péril l'avenir de votre entreprise. Sans préparation, 
-              les conséquences peuvent être dramatiques pour l'entreprise, les associés survivants et les familles.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                icon: <AlertTriangle className="w-12 h-12 text-destructive" />,
-                title: "Blocage de l'Entreprise",
-                description: "Les héritiers deviennent associés sans avoir les compétences ni la volonté de gérer l'entreprise."
-              },
-              {
-                icon: <TrendingUp className="w-12 h-12 text-destructive" />,
-                title: "Problèmes Financiers",
-                description: "L'entreprise doit racheter les parts sans avoir les liquidités nécessaires."
-              },
-              {
-                icon: <Users className="w-12 h-12 text-destructive" />,
-                title: "Conflits Familiaux",
-                description: "Les héritiers et les associés survivants ont des intérêts divergents."
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="p-8 text-center h-full hover:shadow-lg transition-shadow border-destructive/20">
-                  <div className="flex justify-center mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-muted-foreground">{item.description}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* La Solution Durabilis */}
-      <section className="py-20 bg-muted/30">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6">La Solution Durabilis</h2>
-            <p className="text-xl text-muted-foreground">
-              Un dispositif complet qui combine assurance décès et convention d'actionnaires pour garantir 
-              la continuité de votre entreprise
-            </p>
-          </motion.div>
-
-          <div className="max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 mb-12"
-            >
-              <div className="flex items-start gap-6">
-                <div className="shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Shield className="w-8 h-8 text-primary" />
-                  </div>
-                </div>
+            <div className="absolute inset-0 bg-emerald-500 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
+            <div className="relative bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl text-white">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="bg-amber-500 p-3 rounded-lg"><Shield size={32} className="text-white"/></div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-4">Comment ça marche ?</h3>
-                  <p className="text-lg text-muted-foreground mb-6">
-                    Durabilis combine deux éléments essentiels : une <strong>assurance décès croisée</strong> entre 
-                    associés et une <strong>convention d'actionnaires</strong> qui organise le rachat des parts. 
-                    En cas de décès d'un associé, l'assurance fournit les liquidités nécessaires pour racheter 
-                    les parts aux héritiers.
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="flex items-start gap-3">
-                      <Check className="w-6 h-6 text-primary shrink-0 mt-1" />
-                      <div>
-                        <strong className="block mb-1">Assurance décès croisée</strong>
-                        <span className="text-sm text-muted-foreground">Chaque associé assure ses co-associés</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-6 h-6 text-primary shrink-0 mt-1" />
-                      <div>
-                        <strong className="block mb-1">Convention d'actionnaires</strong>
-                        <span className="text-sm text-muted-foreground">Organise le rachat des parts</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-6 h-6 text-primary shrink-0 mt-1" />
-                      <div>
-                        <strong className="block mb-1">Liquidités garanties</strong>
-                        <span className="text-sm text-muted-foreground">Capital disponible immédiatement</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-6 h-6 text-primary shrink-0 mt-1" />
-                      <div>
-                        <strong className="block mb-1">Protection familiale</strong>
-                        <span className="text-sm text-muted-foreground">Les héritiers reçoivent la valeur des parts</span>
-                      </div>
-                    </div>
-                  </div>
+                  <h3 className="text-xl font-bold">Pacte d'Associés</h3>
+                  <p className="text-sm text-slate-300">Sécurité juridique</p>
                 </div>
               </div>
+              <div className="w-full h-[1px] bg-white/20 mb-6"></div>
+              <div className="flex items-start gap-4">
+                <div className="bg-emerald-500 p-3 rounded-lg"><Banknote size={32} className="text-white"/></div>
+                <div>
+                  <h3 className="text-xl font-bold">Financement Garanti</h3>
+                  <p className="text-sm text-slate-300">Assurance croisée</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      {/* THE CONTEXT (PROBLEM) */}
+      <section id="context" className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <SectionTitle subtitle="Que se passe-t-il si un associé décède ou devient invalide demain ?">
+            La réalité du risque
+          </SectionTitle>
+
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 mt-12">
+            {/* The Risk Side */}
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-slate-50 p-8 rounded-2xl border border-slate-200"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <AlertOctagon className="text-red-500" size={32} />
+                <h3 className="text-2xl font-bold text-slate-800">Sans Planification</h3>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  "Les héritiers incompétents entrent dans l'entreprise.",
+                  "Conflits d'intérêts entre survivants et famille.",
+                  "Manque de liquidités pour racheter les parts.",
+                  "Risque de vente forcée à un tiers concurrent.",
+                  "Mise en péril de la continuité de l'activité."
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-slate-600">
+                    <span className="mt-1 min-w-[6px] min-h-[6px] rounded-full bg-red-400 block"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* The Solution Side */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-emerald-900 p-8 rounded-2xl shadow-2xl text-white relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-32 bg-emerald-500 rounded-full blur-[80px] opacity-20"></div>
+              
+              <div className="flex items-center gap-3 mb-6 relative z-10">
+                <Check className="text-emerald-400" size={32} />
+                <h3 className="text-2xl font-bold">Avec Durabilis</h3>
+              </div>
+              <ul className="space-y-4 relative z-10">
+                {[
+                  "Les associés survivants gardent le contrôle total.",
+                  "La famille reçoit immédiatement la valeur en cash.",
+                  "Le financement est garanti par l'assurance.",
+                  "La fiscalité est maîtrisée et optimisée.",
+                  "La pérennité de l'entreprise est assurée."
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-emerald-100">
+                    <span className="mt-1 min-w-[6px] min-h-[6px] rounded-full bg-emerald-400 block"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Les 3 Piliers */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6">Les 3 Piliers de Durabilis</h2>
-          </motion.div>
+      {/* HOW IT WORKS (MECHANISM) */}
+      <section className="py-24 bg-slate-900 text-white overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">
+                Le Mécanisme <span className="text-amber-400">Gagnant-Gagnant</span>
+              </h2>
+              <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+                Durabilis combine une convention d'actionnaires précise avec une solution de financement par assurance-vie risque pur. C'est la garantie que les fonds seront là exactement quand il le faut.
+              </p>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                number: "1",
-                icon: <FileText className="w-10 h-10 text-primary" />,
-                title: "Convention d'Actionnaires",
-                description: "Document juridique qui définit les règles de rachat des parts en cas de décès, garantissant la continuité de l'entreprise.",
-                points: [
-                  "Valorisation des parts",
-                  "Modalités de rachat",
-                  "Droits et obligations"
-                ]
-              },
-              {
-                number: "2",
-                icon: <Shield className="w-10 h-10 text-primary" />,
-                title: "Assurance Décès Croisée",
-                description: "Chaque associé souscrit une assurance sur la vie de ses co-associés, garantissant les liquidités nécessaires au rachat.",
-                points: [
-                  "Capital garanti",
-                  "Primes déductibles",
-                  "Protection immédiate"
-                ]
-              },
-              {
-                number: "3",
-                icon: <Users className="w-10 h-10 text-primary" />,
-                title: "Protection des Familles",
-                description: "Les héritiers reçoivent la juste valeur des parts sans avoir à s'impliquer dans la gestion de l'entreprise.",
-                points: [
-                  "Valeur garantie",
-                  "Liquidités immédiates",
-                  "Sérénité familiale"
-                ]
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="p-8 h-full hover:shadow-lg transition-shadow relative">
-                  <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-primary">{item.number}</span>
-                  </div>
-                  <div className="mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-muted-foreground mb-4">{item.description}</p>
-                  <ul className="space-y-2">
-                    {item.points.map((point, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm">
-                        <Check className="w-4 h-4 text-primary shrink-0" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Exemple Concret */}
-      <section className="py-20 bg-muted/30">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto"
-          >
-            <h2 className="text-4xl font-bold mb-8 text-center">Exemple Concret</h2>
-            <Card className="p-8 md:p-12">
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4 text-primary">Cas Pratique</h3>
-                  <p className="text-lg text-muted-foreground">
-                    Trois associés détiennent chacun 33% d'une entreprise valorisée à CHF 3'000'000.-
-                  </p>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-8 py-6 border-t border-b">
+                <div className="flex gap-4">
+                  <div className="bg-slate-800 p-3 rounded-lg h-fit"><FileSignature className="text-emerald-400" /></div>
                   <div>
-                    <h4 className="font-bold mb-3 text-lg">Situation</h4>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Valeur entreprise : CHF 3'000'000.-</li>
-                      <li>• Parts par associé : CHF 1'000'000.-</li>
-                      <li>• Prime annuelle/associé : ~CHF 3'000.-</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold mb-3 text-lg">En cas de décès</h4>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Capital assuré : CHF 1'000'000.-</li>
-                      <li>• Rachat des parts aux héritiers</li>
-                      <li>• Entreprise continue avec 2 associés</li>
-                    </ul>
+                    <h4 className="text-xl font-bold mb-2">1. Convention d'actionnaires</h4>
+                    <p className="text-slate-400 text-sm">Les associés s'engagent contractuellement à racheter les parts en cas de décès ou d'invalidité.</p>
                   </div>
                 </div>
-
-                <div className="bg-primary/10 rounded-lg p-6">
-                  <p className="text-lg">
-                    <strong className="text-primary">Résultat :</strong> Pour moins de CHF 250.- par mois et par associé, 
-                    l'entreprise est protégée et les familles sont assurées de recevoir la juste valeur des parts. 
-                    Les associés survivants gardent le contrôle de l'entreprise.
-                  </p>
+                <div className="flex gap-4">
+                  <div className="bg-slate-800 p-3 rounded-lg h-fit"><HeartHandshake className="text-emerald-400" /></div>
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">2. Protection Croisée</h4>
+                    <p className="text-slate-400 text-sm">Chaque associé est assuré. La société (ou les associés) paie les primes.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="bg-slate-800 p-3 rounded-lg h-fit"><Landmark className="text-emerald-400" /></div>
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">3. Exécution Automatique</h4>
+                    <p className="text-slate-400 text-sm">Au décès, l'assurance verse le capital aux survivants pour racheter les parts aux héritiers.</p>
+                  </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
+            </motion.div>
 
-      {/* Avantages */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6">Pourquoi Choisir Durabilis ?</h2>
-          </motion.div>
+            {/* Visual Diagram */}
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              className="relative h-[500px] bg-slate-800 rounded-3xl p-8 flex flex-col justify-between border border-slate-700"
+            >
+               {/* Simplified Diagram logic */}
+               <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                 <Shield size={300} />
+               </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {[
-              {
-                icon: "🛡️",
-                title: "Continuité Garantie",
-                description: "L'entreprise continue sans interruption"
-              },
-              {
-                icon: "💰",
-                title: "Liquidités Assurées",
-                description: "Capital disponible pour le rachat des parts"
-              },
-              {
-                icon: "👨‍👩‍👧‍👦",
-                title: "Familles Protégées",
-                description: "Les héritiers reçoivent la valeur des parts"
-              },
-              {
-                icon: "📊",
-                title: "Fiscalité Optimisée",
-                description: "Primes déductibles fiscalement"
-              },
-              {
-                icon: "⚖️",
-                title: "Cadre Juridique",
-                description: "Convention claire et opposable"
-              },
-              {
-                icon: "🤝",
-                title: "Sérénité",
-                description: "Évite les conflits entre héritiers et associés"
-              },
-              {
-                icon: "📈",
-                title: "Valorisation",
-                description: "Méthode de valorisation définie à l'avance"
-              },
-              {
-                icon: "✅",
-                title: "Simplicité",
-                description: "Mise en place rapide et efficace"
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.05 }}
-              >
-                <Card className="p-6 text-center h-full hover:shadow-lg transition-shadow">
-                  <div className="text-4xl mb-3">{item.icon}</div>
-                  <h3 className="font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                </Card>
-              </motion.div>
-            ))}
+               <div className="flex justify-between items-center relative z-10">
+                 <div className="bg-slate-700 p-4 rounded-xl text-center w-32">
+                   <Users size={32} className="mx-auto mb-2 text-blue-400"/>
+                   <span className="font-bold text-sm">Associés Survivants</span>
+                 </div>
+                 <ArrowRight className="text-slate-500 animate-pulse" />
+                 <div className="bg-emerald-600 p-4 rounded-xl text-center w-32 shadow-lg shadow-emerald-500/20">
+                   <div className="font-bold text-2xl mb-1">CASH</div>
+                   <span className="text-xs">Capital Décès</span>
+                 </div>
+                 <ArrowRight className="text-slate-500 animate-pulse" />
+                 <div className="bg-slate-700 p-4 rounded-xl text-center w-32">
+                    <Users size={32} className="mx-auto mb-2 text-amber-400"/>
+                    <span className="font-bold text-sm">Héritiers / Famille</span>
+                 </div>
+               </div>
+
+               <div className="text-center my-4 relative z-10">
+                 <div className="inline-block bg-slate-900 border border-slate-600 px-4 py-2 rounded-full text-xs text-slate-400 mb-2">
+                    Echange Simultané
+                 </div>
+               </div>
+
+               <div className="flex justify-between items-center relative z-10">
+                 <div className="h-1 bg-slate-600 flex-grow mx-4 rounded-full"></div>
+                 <div className="bg-white text-slate-900 p-4 rounded-xl text-center w-40 font-bold shadow-lg">
+                   <FileSignature size={24} className="mx-auto mb-2 text-emerald-600"/>
+                   Parts Sociales
+                 </div>
+                 <div className="h-1 bg-slate-600 flex-grow mx-4 rounded-full"></div>
+               </div>
+               
+               <div className="flex justify-between text-xs text-slate-400 mt-2 px-2">
+                  <span>Reçoivent 100% des parts</span>
+                  <span>Reçoivent la juste valeur</span>
+               </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section 
-        className="py-20 text-white relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(to bottom right, hsl(203, 55%, 42%), hsl(203, 55%, 44%), hsl(205, 40%, 69%))'
-        }}
-      >
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+      {/* IMPLEMENTATION STEPS */}
+      <section className="py-24 bg-emerald-50/50">
+        <div className="container mx-auto px-6">
+          <SectionTitle subtitle="Une mise en place structurée en 3 étapes">
+            Le Parcours Durabilis
+          </SectionTitle>
+
+          <div className="relative mt-16">
+            {/* Timeline Line */}
+            <div className="hidden md:block absolute top-6 left-0 w-full h-1 bg-slate-200"></div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid md:grid-cols-3 gap-8"
+            >
+              <ProcessStep 
+                number="1"
+                title="Valorisation"
+                desc="Estimation objective de la valeur de l'entreprise pour fixer les montants à assurer."
+              />
+              <ProcessStep 
+                number="2"
+                title="Convention"
+                desc="Rédaction du pacte d'associés (Clause d'achat/vente) par nos juristes partenaires."
+              />
+              <ProcessStep 
+                number="3"
+                title="Financement"
+                desc="Mise en place des polices d'assurance sur la tête de chaque associé clé."
+              />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* BENEFITS GRID */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <SectionTitle subtitle="Pourquoi les entreprises familiales et PME nous choisissent">
+            Les Avantages Clés
+          </SectionTitle>
+          
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            <h2 className="text-4xl font-bold mb-6">
-              Protégez Votre Entreprise Dès Aujourd'hui
-            </h2>
-            <p className="text-xl mb-8 text-white/90">
-              Ne laissez pas l'imprévu mettre en péril des années de travail
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaireInfo}>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
-                  Demandez Conseil
-                </Button>
-              </Link>
-              <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-primary border-white/30">
-                  <Phone className="w-5 h-5 mr-2" />
-                  {CONTACT_INFO.phone}
-                </Button>
-              </a>
-            </div>
+            <FeatureCard 
+              icon={Scale}
+              title="Équité Totale"
+              desc="La famille reçoit la valeur réelle de l'entreprise, sans avoir à s'immiscer dans la gestion."
+            />
+            <FeatureCard 
+              icon={Shield}
+              title="Contrôle Assuré"
+              desc="Les associés restants conservent le pouvoir décisionnel sans interférence extérieure."
+            />
+            <FeatureCard 
+              icon={Banknote}
+              title="Liquidités Immédiates"
+              desc="Les fonds sont disponibles sous 30 jours, sans toucher à la trésorerie de l'entreprise."
+            />
+            <FeatureCard 
+              icon={Landmark}
+              title="Fiscalité Optimisée"
+              desc="Structure optimisée pour minimiser l'impact fiscal lors de la transmission."
+            />
+            <FeatureCard 
+              icon={Clock}
+              title="Rapidité d'Exécution"
+              desc="Évite les longues procédures de succession et les blocages bancaires."
+            />
+            <FeatureCard 
+              icon={HeartHandshake}
+              title="Paix d'Esprit"
+              desc="Savoir que ses associés et sa famille sont protégés permet de se concentrer sur le business."
+            />
           </motion.div>
         </div>
       </section>
+
+      {/* CTA / FOOTER */}
+      <footer className="bg-slate-900 text-white pt-20 pb-10">
+        <div className="container mx-auto px-6">
+          
+          <div className="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-12 md:p-16 text-center shadow-2xl mb-20 relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+             
+             <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} transition={{duration:0.6}}>
+               <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Protégez l'œuvre de votre vie.</h2>
+               <p className="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">
+                 Ne laissez pas l'imprévu décider de l'avenir de votre entreprise. Contactez WinWin Finance Group pour un audit gratuit de votre situation actionnariale.
+               </p>
+               <div className="flex flex-col md:flex-row justify-center gap-6">
+                <a href="tel:+41324661100" className="flex items-center justify-center gap-2 bg-white text-emerald-900 px-8 py-4 rounded-full font-bold hover:bg-emerald-50 transition shadow-lg">
+                  <Phone size={20} /> 032 466 11 00
+                </a>
+                <a href="mailto:contact@winwin.swiss" className="flex items-center justify-center gap-2 border-2 border-emerald-400 text-emerald-400 px-8 py-4 rounded-full font-bold hover:bg-emerald-400 hover:text-white transition">
+                  <Mail size={20} /> contact@winwin.swiss
+                </a>
+               </div>
+             </motion.div>
+          </div>
+
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+            <div className="mb-4 md:mb-0">
+              <span className="font-bold text-slate-300 text-lg block mb-1">WinWin Finance Group</span>
+              <span>Expertise en planification financière & succession d'entreprise</span>
+            </div>
+            <div>
+              &copy; {new Date().getFullYear()} Durabilis. Tous droits réservés.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

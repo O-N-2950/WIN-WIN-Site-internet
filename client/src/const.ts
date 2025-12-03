@@ -69,9 +69,9 @@ export const COMPANY_INFO = {
 
 // Services Links
 export const SERVICES_LINKS = {
-  talentis: "https://talentis-les-indemnites--xaf5by0.gamma.site/",
-  durabilis: "https://durabilis-anticipez-prot-42qcd6c.gamma.site/",
-  parentsEnfants: "https://gamma.app/docs/Securisez-lavenir-de-vos-enfants-Notre-solution-unique-a-partir-d-j23lr0vrn1ejl20?mode=doc",
+  talentis: "/concepts/talentis",
+  durabilis: "/concepts/durabilis",
+  parentsEnfants: "/concepts/parents-enfants",
   lppSearch: "https://winwin.recherche-libre-passage.ch",
   airtableClient: "https://airtable.com/appZTQkRJ7PwOtdQ3O/tblWPclpGmB23ASGI/viw3oNghavPmO9cP?blocks=hide",
 } as const;

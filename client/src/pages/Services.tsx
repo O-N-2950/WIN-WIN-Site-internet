@@ -78,7 +78,6 @@ const servicesDetailles = [
       "Motivation et engagement accrus",
     ],
     link: SERVICES_LINKS.talentis,
-    external: true,
     badge: "PREMIUM",
     gradient: "from-amber-500 to-orange-500",
   },
@@ -99,7 +98,6 @@ const servicesDetailles = [
       "Protection de vos proches",
     ],
     link: SERVICES_LINKS.parentsEnfants,
-    external: true,
     gradient: "from-rose-500 to-red-500",
   },
   {
@@ -119,7 +117,6 @@ const servicesDetailles = [
       "Éviter la vente forcée de l'entreprise",
     ],
     link: SERVICES_LINKS.durabilis,
-    external: true,
     badge: "PREMIUM",
     gradient: "from-emerald-500 to-teal-500",
   },

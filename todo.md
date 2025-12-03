@@ -2179,3 +2179,18 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Remplacer bg-white par bg-accent (doré) pour meilleure visibilité
 - [ ] Vérifier que les boutons sont visibles sur fond bleu
 - [ ] Tester sur toutes les pages
+
+
+## 🔗 Correction Liens "En savoir plus" (2 déc 2025)
+- [ ] Identifier les 3 liens "En savoir plus" cassés dans la page Services/Concepts
+- [ ] Vérifier les routes et destinations des liens
+- [ ] Corriger les liens pour qu'ils pointent vers les bonnes pages
+- [ ] Tester tous les liens
+
+
+## 🎨 Intégration Présentations Gamma.app (2 déc 2025)
+- [x] Intégrer Talentis avec effet "Wahou" (animations, design moderne)
+- [x] Intégrer Durabilis avec effet "Wahou" (design Héritage & Prestige)
+- [x] Intégrer Parents-Enfants avec effet "Wahou" (design Dream & Grow)
+- [x] Mettre à jour les liens dans const.ts et Services.tsx pour pointer vers les pages internes
+- [x] Supprimer les flags external: true pour les 3 concepts
