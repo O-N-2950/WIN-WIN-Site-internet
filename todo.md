@@ -2242,3 +2242,14 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - 📊 **Qualification leads** : Données structurées dans le message
 - ⚡ **Conversion** : Formulaire pré-rempli (moins de friction)
 - 💼 **Upsell** : Option Expert visible dès le début
+
+
+## 🔧 Corrections UX et Refonte Page Outils (3 décembre 2025)
+- [x] Corriger les boutons blancs invisibles sur la page d'accueil (Clients Privés et Entreprises)
+- [x] Transformer la page /outils en page de présentation avec cartes cliquables
+- [x] Créer une carte "Établissez votre inventaire ménage en 2 minutes"
+- [x] Créer une page dédiée /outils/inventaire-menage pour le calculateur
+- [x] Ajouter d'autres outils futurs (structure modulaire)
+- [x] Design "Wahouuu" avec animations et effets visuels
+- [x] Tester le parcours utilisateur complet
+- [x] Créer checkpoint après corrections

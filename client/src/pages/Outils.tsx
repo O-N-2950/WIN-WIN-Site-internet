@@ -1,500 +1,240 @@
-import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'wouter';
+import { 
+  Calculator, 
+  Home, 
+  TrendingUp, 
+  Shield, 
+  ArrowRight,
+  Sparkles,
+  Clock,
+  CheckCircle2
+} from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-// --- CHARTE GRAPHIQUE WINWIN ---
-const THEME = {
-  primary: '#3176A6',
-  secondary: '#8CB4D2',
-  bg: '#f8fafc',
-  glass: 'rgba(255, 255, 255, 0.95)',
-  glassBorder: '1px solid rgba(255, 255, 255, 0.5)',
-  text: '#1e293b',
-  textLight: '#64748b',
-  danger: '#ef4444',
-  dangerBg: '#fef2f2',
-  success: '#10b981',
-  shadow: '0 25px 50px -12px rgba(49, 118, 166, 0.15)',
-  disabled: '#cbd5e1'
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 }
 };
 
-const CANTONS = [
-  "", "Argovie (AG)", "Appenzell Rh.-Int. (AI)", "Appenzell Rh.-Ext. (AR)", "Berne (BE)", 
-  "Bâle-Campagne (BL)", "Bâle-Ville (BS)", "Fribourg (FR)", "Genève (GE)", "Glaris (GL)", 
-  "Grisons (GR)", "Jura (JU)", "Lucerne (LU)", "Neuchâtel (NE)", "Nidwald (NW)", 
-  "Obwald (OW)", "Saint-Gall (SG)", "Schaffhouse (SH)", "Soleure (SO)", "Schwytz (SZ)", 
-  "Thurgovie (TG)", "Tessin (TI)", "Uri (UR)", "Vaud (VD)", "Valais (VS)", "Zoug (ZG)", "Zurich (ZH)"
-];
-
-// --- COMPOSANTS UI ---
-const ModernSlider = ({ label, value, onChange, max = 20000, step = 100, presets = [] }: any) => (
-  <div style={{ marginBottom: '35px', background: 'white', padding: '20px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02)', border: '1px solid #f1f5f9' }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '15px' }}>
-      <span style={{ fontWeight: 600, fontSize: '1rem', color: THEME.text }}>{label}</span>
-      <span style={{ color: THEME.primary, fontWeight: '800', fontSize: '1.2rem', fontVariantNumeric: 'tabular-nums' }}>
-        {value.toLocaleString('fr-CH')} <span style={{fontSize:'0.8rem'}}>CHF</span>
-      </span>
-    </div>
-    <input type="range" min="0" max={max} step={step} value={value} onChange={(e) => onChange(parseInt(e.target.value))} style={{ width: '100%', accentColor: THEME.primary, cursor: 'pointer', height: '6px', borderRadius: '10px', marginBottom: '15px' }} />
-    {presets.length > 0 && (
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-        {presets.map((preset: any, index: number) => (
-          <button key={index} type="button" onClick={() => onChange(preset.val)} style={{ background: value === preset.val ? THEME.primary : '#f8fafc', color: value === preset.val ? 'white' : THEME.textLight, border: value === preset.val ? 'none' : '1px solid #e2e8f0', padding: '6px 14px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease' }}>
-            {preset.label}
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
-);
-
-const InputField = ({ label, type = "text", name, value, onChange, placeholder, required = false }: any) => (
-  <div style={{ marginBottom: '15px' }}>
-    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, marginBottom: '5px', color: THEME.textLight, textTransform: 'uppercase', letterSpacing:'0.5px' }}>
-      {label} {required && <span style={{color: THEME.danger, fontSize:'1.2rem', verticalAlign:'middle'}}>*</span>}
-    </label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      style={{
-        width: '100%', padding: '14px', borderRadius: '8px', border: value ? '1px solid #e2e8f0' : '1px solid #cbd5e1',
-        fontSize: '1rem', background: '#fff', boxSizing: 'border-box', color: THEME.text, outline: 'none', transition: 'all 0.2s'
-      }}
-      onFocus={(e) => {e.target.style.borderColor = THEME.secondary; e.target.style.boxShadow = `0 0 0 3px ${THEME.secondary}20`;}}
-      onBlur={(e) => {e.target.style.borderColor = value ? '#e2e8f0' : '#cbd5e1'; e.target.style.boxShadow = 'none';}}
-    />
-  </div>
-);
-
-const LossSimulator = ({ realValue }: any) => {
-  const [oldValue, setOldValue] = useState(Math.round(realValue * 0.7)); 
-  const damageExample = 20000;
-  const ratio = Math.min(oldValue / realValue, 1);
-  const loss = damageExample - (damageExample * ratio);
-
-  return (
-    <div style={{ marginTop: '20px', background: 'white', borderRadius: '16px', border: `1px solid ${THEME.dangerBg}`, overflow: 'hidden' }}>
-      <div style={{ padding: '12px', background: THEME.dangerBg, color: THEME.danger, fontWeight: 'bold', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span>⚠️</span> Testez le danger de la sous-assurance
-      </div>
-      <div style={{ padding: '20px' }}>
-        <p style={{ fontSize: '0.85rem', color: THEME.textLight, marginBottom: '15px' }}>
-          Si vous déclarez <strong>{oldValue.toLocaleString()}</strong> au lieu de <strong>{realValue.toLocaleString()}</strong> (Valeur à neuf), voici le résultat d'un sinistre à 20'000.- :
-        </p>
-        <input type="range" min={0} max={realValue} step={1000} value={oldValue} onChange={(e) => setOldValue(parseInt(e.target.value))} style={{ width: '100%', accentColor: THEME.danger, marginBottom: '10px' }} />
-        {loss > 100 && (
-          <div style={{ textAlign: 'center', color: THEME.danger, fontWeight: 'bold', fontSize: '1rem' }}>
-            Perte sèche pour vous : - {Math.round(loss).toLocaleString()} CHF 💸
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// --- APP PRINCIPALE ---
-export default function Outils() {
-  const [step, setStep] = useState(1);
-  const [actionType, setActionType] = useState<string | null>(null);
-
-  const [values, setValues] = useState({
-    canape: 0, media: 0, meubles: 0,
-    cuisine: 0, habits: 0,
-    sport: 0, vin: 0, autre: 0
-  });
-
-  const [clientInfo, setClientInfo] = useState({
-    prenom: '', nom: '', email: '', mobile: '',
-    dob: '', 
-    adresse: '', npa: '', ville: '', canton: '',
-    statut: 'locataire', type: 'famille',
-    includeRC: false, driveThirdParty: 'non' 
-  });
-
-  const total = useMemo(() => Object.values(values).reduce((a, b) => a + b, 0), [values]);
-  const finalAmount = useMemo(() => Math.ceil((total * 1.10) / 1000) * 1000, [total]);
-
-  const updateVal = (key: string, val: number) => setValues(prev => ({ ...prev, [key]: val }));
-  const handleInfoChange = (e: any) => {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    setClientInfo(prev => ({ ...prev, [e.target.name]: value }));
-  };
-
-  // VALIDATION STRICTE
-  const isFormValid = useMemo(() => {
-    const base = clientInfo.prenom && clientInfo.nom && clientInfo.email && clientInfo.mobile;
-    const address = clientInfo.adresse && clientInfo.npa && clientInfo.ville;
-    
-    if (actionType === 'update') return base && address;
-    if (actionType === 'quote') return base && address && clientInfo.dob && clientInfo.canton;
-    return false;
-  }, [clientInfo, actionType]);
-
-  const navigate = (newStep: number) => {
-    setStep(newStep);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const parts = dateStr.split('-');
-    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-  };
-
-  const generateMailto = () => {
-    if (!isFormValid) return "#";
-
-    const subject = actionType === 'quote' 
-      ? `Demande d'offre - Assurance Ménage ${clientInfo.includeRC ? '+ RC Privée' : ''} - ${clientInfo.nom}` 
-      : `Mise à jour Inventaire Ménage - ${clientInfo.nom}`;
-    
-    let body = '';
-
-    if (actionType === 'quote') {
-      const dob = formatDate(clientInfo.dob);
-      const cantonCode = clientInfo.canton.split('(')[1]?.replace(')', '') || '';
-      
-      let rcSection = "";
-      if (clientInfo.includeRC) {
-        const rcVehicule = clientInfo.driveThirdParty === 'oui' ? 'Oui (+CHF 38.-/an)' : 'Non';
-        rcSection = `\nAssurance RC Privée :\n- Couverture ${clientInfo.type}\n- Option véhicule de tiers : ${rcVehicule}\n`;
-      }
-
-      const cantonNote = `\n=== REMARQUES ===\nCanton ${cantonCode} : Vérifier l'assurance incendie cantonale obligatoire`;
-
-      body = `Bonjour,\n\n` +
-             `Je souhaite obtenir une offre pour une assurance ménage via votre calculateur en ligne.\n\n` +
-             `=== INFORMATIONS CLIENT ===\n` +
-             `Nom : ${clientInfo.prenom} ${clientInfo.nom}\n` +
-             `Date de naissance : ${dob}\n` +
-             `Téléphone : ${clientInfo.mobile}\n` +
-             `Email : ${clientInfo.email}\n\n` +
-             `Adresse du risque :\n` +
-             `${clientInfo.adresse}\n` +
-             `${clientInfo.npa} ${clientInfo.ville} (${cantonCode})\n\n` +
-             `Statut : ${clientInfo.statut.charAt(0).toUpperCase() + clientInfo.statut.slice(1)}\n` +
-             `Composition du ménage : ${clientInfo.type.charAt(0).toUpperCase() + clientInfo.type.slice(1)}\n\n` +
-             `=== COUVERTURE SOUHAITÉE ===\n` +
-             `Assurance Ménage :\n` +
-             `- Valeur inventaire (à neuf + 10%) : CHF ${finalAmount.toLocaleString('fr-CH')}.-\n` +
-             rcSection +
-             cantonNote +
-             `\n\nMerci de me faire parvenir une offre détaillée.\n\n` +
-             `Cordialement,\n${clientInfo.prenom} ${clientInfo.nom}`;
-    } else {
-      body = `Bonjour,\n\n` +
-             `Je souhaite mettre à jour la valeur de mon inventaire ménage.\n\n` +
-             `=== INFORMATIONS CLIENT ===\n` +
-             `Nom : ${clientInfo.prenom} ${clientInfo.nom}\n` +
-             `Téléphone : ${clientInfo.mobile}\n` +
-             `Email : ${clientInfo.email}\n\n` +
-             `Adresse actuelle :\n` +
-             `${clientInfo.adresse}\n` +
-             `${clientInfo.npa}\n\n` +
-             `=== NOUVELLE VALEUR ===\n` +
-             `Valeur inventaire (à neuf + 10%) : CHF ${finalAmount.toLocaleString('fr-CH')}.-\n\n` +
-             `Merci de procéder à la mise à jour de mon contrat.\n\n` +
-             `Cordialement,\n${clientInfo.prenom} ${clientInfo.nom}`;
+const staggerContainer = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.1
     }
+  }
+};
 
-    return `mailto:contact@winwin.swiss?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.5 }
+};
 
+export default function Outils() {
   return (
-    <div style={{ fontFamily: "'Roboto', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%)', padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-      
-      <div style={{ width: '100%', maxWidth: '700px', background: THEME.glass, backdropFilter: 'blur(12px)', borderRadius: '24px', boxShadow: THEME.shadow, border: THEME.glassBorder, overflow: 'hidden', marginTop: '20px' }}>
-
-        {/* HEADER */}
-        <div style={{ background: 'white', padding: '25px', textAlign: 'center', borderBottom: '1px solid #f1f5f9' }}>
-           <div style={{ color: THEME.primary, fontWeight: '900', fontSize: '1.5rem', letterSpacing: '-0.5px' }}>
-             WINWIN <span style={{color: THEME.secondary}}>FINANCE</span>
-           </div>
-           <div style={{ fontSize: '0.8rem', color: THEME.textLight, marginTop: '5px' }}>CALCULATEUR OFFICIEL SUISSE</div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+      {/* Hero Section */}
+      <section className="py-24 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl animate-pulse delay-1000" />
         </div>
 
-        {/* PROGRESS BAR */}
-        <div style={{ height: '4px', background: '#e2e8f0', width: '100%' }}>
-          <div style={{ height: '100%', background: THEME.primary, width: `${(step / 4) * 100}%`, transition: 'width 0.5s ease' }} />
-        </div>
-
-        {/* STICKY TOTAL */}
-        <div style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', padding: '15px 30px', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.9rem', color: THEME.textLight, fontWeight: 600 }}>Total Estimé (Neuf)</span>
-          <span style={{ fontSize: '1.4rem', color: THEME.primary, fontWeight: '800' }}>{total.toLocaleString('fr-CH')} CHF</span>
-        </div>
-
-        <div style={{ padding: '30px', minHeight: '400px' }}>
-          
-          {/* ÉTAPES 1 à 3 */}
-          {step === 1 && (
-            <div className="step-animation">
-              <h2 style={{ color: THEME.primary, fontSize: '1.5rem', marginBottom: '10px' }}>🛋️ Le Salon & Séjour</h2>
-              <p style={{ color: THEME.textLight, marginBottom: '30px' }}>Valeur à neuf = Prix actuel en magasin.</p>
-              <ModernSlider label="Canapés & Fauteuils" value={values.canape} onChange={(v: number) => updateVal('canape', v)} presets={[{label:'IKEA', val:2000}, {label:'Cuir/Design', val:8000}]} />
-              <ModernSlider label="Multimédia (TV, PC...)" value={values.media} onChange={(v: number) => updateVal('media', v)} max={30000} presets={[{label:'Standard', val:3000}, {label:'Gamer', val:12000}]} />
-              <ModernSlider label="Meubles & Déco" value={values.meubles} onChange={(v: number) => updateVal('meubles', v)} />
+        <div className="container relative z-10">
+          <motion.div
+            className="text-center max-w-4xl mx-auto mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-primary/20 mb-6">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="text-sm font-bold text-primary uppercase tracking-wider">Outils Gratuits</span>
             </div>
-          )}
+            
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
+              Vos Outils d'Analyse Gratuits
+            </h1>
+            
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Découvrez nos outils interactifs pour <strong className="text-foreground">évaluer vos besoins</strong> en assurance et prévoyance. 
+              Simples, rapides et <strong className="text-foreground">100% gratuits</strong>.
+            </p>
+          </motion.div>
 
-          {step === 2 && (
-            <div className="step-animation">
-              <h2 style={{ color: THEME.primary, fontSize: '1.5rem', marginBottom: '10px' }}>👗 Dressing & Cuisine</h2>
-              <ModernSlider label="Cuisine (Vaisselle, Robots)" value={values.cuisine} onChange={(v: number) => updateVal('cuisine', v)} max={20000} presets={[{label:'Locataire', val:5000}, {label:'Propriétaire', val:15000}]} />
-              <ModernSlider label="Habits & Chaussures" value={values.habits} onChange={(v: number) => updateVal('habits', v)} max={80000} step={500} presets={[{label:'Solo', val:20000}, {label:'Couple', val:40000}, {label:'Famille', val:60000}]} />
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="step-animation">
-              <h2 style={{ color: THEME.primary, fontSize: '1.5rem', marginBottom: '10px' }}>🚲 Loisirs & Cave</h2>
-              <ModernSlider label="Matériel de Sport" value={values.sport} onChange={(v: number) => updateVal('sport', v)} max={40000} />
-              <ModernSlider label="Vins & Spiritueux" value={values.vin} onChange={(v: number) => updateVal('vin', v)} max={15000} step={100} />
-              <ModernSlider label="Divers (Cave, Outils)" value={values.autre} onChange={(v: number) => updateVal('autre', v)} />
-            </div>
-          )}
-
-          {/* ÉTAPE 4 : RÉSULTAT */}
-          {step === 4 && (
-            <div className="step-animation">
-              
-              {/* BOUTON RETOUR EN HAUT */}
-              <div style={{ marginBottom: '20px' }}>
-                <button 
-                  onClick={() => navigate(1)} 
-                  style={{ 
-                    background: 'white', 
-                    border: `2px solid ${THEME.primary}`, 
-                    color: THEME.primary, 
-                    padding: '12px 24px', 
-                    borderRadius: '10px', 
-                    fontWeight: 'bold', 
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = THEME.primary;
-                    e.currentTarget.style.color = 'white';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'white';
-                    e.currentTarget.style.color = THEME.primary;
-                  }}
-                >
-                  ← Modifier l'inventaire
-                </button>
-              </div>
-
-              {/* CARD RESULTAT */}
-              <div style={{ textAlign: 'center', padding: '30px', background: `linear-gradient(135deg, ${THEME.primary} 0%, #1e40af 100%)`, color: 'white', borderRadius: '20px', marginBottom: '20px' }}>
-                <div style={{ opacity: 0.8, fontSize: '0.9rem' }}>VALEUR À ASSURER (Sécurité incluse)</div>
-                <div style={{ fontSize: '3rem', fontWeight: 900, margin: '10px 0' }}>{finalAmount.toLocaleString('fr-CH')}</div>
-                <div style={{ background: 'rgba(255,255,255,0.15)', padding: '10px', borderRadius: '10px', marginTop: '15px', fontSize: '0.85rem', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px' }}>
-                  <span>💡</span> 
-                  <span>Ne calculez pas au franc près !<br/>Une différence de <strong>10'000.-</strong> représente un investissement d'environ <strong>15.-/an</strong>.</span>
-                </div>
-              </div>
-
-              {/* RÉCAPITULATIF DÉTAILLÉ */}
-              <div style={{ background: 'white', borderRadius: '16px', padding: '20px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
-                <h3 style={{ color: THEME.primary, fontSize: '1.1rem', marginBottom: '15px', borderBottom: '2px solid #f1f5f9', paddingBottom: '10px' }}>
-                  📋 Détail de votre inventaire
-                </h3>
-                <div style={{ display: 'grid', gap: '8px' }}>
-                  {[
-                    { label: '🛋️ Salon & Séjour', categories: [{ name: 'Canapés & Fauteuils', val: values.canape }, { name: 'Multimédia (TV, PC)', val: values.media }, { name: 'Meubles & Déco', val: values.meubles }] },
-                    { label: '👗 Dressing & Cuisine', categories: [{ name: 'Cuisine (Vaisselle, Robots)', val: values.cuisine }, { name: 'Habits & Chaussures', val: values.habits }] },
-                    { label: '🚲 Loisirs & Cave', categories: [{ name: 'Matériel de Sport', val: values.sport }, { name: 'Vins & Spiritueux', val: values.vin }, { name: 'Divers (Cave, Outils)', val: values.autre }] }
-                  ].map((section, idx) => (
-                    <div key={idx} style={{ marginBottom: '15px' }}>
-                      <div style={{ fontWeight: 'bold', color: THEME.text, marginBottom: '8px', fontSize: '0.9rem' }}>{section.label}</div>
-                      {section.categories.map((cat, i) => (
-                        cat.val > 0 && (
-                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: '#f8fafc', borderRadius: '6px', marginBottom: '4px', fontSize: '0.85rem' }}>
-                            <span style={{ color: THEME.textLight }}>{cat.name}</span>
-                            <span style={{ fontWeight: 'bold', color: THEME.primary }}>{cat.val.toLocaleString('fr-CH')} CHF</span>
-                          </div>
-                        )
-                      ))}
+          {/* Grille des outils */}
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            {/* Outil 1 : Inventaire Ménage */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30 bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Home className="w-8 h-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl">Inventaire Ménage</CardTitle>
+                  <CardDescription className="text-base">
+                    Établissez votre inventaire ménage en <strong className="text-foreground">2 minutes</strong>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Calculateur intelligent par catégories</span>
                     </div>
-                  ))}
-                  <div style={{ borderTop: '2px solid #e2e8f0', paddingTop: '10px', marginTop: '10px', display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1rem' }}>
-                    <span>Total (avant marge)</span>
-                    <span style={{ color: THEME.primary }}>{total.toLocaleString('fr-CH')} CHF</span>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Simulation de sous-assurance</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Téléchargement PDF gratuit</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground font-semibold">Durée : 2 minutes</span>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: THEME.textLight }}>
-                    <span>Marge de sécurité (+10%)</span>
-                    <span>+{Math.round(total * 0.10).toLocaleString('fr-CH')} CHF</span>
+
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                    <p className="text-sm text-muted-foreground">
+                      <strong className="text-foreground">Évitez la sous-assurance !</strong> 70% des ménages suisses sont sous-assurés et risquent de perdre des milliers de francs en cas de sinistre.
+                    </p>
                   </div>
+
+                  <Link href="/outils/inventaire-menage">
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-lg py-6 shadow-lg hover:shadow-xl transition-all group">
+                      <Calculator className="w-5 h-5 mr-2" />
+                      Établir mon inventaire
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Outil 2 : Calculateur Retraite (Coming Soon) */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full border-2 border-dashed border-muted bg-white/50 backdrop-blur-sm relative overflow-hidden">
+                <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
+                  Bientôt
                 </div>
+                <CardHeader>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center mb-4 opacity-50">
+                    <TrendingUp className="w-8 h-8 text-accent" />
+                  </div>
+                  <CardTitle className="text-2xl text-muted-foreground">Calculateur Retraite</CardTitle>
+                  <CardDescription className="text-base">
+                    Estimez vos revenus à la retraite (AVS + LPP + 3e pilier)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2 opacity-60">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Projection personnalisée</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Identification des lacunes</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Conseils d'optimisation</span>
+                    </div>
+                  </div>
 
-                {/* BOUTON PDF */}
-                <button 
-                  onClick={() => window.print()}
-                  style={{ 
-                    width: '100%', 
-                    marginTop: '20px', 
-                    background: 'white', 
-                    border: `2px solid ${THEME.primary}`, 
-                    color: THEME.primary, 
-                    padding: '14px', 
-                    borderRadius: '10px', 
-                    fontWeight: 'bold', 
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = THEME.primary;
-                    e.currentTarget.style.color = 'white';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'white';
-                    e.currentTarget.style.color = THEME.primary;
-                  }}
-                >
-                  📄 Télécharger mon estimation PDF
-                </button>
-              </div>
+                  <Button disabled className="w-full" variant="outline">
+                    <Clock className="w-5 h-5 mr-2" />
+                    Disponible prochainement
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-              {!actionType && <LossSimulator realValue={finalAmount} />}
-
-              {/* SELECTEUR D'ACTION */}
-              {!actionType && (
-                <div style={{ marginTop: '30px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                   <button onClick={() => setActionType('quote')} style={{ padding: '20px', border: `2px solid ${THEME.primary}`, background: 'white', borderRadius: '15px', color: THEME.primary, cursor: 'pointer', fontWeight:'bold' }}>
-                     📝 Demander une Offre
-                   </button>
-                   <button onClick={() => setActionType('update')} style={{ padding: '20px', border: '2px solid #cbd5e1', background: 'white', borderRadius: '15px', color: THEME.text, cursor: 'pointer', fontWeight:'bold' }}>
-                     🔄 Mettre à jour contrat
-                   </button>
+            {/* Outil 3 : Comparateur Assurances (Coming Soon) */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full border-2 border-dashed border-muted bg-white/50 backdrop-blur-sm relative overflow-hidden">
+                <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
+                  Bientôt
                 </div>
-              )}
-
-              {/* FORMULAIRE FINAL */}
-              {actionType && (
-                <div style={{ marginTop: '30px', animation: 'fadeIn 0.5s' }}>
-                  <h3 style={{ color: THEME.primary, borderBottom: '2px solid #f1f5f9', paddingBottom: '10px' }}>
-                    {actionType === 'quote' ? '📝 Nouvelle Offre' : '👤 Identification'}
-                  </h3>
-
-                  {/* INFO PERSO */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                    <InputField label="Prénom" name="prenom" value={clientInfo.prenom} onChange={handleInfoChange} required />
-                    <InputField label="Nom" name="nom" value={clientInfo.nom} onChange={handleInfoChange} required />
+                <CardHeader>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary/10 to-secondary/20 flex items-center justify-center mb-4 opacity-50">
+                    <Shield className="w-8 h-8 text-secondary" />
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                    <InputField label="Email" name="email" type="email" value={clientInfo.email} onChange={handleInfoChange} required />
-                    <InputField label="Mobile" name="mobile" type="tel" value={clientInfo.mobile} onChange={handleInfoChange} required />
-                  </div>
-
-                  {/* ADRESSE DETAILLÉE ET OBLIGATOIRE */}
-                  <div style={{ marginTop: '10px' }}>
-                     <InputField label="Rue & N° Bâtiment" name="adresse" value={clientInfo.adresse} onChange={handleInfoChange} placeholder="Ex: Grand-Rue 15" required />
-                     
-                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '15px' }}>
-                       <InputField label="NPA" name="npa" value={clientInfo.npa} onChange={handleInfoChange} placeholder="1000" required />
-                       <InputField label="Localité" name="ville" value={clientInfo.ville} onChange={handleInfoChange} placeholder="Lausanne" required />
-                     </div>
+                  <CardTitle className="text-2xl text-muted-foreground">Comparateur Assurances</CardTitle>
+                  <CardDescription className="text-base">
+                    Comparez les offres et trouvez la meilleure couverture
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2 opacity-60">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Comparaison multi-critères</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Recommandations personnalisées</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">Économies potentielles</span>
+                    </div>
                   </div>
 
-                  {/* CHAMPS SPÉCIFIQUES OFFRE */}
-                  {actionType === 'quote' && (
-                    <>
-                      <div style={{marginBottom:'15px'}}>
-                        <label style={{display:'block', fontSize:'0.75rem', fontWeight:800, marginBottom:'5px', color:THEME.textLight, textTransform:'uppercase'}}>Canton <span style={{color:THEME.danger}}>*</span></label>
-                        <select name="canton" value={clientInfo.canton} onChange={handleInfoChange} style={{width:'100%', padding:'12px', borderRadius:'8px', border:'1px solid #e2e8f0', background:'white', fontSize:'1rem'}}>
-                           <option value="" disabled>Sélectionnez un canton</option>
-                           {CANTONS.map((c,i) => <option key={i} value={c}>{c}</option>)}
-                        </select>
-                      </div>
+                  <Button disabled className="w-full" variant="outline">
+                    <Clock className="w-5 h-5 mr-2" />
+                    Disponible prochainement
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
 
-                      <InputField label="Date Naissance" name="dob" type="date" value={clientInfo.dob} onChange={handleInfoChange} required />
-
-                      {/* STATUT & MÉNAGE */}
-                      <div style={{ background: 'white', padding: '15px', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
-                        <div style={{ display:'flex', gap:'20px', marginBottom:'10px' }}>
-                          <label style={{cursor:'pointer'}}><input type="radio" name="statut" value="locataire" checked={clientInfo.statut === 'locataire'} onChange={handleInfoChange} /> Locataire</label>
-                          <label style={{cursor:'pointer'}}><input type="radio" name="statut" value="proprietaire" checked={clientInfo.statut === 'proprietaire'} onChange={handleInfoChange} /> Propriétaire</label>
-                        </div>
-                        <div style={{ display:'flex', gap:'20px' }}>
-                          <label style={{cursor:'pointer'}}><input type="radio" name="type" value="seul" checked={clientInfo.type === 'seul'} onChange={handleInfoChange} /> Pers. Seule</label>
-                          <label style={{cursor:'pointer'}}><input type="radio" name="type" value="famille" checked={clientInfo.type === 'famille'} onChange={handleInfoChange} /> Famille/Couple</label>
-                        </div>
-                      </div>
-
-                      {/* OPTION RC */}
-                      <div style={{ background: '#f0f9ff', padding: '15px', borderRadius: '10px', border: `1px solid ${THEME.secondary}`, marginBottom: '20px' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'bold', color: THEME.primary }}>
-                          <input type="checkbox" name="includeRC" checked={clientInfo.includeRC} onChange={handleInfoChange} style={{ width: '18px', height: '18px' }} />
-                          Ajouter RC Privée ?
-                        </label>
-                        {clientInfo.includeRC && (
-                          <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #cbd5e1' }}>
-                            <p style={{ fontSize: '0.85rem', marginBottom: '10px' }}>Conduite de véhicule tiers (+38.-/an) ?</p>
-                            <div style={{ display: 'flex', gap: '20px' }}>
-                              <label style={{cursor:'pointer'}}><input type="radio" name="driveThirdParty" value="oui" checked={clientInfo.driveThirdParty === 'oui'} onChange={handleInfoChange} /> Oui</label>
-                              <label style={{cursor:'pointer'}}><input type="radio" name="driveThirdParty" value="non" checked={clientInfo.driveThirdParty === 'non'} onChange={handleInfoChange} /> Non</label>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  )}
-
-                  {/* BOUTON D'ENVOI AVEC VALIDATION */}
-                  <a 
-                    href={generateMailto()} 
-                    onClick={(e) => !isFormValid && e.preventDefault()}
-                    style={{ 
-                      display: 'block', width: '100%', textAlign: 'center', textDecoration: 'none', 
-                      background: isFormValid ? THEME.primary : THEME.disabled, 
-                      color: 'white', padding: '16px', borderRadius: '12px', fontWeight: 'bold', marginTop: '20px',
-                      cursor: isFormValid ? 'pointer' : 'not-allowed', transition: 'background 0.3s'
-                    }}
-                  >
-                    {isFormValid ? 'Envoyer ma demande 🚀' : 'Remplissez les champs obligatoires *'}
-                  </a>
-                  
-                  <button onClick={() => setActionType(null)} style={{ background: 'transparent', border: 'none', width: '100%', padding: '10px', color: THEME.textLight, cursor: 'pointer', textDecoration:'underline', marginTop:'10px' }}>
-                    Annuler
-                  </button>
+          {/* CTA Section */}
+          <motion.div
+            className="mt-20 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Card className="max-w-3xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 border-2 border-primary/20">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold mb-4">Besoin d'un conseil personnalisé ?</h3>
+                <p className="text-muted-foreground mb-6">
+                  Nos experts sont à votre disposition pour analyser votre situation et vous proposer des solutions adaptées.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/conseil">
+                    <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                      Demandez Conseil
+                    </Button>
+                  </Link>
+                  <Link href="/questionnaire-info">
+                    <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Devenir Client
+                    </Button>
+                  </Link>
                 </div>
-              )}
-            </div>
-          )}
-
-          {/* FOOTER NAV */}
-          {step < 4 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px' }}>
-              {step > 1 ? <button onClick={() => navigate(step - 1)} style={{ background: 'transparent', border: 'none', color: THEME.textLight, fontWeight: 600, cursor: 'pointer' }}>← Retour</button> : <div></div>}
-              <button onClick={() => navigate(step + 1)} style={{ background: THEME.primary, color: 'white', border: 'none', padding: '14px 35px', borderRadius: '30px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(49, 118, 166, 0.4)', cursor: 'pointer' }}>
-                {step === 3 ? 'Voir le Résultat 🎉' : 'Suivant'}
-              </button>
-            </div>
-          )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
-      </div>
-      <style>{`
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
-        .step-animation { animation: fadeIn 0.5s ease-out; } 
-        body { margin: 0; } 
-        input:focus { outline: none; }
-        
-        @media print {
-          body * { visibility: hidden; }
-          .step-animation, .step-animation * { visibility: visible; }
-          .step-animation { position: absolute; left: 0; top: 0; width: 100%; }
-          button { display: none !important; }
-        }
-      `}</style>
+      </section>
     </div>
   );
 }
