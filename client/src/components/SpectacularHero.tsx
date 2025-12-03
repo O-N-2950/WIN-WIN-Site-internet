@@ -233,7 +233,7 @@ export default function SpectacularHero() {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="bg-white/10 hover:bg-white/20 border-2 border-white/40 text-white font-bold text-lg px-10 py-7 h-auto backdrop-blur-md shadow-xl"
+                  className="bg-white/10 hover:bg-white/20 border-2 border-white/40 text-primary font-bold text-lg px-10 py-7 h-auto backdrop-blur-md shadow-xl"
                 >
                   Demandez Conseil
                 </Button>

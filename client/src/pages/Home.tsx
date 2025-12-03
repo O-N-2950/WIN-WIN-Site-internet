@@ -120,13 +120,13 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {/* Clients Privés */}
               <motion.div variants={fadeInUp}>
-                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white h-full">
+                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary h-full">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
                       <Users className="w-10 h-10" />
                       <CardTitle className="text-2xl">Clients Privés</CardTitle>
                     </div>
-                    <CardDescription className="text-white/70 text-base">
+                    <CardDescription className="text-primary/80 text-base">
                       Protection et sérénité pour vous et votre famille
                     </CardDescription>
                   </CardHeader>
@@ -166,13 +166,13 @@ export default function Home() {
 
               {/* Clients Entreprises */}
               <motion.div variants={fadeInUp}>
-                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white h-full">
+                <Card className="bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary h-full">
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
                       <Building2 className="w-10 h-10" />
                       <CardTitle className="text-2xl">Clients Entreprises</CardTitle>
                     </div>
-                    <CardDescription className="text-white/70 text-base">
+                    <CardDescription className="text-primary/80 text-base">
                       Solutions professionnelles pour votre entreprise
                     </CardDescription>
                   </CardHeader>
@@ -751,7 +751,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href={ROUTES.contact}>
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white font-semibold text-lg px-8 py-6 h-auto backdrop-blur-sm">
+                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-primary font-semibold text-lg px-8 py-6 h-auto backdrop-blur-sm">
                   <Phone className="w-5 h-5 mr-2" />
                   Nous Contacter
                 </Button>

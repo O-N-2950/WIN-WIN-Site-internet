@@ -23,6 +23,7 @@ export default function Contact() {
     nom: "",
     email: "",
     telephone: "",
+    typeClient: "particulier" as "particulier" | "entreprise" | "les-deux",
     sujet: "",
     message: "",
   });
@@ -115,6 +116,7 @@ export default function Contact() {
         nom: "",
         email: "",
         telephone: "",
+        typeClient: "particulier",
         sujet: "",
         message: "",
       });
@@ -216,6 +218,45 @@ export default function Contact() {
                         value={formData.telephone}
                         onChange={handleChange}
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Vous êtes ? *</Label>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="typeClient"
+                            value="particulier"
+                            checked={formData.typeClient === "particulier"}
+                            onChange={handleChange}
+                            className="w-4 h-4 text-primary"
+                          />
+                          <span>Particulier</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="typeClient"
+                            value="entreprise"
+                            checked={formData.typeClient === "entreprise"}
+                            onChange={handleChange}
+                            className="w-4 h-4 text-primary"
+                          />
+                          <span>Entreprise</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="typeClient"
+                            value="les-deux"
+                            checked={formData.typeClient === "les-deux"}
+                            onChange={handleChange}
+                            className="w-4 h-4 text-primary"
+                          />
+                          <span>Les deux</span>
+                        </label>
+                      </div>
                     </div>
 
                     <div className="space-y-2">

@@ -131,7 +131,7 @@ export default function ProtectionJuridique() {
 
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white">
+                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary">
                   <div className="text-5xl mb-4">📞</div>
                   <h3 className="text-2xl font-bold mb-4">Votre point de contact unique</h3>
                   <p className="text-lg leading-relaxed">
@@ -141,7 +141,7 @@ export default function ProtectionJuridique() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white">
+                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary">
                   <div className="text-5xl mb-4">📊</div>
                   <h3 className="text-2xl font-bold mb-4">Analyse globale de votre situation</h3>
                   <p className="text-lg leading-relaxed">
@@ -151,7 +151,7 @@ export default function ProtectionJuridique() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white">
+                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary">
                   <div className="text-5xl mb-4">⚖️</div>
                   <h3 className="text-2xl font-bold mb-4">Accompagnement en cas de sinistre</h3>
                   <p className="text-lg leading-relaxed">
@@ -161,7 +161,7 @@ export default function ProtectionJuridique() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white">
+                <Card className="p-8 h-full bg-white/10 backdrop-blur-sm border-2 border-white/20 text-primary">
                   <div className="text-5xl mb-4">🎯</div>
                   <h3 className="text-2xl font-bold mb-4">Conseil indépendant et personnalisé</h3>
                   <p className="text-lg leading-relaxed">

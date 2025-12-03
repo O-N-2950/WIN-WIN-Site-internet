@@ -379,7 +379,7 @@ export default function Services() {
                 </Button>
               </Link>
               <a href={`tel:${CONTACT_INFO.phone}`}>
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30">
+                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-primary border-white/30">
                   <Phone className="mr-2 w-5 h-5" />
                   {CONTACT_INFO.phone}
                 </Button>

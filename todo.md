@@ -2154,3 +2154,21 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Enrichir les métadonnées Stripe avec toutes les infos du groupe
 - [x] Tester l'affichage de la facture Stripe en mode test (tests unitaires validés)
 - [x] Vérifier que le montant facturé correspond au prix RT Bull (148 CHF pour 12 membres)
+
+
+## 🎨 Correction Problèmes de Contraste (2 déc 2025)
+- [x] Inspecter www.winwin.swiss pour identifier tous les textes blancs sur fond blanc
+- [x] Documenter tous les éléments problématiques (18 occurrences trouvées)
+- [x] Corriger les problèmes de contraste dans les fichiers CSS
+- [x] Corriger les problèmes de contraste dans les composants React
+- [x] Remplacé text-white par text-primary sur tous les éléments avec fond blanc semi-transparent
+- [ ] Vérifier les corrections sur le site de développement
+- [ ] Tester sur toutes les pages du site
+
+
+## 📝 Correction Formulaire de Contact (2 déc 2025)
+- [x] Ajouter le champ "Type de client" (Particulier/Entreprise/Les deux) dans le formulaire
+- [x] Mettre à jour le state du formulaire avec typeClient
+- [x] Ajouter les boutons radio pour sélectionner le type de client
+- [ ] Tester l'envoi du formulaire avec pièce jointe
+- [ ] Vérifier que l'erreur "invalid_value" est résolue

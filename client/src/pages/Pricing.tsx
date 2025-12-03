@@ -638,7 +638,7 @@ export default function Pricing() {
                 </Button>
               </Link>
               <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30">
+                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-primary border-white/30">
                   <Phone className="w-5 h-5 mr-2" />
                   {CONTACT_INFO.phone}
                 </Button>

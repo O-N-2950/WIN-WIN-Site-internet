@@ -420,13 +420,13 @@ export default function LibrePassage() {
               <p className="text-lg mb-4">Des questions ? Contactez-nous</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`}>
-                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-primary">
                     <Phone className="w-4 h-4 mr-2" />
                     {CONTACT_INFO.phone}
                   </Button>
                 </a>
                 <a href={`mailto:${CONTACT_INFO.email}`}>
-                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-primary">
                     <Mail className="w-4 h-4 mr-2" />
                     {CONTACT_INFO.email}
                   </Button>
