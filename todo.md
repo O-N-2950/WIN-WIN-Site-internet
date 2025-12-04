@@ -2428,3 +2428,13 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter le champ de sélection "Vous êtes ?" dans le formulaire (Conseil.tsx lignes 433-446)
 - [x] Remplacer la valeur hardcodée "prive" par formData.typeClient (Conseil.tsx ligne 113)
 - [x] Pousser sur GitHub (commit 2998a56)
+
+
+## 🎉 Section Rabais de Groupe VIRALE (4 décembre 2025)
+- [x] Créer design exceptionnel avec code de parrainage géant
+- [x] Ajouter tableau des économies EN CHF (calculées selon prix du mandat)
+- [x] Ajouter 4 boutons de partage (WhatsApp, SMS, Email, Copier)
+- [x] Utiliser messages pré-définis avec tutoiement et emojis
+- [x] Animations (pulse, bounce, hover scale)
+- [x] Pousser sur GitHub (commit 8bd3558)
+- [ ] Déployer sur Railway

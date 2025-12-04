@@ -91,7 +91,7 @@ export default function Paiement() {
   const handleShareWhatsApp = () => {
     const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
     const text = encodeURIComponent(
-      `🎉 Salut !\n\nJe viens de rejoindre WIN WIN Finance Group pour gérer mes assurances ! 🎯\n\n💰 Utilise mon code de parrainage : *${referralCode}*\n\n🎁 Avantages :\n✅ Service professionnel\n✅ Rabais familial automatique\n✅ Jusqu'à -20% d'économies !\n\n👉 Clique ici : ${referralLink}\n\nOn économisera tous les deux ! 🚀`
+      `🎯 Salut !\n\nJe viens de trouver LA solution pour mes assurances : WIN WIN Finance Group.\n\n✅ Conseiller neutre et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances\n✅ Gain de temps énorme (ils gèrent tout)\n\nJe te partage mon code de parrainage : *${referralCode}*\n\n👉 On profitera tous les deux d'un rabais familial automatique !\n\nClique ici : ${referralLink}\n\nFranchement, ça vaut le coup. 💪`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
@@ -99,7 +99,7 @@ export default function Paiement() {
   // Partager via SMS
   const handleShareSMS = () => {
     const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
-    const message = `🎁 Rejoins WIN WIN Finance Group !\n\nCode : ${referralCode}\nRabais familial jusqu'à -20% !\n\n👉 ${referralLink}`;
+    const message = `🎯 J'ai trouvé LA solution pour mes assurances : WIN WIN Finance Group (conseiller neutre, optimisation complète). Mon code : ${referralCode} - On profite tous les deux du rabais ! ${referralLink}`;
     const url = `sms:?body=${encodeURIComponent(message)}`;
     window.location.href = url;
   };
@@ -110,9 +110,9 @@ export default function Paiement() {
     const firstName = workflow.clientName?.split(' ')[0] || '';
     const lastName = workflow.clientName?.split(' ').slice(1).join(' ') || '';
     
-    const subject = encodeURIComponent(`🎁 Rejoins WIN WIN Finance Group et économise avec moi !`);
+    const subject = encodeURIComponent(`🎯 J'ai trouvé LA solution pour mes assurances`);
     const body = encodeURIComponent(
-      `Salut,\n\nJe viens de rejoindre WIN WIN Finance Group pour gérer mes assurances de manière professionnelle. 🎯\n\nJe t'invite à me rejoindre ! Voici mon code de parrainage :\n\n🎫 Code : ${referralCode}\n🔗 Lien direct : ${referralLink}\n\n🎁 Avantages :\n✅ Gestion professionnelle de tes assurances\n✅ Rabais familial automatique\n✅ Plus on est nombreux, plus on économise (jusqu'à -20% !)\n\nOn profitera tous les deux du rabais familial ! 💰\n\nÀ bientôt,\n${firstName} ${lastName}`
+      `Salut,\n\nJe viens de trouver LA solution pour mes assurances et je voulais te la partager : WIN WIN Finance Group.\n\nPourquoi je te recommande ?\n\n✅ Conseiller NEUTRE et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances (santé, prévoyance, patrimoine)\n✅ Gain de temps énorme (ils gèrent tout pour moi)\n✅ Enfin quelqu'un qui me conseille vraiment, sans conflit d'intérêt\n\nBonus : avec mon code de parrainage, on profite tous les deux d'un rabais familial automatique !\n\n🎫 Mon code : ${referralCode}\n🔗 Lien direct : ${referralLink}\n\nFranchement, ça vaut vraiment le coup. Je te rends service en te partageant ça. 💪\n\nÀ bientôt,\n${firstName} ${lastName}`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
   };
