@@ -2401,3 +2401,10 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Rediriger l'onglet "Contact" du menu vers /conseil au lieu de /contact (Header.tsx ligne 26)
 - [x] Vérifier que tous les liens "Contact" pointent vers /conseil
 - [ ] Déployer sur Railway
+
+
+## 🐛 BUG CRITIQUE - Limitations de caractères dans Conseil.tsx (4 décembre 2025)
+- [x] Enlever toutes les limitations de caractères (minLength) sur les champs
+- [x] Rendre tous les champs obligatoires (required)
+- [x] Limiter à 1 caractère minimum au lieu de 3 (appointment.ts lignes 27, 29, 180, 184)
+- [ ] Déployer sur Railway

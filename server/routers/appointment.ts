@@ -24,9 +24,9 @@ export const appointmentRouter = router({
   requestAppointment: publicProcedure
     .input(
       z.object({
-        nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+        nom: z.string().min(1, "Le nom est requis"),
         email: z.string().email("Email invalide"),
-        telephone: z.string().min(10, "Numéro de téléphone invalide"),
+        telephone: z.string().min(1, "Le téléphone est requis"),
         typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
         dateRdv: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Format de date invalide (YYYY-MM-DD)"),
         heureRdv: z.string().regex(/^\d{2}:\d{2}$/, "Format d'heure invalide (HH:MM)"),
@@ -177,11 +177,11 @@ export const appointmentRouter = router({
   sendContactRequest: publicProcedure
     .input(
       z.object({
-        nom: z.string().min(2),
+        nom: z.string().min(1),
         email: z.string().email(),
         telephone: z.string().optional(),
         typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
-        message: z.string().min(3, "Le message doit contenir au moins 3 caract\u00e8res"),
+        message: z.string().min(1, "Le message est requis"),
         attachmentUrl: z.union([z.string().url(), z.undefined()]).optional(),
       })
     )
