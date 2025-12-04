@@ -457,6 +457,145 @@ export default function Conseil() {
                         />
                       </div>
 
+                      {/* Message motivant et checklists */}
+                      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 rounded-xl border-2 border-primary/20">
+                        <div className="flex items-start gap-3 mb-4">
+                          <div className="p-2 bg-primary/20 rounded-lg">
+                            <CheckCircle2 className="w-6 h-6 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold text-foreground mb-2">
+                              🎯 Dernière étape : Partagez-nous vos contrats
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              <strong>C'est le dernier effort que nous vous demandons !</strong> Après ça, on s'occupe de tout. 💪
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                              📄 <strong>Envoyez-nous une copie PDF de tous vos contrats d'assurance existants</strong> (santé, prévoyance, véhicule, habitation, etc.).
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                              💡 <strong>Pourquoi c'est important ?</strong> Plus nous avons d'informations, plus nos conseils seront précis et adaptés à votre situation. <strong>N'oubliez rien !</strong>
+                            </p>
+                            <p className="text-sm text-primary font-semibold mt-3">
+                              ✅ Ensuite, on prend le relais : analyse complète, optimisation, et gestion de A à Z.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Checklists selon type de client */}
+                        <div className="mt-6 space-y-4">
+                          {(formData.typeClient === "particulier" || formData.typeClient === "les-deux") && (
+                            <div className="bg-white/50 dark:bg-gray-800/50 p-5 rounded-lg border border-primary/20">
+                              <div className="flex items-center justify-between mb-4">
+                                <h4 className="font-bold text-base flex items-center gap-2">
+                                  📋 Checklist Particuliers
+                                </h4>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => window.print()}
+                                  className="text-xs"
+                                >
+                                  🖨️ Imprimer
+                                </Button>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Carte d'identité (recto-verso)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>IBAN bancaire</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats LAMal (assurance maladie)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats LCA (complémentaires)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats prévoyance (3ème pilier)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats véhicule (RC auto, casco)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats habitation (RC ménage)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Autres contrats d'assurance</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {(formData.typeClient === "entreprise" || formData.typeClient === "les-deux") && (
+                            <div className="bg-white/50 dark:bg-gray-800/50 p-5 rounded-lg border border-primary/20">
+                              <div className="flex items-center justify-between mb-4">
+                                <h4 className="font-bold text-base flex items-center gap-2">
+                                  🏢 Checklist Entreprises
+                                </h4>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => window.print()}
+                                  className="text-xs"
+                                >
+                                  🖨️ Imprimer
+                                </Button>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Extrait du registre du commerce</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>IBAN bancaire entreprise</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats LAMal collective</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats LPP (prévoyance pro.)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats perte de gain maladie</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats perte de gain accident</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats RC entreprise</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrats protection juridique</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Autres contrats d'assurance</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
                       <div className="p-4 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 hover:border-primary/50 transition-colors">
                         <Label htmlFor="file" className="text-base font-semibold flex items-center gap-2">
                           <Upload className="w-5 h-5 text-primary" />

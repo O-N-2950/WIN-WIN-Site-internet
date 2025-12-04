@@ -2478,3 +2478,14 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - **500 clients existants** × **10% taux de partage** = 50 partages
 - **50 partages** × **20% conversion** = **10 nouveaux clients**
 - **Impact** : Croissance organique sans coût publicitaire 🚀
+
+
+## 📋 Checklists Imprimables Documents Clients (4 décembre 2025)
+- [ ] Récupérer les champs depuis Airtable (table Clients)
+- [ ] Créer checklist Particuliers (LAMal, LCA, prévoyance, véhicule, habitation, IBAN, carte d'identité)
+- [ ] Créer checklist Entreprises (LAMal collective, LPP, perte de gain, RC, etc.)
+- [ ] Afficher la bonne checklist selon "Vous êtes ?" (Particulier/Entreprise/Les deux)
+- [ ] Ajouter message motivant ("Dernière étape, après on s'occupe de tout")
+- [ ] Ajouter bouton "Imprimer la checklist" (PDF)
+- [ ] Tester impression et lisibilité
+- [ ] Pousser sur GitHub
