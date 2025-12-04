@@ -2489,3 +2489,18 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter bouton "Imprimer la checklist" (PDF)
 - [ ] Tester impression et lisibilité
 - [x] Pousser sur GitHub (commit 0bb52f9)
+
+
+## 🔧 Correction Checklists Particuliers/Entreprises (4 décembre 2025)
+- [ ] Ajouter "Protection juridique" dans checklist Particuliers
+- [ ] Supprimer "Contrats LAMal collective" de checklist Entreprises
+- [ ] Ajouter "Contrat perte de gain maladie (IJM)" dans checklist Entreprises
+- [ ] Ajouter "Contrat LAA (accidents professionnels)" dans checklist Entreprises
+- [ ] Ajouter "Contrat LAA Complémentaire" dans checklist Entreprises
+- [ ] Ajouter "Contrat LPP avec tous les plans + dernier détail primes et prestations" dans checklist Entreprises
+- [ ] Ajouter "Chiffre d'affaires annuel (CA)" dans checklist Entreprises
+- [ ] Ajouter "Somme des salaires AVS (hommes/femmes) - dernier document IJM/LAA" dans checklist Entreprises
+- [ ] Ajouter "Assurance COMMERCE" dans checklist Entreprises
+- [ ] Ajouter "Assurance Transport (si existante)" dans checklist Entreprises
+- [ ] Pousser sur GitHub
+- [ ] Ajouter "Nom et adresse de la fiduciaire" dans checklist Entreprises

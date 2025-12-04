@@ -531,6 +531,10 @@ export default function Conseil() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Protection juridique</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
                                   <span>Autres contrats d'assurance</span>
                                 </div>
                               </div>
@@ -562,29 +566,60 @@ export default function Conseil() {
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
                                   <span>IBAN bancaire entreprise</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats LAMal collective</span>
+                                <div className="flex flex-col gap-1 col-span-2 bg-primary/5 p-3 rounded-lg">
+                                  <div className="font-semibold text-sm mb-1">💼 Fiduciaire :</div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                    <span className="text-sm">J'ai une fiduciaire (indiquer nom et adresse)</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                    <span className="text-sm">Je n'ai pas de fiduciaire</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                    <span className="text-sm">Je souhaite changer de fiduciaire / recevoir une recommandation</span>
+                                  </div>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats LPP (prévoyance pro.)</span>
+                                  <span>Chiffre d'affaires annuel (CA)</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats perte de gain maladie</span>
+                                  <span>Somme salaires AVS (H/F) - dernier doc IJM/LAA</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats perte de gain accident</span>
+                                  <span>Contrat perte de gain maladie (IJM)</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats RC entreprise</span>
+                                  <span>Contrat LAA (accidents professionnels)</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
-                                  <span>Contrats protection juridique</span>
+                                  <span>Contrat LAA Complémentaire</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Contrat LPP (tous plans + détail primes/prestations)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Assurance RC entreprise</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Protection juridique</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Assurance COMMERCE</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                  <span>Assurance Transport (si existante)</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
