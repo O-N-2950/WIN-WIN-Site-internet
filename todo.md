@@ -2617,7 +2617,7 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 ## 🚀 PRIORITÉ CRITIQUE - Système de Paiement Stripe Production (04 déc 2025)
 
 ### Phase 1 : Configuration Airtable
-- [ ] Mettre à jour server/lib/airtable-config.ts avec les 6 champs Stripe
+- [x] Mettre à jour server/lib/airtable-config.ts avec les 6 champs Stripe
   - "Stripe Subscription ID" (ID abonnement)
   - "Date prochaine facturation" (calculée automatiquement)
   - "Statut Paiement" (Payé/En attente/Échoué)
@@ -2626,19 +2626,19 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
   - "date dernière facture établie" (pour calcul +360 jours)
 
 ### Phase 2 : Paiement Stripe avec Rabais Familiaux
-- [ ] Créer module server/lib/stripe-payment.ts
-- [ ] Implémenter createSubscriptionWithDiscount() pour nouveaux clients
-- [ ] Récupérer "Prix final avec rabais" depuis Airtable
-- [ ] Créer Price ID dynamique dans Stripe (au lieu de coupon)
-- [ ] Gérer paiement immédiat pour nouveaux clients
-- [ ] Afficher liste membres famille sur facture Stripe
+- [x] Créer module server/lib/stripe-payment.ts
+- [x] Implémenter createSubscriptionWithDiscount() pour nouveaux clients
+- [x] Récupérer "Prix final avec rabais" depuis Airtable
+- [x] Créer Price ID dynamique dans Stripe (au lieu de coupon)
+- [x] Gérer paiement immédiat pour nouveaux clients
+- [x] Afficher liste membres famille sur facture Stripe
 
 ### Phase 3 : Webhook Stripe
-- [ ] Créer endpoint /api/stripe/webhook
-- [ ] Gérer événement invoice.payment_succeeded
-- [ ] Gérer événement invoice.payment_failed
-- [ ] Gérer événement invoice.payment_action_required (3D Secure)
-- [ ] Mettre à jour Airtable après chaque paiement :
+- [x] Créer endpoint /api/stripe/webhook
+- [x] Gérer événement invoice.payment_succeeded
+- [x] Gérer événement invoice.payment_failed
+- [x] Gérer événement invoice.payment_action_required (3D Secure)
+- [x] Mettre à jour Airtable après chaque paiement :
   - Stripe Subscription ID
   - Stripe Invoice ID
   - date dernière facture établie = aujourd'hui
@@ -2647,12 +2647,12 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Tester webhook avec Stripe CLI
 
 ### Phase 4 : Facturation Récurrente (360 jours)
-- [ ] Créer module server/lib/billing.ts
-- [ ] Implémenter processDailyBilling() pour vérifier "Date prochaine facturation"
-- [ ] Créer factures Stripe pour clients existants (si date = aujourd'hui)
-- [ ] Mettre à jour "date dernière facture établie" après paiement
+- [x] Créer module server/lib/billing.ts
+- [x] Implémenter processDailyBilling() pour vérifier "Date prochaine facturation"
+- [x] Créer factures Stripe pour clients existants (si date = aujourd'hui)
+- [x] Mettre à jour "date dernière facture établie" après paiement
 - [ ] Configurer cron job quotidien (9h00 CET)
-- [ ] Gérer les "Mandat offert" (skip facturation)
+- [x] Gérer les "Mandat offert" (skip facturation)
 
 ### Phase 5 : Tests Complets
 - [ ] Tester paiement nouveau client avec rabais 0% (1 membre)
