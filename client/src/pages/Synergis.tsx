@@ -34,7 +34,7 @@ export default function Synergis() {
               La première plateforme collaborative suisse pour créer, gérer et développer votre entreprise
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaire}>
+              <Link href="/startup">
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Découvrir Synergis
                 </Button>
@@ -333,7 +333,7 @@ export default function Synergis() {
               Rejoignez Synergis et bénéficiez de la synergie parfaite entre expertise humaine et IA
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={ROUTES.questionnaire}>
+              <Link href="/startup">
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-white">
                   Découvrir Synergis
                 </Button>

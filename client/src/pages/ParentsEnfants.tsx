@@ -246,10 +246,10 @@ export default function ParentsEnfants() {
               className="relative"
             >
                <img 
-                 src="https://images.unsplash.com/photo-1606092195730-5d7b9af1ef4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                 alt="Plant growing" 
-                 className="rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500"
-               />
+                  src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                  alt="Plant growing" 
+                  className="rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500"
+                />
                <div className="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-xl flex items-center gap-3">
                  <div className="bg-green-100 p-2 rounded-full text-green-600">
                    <TrendingUp size={24} />
@@ -326,10 +326,10 @@ export default function ParentsEnfants() {
                 >
                   La vraie différence avec la banque
                 </motion.div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Le "Joker" Protection <br/><span className="text-indigo-400">Exonération des primes</span></h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Le "Joker" Protection <br/><span className="text-indigo-400">Continuité de l'épargne</span></h2>
                 <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                   C'est la question que personne ne veut se poser, mais qui est essentielle : 
-                  <strong> "Si je ne suis plus là pour payer, qui construira son avenir ?"</strong>
+                  <strong> "Si je ne suis plus là pour investir, qui construira son avenir ?"</strong>
                 </p>
                 <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                   Contrairement à un compte épargne bancaire qui s'arrête net, notre plan Junior inclut une assurance. En cas de décès ou d'incapacité de gain du parent/parrain :
@@ -338,7 +338,7 @@ export default function ParentsEnfants() {
                 <ul className="space-y-4">
                   <li className="flex items-center gap-3">
                     <ShieldCheck className="text-green-400 w-6 h-6 flex-shrink-0" />
-                    <span>L'assurance prend le relais et <strong>paie les primes à votre place</strong>.</span>
+                    <span>L'assurance prend le relais et <strong>continue l'épargne à votre place</strong>.</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-green-400 w-6 h-6 flex-shrink-0" />
@@ -363,7 +363,7 @@ export default function ParentsEnfants() {
                   </div>
                   <div className="flex justify-between items-center p-3 bg-indigo-600/50 border border-indigo-400 rounded-lg">
                     <span>Plan Junior</span>
-                    <span className="text-green-300 font-bold">L'assurance paie pour vous ✅</span>
+                    <span className="text-green-300 font-bold">L'assurance investit pour vous ✅</span>
                   </div>
                 </div>
              </motion.div>
@@ -385,8 +385,8 @@ export default function ParentsEnfants() {
               <a href="tel:+41324661100" className="flex items-center justify-center gap-2 bg-white text-violet-700 px-8 py-4 rounded-full font-bold hover:bg-violet-50 transition shadow-lg">
                 <Phone size={20} /> 032 466 11 00
               </a>
-              <a href="mailto:contact@winwin.swiss" className="flex items-center justify-center gap-2 bg-yellow-400 text-violet-900 px-8 py-4 rounded-full font-bold hover:bg-yellow-300 transition shadow-lg">
-                <Mail size={20} /> contact@winwin.swiss
+              <a href="/conseil" className="flex items-center justify-center gap-2 bg-yellow-400 text-violet-900 px-8 py-4 rounded-full font-bold hover:bg-yellow-300 transition shadow-lg">
+                <Mail size={20} /> Demander un conseil
               </a>
             </div>
           </div>

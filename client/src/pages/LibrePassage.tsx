@@ -425,10 +425,10 @@ export default function LibrePassage() {
                     {CONTACT_INFO.phone}
                   </Button>
                 </a>
-                <a href={`mailto:${CONTACT_INFO.email}`}>
+                <a href="/conseil">
                   <Button variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-primary">
                     <Mail className="w-4 h-4 mr-2" />
-                    {CONTACT_INFO.email}
+                    Demander un conseil
                   </Button>
                 </a>
               </div>

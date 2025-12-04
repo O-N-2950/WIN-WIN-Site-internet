@@ -430,8 +430,8 @@ export default function Durabilis() {
                 <a href="tel:+41324661100" className="flex items-center justify-center gap-2 bg-white text-emerald-900 px-8 py-4 rounded-full font-bold hover:bg-emerald-50 transition shadow-lg">
                   <Phone size={20} /> 032 466 11 00
                 </a>
-                <a href="mailto:contact@winwin.swiss" className="flex items-center justify-center gap-2 border-2 border-emerald-400 text-emerald-400 px-8 py-4 rounded-full font-bold hover:bg-emerald-400 hover:text-white transition">
-                  <Mail size={20} /> contact@winwin.swiss
+                <a href="/conseil" className="flex items-center justify-center gap-2 border-2 border-emerald-400 text-emerald-400 px-8 py-4 rounded-full font-bold hover:bg-emerald-400 hover:text-white transition">
+                  <Mail size={20} /> Demander un conseil
                 </a>
                </div>
              </motion.div>

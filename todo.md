@@ -2269,3 +2269,102 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Remplacer le code Mapping360.tsx avec le nouveau fichier fourni
 - [x] Déployer sur GitHub (commit 5028684)
 - [x] Railway déploiera automatiquement sur www.winwin.swiss
+
+
+## 🐛 Bug Lien Inventaire Ménage (3 décembre 2025)
+- [ ] Vérifier le lien de la carte "Inventaire Ménage" dans /outils
+- [ ] S'assurer que le clic redirige vers /outils/inventaire-menage
+- [ ] Déployer la correction sur GitHub
+
+
+## 🚨 BUG CRITIQUE - BOUTONS BLANCS INVISIBLES (3 décembre 2025)
+- [x] Corriger bouton "Établir mon inventaire" dans Outils.tsx (blanc sur blanc)
+- [x] Corriger bouton "Lancer Ma Simulation 360°" dans Home.tsx
+- [x] Remplacer bg-primary par bg-[#D4AF37] text-primary
+- [x] Vérifier TOUS les autres boutons du site
+- [x] Déployer immédiatement sur GitHub
+- [x] RÈGLE À RETENIR : JAMAIS de boutons blancs sur fond blanc, TOUJOURS utiliser #D4AF37 (doré)
+
+
+## 🔗 Lien Calculateur Retraite → Mapping 360 (3 décembre 2025)
+- [x] Transformer carte "Calculateur Retraite" en lien actif
+- [x] Rediriger vers /mapping-360 au lieu de "Disponible prochainement"
+- [x] Retirer le badge "Bientôt" et rendre la carte cliquable avec bouton doré
+- [x] Ajouter description "Simulation complète 360°"
+- [x] Déployer sur GitHub
+
+
+## 🚀 Intégration Landing Page Synergis (3 décembre 2025)
+- [x] Créer la page Startup.tsx avec le code Synergis complet
+- [x] Ajouter la route /startup dans App.tsx
+- [x] Ajouter l'onglet "Startup" dans Header.tsx
+- [x] Ajouter ROUTES.startup dans const.ts
+- [x] Corriger le lien "Découvrir Synergis" sur Home.tsx pour rediriger vers /startup
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🔄 Mise à jour code Synergis (3 décembre 2025)
+- [x] Remplacer Startup.tsx avec le code amélioré
+- [x] Déployer sur GitHub pour Railway
+
+
+## 📝 Correction vocabulaire Parents-Enfants (3 décembre 2025)
+- [x] Remplacer "payer", "prime", "paiement" par "investir", "épargne", "contribution"
+- [x] Rediriger tous les liens de contact vers /conseil (ParentsEnfants.tsx)
+- [x] Rediriger tous les liens de contact vers /conseil (Startup.tsx)
+- [x] Rediriger tous les liens de contact vers /conseil (Durabilis.tsx)
+- [x] Rediriger tous les liens de contact vers /conseil (Talentis.tsx)
+- [x] Rediriger tous les liens de contact vers /conseil (LibrePassage.tsx)
+- [x] Scanner et corriger TOUS les autres fichiers du site
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🔗 Ajout onglet Parents-Enfants (3 décembre 2025)
+- [x] Ajouter l'onglet "Parents-Enfants" dans Header.tsx (sous-menu Concepts)
+- [x] Vérifier que la route /parents-enfants existe dans App.tsx
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🐛 Erreur 404 Parents-Enfants (3 décembre 2025)
+- [x] Vérifier si la route /parents-enfants existe dans App.tsx
+- [x] Corriger le lien dans Header.tsx (/parents-enfants → /concepts/parents-enfants)
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🖼️ Image cassée Parents-Enfants (3 décembre 2025)
+- [x] Identifier l'image cassée (section Croissance +40%)
+- [x] Remplacer l'URL Unsplash par une image fonctionnelle
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🖼️ Remplacement image Croissance +40% (3 décembre 2025)
+- [x] Remplacer par l'URL fournie : photo-1579621970563-ebec7560ff3e
+- [x] Déployer sur GitHub pour Railway
+
+
+## 🐛 Bugs Header Desktop (3 décembre 2025)
+- [ ] Corriger "WIN Finance Group" → "WIN WIN Finance Group"
+- [ ] Corriger numéro de téléphone vertical → horizontal
+- [ ] Déployer sur GitHub pour Railway
+
+
+## 🔗 Correction liens "Découvrir Synergis" (4 décembre 2025)
+- [x] Corriger les 2 boutons "Découvrir Synergis" dans Synergis.tsx pour rediriger vers /startup
+- [ ] Déployer sur GitHub pour Railway
+
+
+## 🔍 VÉRIFICATION COMPLÈTE - Tous les liens "Demander Conseil" (4 décembre 2025)
+- [x] Vérifier et corriger TOUS les liens "Demander Conseil" sur TOUTES les pages
+- [x] Mapping360.tsx - bouton "Demander Conseil" (corrigé : /contact → /conseil)
+- [x] Home.tsx - tous les boutons "Demander Conseil" (OK : utilise ROUTES.conseil)
+- [x] Services.tsx - tous les boutons "Demander Conseil" (OK)
+- [x] Talentis.tsx - tous les boutons "Demander Conseil" (OK : href="/conseil")
+- [x] Durabilis.tsx - tous les boutons "Demander Conseil" (OK : href="/conseil")
+- [x] ParentsEnfants.tsx - tous les boutons "Demander Conseil" (OK : href="/conseil")
+- [x] LibrePassage.tsx - tous les boutons "Demander Conseil" (OK)
+- [x] Synergis.tsx - tous les boutons "Demander Conseil" (OK)
+- [x] Startup.tsx - tous les boutons "Demander Conseil" (OK)
+- [x] Footer.tsx - liens "Contact" et "Formulaire de conseil" (corrigés : /contact → /conseil)
+- [x] About.tsx - bouton "Prendre rendez-vous" (corrigé : /contact → /conseil)
+- [x] const.ts - ROUTES.contact (corrigé : /contact → /conseil)
+- [ ] Déployer sur GitHub pour Railway

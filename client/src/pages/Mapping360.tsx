@@ -239,7 +239,7 @@ export default function Mapping360() {
     navigator.clipboard.writeText(message).then(() => {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4000);
-      setTimeout(() => window.open("https://www.winwin.swiss/contact", "_blank"), 1500);
+      setTimeout(() => window.open("https://www.winwin.swiss/conseil", "_blank"), 1500);
     });
     setIsModalOpen(false);
   };

@@ -26,6 +26,7 @@ import Inscription from "./pages/Inscription";
 import Outils from "./pages/Outils";
 import InventaireMenage from "./pages/InventaireMenage";
 import Mapping360 from "./pages/Mapping360";
+import Startup from "./pages/Startup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -42,6 +43,7 @@ function Router() {
           <Route path="/outils" component={Outils} />
           <Route path="/outils/inventaire-menage" component={InventaireMenage} />
           <Route path="/mapping-360" component={Mapping360} />
+          <Route path="/startup" component={Startup} />
           <Route path="/tarifs" component={Pricing} />
           <Route path="/concepts/talentis" component={Talentis} />
           <Route path="/concepts/durabilis" component={Durabilis} />

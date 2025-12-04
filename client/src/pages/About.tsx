@@ -357,7 +357,7 @@ export default function About() {
             </div>
 
             <div className="mt-12 text-center">
-              <Link href="/contact">
+              <Link href="/conseil">
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Prendre rendez-vous
                   <ArrowRight className="ml-2 h-5 w-5" />

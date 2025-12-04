@@ -357,8 +357,8 @@ export default function Talentis() {
               <a href="tel:+41324661100" className="flex items-center justify-center gap-2 bg-white text-blue-700 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition">
                 <Phone size={20} /> 032 466 11 00
               </a>
-              <a href="mailto:contact@winwin.swiss" className="flex items-center justify-center gap-2 bg-blue-800 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-900 transition">
-                <Mail size={20} /> contact@winwin.swiss
+              <a href="/conseil" className="flex items-center justify-center gap-2 bg-blue-800 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-900 transition">
+                <Mail size={20} /> Demander un conseil
               </a>
             </div>
           </div>

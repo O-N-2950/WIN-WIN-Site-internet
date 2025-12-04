@@ -582,7 +582,7 @@ export default function Home() {
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Link href="/mapping-360" className="flex-1">
-                      <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-semibold text-lg px-8 py-6 h-auto shadow-lg hover:shadow-xl transition-all">
+                      <Button size="lg" className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary font-semibold text-lg px-8 py-6 h-auto shadow-lg hover:shadow-xl transition-all">
                         <Target className="w-5 h-5 mr-2" />
                         Lancer Ma Simulation 360°
                         <ArrowRight className="w-5 h-5 ml-2" />
@@ -647,7 +647,7 @@ export default function Home() {
                 title: "Synergis",
                 subtitle: "Plateforme Collaborative",
                 description: "La synergie parfaite entre expertise humaine et technologie pour créer, gérer et développer votre entreprise",
-                link: ROUTES.synergis,
+                link: ROUTES.startup,
                 gradient: "from-accent to-primary"
               }
             ].map((concept, index) => (

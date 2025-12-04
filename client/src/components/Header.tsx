@@ -16,10 +16,12 @@ const navigation = [
       { name: "Talentis", href: "/concepts/talentis" },
       { name: "Durabilis", href: "/concepts/durabilis" },
       { name: "Synergis", href: "/concepts/synergis" },
+      { name: "Parents-Enfants", href: "/concepts/parents-enfants" },
     ]
   },
   { name: "Outils", href: "/outils" },
   { name: "Mapping 360", href: "/mapping-360" },
+  { name: "Startup", href: "/startup" },
   { name: "À propos", href: "/a-propos" },
   { name: "Contact", href: "/contact" },
   { name: "Tarifs", href: "/tarifs" },

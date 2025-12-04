@@ -114,7 +114,7 @@ export default function Outils() {
                   </div>
 
                   <Link href="/outils/inventaire-menage">
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-lg py-6 shadow-lg hover:shadow-xl transition-all group">
+                    <Button className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary font-bold text-lg py-6 shadow-lg hover:shadow-xl transition-all group">
                       <Calculator className="w-5 h-5 mr-2" />
                       Établir mon inventaire
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -124,41 +124,51 @@ export default function Outils() {
               </Card>
             </motion.div>
 
-            {/* Outil 2 : Calculateur Retraite (Coming Soon) */}
+            {/* Outil 2 : Calculateur Retraite (Mapping 360) */}
             <motion.div variants={scaleIn}>
-              <Card className="h-full border-2 border-dashed border-muted bg-white/50 backdrop-blur-sm relative overflow-hidden">
-                <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
-                  Bientôt
-                </div>
+              <Card className="h-full group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center mb-4 opacity-50">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <TrendingUp className="w-8 h-8 text-accent" />
                   </div>
-                  <CardTitle className="text-2xl text-muted-foreground">Calculateur Retraite</CardTitle>
+                  <CardTitle className="text-2xl">Calculateur Retraite</CardTitle>
                   <CardDescription className="text-base">
                     Estimez vos revenus à la retraite (AVS + LPP + 3e pilier)
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-2 opacity-60">
+                  <div className="space-y-2">
                     <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-muted-foreground">Projection personnalisée</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-muted-foreground">Identification des lacunes</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-muted-foreground">Conseils d'optimisation</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground font-semibold">Durée : 5 minutes</span>
                     </div>
                   </div>
 
-                  <Button disabled className="w-full" variant="outline">
-                    <Clock className="w-5 h-5 mr-2" />
-                    Disponible prochainement
-                  </Button>
+                  <div className="bg-accent/5 border border-accent/20 rounded-lg p-4">
+                    <p className="text-sm text-muted-foreground">
+                      <strong className="text-foreground">Simulation complète 360° !</strong> Analysez votre situation actuelle et projetez vos revenus à la retraite.
+                    </p>
+                  </div>
+
+                  <Link href="/mapping-360">
+                    <Button className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary font-bold text-lg py-6 shadow-lg hover:shadow-xl transition-all group">
+                      <TrendingUp className="w-5 h-5 mr-2" />
+                      Lancer la simulation
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </motion.div>
