@@ -2514,11 +2514,12 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 
 
 ## 🎁 Section Parrainage Page d'Accueil (4 décembre 2025)
-- [ ] Créer section VIRALE avec design exceptionnel (dégradé, animations)
-- [ ] Ajouter tableau des économies (2→10+ membres)
-- [ ] CTA 1 : "Devenir client et obtenir mon code" → /questionnaire-info
-- [ ] CTA 2 : "Obtenir mon code de parrainage" (clients existants) → formulaire modal
-- [ ] Créer formulaire modal pour clients existants (Nom, Prénom, Email)
-- [ ] Créer endpoint tRPC pour envoyer la demande de code par email
-- [ ] Placer la section à l'endroit stratégique de la page d'accueil
-- [ ] Pousser sur GitHub
+- [x] Créer section VIRALE avec design exceptionnel (dégradé, animations)
+- [x] Ajouter tableau des économies (2→10+ membres)
+- [x] CTA 1 : "Devenir client et obtenir mon code" → /questionnaire-info
+- [x] CTA 2 : "Obtenir mon code de parrainage" (clients existants) → formulaire modal
+- [x] Créer formulaire modal pour clients existants (Nom, Prénom, Email)
+- [x] Créer endpoint tRPC parrainage.requestCode
+- [x] Placer la section avant CTA final (position stratégique)
+- [x] Pousser sur GitHub (commit 8683d1b)
+- [ ] Implémenter envoi email à Olivier (TODO dans endpoint)
