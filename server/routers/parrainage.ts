@@ -117,4 +117,30 @@ export const parrainageRouter = router({
 
       return result;
     }),
+
+  /**
+   * Demander un code de parrainage (pour clients existants)
+   * Envoie un email à Olivier avec les informations du client
+   */
+  requestCode: publicProcedure
+    .input(
+      z.object({
+        firstName: z.string().min(1, "Prénom requis"),
+        lastName: z.string().min(1, "Nom requis"),
+        email: z.string().email("Email invalide"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // TODO: Envoyer un email à Olivier avec les informations du client
+      // Pour l'instant, on simule l'envoi
+      console.log("[Parrainage] Demande de code reçue:", input);
+
+      // Simuler un délai d'envoi
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      return {
+        success: true,
+        message: "Demande envoyée avec succès. Vous recevrez votre code par email sous 48h.",
+      };
+    }),
 });

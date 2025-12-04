@@ -41,6 +41,7 @@ import {
   iconFloat,
   badgePulse
 } from "@/lib/animations";
+import { ReferralCodeRequestDialog } from "@/components/ReferralCodeRequestDialog";
 
 // Compteur animé
 function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
@@ -69,6 +70,8 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 }
 
 export default function Home() {
+  const [showReferralDialog, setShowReferralDialog] = useState(false);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section Spectaculaire */}
@@ -831,6 +834,193 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Section Parrainage VIRALE */}
+      <section 
+        className="py-24 relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(158, 64%, 52%) 50%, hsl(142, 76%, 36%) 100%)'
+        }}
+      >
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-20 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-20 w-80 h-80 bg-yellow-300 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white rounded-full blur-3xl opacity-30" />
+        </div>
+
+        <div className="container relative z-10">
+          <motion.div
+            className="max-w-6xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            {/* Badge */}
+            <motion.div 
+              className="text-center mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center gap-2 bg-yellow-400 px-6 py-3 rounded-full shadow-lg">
+                <Sparkles className="w-5 h-5 text-green-900 animate-pulse" />
+                <span className="font-bold text-green-900 text-sm tracking-wide">NOUVEAU PROGRAMME</span>
+              </div>
+            </motion.div>
+
+            {/* Titre */}
+            <motion.h2 
+              className="text-4xl md:text-6xl font-bold text-center text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              🎁 Parrainez vos proches et<br/>
+              <span className="text-yellow-300">économisez ensemble !</span>
+            </motion.h2>
+
+            <motion.p 
+              className="text-xl md:text-2xl text-center text-white/90 mb-12 max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              Plus vous êtes nombreux dans votre groupe familial ou professionnel,<br/>
+              <strong className="text-yellow-300">plus vous économisez sur votre mandat de gestion</strong>
+            </motion.p>
+
+            {/* Tableau des économies */}
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12"
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+            >
+              {[
+                { membres: "2", rabais: "-4%", economie: "7.40 CHF" },
+                { membres: "3", rabais: "-6%", economie: "11.10 CHF" },
+                { membres: "4", rabais: "-8%", economie: "14.80 CHF" },
+                { membres: "5", rabais: "-10%", economie: "18.50 CHF" },
+                { membres: "10+", rabais: "-20%", economie: "37 CHF", max: true },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  variants={scaleIn}
+                  className={`relative p-6 rounded-2xl text-center transform transition-all hover:scale-105 ${
+                    item.max 
+                      ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 shadow-2xl ring-4 ring-white/50' 
+                      : 'bg-white/95 backdrop-blur-sm shadow-lg'
+                  }`}
+                >
+                  {item.max && (
+                    <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-bounce">
+                      MAX
+                    </div>
+                  )}
+                  <div className={`text-4xl font-bold mb-2 ${item.max ? 'text-green-900' : 'text-primary'}`}>
+                    {item.membres}
+                  </div>
+                  <div className="text-sm text-muted-foreground mb-3">
+                    {item.membres === "10+" ? "membres" : "membres"}
+                  </div>
+                  <div className={`text-3xl font-bold mb-1 ${item.max ? 'text-green-900' : 'text-green-600'}`}>
+                    {item.rabais}
+                  </div>
+                  <div className={`text-sm font-semibold ${item.max ? 'text-green-800' : 'text-muted-foreground'}`}>
+                    {item.economie}/an
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* CTA Doubles */}
+            <motion.div 
+              className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 border-2 border-white/30 shadow-2xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl md:text-3xl font-bold text-white text-center mb-8">
+                Comment obtenir votre code de parrainage ?
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* CTA 1 : Nouveaux clients */}
+                <motion.div 
+                  className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                      <Users className="w-6 h-6 text-green-600" />
+                    </div>
+                    <h4 className="text-xl font-bold text-foreground">Nouveau client ?</h4>
+                  </div>
+                  <p className="text-muted-foreground mb-6">
+                    Devenez client WIN WIN Finance Group et recevez immédiatement votre code de parrainage personnel
+                  </p>
+                  <Link href={ROUTES.questionnaireInfo}>
+                    <Button 
+                      size="lg" 
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold text-lg h-14"
+                    >
+                      <Target className="w-5 h-5 mr-2" />
+                      Devenir client
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                </motion.div>
+
+                {/* CTA 2 : Clients existants */}
+                <motion.div 
+                  className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all border-2 border-yellow-300"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-yellow-200 flex items-center justify-center">
+                      <Award className="w-6 h-6 text-yellow-700" />
+                    </div>
+                    <h4 className="text-xl font-bold text-foreground">Déjà client ?</h4>
+                  </div>
+                  <p className="text-muted-foreground mb-6">
+                    Vous êtes déjà client mais n'avez pas encore votre code ? Obtenez-le maintenant !
+                  </p>
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-semibold text-lg h-14"
+                    onClick={() => setShowReferralDialog(true)}
+                  >
+                    <Mail className="w-5 h-5 mr-2" />
+                    Obtenir mon code
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </motion.div>
+              </div>
+
+              {/* Message motivant */}
+              <motion.div 
+                className="mt-8 text-center"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <p className="text-white/90 text-lg">
+                  💡 <strong>Astuce :</strong> Invitez votre famille, vos amis ou vos collaborateurs à rejoindre WIN WIN Finance<br/>
+                  et <span className="text-yellow-300 font-bold">bénéficiez tous d'un rabais automatique</span> sur votre mandat de gestion !
+                </p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA Final Section */}
       <section 
         className="py-24 text-white relative overflow-hidden"
@@ -881,6 +1071,12 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Dialog Demande Code Parrainage */}
+      <ReferralCodeRequestDialog 
+        open={showReferralDialog} 
+        onOpenChange={setShowReferralDialog} 
+      />
     </div>
   );
 }
