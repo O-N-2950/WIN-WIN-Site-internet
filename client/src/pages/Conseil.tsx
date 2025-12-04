@@ -418,12 +418,13 @@ export default function Conseil() {
                       </div>
 
                       <div>
-                        <Label htmlFor="telephone">Téléphone</Label>
+                        <Label htmlFor="telephone">Téléphone *</Label>
                         <Input
                           id="telephone"
                           type="tel"
                           value={formData.telephone}
                           onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
+                          required
                           placeholder="+41 79 123 45 67"
                         />
                       </div>

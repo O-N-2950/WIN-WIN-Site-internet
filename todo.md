@@ -2408,3 +2408,10 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Rendre tous les champs obligatoires (required)
 - [x] Limiter à 1 caractère minimum au lieu de 3 (appointment.ts lignes 27, 29, 180, 184)
 - [ ] Déployer sur Railway
+
+
+## 📞 Téléphone obligatoire dans Conseil.tsx (4 décembre 2025)
+- [x] Ajouter l'astérisque (*) au label "Téléphone" (Conseil.tsx ligne 421)
+- [x] Ajouter l'attribut required au champ téléphone (Conseil.tsx ligne 427)
+- [x] Rendre le champ téléphone obligatoire dans le backend (appointment.ts ligne 182)
+- [ ] Déployer sur Railway

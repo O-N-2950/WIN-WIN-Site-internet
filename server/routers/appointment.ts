@@ -179,7 +179,7 @@ export const appointmentRouter = router({
       z.object({
         nom: z.string().min(1),
         email: z.string().email(),
-        telephone: z.string().optional(),
+        telephone: z.string().min(1, "Le téléphone est requis"),
         typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
         message: z.string().min(1, "Le message est requis"),
         attachmentUrl: z.union([z.string().url(), z.undefined()]).optional(),
