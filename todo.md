@@ -2374,3 +2374,17 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter le champ "Vous êtes ?" (Particulier/Entreprise) dans ContactSimple.tsx
 - [x] Corriger l'erreur de validation typeClient dans contact.ts
 - [ ] Déployer sur GitHub pour Railway
+
+
+## 🧪 TEST CRITIQUE - Formulaire de contact avec pièce jointe (4 décembre 2025)
+- [x] Créer un test vitest pour le formulaire de contact (11/11 tests passés)
+- [x] Tester l'envoi SANS pièce jointe (SUCCÈS - lead créé dans Airtable)
+- [ ] Tester l'envoi avec pièce jointe sur production (Cloudinary configuré sur Railway)
+- [ ] Vérifier la création du lead avec pièce jointe dans Airtable
+- [ ] Déployer si nécessaire
+
+
+## 🐛 BUG CRITIQUE - Affichage "%VITE_APP_TITLE%" (4 décembre 2025)
+- [x] Identifier où le titre est affiché avec la variable non remplacée (index.html ligne 11)
+- [x] Corriger le code pour utiliser un titre par défaut "WIN WIN Finance Group - Site Web"
+- [ ] Déployer sur Railway

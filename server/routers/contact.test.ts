@@ -15,35 +15,33 @@ describe('Contact Router', () => {
     vi.clearAllMocks();
   });
 
-  describe('sendMessage', () => {
-    it('devrait accepter un message sans pièce jointe', async () => {
+  describe('sendMessage', () => {    it('devrait accepter un message sans pi\u00e8ce jointe', async () => {
       const validInput = {
         nom: 'Jean Dupont',
         email: 'jean.dupont@example.com',
         telephone: '+41791234567',
+        typeClient: 'particulier' as const,
         sujet: 'Demande d\'information',
         message: 'Bonjour, je souhaite obtenir plus d\'informations sur vos services.',
-      };
-
-      // Le test vérifie simplement que l'input est valide
+      };    // Le test vérifie simplement que l'input est valide
       expect(validInput.nom).toHaveLength(11);
       expect(validInput.email).toContain('@');
+      expect(validInput.typeClient).toMatch(/^(particulier|entreprise|les-deux)$/);
       expect(validInput.sujet.length).toBeGreaterThanOrEqual(3);
       expect(validInput.message.length).toBeGreaterThanOrEqual(10);
     });
 
-    it('devrait accepter un message avec pièce jointe', async () => {
+    it('devrait accepter un message avec pi\u00e8ce jointe', async () => {
       const validInput = {
         nom: 'Jean Dupont',
         email: 'jean.dupont@example.com',
         telephone: '+41791234567',
+        typeClient: 'entreprise' as const,
         sujet: 'Demande d\'information',
         message: 'Bonjour, je souhaite obtenir plus d\'informations sur vos services.',
         attachmentUrl: 'https://res.cloudinary.com/demo/image/upload/sample.jpg',
         attachmentFilename: 'document.pdf',
-      };
-
-      // Le test vérifie que l'URL est valide
+      };   // Le test vérifie que l'URL est valide
       expect(validInput.attachmentUrl).toMatch(/^https?:\/\//);
       expect(validInput.attachmentFilename).toBeTruthy();
     });
