@@ -2508,6 +2508,6 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 
 
 ## 🔐 Sections Accès Tiers et Accès Fiduciaire (4 décembre 2025)
-- [ ] Ajouter section "Accès Tiers" dans checklist Particuliers (nom, prénom, email, adresse)
-- [ ] Ajouter section "Accès Fiduciaire" dans checklist Entreprises (email)
-- [ ] Pousser sur GitHub
+- [x] Ajouter section "Accès Tiers" dans checklist Particuliers (nom, prénom, email, adresse)
+- [x] Ajouter section "Accès Fiduciaire" dans checklist Entreprises (email)
+- [x] Pousser sur GitHub (commit 3c7218f)
