@@ -23,7 +23,7 @@ const navigation = [
   { name: "Mapping 360", href: "/mapping-360" },
   { name: "Startup", href: "/startup" },
   { name: "À propos", href: "/a-propos" },
-  { name: "Contact", href: "/contact" },
+  { name: "Contact", href: "/conseil" },
   { name: "Tarifs", href: "/tarifs" },
 ];
 

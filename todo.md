@@ -2388,3 +2388,16 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Identifier où le titre est affiché avec la variable non remplacée (index.html ligne 11)
 - [x] Corriger le code pour utiliser un titre par défaut "WIN WIN Finance Group - Site Web"
 - [ ] Déployer sur Railway
+
+
+## 📑 Titres dynamiques des onglets du navigateur (4 décembre 2025)
+- [ ] Créer un hook useDocumentTitle pour gérer les titres dynamiques
+- [ ] Ajouter les titres pour toutes les pages (Accueil, Services, Outils, etc.)
+- [ ] Tester sur toutes les pages
+- [ ] Déployer sur Railway
+
+
+## 🔀 Redirection onglet Contact (4 décembre 2025)
+- [x] Rediriger l'onglet "Contact" du menu vers /conseil au lieu de /contact (Header.tsx ligne 26)
+- [x] Vérifier que tous les liens "Contact" pointent vers /conseil
+- [ ] Déployer sur Railway
