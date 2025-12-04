@@ -2415,3 +2415,9 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter l'attribut required au champ téléphone (Conseil.tsx ligne 427)
 - [x] Rendre le champ téléphone obligatoire dans le backend (appointment.ts ligne 182)
 - [ ] Déployer sur Railway
+
+
+## 🏢 Correction affichage nom entreprise dans Header (4 décembre 2025)
+- [x] Identifier pourquoi "WIN" manque au début du nom (variable d'environnement VITE_APP_TITLE mal configurée)
+- [x] Corriger l'affichage pour "WIN WIN Finance Group" complet (const.ts ligne 3)
+- [ ] Pousser sur GitHub
