@@ -2505,3 +2505,9 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Ajouter "Protection juridique" dans checklist Entreprises
 - [x] Ajouter section Fiduciaire avec 3 options (J'ai / Je n'ai pas / Je souhaite changer)
 - [x] Pousser sur GitHub (commit c36e8b6)
+
+
+## 🔐 Sections Accès Tiers et Accès Fiduciaire (4 décembre 2025)
+- [ ] Ajouter section "Accès Tiers" dans checklist Particuliers (nom, prénom, email, adresse)
+- [ ] Ajouter section "Accès Fiduciaire" dans checklist Entreprises (email)
+- [ ] Pousser sur GitHub

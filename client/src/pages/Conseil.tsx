@@ -537,6 +537,19 @@ export default function Conseil() {
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
                                   <span>Autres contrats d'assurance</span>
                                 </div>
+                                
+                                {/* Section Accès Tiers */}
+                                <div className="flex flex-col gap-1 col-span-2 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800 mt-2">
+                                  <div className="font-semibold text-sm mb-1">👥 Accès Tiers (optionnel) :</div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                    <span className="text-sm">Je souhaite donner un accès à un tiers (parent, conjoint, etc.)</span>
+                                  </div>
+                                  <div className="text-xs text-muted-foreground mt-2 ml-6">
+                                    <strong>Si oui, fournir :</strong> Nom, Prénom, Email, Adresse complète<br/>
+                                    <em>(Nécessaire pour créer un accès sans mandat de gestion)</em>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           )}
@@ -624,6 +637,18 @@ export default function Conseil() {
                                 <div className="flex items-center gap-2">
                                   <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
                                   <span>Autres contrats d'assurance</span>
+                                </div>
+                                
+                                {/* Section Accès Fiduciaire */}
+                                <div className="flex flex-col gap-1 col-span-2 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800 mt-2">
+                                  <div className="font-semibold text-sm mb-1">🔐 Accès Fiduciaire (optionnel) :</div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-primary/40 rounded"></div>
+                                    <span className="text-sm">Je souhaite donner un accès à ma fiduciaire dans mon espace client</span>
+                                  </div>
+                                  <div className="text-xs text-muted-foreground mt-2 ml-6">
+                                    <strong>Si oui, fournir :</strong> Email de la fiduciaire
+                                  </div>
                                 </div>
                               </div>
                             </div>
