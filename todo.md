@@ -2368,3 +2368,9 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] About.tsx - bouton "Prendre rendez-vous" (corrigé : /contact → /conseil)
 - [x] const.ts - ROUTES.contact (corrigé : /contact → /conseil)
 - [ ] Déployer sur GitHub pour Railway
+
+
+## 🐛 BUG CRITIQUE - Formulaire de contact (4 décembre 2025)
+- [x] Ajouter le champ "Vous êtes ?" (Particulier/Entreprise) dans ContactSimple.tsx
+- [x] Corriger l'erreur de validation typeClient dans contact.ts
+- [ ] Déployer sur GitHub pour Railway

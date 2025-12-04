@@ -14,6 +14,7 @@ export default function ContactSimple() {
     nom: '',
     email: '',
     telephone: '',
+    typeClient: 'particulier' as 'particulier' | 'entreprise' | 'les-deux',
     sujet: prefilledSubject || '',
     message: prefilledMessage || ''
   });
@@ -39,6 +40,11 @@ export default function ContactSimple() {
 
     if (!formData.telephone?.trim()) {
       alert('❌ Le téléphone est requis');
+      return;
+    }
+
+    if (!formData.typeClient) {
+      alert('❌ Veuillez sélectionner votre type de client');
       return;
     }
 
@@ -95,7 +101,7 @@ export default function ContactSimple() {
       alert('✅ Message envoyé avec succès !');
       
       // Reset
-      setFormData({ nom: '', email: '', telephone: '', sujet: '', message: '' });
+      setFormData({ nom: '', email: '', telephone: '', typeClient: 'particulier', sujet: '', message: '' });
       setFile(null);
       
     } catch (error) {
@@ -141,6 +147,20 @@ export default function ContactSimple() {
             onChange={e => setFormData({...formData, telephone: e.target.value})}
             className="w-full p-2 border rounded"
           />
+        </div>
+
+        <div>
+          <label className="block mb-2">Vous êtes ? *</label>
+          <select
+            required
+            value={formData.typeClient}
+            onChange={e => setFormData({...formData, typeClient: e.target.value as 'particulier' | 'entreprise' | 'les-deux'})}
+            className="w-full p-2 border rounded"
+          >
+            <option value="particulier">Particulier</option>
+            <option value="entreprise">Entreprise</option>
+            <option value="les-deux">Les deux</option>
+          </select>
         </div>
 
         <div>

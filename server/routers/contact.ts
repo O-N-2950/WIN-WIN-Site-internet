@@ -7,10 +7,11 @@ export const contactRouter = router({
   sendMessage: publicProcedure
     .input(
       z.object({
-        nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+        nom: z.string().min(2, "Le nom doit contenir au moins 2 caract\u00e8res"),
         email: z.string().email("Email invalide"),
         telephone: z.string().optional(),
-        sujet: z.string().min(3, "Le sujet doit contenir au moins 3 caractères"),
+        typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
+        sujet: z.string().min(3, "Le sujet doit contenir au moins 3 caract\u00e8res"),
         message: z.string().min(1, "Le message est requis"),
         attachmentUrl: z.string().url().optional(),
         attachmentFilename: z.string().optional(),
@@ -23,7 +24,8 @@ export const contactRouter = router({
           email: input.email,
           nom: input.nom,
           telephone: input.telephone || "",
-          typeClient: "Particulier" as const,
+          typeClient: input.typeClient === "particulier" ? "Particulier" : 
+                      input.typeClient === "entreprise" ? "Entreprise" : "Les deux",
           source: "Formulaire Contact" as const,
           message: `Sujet: ${input.sujet}\n\nMessage:\n${input.message}`,
           attachmentUrl: input.attachmentUrl,
