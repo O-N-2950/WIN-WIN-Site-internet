@@ -2424,7 +2424,7 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 
 
 ## 🚨 URGENT - Ajouter champ "Vous êtes ?" dans Conseil.tsx (4 décembre 2025)
-- [ ] Ajouter le state typeClient dans formData
-- [ ] Ajouter le champ de sélection "Vous êtes ?" dans le formulaire
-- [ ] Remplacer la valeur hardcodée "prive" par formData.typeClient
-- [ ] Pousser sur GitHub IMMÉDIATEMENT
+- [x] Ajouter le state typeClient dans formData (Conseil.tsx ligne 20)
+- [x] Ajouter le champ de sélection "Vous êtes ?" dans le formulaire (Conseil.tsx lignes 433-446)
+- [x] Remplacer la valeur hardcodée "prive" par formData.typeClient (Conseil.tsx ligne 113)
+- [x] Pousser sur GitHub (commit 2998a56)
