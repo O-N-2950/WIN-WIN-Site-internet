@@ -7,9 +7,14 @@ import {
   Shield, 
   Info,
   ArrowRight,
-  Lock
+  Lock,
+  Copy,
+  Check,
+  MessageCircle,
+  Mail,
+  Share2
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 import { trpc } from "@/lib/trpc";
@@ -17,6 +22,8 @@ import { toast } from "sonner";
 
 export default function Paiement() {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [referralCode, setReferralCode] = useState('');
+  const [copied, setCopied] = useState(false);
   const [, setLocation] = useLocation();
   const { workflow, updateWorkflow } = useWorkflow();
   
@@ -29,6 +36,85 @@ export default function Paiement() {
     age: workflow.clientAge || 25,
     tarif: workflow.annualPrice || 185,
     isFree: workflow.isFree || false
+  };
+
+  // Générer le code de parrainage au chargement
+  useEffect(() => {
+    if (workflow.clientName && !referralCode) {
+      // Générer le code basé sur le nom (format: DUPO-1234)
+      const nom = workflow.clientName.split(' ')[0]; // Prendre le premier mot
+      const cleanNom = nom
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Enlever accents
+        .replace(/[^a-zA-Z]/g, '') // Garder que lettres
+        .toUpperCase()
+        .slice(0, 4)
+        .padEnd(4, 'X'); // Si nom < 4 lettres, compléter avec X
+      
+      // Générer 4 caractères aléatoires
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let randomPart = '';
+      for (let i = 0; i < 4; i++) {
+        randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      
+      const code = `${cleanNom}-${randomPart}`;
+      setReferralCode(code);
+      
+      // Sauvegarder dans le workflow
+      updateWorkflow({ referralCode: code });
+    }
+  }, [workflow.clientName, referralCode, updateWorkflow]);
+
+  // Calculer les économies en CHF pour chaque palier
+  const calculateSavings = (members: number) => {
+    let discount = 0;
+    if (members === 2) discount = 4;
+    else if (members === 3) discount = 6;
+    else if (members === 4) discount = 8;
+    else if (members === 5) discount = 10;
+    else if (members >= 10) discount = 20;
+    
+    const savings = (clientData.tarif * discount) / 100;
+    return { discount, savings: savings.toFixed(2) };
+  };
+
+  // Copier le code de parrainage
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(referralCode);
+    setCopied(true);
+    toast.success('✅ Code copié dans le presse-papier !');
+    setTimeout(() => setCopied(false), 3000);
+  };
+
+  // Partager via WhatsApp
+  const handleShareWhatsApp = () => {
+    const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
+    const text = encodeURIComponent(
+      `🎉 Salut !\n\nJe viens de rejoindre WIN WIN Finance Group pour gérer mes assurances ! 🎯\n\n💰 Utilise mon code de parrainage : *${referralCode}*\n\n🎁 Avantages :\n✅ Service professionnel\n✅ Rabais familial automatique\n✅ Jusqu'à -20% d'économies !\n\n👉 Clique ici : ${referralLink}\n\nOn économisera tous les deux ! 🚀`
+    );
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
+  // Partager via SMS
+  const handleShareSMS = () => {
+    const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
+    const message = `🎁 Rejoins WIN WIN Finance Group !\n\nCode : ${referralCode}\nRabais familial jusqu'à -20% !\n\n👉 ${referralLink}`;
+    const url = `sms:?body=${encodeURIComponent(message)}`;
+    window.location.href = url;
+  };
+
+  // Partager via Email
+  const handleShareEmail = () => {
+    const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
+    const firstName = workflow.clientName?.split(' ')[0] || '';
+    const lastName = workflow.clientName?.split(' ').slice(1).join(' ') || '';
+    
+    const subject = encodeURIComponent(`🎁 Rejoins WIN WIN Finance Group et économise avec moi !`);
+    const body = encodeURIComponent(
+      `Salut,\n\nJe viens de rejoindre WIN WIN Finance Group pour gérer mes assurances de manière professionnelle. 🎯\n\nJe t'invite à me rejoindre ! Voici mon code de parrainage :\n\n🎫 Code : ${referralCode}\n🔗 Lien direct : ${referralLink}\n\n🎁 Avantages :\n✅ Gestion professionnelle de tes assurances\n✅ Rabais familial automatique\n✅ Plus on est nombreux, plus on économise (jusqu'à -20% !)\n\nOn profitera tous les deux du rabais familial ! 💰\n\nÀ bientôt,\n${firstName} ${lastName}`
+    );
+    window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
   };
 
   const handlePayment = async () => {
@@ -330,89 +416,161 @@ export default function Paiement() {
             </CardContent>
           </Card>
 
-          {/* Encadré Rabais de Groupe */}
-          {!clientData.isFree && (
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-emerald-950/30 dark:via-green-950/30 dark:to-teal-950/30 border-2 border-emerald-200 dark:border-emerald-800 shadow-lg">
-              {/* Décoration de fond */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-200/20 dark:bg-emerald-700/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-green-200/20 dark:bg-green-700/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+          {/* Section Rabais de Groupe VIRALE */}
+          {!clientData.isFree && referralCode && (
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-emerald-950/40 dark:via-green-950/40 dark:to-teal-950/40 border-2 border-emerald-300 dark:border-emerald-700 shadow-2xl">
+              {/* Décoration de fond animée */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-300/30 dark:bg-emerald-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-green-300/30 dark:bg-green-600/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
               
-              <div className="relative p-6">
-                {/* En-tête avec icône */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
-                    <span className="text-4xl">💰</span>
+              <div className="relative p-8">
+                {/* En-tête WAOUH */}
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-6 py-2 rounded-full font-bold text-sm mb-4 shadow-lg animate-bounce">
+                    <span className="text-2xl">🎁</span>
+                    <span>OFFRE SPÉCIALE PARRAINAGE</span>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent mb-1">
-                      💡 Astuce : Économisez avec le rabais de groupe !
-                    </h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      Invitez votre famille, vos amis ou vos collaborateurs à rejoindre WIN WIN Finance
-                    </p>
-                  </div>
-                </div>
+                  
+                  <h3 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 dark:from-emerald-400 dark:via-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-3">
+                    Économise avec tes proches !
+                  </h3>
+                  
+                  <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                    Partage ton code et profitez <strong>tous ensemble</strong> du rabais familial
+                  </p>
 
-                {/* Grille des rabais - Design moderne */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                  {[
-                    { membres: '2', rabais: '4%', highlight: false },
-                    { membres: '3', rabais: '6%', highlight: false },
-                    { membres: '4', rabais: '8%', highlight: false },
-                    { membres: '5', rabais: '10%', highlight: false },
-                    { membres: '10+', rabais: '20%', highlight: true }
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className={`
-                        relative group overflow-hidden rounded-xl p-4 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl
-                        ${
-                          item.highlight
-                            ? 'bg-gradient-to-br from-emerald-500 to-green-600 border-2 border-emerald-400 shadow-lg'
-                            : 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600'
-                        }
-                      `}
-                    >
-                      {/* Badge "MAX" pour le dernier */}
-                      {item.highlight && (
-                        <div className="absolute top-1 right-1 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                          MAX
-                        </div>
-                      )}
-                      
-                      <div className={`text-2xl font-bold mb-1 ${
-                        item.highlight
-                          ? 'text-white'
-                          : 'text-emerald-700 dark:text-emerald-400'
-                      }`}>
-                        {item.membres}
-                      </div>
-                      <div className={`text-xs font-medium mb-1 ${
-                        item.highlight
-                          ? 'text-emerald-100'
-                          : 'text-gray-600 dark:text-gray-400'
-                      }`}>
-                        membres
-                      </div>
-                      <div className={`text-3xl font-black ${
-                        item.highlight
-                          ? 'text-white drop-shadow-lg'
-                          : 'text-green-600 dark:text-green-400'
-                      }`}>
-                        -{item.rabais}
-                      </div>
+                  {/* Code de parrainage GÉANT */}
+                  <div className="inline-block bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl border-4 border-emerald-400 dark:border-emerald-600 mb-6">
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                      TON CODE DE PARRAINAGE
                     </div>
-                  ))}
+                    <div className="text-5xl md:text-6xl font-black text-emerald-600 dark:text-emerald-400 tracking-wider font-mono">
+                      {referralCode}
+                    </div>
+                  </div>
                 </div>
 
-                {/* CTA */}
-                <a 
-                  href="/pricing#rabais-groupe" 
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                >
-                  <span>En savoir plus sur le rabais de groupe</span>
-                  <ArrowRight className="h-5 w-5" />
-                </a>
+                {/* Tableau des économies EN CHF */}
+                <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-emerald-200 dark:border-emerald-800">
+                  <h4 className="text-xl font-bold text-center mb-4 text-gray-800 dark:text-gray-200">
+                    💰 Tes économies potentielles
+                  </h4>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {[
+                      { membres: 2, rabais: 4 },
+                      { membres: 3, rabais: 6 },
+                      { membres: 4, rabais: 8 },
+                      { membres: 5, rabais: 10 },
+                      { membres: 10, rabais: 20 }
+                    ].map((item) => {
+                      const { discount, savings } = calculateSavings(item.membres);
+                      const isMax = item.membres === 10;
+                      
+                      return (
+                        <div
+                          key={item.membres}
+                          className={`
+                            relative rounded-xl p-4 text-center transition-all duration-300 transform hover:scale-110 hover:shadow-2xl
+                            ${
+                              isMax
+                                ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 text-white shadow-xl'
+                                : 'bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/50 dark:to-green-900/50 border-2 border-emerald-300 dark:border-emerald-700'
+                            }
+                          `}
+                        >
+                          {isMax && (
+                            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                              MAX !
+                            </div>
+                          )}
+                          
+                          <div className={`text-3xl font-black mb-1 ${isMax ? 'text-white' : 'text-emerald-700 dark:text-emerald-400'}`}>
+                            {item.membres}+
+                          </div>
+                          <div className={`text-xs font-medium mb-2 ${isMax ? 'text-white/90' : 'text-gray-600 dark:text-gray-400'}`}>
+                            {item.membres === 10 ? 'membres' : 'amis'}
+                          </div>
+                          <div className={`text-2xl font-black mb-1 ${isMax ? 'text-white drop-shadow-lg' : 'text-green-600 dark:text-green-400'}`}>
+                            -{discount}%
+                          </div>
+                          <div className={`text-sm font-bold ${isMax ? 'text-white' : 'text-emerald-700 dark:text-emerald-300'}`}>
+                            {savings} CHF/an
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                    💡 Plus vous êtes nombreux, plus vous économisez !
+                  </div>
+                </div>
+
+                {/* Boutons de partage ULTRA-VISIBLES */}
+                <div className="space-y-3">
+                  <div className="text-center font-bold text-lg text-gray-800 dark:text-gray-200 mb-4">
+                    🚀 Partage ton code maintenant :
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* WhatsApp */}
+                    <Button
+                      onClick={handleShareWhatsApp}
+                      className="h-16 text-lg font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      <MessageCircle className="h-6 w-6 mr-3" />
+                      Partager sur WhatsApp
+                    </Button>
+
+                    {/* SMS */}
+                    <Button
+                      onClick={handleShareSMS}
+                      className="h-16 text-lg font-bold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      <MessageCircle className="h-6 w-6 mr-3" />
+                      Partager par SMS
+                    </Button>
+
+                    {/* Email */}
+                    <Button
+                      onClick={handleShareEmail}
+                      className="h-16 text-lg font-bold bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      <Mail className="h-6 w-6 mr-3" />
+                      Partager par Email
+                    </Button>
+
+                    {/* Copier le code */}
+                    <Button
+                      onClick={handleCopyCode}
+                      variant="outline"
+                      className="h-16 text-lg font-bold border-2 border-emerald-500 dark:border-emerald-600 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="h-6 w-6 mr-3 text-green-600" />
+                          Code copié !
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-6 w-6 mr-3" />
+                          Copier mon code
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Message motivant */}
+                <div className="mt-6 text-center bg-gradient-to-r from-emerald-600 to-green-600 dark:from-emerald-700 dark:to-green-700 text-white rounded-xl p-4 shadow-lg">
+                  <p className="font-bold text-lg">
+                    🎯 Chaque ami qui rejoint = plus d'économies pour tous !
+                  </p>
+                  <p className="text-sm mt-1 opacity-90">
+                    Partage dès maintenant et commence à économiser ensemble 💪
+                  </p>
+                </div>
               </div>
             </div>
           )}
