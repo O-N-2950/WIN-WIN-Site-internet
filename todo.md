@@ -2492,15 +2492,16 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 
 
 ## 🔧 Correction Checklists Particuliers/Entreprises (4 décembre 2025)
-- [ ] Ajouter "Protection juridique" dans checklist Particuliers
-- [ ] Supprimer "Contrats LAMal collective" de checklist Entreprises
-- [ ] Ajouter "Contrat perte de gain maladie (IJM)" dans checklist Entreprises
-- [ ] Ajouter "Contrat LAA (accidents professionnels)" dans checklist Entreprises
-- [ ] Ajouter "Contrat LAA Complémentaire" dans checklist Entreprises
-- [ ] Ajouter "Contrat LPP avec tous les plans + dernier détail primes et prestations" dans checklist Entreprises
-- [ ] Ajouter "Chiffre d'affaires annuel (CA)" dans checklist Entreprises
-- [ ] Ajouter "Somme des salaires AVS (hommes/femmes) - dernier document IJM/LAA" dans checklist Entreprises
-- [ ] Ajouter "Assurance COMMERCE" dans checklist Entreprises
-- [ ] Ajouter "Assurance Transport (si existante)" dans checklist Entreprises
-- [ ] Pousser sur GitHub
-- [ ] Ajouter "Nom et adresse de la fiduciaire" dans checklist Entreprises
+- [x] Ajouter "Protection juridique" dans checklist Particuliers
+- [x] Supprimer "Contrats LAMal collective" de checklist Entreprises
+- [x] Ajouter "Contrat perte de gain maladie (IJM)" dans checklist Entreprises
+- [x] Ajouter "Contrat LAA (accidents professionnels)" dans checklist Entreprises
+- [x] Ajouter "Contrat LAA Complémentaire" dans checklist Entreprises
+- [x] Ajouter "Contrat LPP avec tous les plans + dernier détail primes et prestations" dans checklist Entreprises
+- [x] Ajouter "Chiffre d'affaires annuel (CA)" dans checklist Entreprises
+- [x] Ajouter "Somme des salaires AVS (hommes/femmes) - dernier document IJM/LAA" dans checklist Entreprises
+- [x] Ajouter "Assurance COMMERCE" dans checklist Entreprises
+- [x] Ajouter "Assurance Transport (si existante)" dans checklist Entreprises
+- [x] Ajouter "Protection juridique" dans checklist Entreprises
+- [x] Ajouter section Fiduciaire avec 3 options (J'ai / Je n'ai pas / Je souhaite changer)
+- [x] Pousser sur GitHub (commit c36e8b6)
