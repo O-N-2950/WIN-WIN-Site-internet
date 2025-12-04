@@ -17,6 +17,7 @@ export default function Conseil() {
     nom: "",
     email: "",
     telephone: "",
+    typeClient: "particulier" as "particulier" | "entreprise" | "les-deux",
     message: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -26,7 +27,7 @@ export default function Conseil() {
   const sendContactRequest = trpc.appointment.sendContactRequest.useMutation({
     onSuccess: () => {
       toast.success("Message envoyé ! Nous vous répondrons sous 24h.");
-      setFormData({ nom: "", email: "", telephone: "", message: "" });
+      setFormData({ nom: "", email: "", telephone: "", typeClient: "particulier", message: "" });
       setSelectedFile(null);
       setFilePreview(null);
       setSelectedOption(null);
@@ -109,7 +110,7 @@ export default function Conseil() {
       nom: formData.nom,
       email: formData.email,
       telephone: formData.telephone,
-      typeClient: "prive", // Valeur par défaut pour les messages
+      typeClient: formData.typeClient,
       message: formData.message,
       attachmentUrl,
     });
@@ -427,6 +428,21 @@ export default function Conseil() {
                           required
                           placeholder="+41 79 123 45 67"
                         />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="typeClient">Vous êtes ? *</Label>
+                        <select
+                          id="typeClient"
+                          value={formData.typeClient}
+                          onChange={(e) => setFormData({ ...formData, typeClient: e.target.value as "particulier" | "entreprise" | "les-deux" })}
+                          required
+                          className="w-full p-2 border rounded-md"
+                        >
+                          <option value="particulier">Particulier</option>
+                          <option value="entreprise">Entreprise</option>
+                          <option value="les-deux">Les deux</option>
+                        </select>
                       </div>
 
                       <div>

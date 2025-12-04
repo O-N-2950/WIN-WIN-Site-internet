@@ -2421,3 +2421,10 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Identifier pourquoi "WIN" manque au début du nom (variable d'environnement VITE_APP_TITLE mal configurée)
 - [x] Corriger l'affichage pour "WIN WIN Finance Group" complet (const.ts ligne 3)
 - [ ] Pousser sur GitHub
+
+
+## 🚨 URGENT - Ajouter champ "Vous êtes ?" dans Conseil.tsx (4 décembre 2025)
+- [ ] Ajouter le state typeClient dans formData
+- [ ] Ajouter le champ de sélection "Vous êtes ?" dans le formulaire
+- [ ] Remplacer la valeur hardcodée "prive" par formData.typeClient
+- [ ] Pousser sur GitHub IMMÉDIATEMENT
