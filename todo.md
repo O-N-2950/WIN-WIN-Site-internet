@@ -2438,3 +2438,43 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Animations (pulse, bounce, hover scale)
 - [x] Pousser sur GitHub (commit 8bd3558)
 - [ ] Déployer sur Railway
+
+
+## 📧 CAMPAGNE PARRAINAGE - Email aux clients existants (À FAIRE)
+**Objectif** : Activer les 500+ clients existants comme ambassadeurs pour croissance rapide
+
+### Préparation
+- [ ] Récupérer tous les clients actifs depuis Airtable (avec codes de parrainage)
+- [ ] Créer template email HTML professionnel et engageant
+- [ ] Personnaliser avec prénom, code de parrainage, et économies potentielles
+- [ ] Ajouter boutons de partage WhatsApp/SMS/Email pré-remplis
+- [ ] Calculer économies en CHF selon leur tarif actuel
+
+### Contenu Email
+**Objet** : 🎁 [Prénom], rendez service à vos proches et économisez ensemble !
+
+**Corps** :
+- 🎯 Message personnel d'Olivier
+- ✅ Rappel de la valeur du service (conseiller neutre, optimisation complète)
+- 💰 Explication rabais familial (jusqu'à -20% pour tous)
+- 🎫 Leur code de parrainage personnel (XXXX-1234)
+- 📊 Calcul de leurs économies potentielles (ex: "Avec 5 amis = 18.50 CHF/an")
+- 📱 Boutons de partage WhatsApp/SMS/Email (messages pré-remplis)
+- 💪 Call-to-action : "Partagez dès maintenant et rendez service à vos proches"
+
+### Technique
+- [ ] Créer endpoint tRPC pour récupérer clients actifs avec codes
+- [ ] Créer template email Resend avec variables dynamiques
+- [ ] Script d'envoi en batch (éviter spam, max 100/heure)
+- [ ] Tracking ouvertures et clics (Resend analytics)
+- [ ] Suivi conversions (nouveaux clients via codes de parrainage)
+
+### Timing
+- [ ] Envoyer APRÈS déploiement de la section rabais de groupe VIRALE
+- [ ] Choisir meilleur moment (mardi-jeudi, 10h-14h)
+- [ ] Prévoir relance après 7 jours (non-ouvreurs)
+
+### ROI Attendu
+- **500 clients existants** × **10% taux de partage** = 50 partages
+- **50 partages** × **20% conversion** = **10 nouveaux clients**
+- **Impact** : Croissance organique sans coût publicitaire 🚀
