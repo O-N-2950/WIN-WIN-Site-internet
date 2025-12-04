@@ -28,7 +28,7 @@ const stripe = new Stripe(ENV.stripeSecretKey, {
  */
 const AIRTABLE_CONFIG = {
   baseId: 'appZQkRJ7PwOtdQ3O',
-  tableId: 'tblTODO_CLIENTS', // TODO: Remplacer par le vrai ID de la table "Clients"
+  tableId: 'tblWPcIpGmBZ3ASGI', // Table Clients
   apiKey: process.env.AIRTABLE_API_KEY || '',
 };
 
@@ -163,10 +163,12 @@ async function createInvoiceForClient(client: ClientToBill): Promise<string> {
  * @param invoiceId - ID de la facture Stripe créée
  */
 async function updateNextBillingDate(recordId: string, invoiceId: string): Promise<void> {
-  // Calculer la prochaine date de facturation (+1 an)
-  const nextYear = new Date();
-  nextYear.setFullYear(nextYear.getFullYear() + 1);
-  const nextBillingDate = nextYear.toISOString().split('T')[0];
+  // Calculer la prochaine date de facturation (+360 jours)
+  const today = new Date();
+  const nextBillingDate = new Date(today);
+  nextBillingDate.setDate(nextBillingDate.getDate() + 360);
+  const nextBillingDateStr = nextBillingDate.toISOString().split('T')[0];
+  const todayStr = today.toISOString().split('T')[0];
 
   try {
     const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableId)}/${recordId}`;
@@ -179,9 +181,10 @@ async function updateNextBillingDate(recordId: string, invoiceId: string): Promi
       },
       body: JSON.stringify({
         fields: {
-          'Date prochaine facturation': nextBillingDate,
+          'Date prochaine facturation': nextBillingDateStr,
           'Stripe Invoice ID': invoiceId,
           'Statut Paiement': 'En attente', // Sera mis à jour par le webhook après paiement
+          'date dernière facture établie': todayStr, // Mettre à jour la date de dernière facturation
         },
       }),
     });
@@ -192,7 +195,8 @@ async function updateNextBillingDate(recordId: string, invoiceId: string): Promi
       throw new Error(`Airtable API error: ${response.status}`);
     }
 
-    console.log(`[Billing] Prochaine facturation: ${nextBillingDate}`);
+    console.log(`[Billing] Prochaine facturation: ${nextBillingDateStr} (+360 jours)`);
+    console.log(`[Billing] Date dernière facture: ${todayStr}`);
   } catch (error) {
     console.error('[Billing] Erreur:', error);
     throw error;

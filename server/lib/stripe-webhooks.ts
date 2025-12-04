@@ -83,19 +83,25 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
     return;
   }
 
-  // Calculer la prochaine date de facturation (+1 an)
-  const nextBillingDate = new Date();
-  nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
+  // Récupérer l'ID de l'abonnement
+  const subscriptionId = invoice.subscription as string;
+
+  // Calculer la prochaine date de facturation (+360 jours)
+  const today = new Date();
+  const nextBillingDate = new Date(today);
+  nextBillingDate.setDate(nextBillingDate.getDate() + 360);
 
   // Mettre à jour Airtable
   try {
     await updateClientAfterPayment({
       email: customerEmail,
       statutPaiement: "Payé",
-      dateDernierPaiement: new Date().toISOString().split("T")[0], // Format YYYY-MM-DD
+      dateDernierPaiement: today.toISOString().split("T")[0], // Format YYYY-MM-DD
       montantDernierPaiement: amount,
       stripeInvoiceId: invoiceId,
-      dateProchaineFact: nextBillingDate.toISOString().split("T")[0],
+      stripeSubscriptionId: subscriptionId, // ID abonnement Stripe
+      dateDerniereFacture: today.toISOString().split("T")[0], // date dernière facture établie
+      dateProchaineFact: nextBillingDate.toISOString().split("T")[0], // +360 jours
     });
 
     console.log(`[Stripe Webhook] Client ${customerEmail} mis à jour dans Airtable`);

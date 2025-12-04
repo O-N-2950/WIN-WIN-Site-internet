@@ -435,14 +435,14 @@ const CLIENTS_TABLE_CONFIG = {
 };
 
 /**
- * Interface pour les données de mise à jour après paiement
- */
-interface PaymentUpdateData {
+ * Interface pour les données de mise à jour après paiemeexport interface PaymentUpdateData {
   email: string;
   statutPaiement?: 'Payé' | 'En attente' | 'Échec' | 'Tentative en cours' | 'Retard de paiement';
   dateDernierPaiement?: string;
   montantDernierPaiement?: number;
   stripeInvoiceId?: string;
+  stripeSubscriptionId?: string; // ID abonnement Stripe
+  dateDerniereFacture?: string; // date dernière facture établie (pour calcul +360 jours)
   dateProchaineFact?: string;
 }
 
@@ -503,6 +503,14 @@ export async function updateClientAfterPayment(data: PaymentUpdateData): Promise
 
     if (data.stripeInvoiceId) {
       fields['Stripe Invoice ID'] = data.stripeInvoiceId;
+    }
+
+    if (data.stripeSubscriptionId) {
+      fields['Stripe Subscription ID'] = data.stripeSubscriptionId;
+    }
+
+    if (data.dateDerniereFacture) {
+      fields['date dernière facture établie'] = data.dateDerniereFacture;
     }
 
     if (data.dateProchaineFact) {

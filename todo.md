@@ -2523,3 +2523,159 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [x] Placer la section avant CTA final (position stratégique)
 - [x] Pousser sur GitHub (commit 8683d1b)
 - [ ] Implémenter envoi email à Olivier (TODO dans endpoint)
+
+
+## 🎓 CAMPAGNES GROUPES - Étudiants et Apprentis (À FAIRE)
+**Objectif** : Attirer des nouveaux clients par groupes de 20+ pour bénéficier du rabais MAX (-20%)
+
+### Cibles Prioritaires
+- [ ] **Fin d'études** : Étudiants universitaires qui terminent leurs études et se lancent dans la vie active
+- [ ] **Fin d'apprentissage** : Apprentis qui terminent leur formation et commencent à travailler
+- [ ] **Nouveaux employés** : Groupes de jeunes professionnels dans la même entreprise
+
+### Proposition de Valeur
+- ✅ **Conseil et suivi personnalisé** pour période de transition (études → vie active)
+- ✅ **Rabais MAX -20%** pour groupes de 20+ personnes
+- ✅ **Optimisation complète** des assurances dès le début de carrière
+- ✅ **Accompagnement long terme** (pas juste une vente unique)
+
+### Canaux de Distribution
+- [ ] Partenariats avec universités et écoles professionnelles
+- [ ] Présence aux forums emploi et salons de l'apprentissage
+- [ ] Campagnes LinkedIn ciblées (jeunes diplômés Suisse romande)
+- [ ] Partenariats avec entreprises formatrices (apprentis)
+- [ ] Bouche-à-oreille via ambassadeurs étudiants
+
+### Technique
+- [ ] Créer landing page dédiée "Étudiants & Apprentis"
+- [ ] Formulaire d'inscription groupée (1 leader + liste des membres)
+- [ ] Calcul automatique du rabais selon taille du groupe
+- [ ] Code de groupe unique (ex: EPFL2025-001)
+- [ ] Dashboard de suivi des inscriptions par groupe
+
+### ROI Attendu
+- **20 étudiants** × **85 CHF/an** = **1'700 CHF/an** (avec rabais -20%)
+- **10 groupes/an** = **17'000 CHF** de revenus récurrents annuels
+- **Impact long terme** : Clients fidèles pour 30-40 ans 🚀
+
+
+## 📧 TODO - Idées Parrainage à Implémenter Plus Tard
+- [ ] Implémenter envoi email à Olivier pour demandes de code (endpoint parrainage.requestCode)
+- [ ] Créer campagne email aux 500+ clients existants avec code de parrainage
+- [ ] Ajouter dashboard de suivi des parrainages (conversions par code)
+- [ ] Système de récompenses pour meilleurs ambassadeurs
+
+
+## 🚨 PRIORITÉ ABSOLUE - Workflow Paiement Stripe Production (4 décembre 2025)
+**Objectif** : ENCAISSER DE L'ARGENT MAINTENANT 💰
+
+### Phase 1 : Configuration Stripe
+- [ ] Vérifier clés Stripe (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET)
+- [ ] Vérifier produits Stripe existants (10 produits selon grille tarifaire)
+- [ ] Configurer webhook Stripe en production (URL Railway)
+- [ ] Tester connexion Stripe avec clés de production
+
+### Phase 2 : Facturation Immédiate Nouveaux Clients
+- [ ] Vérifier workflow questionnaire → signature → paiement
+- [ ] Implémenter createCheckoutSession avec facturation immédiate
+- [ ] Créer abonnement Stripe récurrent (facturation tous les 360 jours)
+- [ ] Webhook : Créer client dans Airtable après paiement réussi
+- [ ] Webhook : Envoyer email bienvenue + notification Olivier
+- [ ] Tester paiement complet en mode test Stripe
+
+### Phase 3 : Facturation Récurrente Clients Existants
+- [ ] Lire champ "Date de dernière facturation du mandat" depuis Airtable
+- [ ] Créer abonnement Stripe avec start_date = dernière facturation + 360 jours
+- [ ] Script de migration : Créer abonnements Stripe pour tous les clients existants
+- [ ] Vérifier que Stripe ne facture PAS immédiatement (seulement après 360 jours)
+- [ ] Tester avec 1-2 clients test
+
+### Phase 4 : Tests Production
+- [ ] Test workflow complet nouveau client (questionnaire → paiement → Airtable)
+- [ ] Test abonnement récurrent (vérifier date de prochaine facturation)
+- [ ] Test webhook Stripe (checkout.session.completed)
+- [ ] Test email bienvenue + notification Olivier
+- [ ] Vérifier création client dans Airtable avec toutes les données
+
+### Phase 5 : Mise en Production
+- [ ] Déployer sur Railway avec clés Stripe de production
+- [ ] Configurer webhook Stripe avec URL production
+- [ ] Tester 1 paiement réel (petit montant)
+- [ ] Migrer tous les clients existants vers Stripe
+- [ ] Activer facturation automatique
+- [ ] Documentation workflow paiement
+
+### Informations Clés
+- ✅ **Clés Stripe** : Disponibles dans secrets
+- ✅ **Produits Stripe** : 10 produits créés selon grille tarifaire
+- ✅ **Champ Airtable** : "Date de dernière facturation du mandat"
+- ✅ **Fréquence** : Facturation tous les 360 jours (annuelle)
+- ✅ **Nouveaux clients** : Facturation IMMÉDIATE
+- ✅ **Clients existants** : Facturation 360 jours APRÈS dernière facturation
+
+
+## 🚀 PRIORITÉ CRITIQUE - Système de Paiement Stripe Production (04 déc 2025)
+
+### Phase 1 : Configuration Airtable
+- [ ] Mettre à jour server/lib/airtable-config.ts avec les 6 champs Stripe
+  - "Stripe Subscription ID" (ID abonnement)
+  - "Date prochaine facturation" (calculée automatiquement)
+  - "Statut Paiement" (Payé/En attente/Échoué)
+  - "Date dernier paiement" (dernière transaction réussie)
+  - "Stripe Invoice ID" (ID dernière facture)
+  - "date dernière facture établie" (pour calcul +360 jours)
+
+### Phase 2 : Paiement Stripe avec Rabais Familiaux
+- [ ] Créer module server/lib/stripe-payment.ts
+- [ ] Implémenter createSubscriptionWithDiscount() pour nouveaux clients
+- [ ] Récupérer "Prix final avec rabais" depuis Airtable
+- [ ] Créer Price ID dynamique dans Stripe (au lieu de coupon)
+- [ ] Gérer paiement immédiat pour nouveaux clients
+- [ ] Afficher liste membres famille sur facture Stripe
+
+### Phase 3 : Webhook Stripe
+- [ ] Créer endpoint /api/stripe/webhook
+- [ ] Gérer événement invoice.payment_succeeded
+- [ ] Gérer événement invoice.payment_failed
+- [ ] Gérer événement invoice.payment_action_required (3D Secure)
+- [ ] Mettre à jour Airtable après chaque paiement :
+  - Stripe Subscription ID
+  - Stripe Invoice ID
+  - date dernière facture établie = aujourd'hui
+  - Date dernier paiement = aujourd'hui
+  - Statut Paiement = "Payé"
+- [ ] Tester webhook avec Stripe CLI
+
+### Phase 4 : Facturation Récurrente (360 jours)
+- [ ] Créer module server/lib/billing.ts
+- [ ] Implémenter processDailyBilling() pour vérifier "Date prochaine facturation"
+- [ ] Créer factures Stripe pour clients existants (si date = aujourd'hui)
+- [ ] Mettre à jour "date dernière facture établie" après paiement
+- [ ] Configurer cron job quotidien (9h00 CET)
+- [ ] Gérer les "Mandat offert" (skip facturation)
+
+### Phase 5 : Tests Complets
+- [ ] Tester paiement nouveau client avec rabais 0% (1 membre)
+- [ ] Tester paiement nouveau client avec rabais 4% (2 membres)
+- [ ] Tester paiement nouveau client avec rabais 20% (10+ membres)
+- [ ] Tester webhook Stripe (paiement réussi)
+- [ ] Tester webhook Stripe (paiement échoué)
+- [ ] Tester facturation récurrente (simulation date future)
+- [ ] Valider synchronisation Airtable (tous les champs)
+- [ ] Vérifier calcul automatique "Date prochaine facturation" (+360 jours)
+
+### Phase 6 : Production
+- [ ] Documenter le workflow complet (GUIDE-FACTURATION-STRIPE.md)
+- [ ] Créer guide de migration vers clés LIVE Stripe
+- [ ] Tester avec 1 vrai client (clés TEST)
+- [ ] Basculer vers clés LIVE après validation
+- [ ] Déployer sur Railway
+- [ ] Configurer webhook Stripe production (URL www.winwin.swiss)
+- [ ] Vérifier premier virement bancaire Raiffeisen
+
+### Informations Techniques
+- **Cycle de facturation** : 360 jours (pas 365)
+- **Formule Airtable** : Date prochaine facturation = date dernière facture établie + 360 jours
+- **Rabais familial** : 2% par membre, max 20% (10+ membres)
+- **Prix dynamique** : Créer Price ID dans Stripe avec prix final (pas de coupon)
+- **Webhook events** : invoice.payment_succeeded, invoice.payment_failed, invoice.payment_action_required

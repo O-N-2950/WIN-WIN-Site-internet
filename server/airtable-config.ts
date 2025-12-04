@@ -35,6 +35,13 @@ export const AIRTABLE_CONFIG = {
         lieAFamille: 'fldt6pklPvJmGq5FJ', // Lié à (famille) - multipleRecordLinks
         groupeFamilial: 'fld7adFgijiW0Eqhj', // Single line text (FAMILLE-NOM-2024)
         codeParrainage: 'fldEx4ytlCnqPoSDM', // Single line text (DUPO-1234)
+        // Champs Stripe pour facturation
+        stripeSubscriptionId: 'fldocAjdGomXPRQeU', // Stripe Subscription ID
+        dateProchaineFact: 'fld3VBfm8vhkawBCo', // Date prochaine facturation (formule: date dernière facture + 360 jours)
+        statutPaiement: 'fldaFF7mU0FwNshw7', // Statut Paiement (Payé/En attente/Échoué)
+        dateDernierPaiement: 'fldrg5f0BD3np8Mug', // Date dernier paiement
+        stripeInvoiceId: 'fldMn8zMy3lQNWF0e', // Stripe Invoice ID
+        dateDerniereFacture: 'fldq2bsTMuxynxVHj', // date dernière facture établie
       },
     },
     contrats: {
