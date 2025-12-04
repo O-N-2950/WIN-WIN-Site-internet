@@ -332,48 +332,89 @@ export default function Paiement() {
 
           {/* Encadré Rabais de Groupe */}
           {!clientData.isFree && (
-            <Alert className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
-              <div className="flex items-start gap-3">
-                <div className="text-3xl">💰</div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-2 text-green-800 dark:text-green-400">
-                    💡 Astuce : Économisez avec le rabais de groupe !
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Invitez votre famille, vos amis ou vos collaborateurs à rejoindre WIN WIN Finance et bénéficiez tous d'un rabais automatique !
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded text-center">
-                      <div className="font-bold text-green-600 dark:text-green-400">2 membres</div>
-                      <div className="text-muted-foreground">-4%</div>
-                    </div>
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded text-center">
-                      <div className="font-bold text-green-600 dark:text-green-400">3 membres</div>
-                      <div className="text-muted-foreground">-6%</div>
-                    </div>
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded text-center">
-                      <div className="font-bold text-green-600 dark:text-green-400">4 membres</div>
-                      <div className="text-muted-foreground">-8%</div>
-                    </div>
-                    <div className="bg-white dark:bg-gray-800 p-2 rounded text-center">
-                      <div className="font-bold text-green-600 dark:text-green-400">5 membres</div>
-                      <div className="text-muted-foreground">-10%</div>
-                    </div>
-                    <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded text-center">
-                      <div className="font-bold text-green-700 dark:text-green-300">10+ membres</div>
-                      <div className="font-bold text-green-700 dark:text-green-300">-20% MAX</div>
-                    </div>
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-emerald-950/30 dark:via-green-950/30 dark:to-teal-950/30 border-2 border-emerald-200 dark:border-emerald-800 shadow-lg">
+              {/* Décoration de fond */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-200/20 dark:bg-emerald-700/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-green-200/20 dark:bg-green-700/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+              
+              <div className="relative p-6">
+                {/* En-tête avec icône */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+                    <span className="text-4xl">💰</span>
                   </div>
-                  <a 
-                    href="/pricing#rabais-groupe" 
-                    className="text-sm font-medium text-green-700 dark:text-green-400 hover:underline inline-flex items-center gap-1"
-                  >
-                    En savoir plus sur le rabais de groupe
-                    <ArrowRight className="h-3 w-3" />
-                  </a>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent mb-1">
+                      💡 Astuce : Économisez avec le rabais de groupe !
+                    </h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      Invitez votre famille, vos amis ou vos collaborateurs à rejoindre WIN WIN Finance
+                    </p>
+                  </div>
                 </div>
+
+                {/* Grille des rabais - Design moderne */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                  {[
+                    { membres: '2', rabais: '4%', highlight: false },
+                    { membres: '3', rabais: '6%', highlight: false },
+                    { membres: '4', rabais: '8%', highlight: false },
+                    { membres: '5', rabais: '10%', highlight: false },
+                    { membres: '10+', rabais: '20%', highlight: true }
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className={`
+                        relative group overflow-hidden rounded-xl p-4 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl
+                        ${
+                          item.highlight
+                            ? 'bg-gradient-to-br from-emerald-500 to-green-600 border-2 border-emerald-400 shadow-lg'
+                            : 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600'
+                        }
+                      `}
+                    >
+                      {/* Badge "MAX" pour le dernier */}
+                      {item.highlight && (
+                        <div className="absolute top-1 right-1 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          MAX
+                        </div>
+                      )}
+                      
+                      <div className={`text-2xl font-bold mb-1 ${
+                        item.highlight
+                          ? 'text-white'
+                          : 'text-emerald-700 dark:text-emerald-400'
+                      }`}>
+                        {item.membres}
+                      </div>
+                      <div className={`text-xs font-medium mb-1 ${
+                        item.highlight
+                          ? 'text-emerald-100'
+                          : 'text-gray-600 dark:text-gray-400'
+                      }`}>
+                        membres
+                      </div>
+                      <div className={`text-3xl font-black ${
+                        item.highlight
+                          ? 'text-white drop-shadow-lg'
+                          : 'text-green-600 dark:text-green-400'
+                      }`}>
+                        -{item.rabais}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <a 
+                  href="/pricing#rabais-groupe" 
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <span>En savoir plus sur le rabais de groupe</span>
+                  <ArrowRight className="h-5 w-5" />
+                </a>
               </div>
-            </Alert>
+            </div>
           )}
 
           {/* Actions */}
