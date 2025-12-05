@@ -18,7 +18,7 @@ describe('TEST D\'INTÉGRATION COMPLET - WORKFLOW RÉEL', () => {
     prenom: 'Marie',
     nom: 'Dubois',
     email: `marie.dubois.test.${TIMESTAMP}@example.com`,
-    typeClient: 'Privé' as const,
+    typeClient: 'Particulier' as const,
     dateNaissance: '1990-05-15',
     telMobile: '+41 79 555 1234',
     adresse: 'Rue du Test 42',

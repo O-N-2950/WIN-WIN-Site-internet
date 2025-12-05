@@ -91,7 +91,7 @@ export default function Paiement() {
   const handleShareWhatsApp = () => {
     const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
     const text = encodeURIComponent(
-      `🎯 Salut !\n\nJe viens de trouver LA solution pour mes assurances : WIN WIN Finance Group.\n\n✅ Conseiller neutre et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances\n✅ Gain de temps énorme (ils gèrent tout)\n\nJe te partage mon code de parrainage : *${referralCode}*\n\n👉 On profitera tous les deux d'un rabais familial automatique !\n\nClique ici : ${referralLink}\n\nFranchement, ça vaut le coup. 💪`
+      `Salut! 👋\n\nJ'ai trouvé LE courtier en assurances qui change tout: WIN WIN Finance Group\n\n- Conseiller neutre et honnête (0 commission cachée)\n- Ils optimisent TOUTES mes assurances\n- Gain de temps énorme (ils gèrent tout)\n\nMon code de parrainage: ${referralCode}\nOn profite tous les deux d'un rabais familial automatique!\n\n${referralLink}\n\nFranchement, ça vaut le coup! 💪`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
@@ -99,7 +99,7 @@ export default function Paiement() {
   // Partager via SMS
   const handleShareSMS = () => {
     const referralLink = `https://www.winwin.swiss/questionnaire-info?ref=${referralCode}`;
-    const message = `🎯 J'ai trouvé LA solution pour mes assurances : WIN WIN Finance Group (conseiller neutre, optimisation complète). Mon code : ${referralCode} - On profite tous les deux du rabais ! ${referralLink}`;
+    const message = `Salut! J'ai trouvé LE courtier en assurances qui change tout: WIN WIN Finance Group. Mon code: ${referralCode} - On profite tous les deux du rabais! ${referralLink}`;
     const url = `sms:?body=${encodeURIComponent(message)}`;
     window.location.href = url;
   };
@@ -110,9 +110,9 @@ export default function Paiement() {
     const firstName = workflow.clientName?.split(' ')[0] || '';
     const lastName = workflow.clientName?.split(' ').slice(1).join(' ') || '';
     
-    const subject = encodeURIComponent(`🎯 J'ai trouvé LA solution pour mes assurances`);
+    const subject = encodeURIComponent(`J'ai trouvé LE courtier en assurances idéal`);
     const body = encodeURIComponent(
-      `Salut,\n\nJe viens de trouver LA solution pour mes assurances et je voulais te la partager : WIN WIN Finance Group.\n\nPourquoi je te recommande ?\n\n✅ Conseiller NEUTRE et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances (santé, prévoyance, patrimoine)\n✅ Gain de temps énorme (ils gèrent tout pour moi)\n✅ Enfin quelqu'un qui me conseille vraiment, sans conflit d'intérêt\n\nBonus : avec mon code de parrainage, on profite tous les deux d'un rabais familial automatique !\n\n🎫 Mon code : ${referralCode}\n🔗 Lien direct : ${referralLink}\n\nFranchement, ça vaut vraiment le coup. Je te rends service en te partageant ça. 💪\n\nÀ bientôt,\n${firstName} ${lastName}`
+      `Salut,\n\nJe voulais te partager ma découverte: WIN WIN Finance Group, un courtier en assurances qui change vraiment la donne.\n\nPourquoi je te le recommande?\n\n- Conseiller neutre et honnête (0 commission cachée)\n- Ils optimisent TOUTES mes assurances (santé, prévoyance, patrimoine)\n- Gain de temps énorme (ils gèrent tout pour moi)\n- Enfin quelqu'un qui me conseille vraiment, sans conflit d'intérêt\n\nBonus: avec mon code de parrainage, on profite tous les deux d'un rabais familial automatique!\n\nMon code: ${referralCode}\nLien direct: ${referralLink}\n\nFranchement, ça vaut vraiment le coup.\n\nA bientôt,\n${firstName} ${lastName}`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
   };
@@ -573,6 +573,61 @@ export default function Paiement() {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Encadré rassurant sur le fonctionnement du rabais */}
+          {!clientData.isFree && (
+            <Card className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/40 dark:via-indigo-950/40 dark:to-purple-950/40 border-2 border-blue-300 dark:border-blue-700 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                    <Info className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1 space-y-3">
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                      💡 Comment fonctionne le rabais familial ?
+                    </h4>
+                    
+                    <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                        <p><strong>Aujourd'hui :</strong> Vous payez CHF {clientData.tarif}.- (tarif normal pour votre première année)</p>
+                      </div>
+                      
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                        <p><strong>Après le paiement :</strong> Partagez votre code de parrainage à vos proches</p>
+                      </div>
+                      
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                        <p><strong>Chaque nouveau membre :</strong> Vous gagnez 2% de rabais automatique (max 20%)</p>
+                      </div>
+                      
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold">✓</span>
+                        <p><strong>Le rabais s'applique :</strong> Sur votre <u>prochaine facture annuelle</u> (dans 12 mois)</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-green-100 dark:bg-green-900/30 border-2 border-green-400 dark:border-green-700 rounded-lg p-4 mt-4">
+                      <p className="font-bold text-green-800 dark:text-green-300 mb-2">
+                        🎉 Exemple concret :
+                      </p>
+                      <p className="text-sm text-green-700 dark:text-green-400">
+                        Si <strong>3 proches</strong> s'inscrivent avec votre code, vous économisez <strong>CHF {(clientData.tarif * 0.06).toFixed(2)}</strong> l'année prochaine !
+                        <br />
+                        Si <strong>10+ proches</strong> s'inscrivent, vous économisez <strong>CHF {(clientData.tarif * 0.20).toFixed(2)}</strong> par an (rabais maximum) !
+                      </p>
+                    </div>
+
+                    <p className="text-xs text-gray-600 dark:text-gray-400 italic mt-3">
+                      📌 Le rabais est calculé automatiquement et appliqué sur votre facture de renouvellement. Plus vous parrainez tôt, plus vous économisez !
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Actions */}

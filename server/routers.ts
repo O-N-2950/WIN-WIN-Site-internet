@@ -13,6 +13,7 @@ import { airtableRouter } from "./routers/airtable";
 import { clientRouter } from "./routers/client";
 import { clientRouterV2 } from "./routers/client-v2";
 import { contractRouter } from "./routers/contract";
+import { documentsRouter } from "./routers/documents";
 // import { stripeWebhookRouter } from "./routers/stripe-webhook"; // Non utilisé - webhook géré par Express directement
 
 export const appRouter = router({
@@ -29,6 +30,7 @@ export const appRouter = router({
   customers: clientRouter,
   clientV2: clientRouterV2,
   contract: contractRouter,
+  documents: documentsRouter,
   // stripeWebhook: stripeWebhookRouter, // Non utilisé - webhook géré par Express directement
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

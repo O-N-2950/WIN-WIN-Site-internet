@@ -287,3 +287,96 @@
 - **Rabais maximum** : 20% (10+ membres famille)
 - **Économie client** : Jusqu'à 37 CHF/an (sur 185 CHF)
 - **Conversion estimée** : 10% = 50 nouveaux clients = +9'250 CHF/an
+
+
+---
+
+## 🐛 Bugs et Améliorations UX Urgentes (5 déc 2025)
+
+### Page Questionnaire - Améliorations Critiques
+- [ ] **Améliorer le bouton "Continuer vers la signature"**
+  - Rendre le bouton plus grand et plus visible
+  - Meilleur contraste de couleurs
+  - Ajouter une icône attractive
+  - Animation au hover
+  
+- [ ] **Ajouter checklists documents AVANT la signature**
+  - Checklist Particuliers (10 sections) : Carte identité, IBAN, contrats LAMal/LCA, etc.
+  - Checklist Entreprises (16 sections) : RC, LPP, IJM, LAA, section Fiduciaire, etc.
+  - Affichage dynamique selon type de client
+  - Message motivant : "Préparez ces documents pour accélérer votre dossier"
+  
+- [ ] **Vérifier toutes les fonctionnalités manquantes**
+  - Revoir la liste complète des fonctionnalités discutées
+  - Identifier ce qui manque dans le questionnaire
+  - Implémenter les éléments manquants
+
+### Page Signature - Refonte UX Complète
+- [ ] **Rendre la page plus vivante et engageante**
+  - Hero section avec gradient bleu WIN WIN (#3176A6 → #8CB4D2)
+  - Canvas signature avec bordure dorée (#D4AF37)
+  - Animations : Effet signature qui brille, confettis à la validation
+  - Boutons attractifs : Effacer (rouge), Valider (vert avec animation)
+  - Micro-copy motivant : "Votre signature scelle votre tranquillité d'esprit ✨"
+  - Fond dégradé au lieu de blanc pur
+  - Cartes récapitulatif avec couleurs et icônes
+
+
+### Message WhatsApp Parrainage - Correction Urgente
+- [x] **Corriger le message WhatsApp de parrainage**
+  - Remplacer caractères bizarres `◆` par vrais emojis
+  - Rendre le ton plus naturel et personnel (pas formel)
+  - Raccourcir le message (version punchy pour WhatsApp)
+  - Simplifier l'URL (sans ?ref= visible)
+  - Ajouter plus d'émotion et de chaleur
+  - Tester sur mobile (iPhone + Android)
+
+### Erreur Stripe - CRITIQUE ⚠️
+- [ ] **Corriger l'erreur "Expired API Key provided"**
+  - Vérifier la clé Stripe dans les variables d'environnement
+  - Tester avec la clé de test Stripe
+  - Vérifier que la clé n'a pas expiré
+  - Tester un paiement complet
+
+### Page Paiement - UX Confus 😕
+- [x] **Ajouter encadré rassurant sur le fonctionnement du rabais**
+  - Expliquer que le paiement CHF 185.- est pour l'année en cours
+  - Expliquer que le rabais s'applique sur la PROCHAINE facture
+  - Montrer exemple concret : "3 proches = CHF 11.10 économisés l'année prochaine"
+  - Design attractif avec icônes et couleurs
+  - Placer AVANT le bouton de paiement
+
+
+---
+
+## 🤖 **Workflow Upload Documents + Google Vision OCR**
+
+### Phase 1 : Page Upload Documents
+- [x] Créer page `/upload-documents?token=xxx` sécurisée
+- [x] Afficher checklist personnalisée (Particulier/Entreprise)
+- [x] Upload multiple de fichiers (PDF/images)
+- [x] Validation du token unique par client
+- [x] Design moderne et engageant
+
+### Phase 2 : Backend OCR et Airtable
+- [x] Endpoint tRPC `documents.upload` pour recevoir les fichiers
+- [x] Appel Google Vision OCR pour extraction
+- [x] Parsing intelligent des données (compagnie, police, primes, dates)
+- [x] Création automatique des contrats dans Airtable
+- [x] Lien contrat → client dans Airtable
+
+### Phase 3 : Email de Bienvenue
+- [x] Template email avec lien upload personnalisé
+- [x] Inclure code de parrainage
+- [x] Inclure checklist des documents
+- [x] Envoi automatique après paiement Stripe
+- [x] Design professionnel et engageant
+
+### Phase 4 : Tests et Déploiement
+- [x] Harmoniser types Particulier/Privé (Airtable + code)
+- [ ] Tester upload + OCR avec vrais contrats suisses
+- [ ] Vérifier création dans Airtable
+- [ ] Corriger les bugs de parsing
+- [ ] Push sur GitHub
+- [ ] Déploiement automatique sur Railway
+- [ ] Configurer `GOOGLE_CLOUD_VISION_KEY_JSON` sur Railway

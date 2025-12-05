@@ -9,6 +9,8 @@ export async function sendWelcomeEmail(clientData: {
   pdfMandatUrl: string;
   codeParrainage: string;
   montantPaye: number;
+  uploadToken?: string; // Token pour upload documents
+  typeClient?: 'Particulier' | 'Entreprise';
 }) {
   try {
     const { data, error } = await resend.emails.send({
@@ -45,6 +47,37 @@ export async function sendWelcomeEmail(clientData: {
                 <strong>📄 Votre mandat signé</strong><br>
                 <a href="${clientData.pdfMandatUrl}" class="button">Télécharger le PDF</a>
               </div>
+              
+              ${clientData.uploadToken ? `
+              <div class="info-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); border-left: 4px solid #3176A6;">
+                <h3 style="color: #3176A6; margin-top: 0;">📋 Prochaine étape : Envoyez-nous vos documents</h3>
+                <p>Pour réaliser votre analyse complète et optimiser vos assurances, nous avons besoin de quelques documents.</p>
+                <p><strong>Checklist ${clientData.typeClient === 'Entreprise' ? 'Entreprise' : 'Particulier'} :</strong></p>
+                <ul style="text-align: left; line-height: 1.8;">
+                  ${clientData.typeClient === 'Entreprise' ? `
+                    <li>Extrait du registre du commerce</li>
+                    <li>IBAN bancaire entreprise</li>
+                    <li>Contrats LAA, LPP, IJM</li>
+                    <li>RC entreprise</li>
+                    <li>Autres contrats d'assurance</li>
+                  ` : `
+                    <li>Carte d'identité (recto-verso)</li>
+                    <li>IBAN bancaire</li>
+                    <li>Contrats LAMal et LCA</li>
+                    <li>Contrats véhicule et habitation</li>
+                    <li>Autres contrats d'assurance</li>
+                  `}
+                </ul>
+                <div style="text-align: center; margin: 20px 0;">
+                  <a href="https://www.winwin.swiss/upload-documents?token=${clientData.uploadToken}" 
+                     style="display: inline-block; background: linear-gradient(135deg, #3176A6 0%, #8CB4D2 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                    📤 Uploader mes documents
+                  </a>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 15px;">💡 Vous pouvez uploader vos documents en plusieurs fois, pas besoin de tout avoir maintenant !</p>
+                <p style="font-size: 12px; color: #666;">🔒 Vos documents sont transmis de manière sécurisée et confidentielle</p>
+              </div>
+              ` : ''}
               
               <div class="info-box">
                 <strong>💰 Montant payé</strong><br>

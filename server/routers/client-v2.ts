@@ -35,7 +35,7 @@ const ibanSchema = z.string()
  */
 interface MandatCree {
   clientId: string;
-  type: 'Privé' | 'Entreprise';
+  type: 'Particulier' | 'Entreprise';
   nom: string;
   prenom?: string;
   pdfUrl: string;
@@ -146,7 +146,7 @@ export const clientRouterV2 = router({
           const clientData: ClientData = {
             Prénom: input.prenom,
             Nom: input.nom,
-            'Type de client': 'Privé',
+            'Type de client': 'Particulier',
             'Date de naissance': input.dateNaissance,
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
@@ -169,7 +169,7 @@ export const clientRouterV2 = router({
           
           mandatsACréer.push({
             clientId,
-            type: 'Privé',
+            type: 'Particulier',
             nom: input.nom,
             prenom: input.prenom,
             pdfUrl,
@@ -207,7 +207,7 @@ export const clientRouterV2 = router({
           const clientData: ClientData = {
             Prénom: input.conjointPrenom,
             Nom: input.conjointNom,
-            'Type de client': 'Privé',
+            'Type de client': 'Particulier',
             'Date de naissance': input.conjointDateNaissance,
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
@@ -230,7 +230,7 @@ export const clientRouterV2 = router({
           
           mandatsACréer.push({
             clientId,
-            type: 'Privé',
+            type: 'Particulier',
             nom: input.conjointNom,
             prenom: input.conjointPrenom,
             pdfUrl,
@@ -323,7 +323,7 @@ export const clientRouterV2 = router({
           const clientData: ClientData = {
             Prénom: input.conjointPrenom,
             Nom: input.conjointNom,
-            'Type de client': 'Privé',
+            'Type de client': 'Particulier',
             'Date de naissance': input.conjointDateNaissance,
             'Email du client (table client)': input.email,
             'Statut du client': 'Mandat offert',

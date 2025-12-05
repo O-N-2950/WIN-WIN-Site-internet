@@ -30,7 +30,7 @@ export const clientRouter = router({
         // Informations personnelles
         prenom: z.string().min(1, 'Le prénom est requis'),
         nom: z.string().min(1, 'Le nom est requis'),
-        typeClient: z.enum(['Privé', 'Entreprise']),
+        typeClient: z.enum(['Particulier', 'Entreprise']),
         dateNaissance: z.string().optional(), // Format: YYYY-MM-DD
         email: z.string().email('Email invalide'),
         telMobile: z.string().min(1, 'Le téléphone est requis'),
@@ -235,7 +235,7 @@ export const clientRouter = router({
           const clientDataPrive: ClientData = {
             Prénom: input.prenom,
             Nom: input.nom,
-            'Type de client': 'Privé',
+            'Type de client': 'Particulier',
             'Date de naissance': input.dateNaissance,
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
@@ -342,7 +342,7 @@ export const clientRouter = router({
         const clientData: ClientData = {
           Prénom: input.prenom,
           Nom: input.nom,
-          'Type de client': input.typeClient === 'prive' ? 'Privé' : 'Entreprise',
+          'Type de client': input.typeClient === 'prive' ? 'Particulier' : 'Entreprise',
           'Date de naissance': input.dateNaissance,
           'Email du client (table client)': input.email,
           'Tél. Mobile': input.telMobile,
