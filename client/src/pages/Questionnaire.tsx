@@ -858,12 +858,12 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
-                        <Label htmlFor="adresse" className="text-lg">Adresse *</Label>
+                        <Label htmlFor="adresse" className="text-lg">Adresse et numéro *</Label>
                         <Input
                           id="adresse"
                           value={data.adresse}
                           onChange={(e) => setData({ ...data, adresse: e.target.value })}
-                          placeholder="Rue de la Gare 15"
+                          placeholder="Bellevue 7"
                           className="mt-2 text-lg h-14"
                           autoFocus
                           required
