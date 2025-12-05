@@ -27,6 +27,8 @@ import Outils from "./pages/Outils";
 import InventaireMenage from "./pages/InventaireMenage";
 import Mapping360 from "./pages/Mapping360";
 import Startup from "./pages/Startup";
+import MentionsLegales from "./pages/MentionsLegales";
+import Confidentialite from "./pages/Confidentialite";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -59,6 +61,8 @@ function Router() {
           <Route path="/paiement" component={Paiement} />
           <Route path="/merci" component={Merci} />
           <Route path="/confirmation" component={Confirmation} />
+          <Route path="/mentions-legales" component={MentionsLegales} />
+          <Route path="/confidentialite" component={Confidentialite} />
           <Route path={"/404"} component={NotFound} />
           {/* Final fallback route */}
           <Route component={NotFound} />

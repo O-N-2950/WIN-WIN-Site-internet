@@ -135,8 +135,24 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Clause de Responsabilité */}
         <div className="mt-12 pt-8 border-t">
+          <div className="bg-muted/30 rounded-lg p-6 mb-8">
+            <h3 className="font-semibold text-foreground mb-3 text-sm">Responsabilité et rôle limité</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              WIN WIN Finance Group Sàrl propose un service d'accompagnement à la création d'entreprise en Suisse, 
+              incluant la mise en relation avec des prestataires (fiduciaires, banques, assureurs) et la gestion 
+              des assurances professionnelles par le biais de mandats de courtage. 
+              <strong>Nous n'intervenons en aucun cas comme administrateur, organe, associé ou représentant légal 
+              des sociétés créées ou accompagnées.</strong> Notre rôle est strictement limité au conseil et à la gestion 
+              des assurances, sur la base de mandats de courtage conformes à la LSA. Chaque entrepreneur demeure seul 
+              responsable de la gestion juridique, comptable et financière de son entreprise.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
               © {currentYear} {COMPANY_INFO.legalName}. Tous droits réservés.

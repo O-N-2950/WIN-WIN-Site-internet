@@ -37,7 +37,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
           <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-auto" />
-          <span className="font-bold text-lg text-primary hidden lg:inline-block whitespace-nowrap">
+          <span className="font-bold text-base text-primary hidden xl:inline-block whitespace-nowrap max-w-[200px] truncate">
             {APP_TITLE}
           </span>
         </Link>
@@ -78,10 +78,10 @@ export default function Header() {
         <div className="hidden lg:flex items-center space-x-4">
           <a
             href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`}
-            className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors whitespace-nowrap"
           >
-            <Phone className="h-4 w-4" />
-            <span>{CONTACT_INFO.phone}</span>
+            <Phone className="h-4 w-4 flex-shrink-0" />
+            <span className="whitespace-nowrap">{CONTACT_INFO.phone}</span>
           </a>
           <Link href="/conseil">
             <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">

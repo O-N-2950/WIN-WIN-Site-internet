@@ -443,6 +443,37 @@ const WinWinSynergis = () => {
         </div>
       </section>
 
+      {/* Clause de Responsabilité */}
+      <section className="py-16 bg-slate-900/50">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <ShieldCheck className="text-[#8CB4D2]" size={28} />
+              Responsabilité et rôle limité
+            </h2>
+            <div className="prose prose-invert max-w-none">
+              <p className="text-slate-300 leading-relaxed mb-4">
+                WIN WIN Finance Group Sàrl propose un service d'accompagnement à la création d'entreprise en Suisse, 
+                incluant la mise en relation avec des prestataires (fiduciaires, banques, assureurs) et la gestion 
+                des assurances professionnelles par le biais de mandats de courtage.
+              </p>
+              <p className="text-slate-300 leading-relaxed mb-4 font-semibold">
+                Nous n'intervenons en aucun cas comme administrateur, organe, associé ou représentant légal 
+                des sociétés créées ou accompagnées.
+              </p>
+              <p className="text-slate-300 leading-relaxed mb-4">
+                Notre rôle est strictement limité au conseil et à la gestion des assurances, sur la base de mandats 
+                de courtage conformes à la LSA.
+              </p>
+              <p className="text-slate-300 leading-relaxed">
+                Chaque entrepreneur demeure seul responsable de la gestion juridique, comptable et financière 
+                de son entreprise.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA FOOTER */}
       <section className="py-20 px-6 text-center bg-gradient-to-b from-[#0f172a] to-[#080c17]">
         <div className="container mx-auto max-w-3xl">

@@ -2704,3 +2704,12 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Animations au scroll (reveal, parallaxe)
 - [ ] Responsive design mobile/tablet
 - [ ] Tester et valider
+
+
+## 🐛 BUGS CRITIQUES - À corriger immédiatement
+- [ ] Restaurer page Mentions légales (404)
+- [ ] Restaurer page Confidentialité (404)
+- [ ] Corriger header responsive (logo recouvre onglets)
+- [ ] Corriger affichage téléphone (vertical au lieu d'horizontal)
+- [ ] Ajouter clause de responsabilité sur page Startup
+- [ ] Ajouter clause de responsabilité dans Footer
