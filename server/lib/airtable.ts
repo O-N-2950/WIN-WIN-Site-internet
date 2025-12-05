@@ -53,7 +53,6 @@ export interface ClientData {
   IBAN?: string;
   
   // Champs optionnels
-  'Nom de l\'entreprise'?: string;
   'Nombre d\'employés'?: number;
   AVS?: string;
   Language?: 'Français' | 'Anglais' | 'Allemand' | 'Italien' | 'Espagnol' | 'Autre';
