@@ -2807,3 +2807,10 @@ Remplir automatiquement le champ Localité dès que le NPA complet (4 chiffres) 
 - [ ] Vérifier le redéploiement Railway
 - [ ] URGENT: Corriger ordre des champs Étape 1 - Formule d'appel AVANT Prénom et Nom (pas après)
 - [ ] URGENT: Remplacer champ texte Nationalité par dropdown dynamique depuis Airtable (table Pays)
+
+
+## 🔴 Corrections urgentes identifiées lors des tests end-to-end (05.12.2025)
+
+- [ ] URGENT: Implémenter dropdown Nationalités depuis Airtable (remplacer champ texte libre)
+- [ ] URGENT: Corriger problème Date de naissance - state React ne se met pas à jour avec événements input/change
+- [ ] URGENT: Corriger bug virgules ", , ," dans champ Adresse au chargement

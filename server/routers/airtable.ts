@@ -5,6 +5,7 @@
 
 import { publicProcedure, router } from "../_core/trpc";
 import { getInsuranceCompanies, getContractTypes } from "../lib/airtable-reference";
+import { getNationalites } from "../airtable";
 
 export const airtableRouter = router({
   /**
@@ -30,6 +31,19 @@ export const airtableRouter = router({
       success: true,
       contractTypes,
       count: contractTypes.length
+    };
+  }),
+
+  /**
+   * Récupère la liste des nationalités depuis Airtable
+   * Table: Clients, Colonne: Nationalité (singleSelect)
+   */
+  getNationalites: publicProcedure.query(async () => {
+    const nationalites = await getNationalites();
+    return {
+      success: true,
+      nationalites,
+      count: nationalites.length
     };
   })
 });

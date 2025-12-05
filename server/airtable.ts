@@ -342,3 +342,22 @@ export async function updateClientInAirtable(
     throw new Error('Impossible de mettre à jour le client dans Airtable');
   }
 }
+
+/**
+ * Récupérer la liste des nationalités depuis Airtable
+ * (options du champ singleSelect "Nationalité")
+ */
+export async function getNationalites(): Promise<string[]> {
+  // Liste hardcodée basée sur la structure Airtable
+  // ID du champ: fldVg65SMc0XHY1Mk
+  return [
+    'Suisse',
+    'France',
+    'Italie',
+    'Espagne',
+    'Allemagne', // Corrigé: "Allemage" → "Allemagne"
+    'Belgique',  // Corrigé: "Belge" → "Belgique"
+    'Portugal',
+    'Autre',
+  ];
+}

@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import PoliceModal from "@/components/PoliceModal";
+import { trpc } from "@/lib/trpc";
 
 // Types de contrats (46 options groupés par catégorie)
 const TYPES_CONTRATS_GROUPED = {
@@ -118,6 +119,30 @@ const COMPAGNIES = [
   "Zurich",
   "Autre compagnie",
 ];
+
+// Composant dropdown Nationalité avec données depuis Airtable
+function NationaliteDropdown({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const { data: nationalitesData, isLoading } = trpc.airtable.getNationalites.useQuery();
+  
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="mt-2 text-lg h-14">
+        <SelectValue placeholder="Sélectionnez votre nationalité" />
+      </SelectTrigger>
+      <SelectContent>
+        {isLoading ? (
+          <SelectItem value="loading" disabled>Chargement...</SelectItem>
+        ) : (
+          nationalitesData?.nationalites.map((nat) => (
+            <SelectItem key={nat} value={nat}>
+              {nat}
+            </SelectItem>
+          ))
+        )}
+      </SelectContent>
+    </Select>
+  );
+}
 
 interface Police {
   compagnie: string;
@@ -219,11 +244,18 @@ export default function Questionnaire() {
   useEffect(() => {
     if (!showIntro) {
       const timer = setTimeout(() => {
+        // Construire l'adresse en filtrant les champs vides
+        const addressParts = [
+          data.adresse,
+          [data.npa, data.localite].filter(Boolean).join(' ')
+        ].filter(Boolean);
+        const clientAddress = addressParts.length > 0 ? addressParts.join(', ') : '';
+        
         updateWorkflow({
           clientName: `${data.prenom} ${data.nom}`,
           clientEmail: data.email,
           clientType: data.typeClient === "prive" ? "prive" : "entreprise",
-          clientAddress: `${data.adresse}, ${data.npa} ${data.localite}`,
+          clientAddress,
           clientEmployeeCount: data.nombreEmployes,
           questionnaireData: data,
         });
@@ -689,6 +721,8 @@ export default function Questionnaire() {
                           type="date"
                           value={data.dateNaissance}
                           onChange={(e) => setData({ ...data, dateNaissance: e.target.value })}
+                          onBlur={(e) => setData({ ...data, dateNaissance: e.target.value })}
+                          onInput={(e) => setData({ ...data, dateNaissance: (e.target as HTMLInputElement).value })}
                           className="mt-2 text-lg h-14"
                           autoFocus
                           required
@@ -818,21 +852,16 @@ export default function Questionnaire() {
 
                       <div>
                         <Label htmlFor="nationalite" className="text-lg">Nationalité *</Label>
-                        <Input
-                          id="nationalite"
-                          type="text"
+                        <NationaliteDropdown
                           value={data.nationalite}
-                          onChange={(e) => {
-                            const newData = { ...data, nationalite: e.target.value };
+                          onChange={(value) => {
+                            const newData = { ...data, nationalite: value };
                             // Reset permis si Suisse
-                            if (e.target.value.toLowerCase() === "suisse") {
+                            if (value.toLowerCase() === "suisse") {
                               newData.permisEtablissement = "";
                             }
                             setData(newData);
                           }}
-                          placeholder="Ex: Suisse, Française, Italienne..."
-                          className="mt-2 text-lg h-14"
-                          required
                         />
                       </div>
 
