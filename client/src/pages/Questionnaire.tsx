@@ -22,6 +22,7 @@ import {
   Clock,
   Shield,
   X,
+  CreditCard,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -159,6 +160,8 @@ interface QuestionnaireData {
   adresseEntreprise?: string;
   npaEntreprise?: string;
   localiteEntreprise?: string;
+  banqueEntreprise?: string;
+  ibanEntreprise?: string;
 }
 
 export default function Questionnaire() {
@@ -199,6 +202,8 @@ export default function Questionnaire() {
     adresseEntreprise: "",
     npaEntreprise: "",
     localiteEntreprise: "",
+    banqueEntreprise: "",
+    ibanEntreprise: "",
   });
 
   const [currentPoliceIndex, setCurrentPoliceIndex] = useState(0);
@@ -314,9 +319,25 @@ export default function Questionnaire() {
           toast.error("Veuillez sélectionner votre type de client");
           return false;
         }
-        if (data.typeClient === "entreprise" && data.nombreEmployes === 0) {
-          toast.error("Veuillez indiquer le nombre d'employés");
-          return false;
+        if (data.typeClient === "entreprise") {
+          if (data.nombreEmployes === 0) {
+            toast.error("Veuillez indiquer le nombre d'employés");
+            return false;
+          }
+          if (!data.adresseEntreprise || !data.npaEntreprise || !data.localiteEntreprise) {
+            toast.error("Veuillez compléter l'adresse de l'entreprise");
+            return false;
+          }
+          if (!data.banqueEntreprise || !data.ibanEntreprise) {
+            toast.error("Veuillez compléter les coordonnées bancaires de l'entreprise");
+            return false;
+          }
+          // Validation IBAN entreprise: CH + 19 chiffres
+          const ibanClean = data.ibanEntreprise.replace(/\s/g, '');
+          if (!ibanClean.match(/^CH[0-9]{19}$/)) {
+            toast.error("IBAN entreprise invalide. Format attendu: CH + 19 chiffres");
+            return false;
+          }
         }
         return true;
       case 5:
@@ -1029,6 +1050,107 @@ export default function Questionnaire() {
                             required
                             min="0"
                           />
+                        </div>
+
+                        <div className="pt-4 border-t border-border">
+                          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                            <Building2 className="h-5 w-5 text-primary" />
+                            Adresse de l'entreprise
+                          </h3>
+                          
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="adresseEntreprise" className="text-lg">Adresse et numéro *</Label>
+                              <Input
+                                id="adresseEntreprise"
+                                value={data.adresseEntreprise || ""}
+                                onChange={(e) => setData({ ...data, adresseEntreprise: e.target.value })}
+                                placeholder="Rue de l'Industrie 42"
+                                className="mt-2 text-lg h-14"
+                                required
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="npaEntreprise" className="text-lg">NPA *</Label>
+                                <Input
+                                  id="npaEntreprise"
+                                  value={data.npaEntreprise || ""}
+                                  onChange={(e) => setData({ ...data, npaEntreprise: e.target.value })}
+                                  placeholder="2950"
+                                  className="mt-2 text-lg h-14"
+                                  required
+                                  maxLength={4}
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="localiteEntreprise" className="text-lg">Localité *</Label>
+                                <Input
+                                  id="localiteEntreprise"
+                                  value={data.localiteEntreprise || ""}
+                                  onChange={(e) => setData({ ...data, localiteEntreprise: e.target.value })}
+                                  placeholder="Courgenay"
+                                  className="mt-2 text-lg h-14"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-border">
+                          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                            <CreditCard className="h-5 w-5 text-primary" />
+                            Coordonnées bancaires de l'entreprise
+                          </h3>
+                          
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="banqueEntreprise" className="text-lg">Banque *</Label>
+                              <select
+                                id="banqueEntreprise"
+                                value={data.banqueEntreprise || ""}
+                                onChange={(e) => setData({ ...data, banqueEntreprise: e.target.value })}
+                                className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
+                                required
+                              >
+                                <option value="">Sélectionnez...</option>
+                                <option value="Banque Migros">Banque Migros</option>
+                                <option value="RAIFFEISEN">RAIFFEISEN</option>
+                                <option value="Crédit Suisse">Crédit Suisse</option>
+                                <option value="PostFinance">PostFinance</option>
+                                <option value="UBS SA">UBS SA</option>
+                                <option value="Valiant">Valiant</option>
+                                <option value="SB Saanen Bank">SB Saanen Bank</option>
+                                <option value="Zuger Kantonal Bank">Zuger Kantonal Bank</option>
+                                <option value="BCF">BCF</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <Label htmlFor="ibanEntreprise" className="text-lg">IBAN *</Label>
+                              <Input
+                                id="ibanEntreprise"
+                                value={data.ibanEntreprise || ""}
+                                onChange={(e) => {
+                                  // Auto-format IBAN avec espaces
+                                  let value = e.target.value.replace(/\s/g, '').toUpperCase();
+                                  if (value.length > 21) value = value.slice(0, 21);
+                                  // Ajouter espaces tous les 4 caractères
+                                  const formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                                  setData({ ...data, ibanEntreprise: formatted });
+                                }}
+                                placeholder="CH12 3456 7890 1234 5678 9"
+                                className="mt-2 text-lg h-14 font-mono"
+                                required
+                                maxLength={26}
+                              />
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Format: CH + 19 chiffres
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </motion.div>
                     )}
