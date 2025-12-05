@@ -432,10 +432,7 @@ export default function Signature() {
             <CardContent className="p-6">
               <div className="space-y-4 text-sm text-muted-foreground">
                 <p>
-                  En signant ce document, je confirme avoir pris connaissance et accepter les 
-                  <a href="/conditions" className="text-primary hover:underline ml-1">
-                    conditions générales
-                  </a> du mandat de gestion WIN WIN Finance Group.
+                  En signant ce document, je confirme avoir pris connaissance et accepter les conditions générales du mandat de gestion WIN WIN Finance Group.
                 </p>
                 <p>
                   Je comprends que ce mandat est valable pour une durée de 12 mois et se renouvelle 
