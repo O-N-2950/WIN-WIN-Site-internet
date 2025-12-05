@@ -41,16 +41,9 @@ export interface ClientData {
   // Statut et configuration
   'Statut du client': 'Prospect' | 'En attente' | 'Actif' | 'Inactif' | 'Mandat résilié';
   'Formule d\'appel'?: 'Monsieur' | 'Madame' | 'Autre';
-  'Situation familiale'?: 'Célibataire' | 'Marié(e)' | 'En couple' | 'Divorcé(e)' | 'Veuf(ve)' | 'Séparé(e)' | 'Partenariat enregistré';
-  'Statut professionnel'?: 'Employé(e)' | 'Indépendant(e)' | 'Retraité(e)' | 'Sans Emploi' | 'Au chômage' | 'Ai' | 'Etudiant(e)' | 'Enfant' | '?';
-  Profession?: string;
-  Employeur?: string;
-  'Taux d\'activité %'?: '150 %' | '100 %' | '90 %' | '80 %' | '70 %' | '60 %' | '50 %' | '40 %' | '30 %' | '20 %' | '10 %';
-  'Nationalité'?: 'Suisse' | 'France' | 'Italie' | 'Espagne' | 'Allemage' | 'Belge' | 'Portugal' | 'Autre';
-  "Permis d'établissement"?: 'Permis C (autorisation d\'\u00e9tablissement)' | 'Permis B (autorisation de séjour)' | 'Permis L (autorisation de courte durée)' | 'Permis G (autorisation frontalière)';
-  'Fumeur(se)'?: 'oui' | 'non' | '?';
-  'Nom de la banque'?: 'Banque Migros' | 'RAIFFEISEN' | 'Crédit Suisse' | 'PostFinance' | 'UBS SA' | 'Valiant' | 'SB Saanen Bank' | 'Zuger Kantonal Bank' | 'BCF';
-  IBAN?: string;
+  'Situation familiale'?: 'Célibataire' | 'Marié(e)' | 'Divorcé(e)' | 'Veuf(ve)' | 'Partenariat enregistré';
+  'Statut professionnel'?: 'Employé(e)' | 'Indépendant(e)' | 'Retraité(e)' | 'Étudiant(e)' | 'Sans emploi';
+  'Fumeur(se)'?: 'oui' | 'non';
   
   // Champs optionnels
   'Nom de l\'entreprise'?: string;

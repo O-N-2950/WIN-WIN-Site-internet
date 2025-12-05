@@ -22,7 +22,6 @@ import {
   Clock,
   Shield,
   X,
-  CreditCard,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -135,22 +134,13 @@ interface QuestionnaireData {
   email: string;
   telMobile: string;
   dateNaissance: string;
-  formuleAppel: "Monsieur" | "Madame" | "";
-  statutProfessionnel: string;
-  profession: string;
-  employeur: string;
-  tauxActivite: string;
-  situationFamiliale: "Célibataire" | "Marié(e)" | "En couple" | "Divorcé(e)" | "Veuf(ve)" | "Séparé(e)" | "";
-  nationalite: string;
-  permisEtablissement: string;
+  situationFamiliale: "celibataire" | "marie" | "divorce" | "veuf" | "";
   typeClient: "prive" | "entreprise" | "";
   
   // Données privé
   adresse: string;
   npa: string;
   localite: string;
-  banque: string;
-  iban: string;
   polices: Police[];
   
   // Données entreprise (si typeClient = "entreprise" ou "les_deux")
@@ -160,8 +150,6 @@ interface QuestionnaireData {
   adresseEntreprise?: string;
   npaEntreprise?: string;
   localiteEntreprise?: string;
-  banqueEntreprise?: string;
-  ibanEntreprise?: string;
 }
 
 export default function Questionnaire() {
@@ -179,20 +167,11 @@ export default function Questionnaire() {
     email: workflow.clientEmail || "",
     telMobile: "",
     dateNaissance: "",
-    formuleAppel: "",
-    statutProfessionnel: "",
-    profession: "",
-    employeur: "",
-    tauxActivite: "",
     situationFamiliale: "",
-    nationalite: "Suisse",
-    permisEtablissement: "",
     typeClient: "",
     adresse: workflow.clientAddress || "",
     npa: "",
     localite: "",
-    banque: "",
-    iban: "",
     polices: [],
     
     // Entreprise
@@ -202,8 +181,6 @@ export default function Questionnaire() {
     adresseEntreprise: "",
     npaEntreprise: "",
     localiteEntreprise: "",
-    banqueEntreprise: "",
-    ibanEntreprise: "",
   });
 
   const [currentPoliceIndex, setCurrentPoliceIndex] = useState(0);
@@ -284,34 +261,9 @@ export default function Questionnaire() {
         }
         return true;
       case 3:
-        if (!data.dateNaissance || !data.statutProfessionnel || !data.situationFamiliale || !data.nationalite) {
-          toast.error("Veuillez compléter tous les champs obligatoires");
+        if (!data.dateNaissance || !data.situationFamiliale) {
+          toast.error("Veuillez compléter votre situation");
           return false;
-        }
-        // Si non-Suisse, le permis est obligatoire
-        if (data.nationalite !== 'Suisse' && !data.permisEtablissement) {
-          toast.error("Veuillez sélectionner votre permis d'établissement");
-          return false;
-        }
-        // Si Employé(e) ou Indépendant(e), profession est obligatoire
-        if (data.statutProfessionnel === 'Employé(e)' || data.statutProfessionnel === 'Indépendant(e)') {
-          if (!data.profession) {
-            toast.error("Veuillez compléter votre profession");
-            return false;
-          }
-          // Si Employé(e), employeur et taux d'activité sont obligatoires
-          if (data.statutProfessionnel === 'Employé(e)') {
-            if (!data.employeur) {
-              toast.error("Veuillez indiquer votre employeur");
-              return false;
-            }
-            if (!data.tauxActivite) {
-              toast.error("Veuillez sélectionner votre taux d'activité");
-              return false;
-            }
-          }
-          // Si Indépendant(e), taux d'activité est automatiquement 150%
-          // Pas de validation nécessaire
         }
         return true;
       case 4:
@@ -319,36 +271,14 @@ export default function Questionnaire() {
           toast.error("Veuillez sélectionner votre type de client");
           return false;
         }
-        if (data.typeClient === "entreprise") {
-          if (data.nombreEmployes === 0) {
-            toast.error("Veuillez indiquer le nombre d'employés");
-            return false;
-          }
-          if (!data.adresseEntreprise || !data.npaEntreprise || !data.localiteEntreprise) {
-            toast.error("Veuillez compléter l'adresse de l'entreprise");
-            return false;
-          }
-          if (!data.banqueEntreprise || !data.ibanEntreprise) {
-            toast.error("Veuillez compléter les coordonnées bancaires de l'entreprise");
-            return false;
-          }
-          // Validation IBAN entreprise: CH + 19 chiffres
-          const ibanClean = data.ibanEntreprise.replace(/\s/g, '');
-          if (!ibanClean.match(/^CH[0-9]{19}$/)) {
-            toast.error("IBAN entreprise invalide. Format attendu: CH + 19 chiffres");
-            return false;
-          }
+        if (data.typeClient === "entreprise" && data.nombreEmployes === 0) {
+          toast.error("Veuillez indiquer le nombre d'employés");
+          return false;
         }
         return true;
       case 5:
-        if (!data.adresse || !data.npa || !data.localite || !data.banque || !data.iban) {
-          toast.error("Veuillez compléter tous les champs obligatoires");
-          return false;
-        }
-        // Validation IBAN: CH + 19 chiffres
-        const ibanClean = data.iban.replace(/\s/g, '');
-        if (!ibanClean.match(/^CH[0-9]{19}$/)) {
-          toast.error("IBAN invalide. Format attendu: CH + 19 chiffres");
+        if (!data.adresse || !data.npa || !data.localite) {
+          toast.error("Veuillez compléter votre adresse");
           return false;
         }
         return true;
@@ -659,33 +589,6 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
-                        <Label className="text-lg mb-4 block">Formule d'appel *</Label>
-                        <div className="grid grid-cols-2 gap-4">
-                          {[
-                            { value: "Monsieur", label: "Monsieur" },
-                            { value: "Madame", label: "Madame" },
-                          ].map((option) => (
-                            <motion.button
-                              key={option.value}
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => setData({ ...data, formuleAppel: option.value as any })}
-                              className={`p-4 rounded-lg border-2 transition-all ${
-                                data.formuleAppel === option.value
-                                  ? "border-primary bg-primary/10"
-                                  : "border-border hover:border-primary/50"
-                              }`}
-                            >
-                              {option.label}
-                              {data.formuleAppel === option.value && (
-                                <CheckCircle2 className="ml-2 inline-block w-5 h-5 text-primary" />
-                              )}
-                            </motion.button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
                         <Label htmlFor="email" className="text-lg">Email *</Label>
                         <Input
                           id="email"
@@ -694,6 +597,7 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, email: e.target.value })}
                           placeholder="jean.dupont@example.com"
                           className="mt-2 text-lg h-14"
+                          autoFocus
                           required
                         />
                       </div>
@@ -739,7 +643,7 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
-                        <Label htmlFor="dateNaissance" className="text-lg">Date de naissance *</Label>
+                        <Label htmlFor="dateNaissance" className="text-lg">Date de naissance</Label>
                         <Input
                           id="dateNaissance"
                           type="date"
@@ -747,122 +651,17 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, dateNaissance: e.target.value })}
                           className="mt-2 text-lg h-14"
                           autoFocus
-                          required
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="statutProfessionnel" className="text-lg">Statut professionnel *</Label>
-                        <select
-                          id="statutProfessionnel"
-                          value={data.statutProfessionnel}
-                          onChange={(e) => {
-                            const newStatut = e.target.value;
-                            setData({ 
-                              ...data, 
-                              statutProfessionnel: newStatut,
-                              // Réinitialiser les champs conditionnels si on change de statut
-                              profession: (newStatut === 'Employé(e)' || newStatut === 'Indépendant(e)') ? data.profession : '',
-                              employeur: newStatut === 'Employé(e)' ? data.employeur : '',
-                              // Indépendant = 150% automatique, Employé = vide (dropdown), autres = vide
-                              tauxActivite: newStatut === 'Indépendant(e)' ? '150 %' : (newStatut === 'Employé(e)' ? data.tauxActivite : '')
-                            });
-                          }}
-                          className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                          required
-                        >
-                          <option value="">Sélectionnez...</option>
-                          <option value="Employé(e)">Employé(e)</option>
-                          <option value="Indépendant(e)">Indépendant(e)</option>
-                          <option value="Retraité(e)">Retraité(e)</option>
-                          <option value="Sans Emploi">Sans Emploi</option>
-                          <option value="Au chômage">Au chômage</option>
-                          <option value="Ai">Ai</option>
-                          <option value="Etudiant(e)">Etudiant(e)</option>
-                          <option value="Enfant">Enfant</option>
-                        </select>
-                      </div>
-
-                      {/* Champs conditionnels selon le statut professionnel */}
-                      {(data.statutProfessionnel === 'Employé(e)' || data.statutProfessionnel === 'Indépendant(e)') && (
-                        <>
-                          <div>
-                            <Label htmlFor="profession" className="text-lg">Profession *</Label>
-                            <Input
-                              id="profession"
-                              value={data.profession}
-                              onChange={(e) => setData({ ...data, profession: e.target.value })}
-                              placeholder="Ex: Comptable, Ingénieur, Consultant..."
-                              className="mt-2 text-lg h-14"
-                              required
-                            />
-                          </div>
-
-                          {data.statutProfessionnel === 'Employé(e)' && (
-                            <>
-                              <div>
-                                <Label htmlFor="employeur" className="text-lg">Employeur *</Label>
-                                <Input
-                                  id="employeur"
-                                  value={data.employeur}
-                                  onChange={(e) => setData({ ...data, employeur: e.target.value })}
-                                  placeholder="Nom de votre employeur"
-                                  className="mt-2 text-lg h-14"
-                                  required
-                                />
-                              </div>
-
-                              <div>
-                                <Label htmlFor="tauxActivite" className="text-lg">Taux d'activité *</Label>
-                                <select
-                                  id="tauxActivite"
-                                  value={data.tauxActivite}
-                                  onChange={(e) => setData({ ...data, tauxActivite: e.target.value })}
-                                  className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                                  required
-                                >
-                                  <option value="">Sélectionnez...</option>
-                                  <option value="100 %">100 %</option>
-                                  <option value="90 %">90 %</option>
-                                  <option value="80 %">80 %</option>
-                                  <option value="70 %">70 %</option>
-                                  <option value="60 %">60 %</option>
-                                  <option value="50 %">50 %</option>
-                                  <option value="40 %">40 %</option>
-                                  <option value="30 %">30 %</option>
-                                  <option value="20 %">20 %</option>
-                                  <option value="10 %">10 %</option>
-                                </select>
-                              </div>
-                            </>
-                          )}
-
-                          {data.statutProfessionnel === 'Indépendant(e)' && (
-                            <div className="p-6 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200">
-                              <div className="flex items-center gap-3 mb-2">
-                                <span className="text-3xl">😉</span>
-                                <p className="text-lg font-semibold text-amber-900">
-                                  En tant qu'indépendant, vous travaillez probablement à 150% !
-                                </p>
-                              </div>
-                              <p className="text-sm text-amber-700">
-                                Nous le savons bien... Les indépendants donnent toujours plus que 100% ! 🚀
-                              </p>
-                            </div>
-                          )}
-                        </>
-                      )}
-
-                      <div>
-                        <Label className="text-lg mb-4 block">Situation familiale *</Label>
+                        <Label className="text-lg mb-4 block">Situation familiale</Label>
                         <div className="grid grid-cols-2 gap-4">
                           {[
-                            { value: "Célibataire", label: "Célibataire" },
-                            { value: "Marié(e)", label: "Marié(e)" },
-                            { value: "En couple", label: "En couple" },
-                            { value: "Divorcé(e)", label: "Divorcé(e)" },
-                            { value: "Veuf(ve)", label: "Veuf(ve)" },
-                            { value: "Séparé(e)", label: "Séparé(e)" },
+                            { value: "celibataire", label: "Célibataire" },
+                            { value: "marie", label: "Marié(e)" },
+                            { value: "divorce", label: "Divorcé(e)" },
+                            { value: "veuf", label: "Veuf/Veuve" },
                           ].map((option) => (
                             <motion.button
                               key={option.value}
@@ -883,45 +682,6 @@ export default function Questionnaire() {
                           ))}
                         </div>
                       </div>
-
-                      <div>
-                        <Label htmlFor="nationalite" className="text-lg">Nationalité *</Label>
-                        <select
-                          id="nationalite"
-                          value={data.nationalite}
-                          onChange={(e) => setData({ ...data, nationalite: e.target.value, permisEtablissement: e.target.value === 'Suisse' ? '' : data.permisEtablissement })}
-                          className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                          required
-                        >
-                          <option value="Suisse">Suisse</option>
-                          <option value="France">France</option>
-                          <option value="Italie">Italie</option>
-                          <option value="Espagne">Espagne</option>
-                          <option value="Allemage">Allemagne</option>
-                          <option value="Belge">Belge</option>
-                          <option value="Portugal">Portugal</option>
-                          <option value="Autre">Autre</option>
-                        </select>
-                      </div>
-
-                      {data.nationalite !== 'Suisse' && data.nationalite && (
-                        <div>
-                          <Label htmlFor="permisEtablissement" className="text-lg">Permis d'établissement *</Label>
-                          <select
-                            id="permisEtablissement"
-                            value={data.permisEtablissement}
-                            onChange={(e) => setData({ ...data, permisEtablissement: e.target.value })}
-                            className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                            required
-                          >
-                            <option value="">Sélectionnez...</option>
-                            <option value="Permis C (autorisation d'établissement)">Permis C (autorisation d'établissement)</option>
-                            <option value="Permis B (autorisation de séjour)">Permis B (autorisation de séjour)</option>
-                            <option value="Permis L (autorisation de courte durée)">Permis L (autorisation de courte durée)</option>
-                            <option value="Permis G (autorisation frontalière)">Permis G (autorisation frontalière)</option>
-                          </select>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}
@@ -1051,107 +811,6 @@ export default function Questionnaire() {
                             min="0"
                           />
                         </div>
-
-                        <div className="pt-4 border-t border-border">
-                          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                            <Building2 className="h-5 w-5 text-primary" />
-                            Adresse de l'entreprise
-                          </h3>
-                          
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="adresseEntreprise" className="text-lg">Adresse et numéro *</Label>
-                              <Input
-                                id="adresseEntreprise"
-                                value={data.adresseEntreprise || ""}
-                                onChange={(e) => setData({ ...data, adresseEntreprise: e.target.value })}
-                                placeholder="Rue de l'Industrie 42"
-                                className="mt-2 text-lg h-14"
-                                required
-                              />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <Label htmlFor="npaEntreprise" className="text-lg">NPA *</Label>
-                                <Input
-                                  id="npaEntreprise"
-                                  value={data.npaEntreprise || ""}
-                                  onChange={(e) => setData({ ...data, npaEntreprise: e.target.value })}
-                                  placeholder="2950"
-                                  className="mt-2 text-lg h-14"
-                                  required
-                                  maxLength={4}
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor="localiteEntreprise" className="text-lg">Localité *</Label>
-                                <Input
-                                  id="localiteEntreprise"
-                                  value={data.localiteEntreprise || ""}
-                                  onChange={(e) => setData({ ...data, localiteEntreprise: e.target.value })}
-                                  placeholder="Courgenay"
-                                  className="mt-2 text-lg h-14"
-                                  required
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-border">
-                          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                            <CreditCard className="h-5 w-5 text-primary" />
-                            Coordonnées bancaires de l'entreprise
-                          </h3>
-                          
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="banqueEntreprise" className="text-lg">Banque *</Label>
-                              <select
-                                id="banqueEntreprise"
-                                value={data.banqueEntreprise || ""}
-                                onChange={(e) => setData({ ...data, banqueEntreprise: e.target.value })}
-                                className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                                required
-                              >
-                                <option value="">Sélectionnez...</option>
-                                <option value="Banque Migros">Banque Migros</option>
-                                <option value="RAIFFEISEN">RAIFFEISEN</option>
-                                <option value="Crédit Suisse">Crédit Suisse</option>
-                                <option value="PostFinance">PostFinance</option>
-                                <option value="UBS SA">UBS SA</option>
-                                <option value="Valiant">Valiant</option>
-                                <option value="SB Saanen Bank">SB Saanen Bank</option>
-                                <option value="Zuger Kantonal Bank">Zuger Kantonal Bank</option>
-                                <option value="BCF">BCF</option>
-                              </select>
-                            </div>
-
-                            <div>
-                              <Label htmlFor="ibanEntreprise" className="text-lg">IBAN *</Label>
-                              <Input
-                                id="ibanEntreprise"
-                                value={data.ibanEntreprise || ""}
-                                onChange={(e) => {
-                                  // Auto-format IBAN avec espaces
-                                  let value = e.target.value.replace(/\s/g, '').toUpperCase();
-                                  if (value.length > 21) value = value.slice(0, 21);
-                                  // Ajouter espaces tous les 4 caractères
-                                  const formatted = value.match(/.{1,4}/g)?.join(' ') || value;
-                                  setData({ ...data, ibanEntreprise: formatted });
-                                }}
-                                placeholder="CH12 3456 7890 1234 5678 9"
-                                className="mt-2 text-lg h-14 font-mono"
-                                required
-                                maxLength={26}
-                              />
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Format: CH + 19 chiffres
-                              </p>
-                            </div>
-                          </div>
-                        </div>
                       </motion.div>
                     )}
                   </div>
@@ -1214,55 +873,10 @@ export default function Questionnaire() {
                             onChange={(e) => setData({ ...data, localite: e.target.value })}
                             placeholder="Courgenay"
                             className="mt-2 text-lg h-14"
+                            onKeyPress={(e) => e.key === 'Enter' && nextStep()}
                             required
                           />
                         </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="banque" className="text-lg">Banque *</Label>
-                        <select
-                          id="banque"
-                          value={data.banque}
-                          onChange={(e) => setData({ ...data, banque: e.target.value })}
-                          className="mt-2 w-full h-14 px-4 rounded-md border border-input bg-background text-lg"
-                          required
-                        >
-                          <option value="">Sélectionnez votre banque...</option>
-                          <option value="Banque Migros">Banque Migros</option>
-                          <option value="RAIFFEISEN">RAIFFEISEN</option>
-                          <option value="Crédit Suisse">Crédit Suisse</option>
-                          <option value="PostFinance">PostFinance</option>
-                          <option value="UBS SA">UBS SA</option>
-                          <option value="Valiant">Valiant</option>
-                          <option value="SB Saanen Bank">SB Saanen Bank</option>
-                          <option value="Zuger Kantonal Bank">Zuger Kantonal Bank</option>
-                          <option value="BCF">BCF</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="iban" className="text-lg">IBAN *</Label>
-                        <Input
-                          id="iban"
-                          value={data.iban}
-                          onChange={(e) => {
-                            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                            // Auto-format: CH + 19 chiffres avec espaces
-                            if (value.startsWith('CH') && value.length > 2) {
-                              const numbers = value.substring(2);
-                              value = 'CH' + numbers.match(/.{1,4}/g)?.join(' ') || numbers;
-                            }
-                            setData({ ...data, iban: value });
-                          }}
-                          placeholder="CH12 3456 7890 1234 5678 9"
-                          className="mt-2 text-lg h-14 font-mono"
-                          onKeyPress={(e) => e.key === 'Enter' && nextStep()}
-                          required
-                          pattern="CH[0-9]{2}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]"
-                          title="Format: CH + 19 chiffres (ex: CH12 3456 7890 1234 5678 9)"
-                        />
-                        <p className="text-sm text-gray-500 mt-2">Format: CH + 19 chiffres</p>
                       </div>
                     </div>
                   </div>

@@ -56,20 +56,13 @@ export const clientRouterV2 = router({
         // Informations personnelles
         prenom: z.string().min(1),
         nom: z.string().min(1),
-        formuleAppel: z.enum(['Monsieur', 'Madame']).optional(),
         email: z.string().email(),
         telMobile: z.string(),
         adresse: z.string(),
         npa: z.string(),
         localite: z.string(),
         dateNaissance: z.string().optional(),
-        statutProfessionnel: z.string().optional(),
-        profession: z.string().optional(),
-        employeur: z.string().optional(),
-        tauxActivite: z.string().optional(),
-        situationFamiliale: z.enum(['Célibataire', 'Marié(e)', 'En couple', 'Divorcé(e)', 'Veuf(ve)', 'Séparé(e)']).optional(),
-        nationalite: z.string().optional(),
-        permisEtablissement: z.string().optional(),
+        situationFamiliale: z.enum(['Célibataire', 'Marié(e)', 'Divorcé(e)', 'Veuf(ve)', 'Partenariat enregistré']).optional(),
         
         // Type de client
         typeClient: z.enum(['prive', 'entreprise', 'les_deux']),
@@ -147,27 +140,19 @@ export const clientRouterV2 = router({
           const clientData: ClientData = {
             Prénom: input.prenom,
             Nom: input.nom,
-            "Formule d'appel": input.formuleAppel,
             'Type de client': 'Privé',
             'Date de naissance': input.dateNaissance,
-            'Statut professionnel': input.statutProfessionnel,
-            Profession: input.profession,
-            Employeur: input.employeur,
-            'Taux d\'activité %': input.tauxActivite,
-            'Situation familiale': input.situationFamiliale,
-            'Nationalité': input.nationalite,
-            "Permis d'établissement": input.permisEtablissement,
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
             'Adresse et no': input.adresse,
             NPA: input.npa ? parseInt(input.npa) : undefined,
             Localité: input.localite,
-            'Nom de la banque': input.banquePersonnelle,
-            IBAN: input.ibanPersonnel,
             'Statut du client': 'Prospect',
             'Date signature mandat': dateSignature,
             'Code Parrainage': codeParrainageGenere,
             'Code de parrainage utilisé': input.codeParrainageUtilise,
+            IBAN: input.ibanPersonnel,
+            'Nom de la banque': input.banquePersonnelle,
             Language: 'Français',
           };
           
@@ -211,10 +196,9 @@ export const clientRouterV2 = router({
           const { url: pdfUrl } = await storagePut(`mandats/${fileName}`, pdfBuffer, 'application/pdf');
           
           // Créer dans Airtable
-          // Pour les entreprises: Nom = nom de l'entreprise, Prénom = vide
           const clientData: ClientData = {
-            Nom: input.nomEntreprise, // Nom de l'entreprise dans le champ Nom
-            Prénom: '', // Vide pour les entreprises
+            Prénom: input.prenom,
+            Nom: input.nom,
             'Type de client': 'Entreprise',
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
@@ -222,7 +206,7 @@ export const clientRouterV2 = router({
             NPA: (input.npaEntreprise || input.npa) ? parseInt(input.npaEntreprise || input.npa) : undefined,
             Localité: input.localiteEntreprise || input.localite,
             'Statut du client': 'Prospect',
-            'Nom de l\'entreprise': input.nomEntreprise, // Doublon pour compatibilité
+            'Nom de l\'entreprise': input.nomEntreprise,
             'Nombre d\'employés': input.nombreEmployes ? parseInt(input.nombreEmployes) : undefined,
             'Date signature mandat': dateSignature,
             'Code Parrainage': codeParrainageGenere,
