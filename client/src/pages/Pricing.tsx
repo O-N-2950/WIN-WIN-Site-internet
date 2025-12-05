@@ -681,11 +681,14 @@ export default function Pricing() {
                 question: "Y a-t-il des frais cachés ?",
                 answer: (
                   <>
-                    Non, le tarif annuel inclut toutes les prestations listées. L'analyse prévoyance{" "}
-                    <a href="https://peps.swiss/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                      PEP's
+                    Non, le tarif annuel inclut toutes les prestations listées. L'{" "}
+                    <a href="https://www.winwin.swiss/mapping-360" className="text-primary hover:underline font-medium">
+                      Analyse Expert
                     </a>{" "}
-                    (d'une valeur de CHF 250.-) est offerte aux membres actifs de l'application PEP's.{" "}
+                    (d'une valeur de CHF 250.-) est offerte aux membres actifs de l'application{" "}
+                    <a href="https://www.peps.swiss" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      PEP's
+                    </a>.{" "}
                     <br /><br />
                     Téléchargez l'application :{" "}
                     <a href="https://apps.apple.com/ch/app/peps-exclusive-partnerships/id6477572989" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
