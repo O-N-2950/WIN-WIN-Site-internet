@@ -21,8 +21,8 @@ export default function About() {
   const stats = [
     { value: "30+", label: "Années d'expérience", icon: Award },
     { value: "500+", label: "Clients satisfaits", icon: Users },
-    { value: "98%", label: "Taux de satisfaction", icon: TrendingUp },
-    { value: "100%", label: "Indépendance", icon: Shield },
+    { value: "300+", label: "Collaborateurs managés", icon: Users },
+    { value: "7", label: "Sociétés créées", icon: TrendingUp },
   ];
 
   const values = [
@@ -58,30 +58,51 @@ export default function About() {
 
   const timeline = [
     {
-      year: "1995",
-      title: "Débuts dans l'assurance",
-      description: "Premiers pas dans le monde des assurances et de la prévoyance en Suisse romande.",
+      year: "~1995",
+      title: "Débuts dans le domaine bancaire",
+      description: "Premiers pas dans le secteur financier à Bâle, acquisition d'une expertise solide en finance et gestion patrimoniale.",
     },
     {
-      year: "2005",
-      title: "Expertise approfondie",
-      description: "Développement d'une expertise reconnue en prévoyance professionnelle et planification retraite.",
+      year: "~1998",
+      title: "Agent Général à 29 ans",
+      description: "Nomination comme Agent Général, début d'un leadership précoce dans le secteur des assurances.",
+    },
+    {
+      year: "~1999-2006",
+      title: "Responsable Suisse romande",
+      description: "Management de plus de 300 collaborateurs pour une grande compagnie d'assurance. 7 ans à Lausanne, développement d'une expertise reconnue en management et stratégie commerciale.",
+    },
+    {
+      year: "2011-2012",
+      title: "Création des premières sociétés",
+      description: "Fondation de Win & Win SA, Winax SA (2011) et Winergie SA (2012). Début de l'aventure entrepreneuriale.",
     },
     {
       year: "2015",
-      title: "Fondation WIN WIN",
-      description: "Création de WIN WIN Finance Group avec une vision claire : l'indépendance au service du client.",
+      title: "Expansion du groupe",
+      description: "Fondation de Win & Jura SA, consolidation de l'offre de services en Suisse romande.",
     },
     {
-      year: "2025",
-      title: "Leader reconnu",
-      description: "Plus de 500 clients accompagnés et une réputation d'excellence en Suisse romande.",
+      year: "2017",
+      title: "Création WW Finance Group",
+      description: "Fondation de WW Finance Group, structure centrale regroupant l'ensemble des activités et services.",
+    },
+    {
+      year: "2023",
+      title: "Lancement PEP's Swiss SA",
+      description: "Création de PEP's Swiss SA (www.peps.swiss), innovation dans les concepts de fidélisation et prévoyance d'entreprise.",
+    },
+    {
+      year: "2024",
+      title: "Directeur & Administrateur",
+      description: "Directeur et Administrateur de WW Finance Group. 30 ans d'expertise au service de plus de 500 clients satisfaits.",
     },
   ];
 
   const certifications = [
     { title: "Agréé FINMA", subtitle: `N° ${COMPANY_INFO.finma}`, icon: Shield },
     { title: "Membre CICERO", subtitle: "Centre d'Information", icon: CheckCircle2 },
+    { title: "Diplôme IAF", subtitle: "Fonds de placement", icon: Award },
     { title: "Prévoyance Pro", subtitle: "Certification", icon: Award },
     { title: "Planification", subtitle: "Expert financier", icon: Target },
   ];
@@ -325,14 +346,13 @@ export default function About() {
           <div className="max-w-5xl mx-auto">
             <Card className="overflow-hidden bg-white shadow-2xl border-0">
               <div className="grid md:grid-cols-2 gap-8">
-                {/* Photo placeholder */}
-                <div className="bg-gradient-to-br from-blue-600 to-green-600 p-12 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <div className="w-48 h-48 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30">
-                      <Users className="w-24 h-24" />
-                    </div>
-                    <p className="text-lg text-white/90">Photo à venir</p>
-                  </div>
+                {/* Photo Olivier Neukomm */}
+                <div className="relative overflow-hidden">
+                  <img 
+                    src="/olivier-neukomm.jpg" 
+                    alt="Olivier Neukomm - Directeur & Fondateur" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
                 {/* Contenu */}
@@ -341,7 +361,7 @@ export default function About() {
                   <p className="text-xl text-blue-600 font-semibold mb-6">Directeur & Fondateur</p>
                   
                   <p className="text-gray-700 leading-relaxed mb-6">
-                    Expert en assurances et prévoyance avec <span className="font-bold text-green-600">30 ans d'expérience</span>. Passionné par la création de solutions innovantes pour sécuriser l'avenir de ses clients.
+                    Expert en assurances, prévoyance et fonds de placement avec <span className="font-bold text-green-600">30 ans d'expérience</span>. Parcours remarquable démarré dans le domaine bancaire à Bâle, suivi d'un management de plus de 300 collaborateurs en Suisse romande. Entrepreneur passionné, fondateur de 7 sociétés dont <a href="https://www.peps.swiss" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 font-semibold underline">PEP's Swiss SA</a>.
                   </p>
 
                   <div className="space-y-3">
@@ -349,8 +369,10 @@ export default function About() {
                     {[
                       "Prévoyance professionnelle",
                       "Planification retraite",
+                      "Fonds de placement (Diplôme IAF)",
                       "Assurances entreprises",
                       "Concepts de fidélisation",
+                      "Management & Leadership",
                     ].map((spec, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
