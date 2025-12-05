@@ -209,7 +209,7 @@ describe('Client V2 Router - createFromSignature', () => {
         mandats: [
           {
             clientId: 'rec123',
-            type: 'Particulier' as const,
+            type: 'Privé' as const,
             nom: 'Dupont',
             prenom: 'Jean',
             pdfUrl: 'https://s3.../mandat-prive-Dupont-123.pdf',
@@ -235,7 +235,7 @@ describe('Client V2 Router - createFromSignature', () => {
       expect(mockResponse.success).toBe(true);
       expect(mockResponse.nombreMandats).toBe(2);
       expect(mockResponse.mandats).toHaveLength(2);
-      expect(mockResponse.mandats[0].type).toBe('Particulier');
+      expect(mockResponse.mandats[0].type).toBe('Privé');
       expect(mockResponse.mandats[1].type).toBe('Entreprise');
     });
   });

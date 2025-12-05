@@ -12,7 +12,7 @@ describe('Airtable Workflow Integration', () => {
       nom: 'TestWorkflow',
       prenom: 'Client',
       email: `test-workflow-${Date.now()}@example.com`,
-      typeClient: 'Particulier' as const,
+      typeClient: 'Privé' as const,
       dateNaissance: '1990-01-15',
       adresse: 'Rue de Test 123',
       npa: '2950',

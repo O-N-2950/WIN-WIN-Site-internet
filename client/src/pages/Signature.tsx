@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle2, AlertCircle, Pen, RotateCcw, Download, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
-import confetti from "canvas-confetti";
+import { CheckCircle2, AlertCircle, Pen, RotateCcw, Download } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useWorkflow } from "@/contexts/WorkflowContext";
@@ -227,34 +225,16 @@ export default function Signature() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-950 py-12">
+    <div className="min-h-screen bg-muted/50 py-12">
       <div className="container max-w-4xl">
         <div className="space-y-8">
-          {/* Hero Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center space-y-6 mb-12"
-          >
-            <div className="flex justify-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                className="h-20 w-20 rounded-full bg-gradient-to-br from-[#3176A6] to-[#8CB4D2] flex items-center justify-center shadow-2xl"
-              >
-                <Pen className="h-10 w-10 text-white" />
-              </motion.div>
-            </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#3176A6] to-[#8CB4D2] bg-clip-text text-transparent mb-4">
-                Signature du Mandat de Gestion
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                ✨ Votre signature scelle votre tranquillité d'esprit
-              </p>
-            </div>
-          </motion.div>
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <h1 className="text-3xl md:text-4xl font-bold">Signature du Mandat de Gestion</h1>
+            <p className="text-lg text-muted-foreground">
+              Signez électroniquement votre mandat de gestion annuel
+            </p>
+          </div>
 
           {/* Récapitulatif */}
           <Card>
@@ -354,83 +334,60 @@ export default function Signature() {
           </Card>
 
           {/* Canvas de signature */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Card className="border-2 border-[#D4AF37]/30 shadow-2xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#3176A6]/10 to-[#8CB4D2]/10">
-                <CardTitle className="flex items-center gap-3 text-2xl">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#3176A6] to-[#8CB4D2] flex items-center justify-center">
-                    <Pen className="h-5 w-5 text-white" />
-                  </div>
-                  Votre signature électronique
-                </CardTitle>
-                <CardDescription className="text-base">
-                  🖊️ Signez avec votre souris ou votre doigt (sur mobile)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 p-8">
-                {/* Canvas avec bordure dorée */}
-                <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Pen className="h-5 w-5" />
+                Votre signature électronique
+              </CardTitle>
+              <CardDescription>
+                Signez dans le cadre ci-dessous avec votre souris ou votre doigt (sur mobile)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-4 bg-white">
+                <canvas
+                  ref={canvasRef}
+                  className="w-full cursor-crosshair touch-none"
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="outline"
+                  onClick={clearSignature}
+                  disabled={isEmpty}
                 >
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5A6] to-[#D4AF37] rounded-xl opacity-75 blur-sm"></div>
-                  <div className="relative border-4 border-[#D4AF37] rounded-xl p-4 bg-white shadow-inner">
-                    <canvas
-                      ref={canvasRef}
-                      className="w-full cursor-crosshair touch-none"
-                      onMouseDown={startDrawing}
-                      onMouseMove={draw}
-                      onMouseUp={stopDrawing}
-                      onMouseLeave={stopDrawing}
-                      onTouchStart={startDrawing}
-                      onTouchMove={draw}
-                      onTouchEnd={stopDrawing}
-                    />
-                  </div>
-                </motion.div>
+                  <RotateCcw className="mr-2 h-4 w-4" />
+                  Effacer
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={downloadSignature}
+                  disabled={isEmpty}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Télécharger
+                </Button>
+              </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={clearSignature}
-                    disabled={isEmpty}
-                    className="border-red-500 text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950"
-                  >
-                    <RotateCcw className="mr-2 h-4 w-4" />
-                    Effacer
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={downloadSignature}
-                    disabled={isEmpty}
-                    className="border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Télécharger
-                  </Button>
-                </div>
-
-                {isEmpty && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <Alert variant="default" className="border-amber-500 bg-amber-50 dark:bg-amber-950/30">
-                      <AlertCircle className="h-4 w-4 text-amber-600" />
-                      <AlertDescription className="text-amber-800 dark:text-amber-200">
-                        🖊️ Veuillez signer dans le cadre doré ci-dessus pour continuer
-                      </AlertDescription>
-                    </Alert>
-                  </motion.div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
+              {isEmpty && (
+                <Alert variant="default">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Veuillez signer dans le cadre ci-dessus pour continuer
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Conditions */}
           <Card>
@@ -455,63 +412,32 @@ export default function Signature() {
           </Card>
 
           {/* Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-6 justify-between items-center"
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <Button
               variant="outline"
               onClick={() => setLocation("/questionnaire")}
-              className="w-full sm:w-auto"
             >
               Retour au questionnaire
             </Button>
-            
             <Button
               size="lg"
-              onClick={() => {
-                // Confettis avant la sauvegarde
-                if (!isEmpty) {
-                  confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#3176A6', '#8CB4D2', '#D4AF37', '#F4E5A6']
-                  });
-                }
-                saveSignature();
-              }}
+              onClick={saveSignature}
               disabled={isEmpty || isSaving}
-              className="group relative overflow-hidden bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 hover:from-green-700 hover:via-emerald-700 hover:to-green-700 text-white font-bold text-xl px-12 py-8 rounded-2xl shadow-2xl hover:shadow-[0_20px_60px_rgba(34,197,94,0.4)] transition-all duration-300 hover:scale-105 border-2 border-white/20 w-full sm:w-auto"
+              className="bg-primary hover:bg-primary/90"
             >
               {isSaving ? (
-                <span className="flex items-center gap-3">
-                  <div className="h-6 w-6 animate-spin rounded-full border-3 border-current border-t-transparent" />
-                  <span className="text-lg">Enregistrement...</span>
-                </span>
+                <>
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Enregistrement...
+                </>
               ) : (
-                <span className="relative z-10 flex items-center gap-3">
-                  <CheckCircle2 className="h-7 w-7 group-hover:scale-125 transition-transform" />
-                  <span>Valider et Continuer</span>
-                  <Sparkles className="h-6 w-6 group-hover:rotate-12 group-hover:scale-125 transition-all duration-300" />
-                </span>
+                <>
+                  <CheckCircle2 className="mr-2 h-5 w-5" />
+                  Valider et Continuer
+                </>
               )}
-              {/* Effet de brillance animé */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                animate={{
-                  x: ["-100%", "100%"],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                }}
-              />
             </Button>
-          </motion.div>
+          </div>
 
           {/* Sécurité */}
           <div className="text-center text-sm text-muted-foreground">

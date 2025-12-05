@@ -27,7 +27,7 @@ export interface ClientData {
   // Champs obligatoires
   Prénom: string;
   Nom: string;
-  'Type de client': 'Particulier' | 'Entreprise';
+  'Type de client': 'Privé' | 'Entreprise';
   'Date de naissance'?: string; // Format: YYYY-MM-DD
   'Email du client (table client)': string;
   'Tél. Mobile': string;

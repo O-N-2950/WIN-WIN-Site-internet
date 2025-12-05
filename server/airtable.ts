@@ -18,7 +18,7 @@ export interface CreateClientInput {
   adresse?: string;
   npa?: string;
   localite?: string;
-  typeClient: 'Particulier' | 'Entreprise';
+  typeClient: 'Privé' | 'Entreprise';
   dateNaissance?: string;
   age?: number;
   nbEmployes?: number;
@@ -340,125 +340,5 @@ export async function updateClientInAirtable(
   } catch (error) {
     console.error('[Airtable] Erreur lors de la mise à jour du client:', error);
     throw new Error('Impossible de mettre à jour le client dans Airtable');
-  }
-}
-
-
-/**
- * Interface pour créer un contrat dans Airtable
- */
-export interface CreateContractInput {
-  clientRecordId: string; // ID du record client dans Airtable
-  numeroPolice?: string;
-  compagnie?: string;
-  typeContrat?: string;
-  montantPrime?: number;
-  frequencePaiement?: 'Annuel' | 'Semestriel' | 'Trimestriel' | 'Mensuel';
-  primeAnnuelle?: number;
-  dateDebut?: string;
-  dateFin?: string;
-  statut?: string;
-  notes?: string;
-}
-
-/**
- * Créer un contrat dans Airtable via MCP
- */
-export async function createContract(input: CreateContractInput): Promise<string> {
-  const { baseId, tables } = AIRTABLE_CONFIG;
-  const { contrats } = tables;
-  
-  // Préparer les champs pour Airtable
-  const fields: Record<string, any> = {};
-  
-  // Lien vers le client (multipleRecordLinks)
-  fields['fldSK4wAp8KJOPpHr'] = [input.clientRecordId]; // lien client avec contrats
-  
-  // Champs du contrat
-  if (input.numeroPolice) fields[contrats.fields.numeroContrat] = input.numeroPolice;
-  if (input.compagnie) {
-    // Compagnie est un champ multipleRecordLinks vers la table Compagnies
-    // Pour l'instant, on stocke juste le nom dans les notes
-    // TODO: Créer/lier vers la table Compagnies
-  }
-  if (input.typeContrat) {
-    // Type de contrat est un champ multipleSelects
-    fields[contrats.fields.typeContrat] = [input.typeContrat];
-  }
-  if (input.montantPrime) fields[contrats.fields.montantPrime] = input.montantPrime;
-  if (input.dateDebut) fields[contrats.fields.dateDebut] = input.dateDebut;
-  if (input.dateFin) fields[contrats.fields.dateFin] = input.dateFin;
-  if (input.statut) fields[contrats.fields.statutContrat] = input.statut;
-  
-  // Notes avec toutes les infos OCR
-  let notes = '';
-  if (input.compagnie) notes += `Compagnie: ${input.compagnie}\n`;
-  if (input.frequencePaiement) notes += `Fréquence: ${input.frequencePaiement}\n`;
-  if (input.primeAnnuelle) notes += `Prime annuelle: CHF ${input.primeAnnuelle}\n`;
-  if (input.notes) notes += `\n${input.notes}`;
-  
-  if (notes) fields['fldmTy1rK5kVgp1Cm'] = notes; // Notes
-  
-  // Appeler MCP Airtable pour créer le record
-  const mcpInput = JSON.stringify({
-    baseId,
-    tableId: contrats.id,
-    fields,
-  });
-  
-  try {
-    console.log('[Airtable] Création contrat:', {
-      client: input.clientRecordId,
-      numeroPolice: input.numeroPolice,
-      compagnie: input.compagnie,
-    });
-    
-    const { stdout } = await execAsync(
-      `manus-mcp-cli tool call create_record --server airtable --input '${mcpInput.replace(/'/g, "'\\''")}'`
-    );
-    
-    const result = JSON.parse(stdout.trim());
-    console.log('[Airtable] Contrat créé avec succès:', result.id);
-    
-    return result.id;
-  } catch (error) {
-    console.error('[Airtable] Erreur lors de la création du contrat:', error);
-    throw new Error(`Impossible de créer le contrat dans Airtable: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-  }
-}
-
-/**
- * Récupérer un client par email
- */
-export async function getClientByEmail(email: string): Promise<AirtableClientRecord | null> {
-  const { baseId, tables } = AIRTABLE_CONFIG;
-  const { clients } = tables;
-  
-  try {
-    console.log('[Airtable] Recherche client par email:', email);
-    
-    const mcpInput = JSON.stringify({
-      baseId,
-      tableId: clients.id,
-      filterByFormula: `{${clients.fields.email}} = '${email}'`,
-      maxRecords: 1,
-    });
-    
-    const { stdout } = await execAsync(
-      `manus-mcp-cli tool call list_records --server airtable --input '${mcpInput.replace(/'/g, "'\\''")}'`
-    );
-    
-    const result = JSON.parse(stdout.trim());
-    
-    if (result.records && result.records.length > 0) {
-      console.log('[Airtable] Client trouvé:', result.records[0].id);
-      return result.records[0];
-    }
-    
-    console.log('[Airtable] Aucun client trouvé avec cet email');
-    return null;
-  } catch (error) {
-    console.error('[Airtable] Erreur lors de la recherche du client:', error);
-    return null;
   }
 }

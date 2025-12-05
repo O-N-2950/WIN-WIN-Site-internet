@@ -29,7 +29,6 @@ import Mapping360 from "./pages/Mapping360";
 import Startup from "./pages/Startup";
 import MentionsLegales from "./pages/MentionsLegales";
 import Confidentialite from "./pages/Confidentialite";
-import UploadDocuments from "./pages/UploadDocuments";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -64,7 +63,6 @@ function Router() {
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/mentions-legales" component={MentionsLegales} />
           <Route path="/confidentialite" component={Confidentialite} />
-          <Route path="/upload-documents" component={UploadDocuments} />
           <Route path={"/404"} component={NotFound} />
           {/* Final fallback route */}
           <Route component={NotFound} />

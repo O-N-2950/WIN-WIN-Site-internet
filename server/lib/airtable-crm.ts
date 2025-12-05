@@ -34,7 +34,7 @@ export async function createClientInAirtable(clientData: ClientData): Promise<st
   const fields: Record<string, any> = {
     'Nom': clientData.nom,
     'Prénom': clientData.prenom || '',
-    'Type de client': clientData.typeClient === 'prive' ? 'Particulier' : 'Entreprise',
+    'Type de client': clientData.typeClient === 'prive' ? 'Privé' : 'Entreprise',
     'Email du client (table client)': clientData.email,
     'Tél. Mobile': clientData.telMobile,
     'Adresse et no': clientData.adresse,

@@ -8,9 +8,7 @@ import Stripe from 'stripe';
 import { ENV } from '../_core/env';
 import { createClientInAirtable } from '../airtable';
 import { notifyOwner } from '../_core/notification';
-import { sendWelcomeEmail as sendWelcomeEmailOld, sendOwnerNotificationEmail } from '../email';
-import { sendWelcomeEmail } from '../lib/email-service';
-import { generateUploadToken } from '../routers/documents';
+import { sendWelcomeEmail, sendOwnerNotificationEmail } from '../email';
 import { enrichClientWithReferral } from '../lib/family-referral';
 
 const stripe = new Stripe(ENV.stripeSecretKey, {
@@ -105,28 +103,8 @@ export async function handleStripeWebhook(req: Request, res: Response) {
         console.log('[Webhook] Client créé dans Airtable:', airtableRecord.id);
         console.log('[Webhook] Numéro de mandat:', mandatNumber);
         
-        // Générer le token d'upload de documents
-        const typeClientForToken = clientDataWithReferral.typeClient === 'Particulier' ? 'Particulier' : 'Entreprise';
-        const uploadToken = generateUploadToken(
-          clientEmail,
-          prenom,
-          nom,
-          typeClientForToken
-        );
-        
-        console.log('[Webhook] Token upload généré pour', clientEmail);
-        
-        // Envoyer l'email de bienvenue au client avec lien upload
-        await sendWelcomeEmail({
-          email: clientEmail,
-          prenom,
-          nom,
-          pdfMandatUrl: 'https://www.winwin.swiss/merci', // TODO: Générer le PDF mandat
-          codeParrainage: clientDataWithReferral.codeParrainage || 'N/A',
-          montantPaye: annualPrice,
-          uploadToken,
-          typeClient: typeClientForToken,
-        });
+        // Envoyer l'email de bienvenue au client
+        await sendWelcomeEmail(clientEmail, clientName, mandatNumber);
         
         // Notifier Olivier (notification Manus)
         await notifyOwner({
