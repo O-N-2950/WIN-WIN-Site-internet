@@ -84,8 +84,8 @@ export const clientRouterV2 = router({
         adresseEntreprise: z.string().optional(),
         npaEntreprise: z.string().optional(),
         localiteEntreprise: z.string().optional(),
-        formeJuridique: z.enum(['entreprise_individuelle', 'sarl', 'sa', 'autre']).optional(),
-        nombreEmployes: z.string().optional(),
+        formeJuridique: z.enum(['entreprise_individuelle', 'sarl', 'sa', 'autre']).optional().or(z.literal('').transform(() => undefined)),
+        nombreEmployes: z.string().optional().or(z.literal('').transform(() => undefined)),
         ibanEntreprise: ibanSchema.optional(),
         banqueEntreprise: z.string().optional(),
         
