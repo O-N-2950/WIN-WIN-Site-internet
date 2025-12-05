@@ -39,17 +39,24 @@ export interface ClientData {
   Canton?: string;
   
   // Statut et configuration
-  'Statut du client': 'Prospect' | 'En attente' | 'Actif' | 'Inactif' | 'Mandat résilié';
+  'Statut du client': 'Prospect' | 'En attente' | 'Actif' | 'Inactif' | 'Mandat résilié' | 'Mandat offert';
   'Formule d\'appel'?: 'Monsieur' | 'Madame' | 'Autre';
-  'Situation familiale'?: 'Célibataire' | 'Marié(e)' | 'Divorcé(e)' | 'Veuf(ve)' | 'Partenariat enregistré';
-  'Statut professionnel'?: 'Employé(e)' | 'Indépendant(e)' | 'Retraité(e)' | 'Étudiant(e)' | 'Sans emploi';
+  'Situation familiale'?: 'Célibataire' | 'Marié(e)' | 'Divorcé(e)' | 'Veuf/Veuve' | 'Concubin(e)' | 'Partenariat enregistré';
+  'Statut professionnel'?: 'Employé(e)' | 'Indépendant(e)' | 'Retraité(e)' | 'Sans Emploi' | 'Au chômage' | 'Ai' | 'Etudiant(e)' | 'Enfant';
+  Profession?: string;
+  Employeur?: string;
+  'Taux d\'activité'?: string;
+  Nationalité?: string;
+  'Permis d\'Etablissement'?: string;
+  Banque?: string;
+  IBAN?: string;
   'Fumeur(se)'?: 'oui' | 'non';
   
   // Champs optionnels
-  'Nom de l\'entreprise'?: string;
   'Nombre d\'employés'?: number;
   AVS?: string;
   Language?: 'Français' | 'Anglais' | 'Allemand' | 'Italien' | 'Espagnol' | 'Autre';
+  'Nom de la banque'?: string;
   
   // Champs Stripe (ajoutés après paiement)
   'Stripe Customer ID'?: string;

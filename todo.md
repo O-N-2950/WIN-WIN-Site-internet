@@ -2713,3 +2713,53 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Corriger affichage téléphone (vertical au lieu d'horizontal)
 - [ ] Ajouter clause de responsabilité sur page Startup
 - [ ] Ajouter clause de responsabilité dans Footer
+
+
+## 🔥 RÉIMPLÉMENTATION URGENTE - Champs Complets PRIVÉS + ENTREPRISE (05 DÉC 2025 - 21h45)
+
+**CONTEXTE** : Toutes les modifications précédentes ont été perdues lors du rollback Git. Réimplémentation complète nécessaire.
+
+### Frontend - Questionnaire.tsx
+- [ ] Ajouter 13 champs à l'interface QuestionnaireData
+- [ ] Initialiser les 13 champs dans le state
+- [ ] Étape 2 : Formule d'appel (Monsieur/Madame)
+- [ ] Étape 3 : Statut professionnel (8 options dropdown)
+- [ ] Étape 3 : Profession (si Employé OU Indépendant)
+- [ ] Étape 3 : Employeur (si Employé uniquement)
+- [ ] Étape 3 : Taux d'activité (si Employé, auto 150% + message si Indépendant)
+- [ ] Étape 3 : Situation familiale (5 options)
+- [ ] Étape 3 : Nationalité (texte)
+- [ ] Étape 3 : Permis d'établissement (si nationalité != Suisse)
+- [ ] Étape 5 : Banque (texte)
+- [ ] Étape 5 : IBAN (texte)
+- [ ] Étape 4 : Banque entreprise (si type = Entreprise)
+- [ ] Étape 4 : IBAN entreprise (si type = Entreprise)
+- [ ] Validation étape 3 (champs conditionnels)
+- [ ] Validation étape 4 (champs entreprise)
+- [ ] Validation étape 5 (banque + IBAN)
+
+### Backend - Mapping Airtable
+- [ ] Ajouter 13 champs à ClientData (server/lib/airtable.ts)
+- [ ] Ajouter 13 champs au schéma input (server/routers/client-v2.ts)
+- [ ] Mapper PRIVÉ : formuleAppel, statutProfessionnel, profession, employeur, tauxActivite, situationFamiliale, nationalite, permisEtablissement, banque, iban
+- [ ] Mapper ENTREPRISE : banqueEntreprise, ibanEntreprise
+- [ ] Corriger mapping entreprise : Nom = nomEntreprise, Prénom = "" (vide)
+- [ ] Mettre à jour Signature.tsx pour envoyer tous les champs
+
+### Déploiement GitHub + Railway
+- [ ] Commit avec message clair "feat: Champs complets PRIVÉS + ENTREPRISE"
+- [ ] Push sur GitHub via gh CLI
+- [ ] Vérifier commit sur GitHub via API
+- [ ] Attendre déploiement Railway (3-5 min)
+- [ ] Confirmer nouveau commit dans Railway dashboard
+- [ ] Tester site en production (win-win-site-internet-production.up.railway.app)
+
+### Tests Production
+- [ ] Test client PRIVÉ Employé (avec tous les champs)
+- [ ] Test client PRIVÉ Indépendant (message 150%)
+- [ ] Test client ENTREPRISE (avec banque entreprise)
+- [ ] Vérifier données dans Airtable via MCP
+- [ ] Vérifier signature PNG uploadée
+- [ ] Vérifier PDF mandat généré
+
+**PRIORITÉ ABSOLUE** : Ne PAS créer de checkpoint avant d'avoir vérifié le push GitHub !
