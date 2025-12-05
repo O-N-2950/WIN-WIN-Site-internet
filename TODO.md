@@ -21,3 +21,7 @@
 ### Phase 4 : Documentation
 - [ ] Mettre à jour la documentation avec les nouvelles formules
 - [ ] Créer guide d'utilisation complet
+
+## Corrections UX
+
+- [x] Supprimer le texte "Pour vous envoyer votre analyse personnalisée" de la page Mapping 360
