@@ -1053,12 +1053,116 @@ export default function Questionnaire() {
                       </div>
                     </div>
 
-                    <div className="text-center pt-6">
-                      <Button onClick={handleSubmit} size="lg" className="group">
-                        Continuer vers la signature
-                        <Zap className="ml-2 w-5 h-5 group-hover:rotate-12 transition-transform" />
+                    {/* Section Documents à préparer */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl border-2 border-blue-200 dark:border-blue-800"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                          <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#3176A6] to-[#8CB4D2] flex items-center justify-center">
+                            <FileText className="h-6 w-6 text-white" />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-lg font-bold mb-2 text-[#3176A6] dark:text-[#8CB4D2]">
+                            📝 Documents à préparer pour votre analyse
+                          </h4>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Après la signature, vous recevrez un email avec un lien sécurisé pour uploader ces documents.
+                          </p>
+                          
+                          {data.typeClient === "prive" ? (
+                            <ul className="space-y-2 text-sm">
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Carte d'identité (recto-verso)</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>IBAN bancaire</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Contrats LAMal et LCA</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Contrats véhicule et habitation</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Autres contrats d'assurance</span>
+                              </li>
+                            </ul>
+                          ) : (
+                            <ul className="space-y-2 text-sm">
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Extrait du registre du commerce</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>IBAN bancaire entreprise</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Contrats LAA, LPP, IJM</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>RC entreprise</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                <span>Autres contrats d'assurance</span>
+                              </li>
+                            </ul>
+                          )}
+                          
+                          <p className="text-xs text-muted-foreground mt-4 italic">
+                            💡 Pas besoin de tout avoir maintenant ! Vous pourrez uploader vos documents en plusieurs fois.
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Bouton Signature Amélioré */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                      className="text-center pt-8"
+                    >
+                      <Button
+                        onClick={handleSubmit}
+                        size="lg"
+                        className="group relative overflow-hidden bg-gradient-to-r from-[#3176A6] via-[#5A94BF] to-[#8CB4D2] hover:from-[#2A6895] hover:via-[#4A84AF] hover:to-[#7CA4C2] text-white font-bold text-xl px-12 py-8 rounded-2xl shadow-2xl hover:shadow-[0_20px_60px_rgba(49,118,166,0.4)] transition-all duration-300 hover:scale-105 border-2 border-white/20"
+                      >
+                        <span className="relative z-10 flex items-center gap-3">
+                          <span className="text-2xl">✍️</span>
+                          Continuer vers la signature
+                          <Zap className="w-6 h-6 group-hover:rotate-12 group-hover:scale-125 transition-all duration-300" />
+                        </span>
+                        {/* Effet de brillance animé */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                          animate={{
+                            x: ["-100%", "100%"],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 1,
+                          }}
+                        />
                       </Button>
-                    </div>
+                      <p className="text-sm text-muted-foreground mt-4">
+                        ✨ Votre signature scelle votre tranquillité d'esprit
+                      </p>
+                    </motion.div>
                   </div>
                 )}
 
