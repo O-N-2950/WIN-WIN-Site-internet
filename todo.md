@@ -2779,3 +2779,17 @@ Implémenter l'auto-complétion d'adresse avec l'API Swiss Post pour suggérer a
 - [x] Navigation clavier (↑↓ Enter Esc)
 - [x] Intégrer dans Questionnaire.tsx étape 5
 - [x] Tests et checkpoint
+
+
+## 🎯 Pré-remplissage Intelligent Localité (05 DÉC 2025 - 22h30)
+
+### Objectif
+Remplir automatiquement le champ Localité dès que le NPA complet (4 chiffres) est saisi et correspond à une localité unique.
+
+### Fonctionnalités
+- [x] Détecter NPA complet (4 chiffres)
+- [x] Appeler API OpenPLZ pour vérifier le NPA
+- [x] Si 1 seule localité → Auto-remplir automatiquement
+- [x] Si plusieurs localités → Afficher dropdown
+- [x] Feedback visuel (✓ vert) pour NPA valide
+- [x] Tests et checkpoint

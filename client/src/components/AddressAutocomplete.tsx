@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MapPin, Loader2 } from 'lucide-react';
+import { MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 
 interface Locality {
   key: string;
@@ -43,6 +43,7 @@ export function AddressAutocomplete({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [activeField, setActiveField] = useState<'npa' | 'localite' | null>(null);
+  const [isNpaValid, setIsNpaValid] = useState(false);
   
   const npaInputRef = useRef<HTMLInputElement>(null);
   const localiteInputRef = useRef<HTMLInputElement>(null);
@@ -127,17 +128,54 @@ export function AddressAutocomplete({
   };
 
   // Gérer le changement de NPA
-  const handleNpaChange = (value: string) => {
+  const handleNpaChange = async (value: string) => {
     // Autoriser uniquement les chiffres (4 max)
     const cleaned = value.replace(/\D/g, '').slice(0, 4);
     onNpaChange(cleaned);
     setActiveField('npa');
     
-    if (cleaned.length > 0) {
+    if (cleaned.length === 4) {
+      // NPA complet : vérifier s'il correspond à une localité unique
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://openplzapi.org/ch/Localities?postalCode=${cleaned}`,
+          { headers: { 'Accept': 'application/json' } }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data.length === 1) {
+            // Une seule localité → Auto-remplir
+            onLocaliteChange(data[0].name);
+            setSuggestions([]);
+            setShowSuggestions(false);
+            setIsNpaValid(true);
+          } else if (data.length > 1) {
+            // Plusieurs localités → Afficher suggestions
+            setSuggestions(data.slice(0, 10));
+            setShowSuggestions(true);
+            setIsNpaValid(true);
+          } else {
+            // Aucune localité trouvée
+            setSuggestions([]);
+            setShowSuggestions(false);
+            setIsNpaValid(false);
+          }
+        }
+      } catch (error) {
+        console.error('[AddressAutocomplete] Error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else if (cleaned.length > 0) {
+      setIsNpaValid(false);
       debouncedSearch(cleaned, '');
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setIsNpaValid(false);
     }
   };
 
@@ -202,25 +240,32 @@ export function AddressAutocomplete({
           <Label htmlFor="npa" className="text-lg">
             NPA {required && '*'}
           </Label>
-          <Input
-            ref={npaInputRef}
-            id="npa"
-            type="text"
-            inputMode="numeric"
-            value={npaValue}
-            onChange={(e) => handleNpaChange(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => {
-              setActiveField('npa');
-              if (npaValue) {
-                debouncedSearch(npaValue, '');
-              }
-            }}
-            placeholder="1000"
-            className="mt-2 text-lg h-14"
-            required={required}
-            maxLength={4}
-          />
+          <div className="relative">
+            <Input
+              ref={npaInputRef}
+              id="npa"
+              type="text"
+              inputMode="numeric"
+              value={npaValue}
+              onChange={(e) => handleNpaChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onFocus={() => {
+                setActiveField('npa');
+                if (npaValue) {
+                  debouncedSearch(npaValue, '');
+                }
+              }}
+              placeholder="1000"
+              className={`mt-2 text-lg h-14 ${
+                isNpaValid ? 'pr-12 border-green-500 focus:ring-green-500' : ''
+              }`}
+              required={required}
+              maxLength={4}
+            />
+            {isNpaValid && (
+              <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 mt-1 h-6 w-6 text-green-500" />
+            )}
+          </div>
         </div>
 
         {/* Champ Localité */}
