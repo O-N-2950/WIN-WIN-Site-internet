@@ -211,9 +211,10 @@ export const clientRouterV2 = router({
           const { url: pdfUrl } = await storagePut(`mandats/${fileName}`, pdfBuffer, 'application/pdf');
           
           // Créer dans Airtable
+          // Pour les entreprises: Nom = nom de l'entreprise, Prénom = vide
           const clientData: ClientData = {
-            Prénom: input.prenom,
-            Nom: input.nom,
+            Nom: input.nomEntreprise, // Nom de l'entreprise dans le champ Nom
+            Prénom: '', // Vide pour les entreprises
             'Type de client': 'Entreprise',
             'Email du client (table client)': input.email,
             'Tél. Mobile': input.telMobile,
@@ -221,7 +222,7 @@ export const clientRouterV2 = router({
             NPA: (input.npaEntreprise || input.npa) ? parseInt(input.npaEntreprise || input.npa) : undefined,
             Localité: input.localiteEntreprise || input.localite,
             'Statut du client': 'Prospect',
-            'Nom de l\'entreprise': input.nomEntreprise,
+            'Nom de l\'entreprise': input.nomEntreprise, // Doublon pour compatibilité
             'Nombre d\'employés': input.nombreEmployes ? parseInt(input.nombreEmployes) : undefined,
             'Date signature mandat': dateSignature,
             'Code Parrainage': codeParrainageGenere,
