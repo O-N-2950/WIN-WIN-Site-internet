@@ -8,11 +8,11 @@
 ---
 
 ## Phase 1 : Configuration Initiale et Activation Stripe
-- [ ] Activer Stripe dans le projet (webdev_add_feature)
-- [ ] Configurer clé API Stripe (sk_live_xxx)
-- [ ] Créer produit "Mandat de Gestion Annuel" dans Stripe
-- [ ] Configurer prix 500 CHF/an récurrent
-- [ ] Tester intégration Stripe en mode test
+- [x] Activer Stripe dans le projet (webdev_add_feature)
+- [x] Configurer clé API Stripe (sk_live_xxx)
+- [x] Créer produit "Mandat de Gestion Annuel" dans Stripe
+- [x] Configurer prix 500 CHF/an récurrent
+- [x] Tester intégration Stripe en mode test
 
 ## Phase 2 : Page d'Accueil et Design System
 - [x] Configurer Tailwind avec couleurs WW (#3176A6, #8CB4D2, #D4AF37)
