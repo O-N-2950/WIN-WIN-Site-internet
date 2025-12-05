@@ -2814,3 +2814,12 @@ Remplir automatiquement le champ Localité dès que le NPA complet (4 chiffres) 
 - [ ] URGENT: Implémenter dropdown Nationalités depuis Airtable (remplacer champ texte libre)
 - [ ] URGENT: Corriger problème Date de naissance - state React ne se met pas à jour avec événements input/change
 - [ ] URGENT: Corriger bug virgules ", , ," dans champ Adresse au chargement
+
+
+## 🔴 Correction validation étape 5 (URGENT - 05 déc 2025)
+- [ ] Identifier cause problème validation étape 5 (champs NPA et Banque)
+- [ ] Corriger code validation ou gestion événements React
+- [ ] Push et déployer sur Railway
+- [ ] Tester workflow complet PRIVÉ Employé jusqu'à signature
+- [ ] Tester workflow complet ENTREPRISE jusqu'à signature
+- [ ] Vérifier données Airtable via MCP

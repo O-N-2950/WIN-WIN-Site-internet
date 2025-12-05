@@ -343,6 +343,10 @@ export default function Questionnaire() {
           toast.error("Veuillez compléter votre adresse");
           return false;
         }
+        if (!data.banque || !data.iban) {
+          toast.error("Veuillez compléter vos coordonnées bancaires");
+          return false;
+        }
         return true;
       default:
         return true;
