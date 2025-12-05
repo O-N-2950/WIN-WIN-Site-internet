@@ -36,6 +36,11 @@ export interface WorkflowData {
   // Étape 6: Confirmation
   mandatNumber?: string;
   airtableRecordId?: string;
+  
+  // Système de parrainage
+  referralCode?: string; // Code de parrainage réel depuis Airtable
+  clientId?: string; // ID du client dans Airtable
+  mandatPdfUrl?: string; // URL du PDF mandat signé
 }
 
 interface WorkflowContextType {
