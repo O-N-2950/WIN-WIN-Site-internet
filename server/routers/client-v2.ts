@@ -222,6 +222,7 @@ export const clientRouterV2 = router({
             NPA: (input.npaEntreprise || input.npa) ? parseInt(input.npaEntreprise || input.npa) : undefined,
             Localité: input.localiteEntreprise || input.localite,
             'Statut du client': 'Prospect',
+            'Nom de l\'entreprise': input.nomEntreprise, // Doublon pour compatibilité
             'Nombre d\'employés': input.nombreEmployes ? parseInt(input.nombreEmployes) : undefined,
             'Date signature mandat': dateSignature,
             'Code Parrainage': codeParrainageGenere,
