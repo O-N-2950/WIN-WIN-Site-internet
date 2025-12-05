@@ -39,6 +39,7 @@ async function startServer() {
   const allowedOrigins = [
     'https://www.winwin.swiss',
     'https://winwin.swiss',
+    'https://win-win-site-internet-production.up.railway.app',
     'http://localhost:3000',
     'http://localhost:5173',
   ];

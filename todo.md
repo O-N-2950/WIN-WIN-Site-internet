@@ -2793,3 +2793,17 @@ Remplir automatiquement le champ Localité dès que le NPA complet (4 chiffres) 
 - [x] Si plusieurs localités → Afficher dropdown
 - [x] Feedback visuel (✓ vert) pour NPA valide
 - [x] Tests et checkpoint
+
+
+## 🔧 URGENT - Correction CORS
+- [ ] Ajouter https://win-win-site-internet-production.up.railway.app dans les origines CORS autorisées
+- [ ] Push sur GitHub
+- [ ] Vérifier le redéploiement Railway
+
+
+## 🔧 URGENT - Correction Formule d'appel
+- [ ] Déplacer le champ "Formule d'appel" de l'étape 2 vers l'étape 1 (avec Prénom/Nom)
+- [ ] Push sur GitHub
+- [ ] Vérifier le redéploiement Railway
+- [ ] URGENT: Corriger ordre des champs Étape 1 - Formule d'appel AVANT Prénom et Nom (pas après)
+- [ ] URGENT: Remplacer champ texte Nationalité par dropdown dynamique depuis Airtable (table Pays)

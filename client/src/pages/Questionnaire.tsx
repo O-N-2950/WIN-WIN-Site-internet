@@ -284,9 +284,16 @@ export default function Questionnaire() {
         }
         return true;
       case 3:
-        if (!data.dateNaissance || !data.situationFamiliale) {
-          toast.error("Veuillez compléter votre situation");
+        if (!data.dateNaissance || !data.situationFamiliale || !data.statutProfessionnel || !data.nationalite) {
+          toast.error("Veuillez compléter tous les champs obligatoires");
           return false;
+        }
+        // Validation conditionnelle pour les employés
+        if (data.statutProfessionnel === 'Employé(e)') {
+          if (!data.profession || !data.employeur || !data.tauxActivite) {
+            toast.error("Veuillez compléter votre profession, employeur et taux d'activité");
+            return false;
+          }
         }
         return true;
       case 4:
@@ -563,6 +570,19 @@ export default function Questionnaire() {
 
                     <div className="space-y-6">
                       <div>
+                        <Label htmlFor="formuleAppel" className="text-lg">Formule d'appel *</Label>
+                        <Select value={data.formuleAppel} onValueChange={(value) => setData({ ...data, formuleAppel: value as "Monsieur" | "Madame" | "" })}>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Monsieur">Monsieur</SelectItem>
+                            <SelectItem value="Madame">Madame</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
                         <Label htmlFor="prenom" className="text-lg">Prénom</Label>
                         <Input
                           id="prenom"
@@ -570,7 +590,6 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, prenom: e.target.value })}
                           placeholder="Jean"
                           className="mt-2 text-lg h-14"
-                          autoFocus
                           onKeyPress={(e) => e.key === 'Enter' && document.getElementById('nom')?.focus()}
                         />
                       </div>
@@ -583,7 +602,6 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, nom: e.target.value })}
                           placeholder="Dupont"
                           className="mt-2 text-lg h-14"
-                          onKeyPress={(e) => e.key === 'Enter' && nextStep()}
                           required
                         />
                       </div>
@@ -611,19 +629,6 @@ export default function Questionnaire() {
                     </div>
 
                     <div className="space-y-6">
-                      <div>
-                        <Label htmlFor="formuleAppel" className="text-lg">Formule d'appel *</Label>
-                        <Select value={data.formuleAppel} onValueChange={(value) => setData({ ...data, formuleAppel: value as "Monsieur" | "Madame" | "" })}>
-                          <SelectTrigger className="mt-2 text-lg h-14">
-                            <SelectValue placeholder="Sélectionnez..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Monsieur">Monsieur</SelectItem>
-                            <SelectItem value="Madame">Madame</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
                       <div>
                         <Label htmlFor="email" className="text-lg">Email *</Label>
                         <Input
