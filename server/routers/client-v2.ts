@@ -107,22 +107,16 @@ export const clientRouterV2 = router({
         const mandatsACréer: MandatCree[] = [];
         const dateSignature = new Date().toISOString().split('T')[0];
         
-        // 2. Déterminer les mandats à créer
-        const creerMandatPrive = true; // Toujours créer le mandat principal
-        const creerMandatConjoint = input.situationFamiliale === 'Marié(e)' && input.conjointHasContracts === true;
-        const creerMandatEntreprise = input.typeClient === 'entreprise' || input.typeClient === 'les_deux';
+        // 2. Créer UN SEUL mandat selon le typeClient
+        const typeMandat = input.typeClient; // 'prive' ou 'entreprise'
         
-        // 3. Calculer le nombre total de mandats et le rabais
-        let nombreMandats = 0;
-        if (creerMandatPrive) nombreMandats++;
-        if (creerMandatConjoint) nombreMandats++;
-        if (creerMandatEntreprise) nombreMandats++;
+        // 3. TODO: Calculer le rabais familial en fonction du nombre de clients existants avec le même code de parrainage
+        // Pour l'instant, rabais = 0% (sera recalculé plus tard)
+        const rabaisFamilial = 0;
+        console.log(`[Client V2] Création mandat ${typeMandat}, rabais: ${rabaisFamilial}%`);
         
-        const rabaisFamilial = calculateFamilyDiscount(nombreMandats);
-        console.log(`[Client V2] ${nombreMandats} mandats à créer, rabais: ${rabaisFamilial}%`);
-        
-        // 4. MANDAT PRIVÉ (client principal)
-        if (creerMandatPrive) {
+        // 4. Créer le mandat selon le type
+        if (typeMandat === 'prive') {
           console.log('[Client V2] Creating mandat PRIVÉ...');
           
           // Générer PDF
@@ -180,71 +174,7 @@ export const clientRouterV2 = router({
           });
           
           console.log('[Client V2] Mandat PRIVÉ created:', clientId);
-        }
-        
-        // 5. MANDAT CONJOINT (si marié et a des contrats)
-        if (creerMandatConjoint && input.conjointPrenom && input.conjointNom) {
-          console.log('[Client V2] Creating mandat CONJOINT...');
-          
-          // Générer PDF
-          const mandatData: MandatData = {
-            prenom: input.conjointPrenom,
-            nom: input.conjointNom,
-            email: input.email, // Même email que le client principal
-            adresse: input.adresse,
-            npa: input.npa,
-            localite: input.localite,
-            typeClient: 'prive',
-            signatureDataUrl: input.signatureDataUrl,
-            dateSignature: new Date().toLocaleDateString('fr-CH'),
-          };
-          
-          const pdfBuffer = await generateMandatPDF(mandatData);
-          const fileName = `mandat-conjoint-${input.conjointNom}-${Date.now()}.pdf`;
-          const { url: pdfUrl } = await storagePut(`mandats/${fileName}`, pdfBuffer, 'application/pdf');
-          
-          // Créer dans Airtable
-          const clientData: ClientData = {
-            Prénom: input.conjointPrenom,
-            Nom: input.conjointNom,
-            'Type de client': 'Privé',
-            'Date de naissance': input.conjointDateNaissance,
-            'Email du client (table client)': input.email,
-            'Tél. Mobile': input.telMobile,
-            'Adresse et no': input.adresse,
-            NPA: input.npa ? parseInt(input.npa) : undefined,
-            Localité: input.localite,
-            'Statut du client': 'Prospect',
-            'Date signature mandat': dateSignature,
-            'Code Parrainage': codeParrainageGenere,
-            'Code de parrainage utilisé': input.codeParrainageUtilise,
-            IBAN: input.ibanConjoint!,
-            'Nom de la banque': input.banqueConjoint!,
-            Language: 'Français',
-          };
-          
-          const clientId = await createAirtableClient(clientData);
-          
-          const montantBase = 185;
-          const montantFinal = applyFamilyDiscount(montantBase, rabaisFamilial);
-          
-          mandatsACréer.push({
-            clientId,
-            type: 'Privé',
-            nom: input.conjointNom,
-            prenom: input.conjointPrenom,
-            pdfUrl,
-            montantBase,
-            montantFinal,
-            iban: input.ibanConjoint!,
-            banque: input.banqueConjoint!,
-          });
-          
-          console.log('[Client V2] Mandat CONJOINT created:', clientId);
-        }
-        
-        // 6. MANDAT ENTREPRISE
-        if (creerMandatEntreprise && input.nomEntreprise) {
+        } else if (typeMandat === 'entreprise' && input.nomEntreprise) {
           console.log('[Client V2] Creating mandat ENTREPRISE...');
           
           // Générer PDF

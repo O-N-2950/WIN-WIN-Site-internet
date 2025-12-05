@@ -11,6 +11,7 @@ import {
   Gift,
   TrendingDown,
   Sparkles,
+  Building2,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -254,16 +255,62 @@ export default function Confirmation() {
           </Card>
         </motion.div>
 
-        {/* Actions */}
+        {/* Ajouter d'autres mandats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+        >
+          <Card className="p-8 mb-8">
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Souhaitez-vous ajouter un autre mandat de gestion ?
+            </h2>
+            <p className="text-center text-muted-foreground mb-6">
+              Augmentez votre rabais familial en ajoutant d'autres mandats
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              <Link href="/questionnaire?type=entreprise">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-6 rounded-xl border-2 border-border hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <Building2 className="w-12 h-12 text-primary mb-3" />
+                  <h3 className="text-lg font-semibold mb-2">Mandat Entreprise</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Ajouter un mandat pour votre entreprise
+                  </p>
+                </motion.div>
+              </Link>
+
+              <Link href="/questionnaire?type=conjoint">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-6 rounded-xl border-2 border-border hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <Users className="w-12 h-12 text-primary mb-3" />
+                  <h3 className="text-lg font-semibold mb-2">Mandat Conjoint(e)</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Ajouter un mandat pour votre conjoint ou conjointe
+                  </p>
+                </motion.div>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link href="/">
             <Button variant="outline" size="lg">
-              Retour à l'accueil
+              Non merci, terminer
             </Button>
           </Link>
           <Button size="lg" asChild>

@@ -25,3 +25,13 @@
 ## Corrections UX
 
 - [x] Supprimer le texte "Pour vous envoyer votre analyse personnalisée" de la page Mapping 360
+
+## Refonte Workflow Séquentiel (1 mandat à la fois)
+
+- [x] Questionnaire : Supprimer "Les deux", garder Privé OU Entreprise
+- [x] Questionnaire : Questions entreprise complètes déjà présentes
+- [x] Modifier page Confirmation après paiement
+- [x] Page Confirmation : 2 boutons (Entreprise / Conjoint ou conjointe) + Terminer
+- [x] Backend : Simplifier création 1 mandat à la fois (privé OU entreprise)
+- [ ] Backend : Gérer groupe familial et rabais automatique (TODO)
+- [ ] Tests complets workflow

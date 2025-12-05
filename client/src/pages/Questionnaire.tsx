@@ -135,7 +135,7 @@ interface QuestionnaireData {
   telMobile: string;
   dateNaissance: string;
   situationFamiliale: "celibataire" | "marie" | "divorce" | "veuf" | "";
-  typeClient: "prive" | "entreprise" | "les_deux" | "";
+  typeClient: "prive" | "entreprise" | "";
   
   // Données privé
   adresse: string;
@@ -749,28 +749,10 @@ export default function Questionnaire() {
                         )}
                       </motion.button>
 
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setData({ ...data, typeClient: "les_deux" })}
-                        className={`p-6 rounded-xl border-2 transition-all ${
-                          data.typeClient === "les_deux"
-                            ? "border-primary bg-primary/10"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <Users className="h-10 w-10 mx-auto mb-3 text-primary" />
-                        <h3 className="text-lg font-semibold mb-2">Les deux</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Privé + Entreprise (2 mandats)
-                        </p>
-                        {data.typeClient === "les_deux" && (
-                          <CheckCircle2 className="mt-3 mx-auto w-5 h-5 text-primary" />
-                        )}
-                      </motion.button>
+
                     </div>
 
-                    {(data.typeClient === "entreprise" || data.typeClient === "les_deux") && (
+                    {data.typeClient === "entreprise" && (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
