@@ -2763,3 +2763,19 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - [ ] Vérifier PDF mandat généré
 
 **PRIORITÉ ABSOLUE** : Ne PAS créer de checkpoint avant d'avoir vérifié le push GitHub !
+
+
+## 🏠 Auto-complétion Adresse Swiss Post (05 DÉC 2025 - 22h15)
+
+### Objectif
+Implémenter l'auto-complétion d'adresse avec l'API Swiss Post pour suggérer automatiquement NPA/Localité pendant la saisie.
+
+### Fonctionnalités
+- [x] Rechercher l'API Swiss Post pour les données NPA/Localité (OpenPLZ API)
+- [x] Créer composant AddressAutocomplete avec dropdown
+- [x] Recherche NPA → Suggérer localités
+- [x] Recherche Localité → Suggérer NPA
+- [x] Validation combinaison NPA + Localité
+- [x] Navigation clavier (↑↓ Enter Esc)
+- [x] Intégrer dans Questionnaire.tsx étape 5
+- [x] Tests et checkpoint

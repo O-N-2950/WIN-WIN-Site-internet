@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { useState, useEffect } from "react";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 import { useLocation } from "wouter";
@@ -1047,31 +1048,13 @@ export default function Questionnaire() {
                         />
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <Label htmlFor="npa" className="text-lg">NPA *</Label>
-                          <Input
-                            id="npa"
-                            value={data.npa}
-                            onChange={(e) => setData({ ...data, npa: e.target.value })}
-                            placeholder="2950"
-                            className="mt-2 text-lg h-14"
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <Label htmlFor="localite" className="text-lg">Localité *</Label>
-                          <Input
-                            id="localite"
-                            value={data.localite}
-                            onChange={(e) => setData({ ...data, localite: e.target.value })}
-                            placeholder="Courgenay"
-                            className="mt-2 text-lg h-14"
-                            required
-                          />
-                        </div>
-                      </div>
+                      <AddressAutocomplete
+                        npaValue={data.npa}
+                        localiteValue={data.localite}
+                        onNpaChange={(value) => setData({ ...data, npa: value })}
+                        onLocaliteChange={(value) => setData({ ...data, localite: value })}
+                        required
+                      />
 
                       <div className="mt-8 pt-8 border-t border-border">
                         <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
