@@ -37,7 +37,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
           <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-auto" />
-          <span className="font-bold text-xl text-primary hidden sm:inline-block">
+          <span className="font-bold text-lg text-primary hidden lg:inline-block whitespace-nowrap">
             {APP_TITLE}
           </span>
         </Link>

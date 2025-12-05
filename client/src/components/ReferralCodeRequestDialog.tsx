@@ -25,7 +25,7 @@ export function ReferralCodeRequestDialog({ open, onOpenChange }: ReferralCodeRe
     email: "",
   });
 
-  const requestCodeMutation = trpc.referral.requestCode.useMutation({
+  const requestCodeMutation = trpc.parrainage.requestCode.useMutation({
     onSuccess: () => {
       toast.success("Demande envoyée !", {
         description: "Nous vous enverrons votre code de parrainage par email sous 48h.",
@@ -56,7 +56,7 @@ export function ReferralCodeRequestDialog({ open, onOpenChange }: ReferralCodeRe
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
             <Mail className="w-6 h-6 text-primary" />

@@ -2679,3 +2679,28 @@ Créer un onglet "Outils" dans le menu principal pour offrir des outils pratique
 - **Rabais familial** : 2% par membre, max 20% (10+ membres)
 - **Prix dynamique** : Créer Price ID dans Stripe avec prix final (pas de coupon)
 - **Webhook events** : invoice.payment_succeeded, invoice.payment_failed, invoice.payment_action_required
+
+
+## 🐛 BUG CRITIQUE - Formulaire Parrainage (04 déc 2025)
+
+- [ ] Diagnostiquer l'erreur "Erreur lors de l'envoi de la demande du code de parrainage"
+- [ ] Vérifier l'endpoint tRPC parrainage.requestCode
+- [ ] Vérifier la validation backend (email, prénom, nom)
+- [ ] Vérifier la connexion Airtable
+- [ ] Tester avec les données : Olivier Neukomm (olivier.neukomm@bluewin.ch)
+- [ ] Corriger le bug
+- [ ] Déployer la correction
+
+
+## 🎨 REFONTE PAGE À PROPOS - Design Exceptionnel (04 déc 2025)
+
+- [ ] Hero section spectaculaire avec photo Olivier + dégradé dynamique
+- [ ] Timeline interactive du parcours professionnel
+- [ ] Section valeurs avec cards glassmorphism
+- [ ] Section équipe/expertise avec badges FINMA
+- [ ] Statistiques animées (années expérience, clients)
+- [ ] Carousel témoignages clients
+- [ ] CTA final avec formulaire contact intégré
+- [ ] Animations au scroll (reveal, parallaxe)
+- [ ] Responsive design mobile/tablet
+- [ ] Tester et valider

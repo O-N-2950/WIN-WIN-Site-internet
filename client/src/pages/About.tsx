@@ -1,371 +1,433 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { COMPANY_INFO, CONTACT_INFO } from "@/const";
 import {
   Shield,
+  Heart,
   Award,
   Users,
-  Heart,
   TrendingUp,
   CheckCircle2,
-  ArrowRight,
   Phone,
   Mail,
   MapPin,
+  Sparkles,
+  Target,
+  Eye,
+  ArrowRight,
 } from "lucide-react";
-import { Link } from "wouter";
-
-const valeurs = [
-  {
-    icon: Shield,
-    titre: "Indépendance",
-    description: "Conseil totalement indépendant, sans lien capitalistique avec les compagnies d'assurance. Nous travaillons uniquement dans votre intérêt.",
-  },
-  {
-    icon: Heart,
-    titre: "Proximité",
-    description: "Relation de confiance sur le long terme. Nous sommes à votre écoute et disponibles pour vous accompagner à chaque étape de votre vie.",
-  },
-  {
-    icon: Award,
-    titre: "Excellence",
-    description: "Expertise reconnue et certifications professionnelles (FINMA, CICERO). Formation continue pour rester à la pointe du marché.",
-  },
-  {
-    icon: Users,
-    titre: "Personnalisation",
-    description: "Chaque client est unique. Nous élaborons des solutions sur mesure adaptées à votre situation et vos objectifs spécifiques.",
-  },
-];
-
-const chiffres = [
-  {
-    nombre: "30",
-    label: "Années d'expérience",
-  },
-  {
-    nombre: "500+",
-    label: "Clients satisfaits",
-  },
-  {
-    nombre: "98%",
-    label: "Taux de satisfaction",
-  },
-  {
-    nombre: "100%",
-    label: "Indépendance",
-  },
-];
-
-const certifications = [
-  "Partenaire en assurances agréé FINMA",
-  "Membre CICERO (Centre d'Information des Partenaires en Assurances)",
-  "Certification en prévoyance professionnelle",
-  "Expert en planification financière",
-];
-
-const equipe = {
-  directeur: {
-    nom: COMPANY_INFO.director.name,
-    titre: "Directeur & Fondateur",
-    description: "Expert en assurances et prévoyance avec 30 ans d'expérience. Passionné par la création de solutions innovantes pour sécuriser l'avenir de ses clients.",
-    specialites: [
-      "Prévoyance professionnelle",
-      "Planification retraite",
-      "Assurances entreprises",
-      "Concepts de fidélisation",
-    ],
-  },
-};
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { APP_TITLE, COMPANY_INFO, CONTACT_INFO } from "@/const";
 
 export default function About() {
+  const stats = [
+    { value: "30+", label: "Années d'expérience", icon: Award },
+    { value: "500+", label: "Clients satisfaits", icon: Users },
+    { value: "98%", label: "Taux de satisfaction", icon: TrendingUp },
+    { value: "100%", label: "Indépendance", icon: Shield },
+  ];
+
+  const values = [
+    {
+      icon: Shield,
+      title: "Indépendance",
+      description:
+        "Conseil totalement indépendant, sans lien capitalistique avec les compagnies d'assurance. Nous travaillons uniquement dans votre intérêt.",
+      gradient: "from-blue-500 to-cyan-500",
+    },
+    {
+      icon: Heart,
+      title: "Proximité",
+      description:
+        "Relation de confiance sur le long terme. Nous sommes à votre écoute et disponibles pour vous accompagner à chaque étape de votre vie.",
+      gradient: "from-green-500 to-emerald-500",
+    },
+    {
+      icon: Award,
+      title: "Excellence",
+      description:
+        "Expertise reconnue et certifications professionnelles (FINMA, CICERO). Formation continue pour rester à la pointe du marché.",
+      gradient: "from-purple-500 to-pink-500",
+    },
+    {
+      icon: Sparkles,
+      title: "Personnalisation",
+      description:
+        "Chaque client est unique. Nous élaborons des solutions sur mesure adaptées à votre situation et vos objectifs spécifiques.",
+      gradient: "from-orange-500 to-yellow-500",
+    },
+  ];
+
+  const timeline = [
+    {
+      year: "1995",
+      title: "Débuts dans l'assurance",
+      description: "Premiers pas dans le monde des assurances et de la prévoyance en Suisse romande.",
+    },
+    {
+      year: "2005",
+      title: "Expertise approfondie",
+      description: "Développement d'une expertise reconnue en prévoyance professionnelle et planification retraite.",
+    },
+    {
+      year: "2015",
+      title: "Fondation WIN WIN",
+      description: "Création de WIN WIN Finance Group avec une vision claire : l'indépendance au service du client.",
+    },
+    {
+      year: "2025",
+      title: "Leader reconnu",
+      description: "Plus de 500 clients accompagnés et une réputation d'excellence en Suisse romande.",
+    },
+  ];
+
+  const certifications = [
+    { title: "Agréé FINMA", subtitle: `N° ${COMPANY_INFO.finma}`, icon: Shield },
+    { title: "Membre CICERO", subtitle: "Centre d'Information", icon: CheckCircle2 },
+    { title: "Prévoyance Pro", subtitle: "Certification", icon: Award },
+    { title: "Planification", subtitle: "Expert financier", icon: Target },
+  ];
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/10 via-secondary/5 to-background py-20">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold">À propos de WIN WIN Finance Group</h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
-              Votre partenaire de confiance pour tous vos besoins en assurances et prévoyance depuis 30 ans.
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Hero Section - Spectaculaire */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+        {/* Gradient animé en fond */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-green-500 to-blue-700 opacity-90" />
+        
+        {/* Pattern géométrique */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+
+        <div className="container relative z-10 px-4 py-20">
+          <div className="text-center text-white animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-8 border border-white/30">
+              <Sparkles className="w-5 h-5" />
+              <span className="font-semibold">Autorisé FINMA {COMPANY_INFO.finma}</span>
+              <Sparkles className="w-5 h-5" />
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              À propos de
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-100">
+                {APP_TITLE}
+              </span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-8 leading-relaxed">
+              Votre partenaire de confiance pour tous vos besoins en assurances et prévoyance depuis{" "}
+              <span className="font-bold text-yellow-300">30 ans</span>
             </p>
+
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button
+                size="lg"
+                className="bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-semibold text-lg h-14 px-8"
+                onClick={() => window.location.href = '/conseil'}
+              >
+                Nous contacter
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-sm font-semibold text-lg h-14 px-8"
+                onClick={() => window.location.href = '/tarifs'}
+              >
+                Découvrir nos tarifs
+              </Button>
+            </div>
           </div>
+        </div>
+
+        {/* Vague de séparation */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path
+              d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="container px-4 -mt-20 relative z-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map((stat, index) => (
+            <Card key={index} className="p-6 text-center bg-white shadow-xl hover:shadow-2xl transition-all duration-300 border-0 hover:-translate-y-2">
+              <stat.icon className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+              <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
+              <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* Notre Histoire */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold">Notre Histoire</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Fondé par {COMPANY_INFO.director.name}, WIN WIN Finance Group est né d'une conviction forte : 
-                  chaque personne mérite un conseil en assurances et prévoyance totalement indépendant, 
-                  personnalisé et orienté vers ses intérêts.
-                </p>
-                <p>
-                  Fort de plus de 20 ans d'expérience dans le domaine des assurances et de la prévoyance, 
-                  nous avons développé une expertise reconnue et une approche unique centrée sur la création 
-                  de valeur pour nos clients.
-                </p>
-                <p>
-                  Notre nom, <strong className="text-foreground">WIN WIN</strong>, reflète notre philosophie : 
-                  créer des solutions où tout le monde gagne. Vous gagnez en sécurité, en optimisation fiscale 
-                  et en tranquillité d'esprit. Nous gagnons votre confiance et votre fidélité.
-                </p>
-              </div>
+      <section className="container px-4 py-20">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-block p-3 bg-blue-100 rounded-2xl mb-6">
+              <Shield className="w-8 h-8 text-blue-600" />
             </div>
-
-            <div className="space-y-6">
-              <Card className="bg-primary text-primary-foreground">
-                <CardContent className="p-8 space-y-4">
-                  <Shield className="h-12 w-12" />
-                  <h3 className="text-2xl font-bold">Notre Mission</h3>
-                  <p className="text-primary-foreground/90">
-                    Accompagner nos clients dans la sécurisation de leur avenir et celui de leurs proches, 
-                    en proposant des solutions d'assurances et de prévoyance parfaitement adaptées à leurs 
-                    besoins et objectifs de vie.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-secondary text-secondary-foreground">
-                <CardContent className="p-8 space-y-4">
-                  <TrendingUp className="h-12 w-12" />
-                  <h3 className="text-2xl font-bold">Notre Vision</h3>
-                  <p className="text-secondary-foreground/90">
-                    Devenir le partenaire de référence en Suisse romande pour le conseil en assurances 
-                    et prévoyance, reconnu pour notre indépendance, notre expertise et la qualité de 
-                    notre accompagnement.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Notre Histoire</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-green-500 mx-auto rounded-full" />
           </div>
-        </div>
-      </section>
 
-      {/* Nos Valeurs */}
-      <section className="py-20 bg-muted/50">
-        <div className="container">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">Nos Valeurs</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Les principes qui guident notre action au quotidien
+          <div className="prose prose-lg max-w-none">
+            <p className="text-xl text-gray-700 leading-relaxed mb-6">
+              Fondé par <span className="font-semibold text-blue-600">{COMPANY_INFO.director.name}</span>, {APP_TITLE} est né d'une conviction forte : chaque personne mérite un conseil en assurances et prévoyance totalement indépendant, personnalisé et orienté vers ses intérêts.
+            </p>
+
+            <p className="text-xl text-gray-700 leading-relaxed mb-6">
+              Fort de plus de <span className="font-bold text-green-600">30 ans d'expérience</span> dans le domaine des assurances et de la prévoyance, nous avons développé une expertise reconnue et une approche unique centrée sur la création de valeur pour nos clients.
+            </p>
+
+            <p className="text-xl text-gray-700 leading-relaxed">
+              Notre nom, <span className="font-bold">WIN WIN</span>, reflète notre philosophie : créer des solutions où tout le monde gagne. Vous gagnez en sécurité, en optimisation fiscale et en tranquillité d'esprit. Nous gagnons votre confiance et votre fidélité.
             </p>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {valeurs.map((valeur, index) => (
-              <Card key={index} className="text-center">
-                <CardContent className="p-6 space-y-4">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 text-primary mx-auto">
-                    <valeur.icon className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold">{valeur.titre}</h3>
-                  <p className="text-sm text-muted-foreground">{valeur.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Chiffres Clés */}
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">WIN WIN en Chiffres</h2>
-            <p className="text-lg opacity-90">
-              Des résultats qui témoignent de notre engagement
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {chiffres.map((chiffre, index) => (
-              <div key={index} className="text-center space-y-2">
-                <div className="text-5xl md:text-6xl font-bold">{chiffre.nombre}</div>
-                <div className="text-lg opacity-90">{chiffre.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Notre Équipe */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">Notre Équipe</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Des experts passionnés à votre service
+      {/* Timeline Interactive */}
+      <section className="bg-gradient-to-br from-blue-50 to-green-50 py-20">
+        <div className="container px-4">
+          <div className="text-center mb-16">
+            <div className="inline-block p-3 bg-white rounded-2xl mb-6 shadow-lg">
+              <TrendingUp className="w-8 h-8 text-green-600" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Notre Parcours</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              30 ans d'excellence au service de nos clients
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card>
-              <CardContent className="p-8">
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="md:col-span-1">
-                    <div className="aspect-square rounded-lg overflow-hidden border-4 border-primary shadow-xl">
-                      <img 
-                        src="/olivier-neukomm.jpg" 
-                        alt="Olivier Neukomm" 
-                        className="w-full h-full object-cover grayscale"
-                      />
+            {timeline.map((item, index) => (
+              <div
+                key={index}
+                className="relative pl-8 pb-12 border-l-4 border-blue-600 last:pb-0"
+              >
+                {/* Point sur la timeline */}
+                <div className="absolute left-0 top-0 w-6 h-6 bg-blue-600 rounded-full -translate-x-[13px] border-4 border-white shadow-lg" />
+                
+                <Card className="p-6 ml-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-0">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="text-3xl font-bold text-blue-600">{item.year}</div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                      <p className="text-gray-600 leading-relaxed">{item.description}</p>
                     </div>
                   </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                  <div className="md:col-span-2 space-y-6">
-                    <div>
-                      <h3 className="text-2xl font-bold">{equipe.directeur.nom}</h3>
-                      <p className="text-primary font-medium">{equipe.directeur.titre}</p>
-                    </div>
+      {/* Mission & Vision */}
+      <section className="container px-4 py-20">
+        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Mission */}
+          <Card className="p-8 h-full bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-2xl border-0 hover:scale-105 transition-transform duration-300">
+            <Target className="w-16 h-16 mb-6" />
+            <h3 className="text-3xl font-bold mb-4">Notre Mission</h3>
+            <p className="text-lg text-blue-50 leading-relaxed">
+              Accompagner nos clients dans la sécurisation de leur avenir et celui de leurs proches, en proposant des solutions d'assurances et de prévoyance parfaitement adaptées à leurs besoins et objectifs de vie.
+            </p>
+          </Card>
 
-                    <p className="text-muted-foreground">
-                      {equipe.directeur.description}
-                    </p>
+          {/* Vision */}
+          <Card className="p-8 h-full bg-gradient-to-br from-green-600 to-green-700 text-white shadow-2xl border-0 hover:scale-105 transition-transform duration-300">
+            <Eye className="w-16 h-16 mb-6" />
+            <h3 className="text-3xl font-bold mb-4">Notre Vision</h3>
+            <p className="text-lg text-green-50 leading-relaxed">
+              Devenir le partenaire de référence en Suisse romande pour le conseil en assurances et prévoyance, reconnu pour notre indépendance, notre expertise et la qualité de notre accompagnement.
+            </p>
+          </Card>
+        </div>
+      </section>
 
-                    <div>
-                      <h4 className="font-semibold mb-3">Spécialités</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {equipe.directeur.specialites.map((specialite, index) => (
-                          <div key={index} className="flex items-center gap-2 text-sm">
-                            <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                            <span>{specialite}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+      {/* Nos Valeurs - Glassmorphism */}
+      <section className="bg-gradient-to-br from-gray-900 to-gray-800 py-20">
+        <div className="container px-4">
+          <div className="text-center mb-16">
+            <div className="inline-block p-3 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
+              <Sparkles className="w-8 h-8 text-yellow-400" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Nos Valeurs</h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Les principes qui guident notre action au quotidien
+            </p>
+          </div>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                      <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                        <Phone className="h-4 w-4" />
-                        {CONTACT_INFO.phone}
-                      </a>
-                      <a href={`mailto:${CONTACT_INFO.email}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                        <Mail className="h-4 w-4" />
-                        {CONTACT_INFO.email}
-                      </a>
-                    </div>
-                  </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {values.map((value, index) => (
+              <Card key={index} className="p-6 h-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:-translate-y-2">
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${value.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <value.icon className="w-8 h-8 text-white" />
                 </div>
-              </CardContent>
-            </Card>
+                <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
+                <p className="text-gray-300 leading-relaxed">{value.description}</p>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Certifications */}
-      <section className="py-20 bg-muted/50">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Certifications & Agréments</h2>
-              <p className="text-lg text-muted-foreground">
-                Une expertise reconnue et certifiée
-              </p>
-            </div>
+      <section className="container px-4 py-20">
+        <div className="text-center mb-16">
+          <div className="inline-block p-3 bg-purple-100 rounded-2xl mb-6">
+            <Award className="w-8 h-8 text-purple-600" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Certifications & Agréments
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Une expertise reconnue et certifiée
+          </p>
+        </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              {certifications.map((cert, index) => (
-                <Card key={index}>
-                  <CardContent className="p-6 flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Award className="h-6 w-6 text-primary" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {certifications.map((cert, index) => (
+            <Card key={index} className="p-6 text-center bg-white shadow-lg hover:shadow-2xl transition-all duration-300 border-0 hover:-translate-y-2 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <cert.icon className="w-8 h-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-1">{cert.title}</h4>
+              <p className="text-sm text-gray-600">{cert.subtitle}</p>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Card className="inline-block p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl border-0">
+            <p className="text-lg font-semibold mb-2">Numéro FINMA</p>
+            <p className="text-3xl font-bold">{COMPANY_INFO.finma}</p>
+            <p className="text-sm text-blue-100 mt-2">
+              Enregistré auprès de l'Autorité fédérale de surveillance des marchés financiers
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      {/* Olivier Neukomm - Fondateur */}
+      <section className="bg-gradient-to-br from-blue-50 to-green-50 py-20">
+        <div className="container px-4">
+          <div className="max-w-5xl mx-auto">
+            <Card className="overflow-hidden bg-white shadow-2xl border-0">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Photo placeholder */}
+                <div className="bg-gradient-to-br from-blue-600 to-green-600 p-12 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-48 h-48 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30">
+                      <Users className="w-24 h-24" />
                     </div>
-                    <p className="font-medium">{cert}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    <p className="text-lg text-white/90">Photo à venir</p>
+                  </div>
+                </div>
 
-            <div className="mt-8 p-6 bg-background rounded-lg border">
-              <div className="flex items-start gap-4">
-                <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold mb-2">Numéro FINMA : {COMPANY_INFO.finma}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    WIN WIN Finance Group est enregistré auprès de l'Autorité fédérale de surveillance 
-                    des marchés financiers (FINMA), garantissant le respect des normes les plus strictes 
-                    en matière de conseil et d'intermédiation en assurances.
+                {/* Contenu */}
+                <div className="p-8 flex flex-col justify-center">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-2">{COMPANY_INFO.director.name}</h3>
+                  <p className="text-xl text-blue-600 font-semibold mb-6">Directeur & Fondateur</p>
+                  
+                  <p className="text-gray-700 leading-relaxed mb-6">
+                    Expert en assurances et prévoyance avec <span className="font-bold text-green-600">30 ans d'expérience</span>. Passionné par la création de solutions innovantes pour sécuriser l'avenir de ses clients.
                   </p>
+
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-gray-900 mb-3">Spécialités</h4>
+                    {[
+                      "Prévoyance professionnelle",
+                      "Planification retraite",
+                      "Assurances entreprises",
+                      "Concepts de fidélisation",
+                    ].map((spec, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-700">{spec}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Coordonnées */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Nous Contacter</h2>
-              <p className="text-lg text-muted-foreground">
-                Nous sommes à votre disposition pour répondre à toutes vos questions
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card>
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto">
-                    <Phone className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Téléphone</h4>
-                    <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">
-                      {CONTACT_INFO.phone}
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto">
-                    <Mail className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Email</h4>
-                    <a href={`mailto:${CONTACT_INFO.email}`} className="text-primary hover:underline break-all">
-                      {CONTACT_INFO.email}
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto">
-                    <MapPin className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Adresse</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {CONTACT_INFO.address.street}<br />
-                      {CONTACT_INFO.address.postalCode} {CONTACT_INFO.address.city}<br />
-                      {CONTACT_INFO.address.country}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mt-12 text-center">
-              <Link href="/conseil">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Prendre rendez-vous
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
+      {/* Contact CTA */}
+      <section className="container px-4 py-20">
+        <Card className="max-w-4xl mx-auto p-12 bg-gradient-to-br from-blue-600 via-green-500 to-blue-700 text-white shadow-2xl border-0 relative overflow-hidden">
+          {/* Pattern de fond */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }} />
           </div>
-        </div>
+
+          <div className="relative z-10 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Nous Contacter</h2>
+            <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+              Nous sommes à votre disposition pour répondre à toutes vos questions
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <Phone className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/80 mb-1">Téléphone</p>
+                  <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`} className="text-xl font-bold hover:text-yellow-300 transition-colors">
+                    {CONTACT_INFO.phone}
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <Mail className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/80 mb-1">Email</p>
+                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-xl font-bold hover:text-yellow-300 transition-colors">
+                    {CONTACT_INFO.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <MapPin className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="text-sm text-white/80 mb-1">Adresse</p>
+                  <p className="text-xl font-bold">{CONTACT_INFO.address.street}</p>
+                  <p className="text-lg">{CONTACT_INFO.address.postalCode} {CONTACT_INFO.address.city}</p>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              size="lg"
+              className="bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-semibold text-lg h-14 px-8"
+              onClick={() => window.location.href = '/conseil'}
+            >
+              Prendre rendez-vous
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </div>
+        </Card>
       </section>
     </div>
   );
