@@ -34,11 +34,13 @@ export const appRouter = router({
         statutProfessionnel: z.string().optional(),
         situationFamiliale: z.string().optional(),
         nationalite: z.string().optional(),
+        autreNationalite: z.string().optional(), // Si nationalite === "Autre"
         permis: z.string().optional(), // Si nationalité !== "Suisse"
         adresse: z.string().optional(),
         npa: z.string().optional(),
         localite: z.string().optional(),
         banque: z.string().optional(),
+        autreBanque: z.string().optional(), // Si banque === "Autre"
         iban: z.string().refine((val) => !val || val.length >= 15, {
           message: "L'IBAN doit contenir au moins 15 caractères",
         }).optional(),
@@ -50,6 +52,7 @@ export const appRouter = router({
         npaEntreprise: z.string().optional(),
         localiteEntreprise: z.string().optional(),
         banqueEntreprise: z.string().optional(),
+        autreBanqueEntreprise: z.string().optional(), // Si banqueEntreprise === "Autre"
         ibanEntreprise: z.string().refine((val) => !val || val.length >= 15, {
           message: "L'IBAN doit contenir au moins 15 caractères",
         }).optional(),
@@ -111,7 +114,8 @@ export const appRouter = router({
           airtableFields["Adresse"] = input.adresseEntreprise || "";
           airtableFields["NPA"] = input.npaEntreprise || "";
           airtableFields["Localité"] = input.localiteEntreprise || "";
-          airtableFields["Banque"] = input.banqueEntreprise || "";
+          // Banque entreprise : Utiliser "autreBanqueEntreprise" si "Autre" sélectionné
+          airtableFields["Banque"] = input.banqueEntreprise === "Autre" ? (input.autreBanqueEntreprise || "Autre") : (input.banqueEntreprise || "");
           airtableFields["IBAN"] = input.ibanEntreprise || "";
           // LAISSER VIDE : Nom, Prénom
         } else {
@@ -122,14 +126,16 @@ export const appRouter = router({
           airtableFields["Date de naissance"] = input.dateNaissance || "";
           airtableFields["Statut professionnel"] = input.statutProfessionnel || "";
           airtableFields["Situation familiale"] = input.situationFamiliale || "";
-          airtableFields["Nationalité"] = input.nationalite || "";
+          // Nationalité : Utiliser "autreNationalite" si "Autre" sélectionné
+          airtableFields["Nationalité"] = input.nationalite === "Autre" ? (input.autreNationalite || "Autre") : (input.nationalite || "");
           if (input.nationalite && input.nationalite !== "Suisse") {
             airtableFields["Permis"] = input.permis || "";
           }
           airtableFields["Adresse"] = input.adresse || "";
           airtableFields["NPA"] = input.npa || "";
           airtableFields["Localité"] = input.localite || "";
-          airtableFields["Banque"] = input.banque || "";
+          // Banque : Utiliser "autreBanque" si "Autre" sélectionné
+          airtableFields["Banque"] = input.banque === "Autre" ? (input.autreBanque || "Autre") : (input.banque || "");
           airtableFields["IBAN"] = input.iban || "";
           // LAISSER VIDE : Nom de l'entreprise
         }

@@ -60,8 +60,10 @@ interface QuestionnaireData {
   tauxActivite: "10 %" | "20 %" | "30 %" | "40 %" | "50 %" | "60 %" | "70 %" | "80 %" | "90 %" | "100 %" | "150 %" | "";
   situationFamiliale: "Célibataire" | "Marié(e)" | "Divorcé(e)" | "Veuf/Veuve" | "Concubin(e)" | "";
   nationalite: string;
+  autreNationalite: string; // Si nationalite === "Autre"
   permisEtablissement: string;
   banque: string;
+  autreBanque: string; // Si banque === "Autre"
   iban: string;
   typeClient: "prive" | "entreprise" | "";
   
@@ -79,6 +81,7 @@ interface QuestionnaireData {
   npaEntreprise?: string;
   localiteEntreprise?: string;
   banqueEntreprise?: string;
+  autreBanqueEntreprise?: string; // Si banqueEntreprise === "Autre"
   ibanEntreprise?: string;
   
   // Champ technique pour le rabais familial
@@ -103,13 +106,13 @@ export default function Questionnaire() {
     prenom: "", nom: "", email: "", telMobile: "",
     dateNaissance: "", formuleAppel: "", statutProfessionnel: "",
     profession: "", employeur: "", tauxActivite: "",
-    situationFamiliale: "", nationalite: "", permisEtablissement: "",
-    banque: "", iban: "", typeClient: "",
+    situationFamiliale: "", nationalite: "", autreNationalite: "", permisEtablissement: "",
+    banque: "", autreBanque: "", iban: "", typeClient: "",
     adresse: "", npa: "", localite: "", polices: [],
     // Entreprise
     nomEntreprise: "", formeJuridique: "", nombreEmployes: 0,
     adresseEntreprise: "", npaEntreprise: "", localiteEntreprise: "",
-    banqueEntreprise: "", ibanEntreprise: "",
+    banqueEntreprise: "", autreBanqueEntreprise: "", ibanEntreprise: "",
     // Champ technique pour le rabais familial
     parrainEmail: "" 
   });
@@ -273,11 +276,11 @@ export default function Questionnaire() {
 
         dateNaissance: "", formuleAppel: "", statutProfessionnel: "", 
         profession: "", employeur: "", tauxActivite: "", situationFamiliale: "",
-        nationalite: "", permisEtablissement: "", banque: "", iban: "",
+        nationalite: "", autreNationalite: "", permisEtablissement: "", banque: "", autreBanque: "", iban: "",
         
         nomEntreprise: "", formeJuridique: "", nombreEmployes: 0,
         adresseEntreprise: "", npaEntreprise: "", localiteEntreprise: "",
-        banqueEntreprise: "", ibanEntreprise: "",
+        banqueEntreprise: "", autreBanqueEntreprise: "", ibanEntreprise: "",
 
         polices: [],
         typeClient: targetType,
@@ -622,9 +625,30 @@ export default function Questionnaire() {
                                   <SelectItem value="Banque COOP">Banque COOP</SelectItem>
                                   <SelectItem value="Banque Cler">Banque Cler</SelectItem>
                                   <SelectItem value="Valiant">Valiant</SelectItem>
+                                  <SelectItem value="Autre">Autre</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
+
+                            {/* Champ "Autre banque entreprise" (conditionnel) */}
+                            {data.banqueEntreprise === "Autre" && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                              >
+                                <Label htmlFor="autreBanqueEntreprise" className="text-lg">Précisez le nom de la banque *</Label>
+                                <Input
+                                  id="autreBanqueEntreprise"
+                                  value={data.autreBanqueEntreprise || ""}
+                                  onChange={(e) => setData({ ...data, autreBanqueEntreprise: e.target.value })}
+                                  placeholder="Ex: Banque Lombard Odier, etc."
+                                  className="mt-2 text-lg h-14"
+                                  required
+                                />
+                              </motion.div>
+                            )}
+
                             <Input
                               placeholder="IBAN (CH...)"
                               value={data.ibanEntreprise || ""}
@@ -778,6 +802,25 @@ export default function Questionnaire() {
                         </Select>
                       </div>
 
+                      {/* Champ "Autre nationalité" (conditionnel) */}
+                      {data.nationalite === "Autre" && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          <Label htmlFor="autreNationalite" className="text-lg">Précisez votre nationalité *</Label>
+                          <Input
+                            id="autreNationalite"
+                            value={data.autreNationalite}
+                            onChange={(e) => setData({ ...data, autreNationalite: e.target.value })}
+                            placeholder="Ex: Brésil, Maroc, etc."
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+                      )}
+
                       {/* Champ Permis d'établissement (conditionnel) */}
                       {data.nationalite && data.nationalite !== "Suisse" && (
                         <motion.div
@@ -921,9 +964,30 @@ export default function Questionnaire() {
                                 <SelectItem value="Banque COOP">Banque COOP</SelectItem>
                                 <SelectItem value="Banque Cler">Banque Cler</SelectItem>
                                 <SelectItem value="Valiant">Valiant</SelectItem>
+                                <SelectItem value="Autre">Autre</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
+
+                          {/* Champ "Autre banque" (conditionnel) */}
+                          {data.banque === "Autre" && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                            >
+                              <Label htmlFor="autreBanque" className="text-lg">Précisez le nom de votre banque *</Label>
+                              <Input
+                                id="autreBanque"
+                                value={data.autreBanque}
+                                onChange={(e) => setData({ ...data, autreBanque: e.target.value })}
+                                placeholder="Ex: Banque Lombard Odier, etc."
+                                className="mt-2 text-lg h-14"
+                                required
+                              />
+                            </motion.div>
+                          )}
+
                           <Input
                             placeholder="IBAN (CH...)"
                             value={data.iban}
