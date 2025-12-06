@@ -600,12 +600,31 @@ export default function Questionnaire() {
                             Coordonnées bancaires
                           </h3>
                           <div className="space-y-4">
-                            <Input
-                              placeholder="Nom de la Banque"
-                              value={data.banqueEntreprise || ""}
-                              onChange={(e) => setData({ ...data, banqueEntreprise: e.target.value })}
-                              className="text-lg h-14"
-                            />
+                            <div>
+                              <Label htmlFor="banqueEntreprise" className="text-lg">Banque *</Label>
+                              <Select value={data.banqueEntreprise || ""} onValueChange={(value) => setData({ ...data, banqueEntreprise: value })}>
+                                <SelectTrigger className="mt-2 text-lg h-14">
+                                  <SelectValue placeholder="Sélectionnez..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="UBS SA">UBS SA</SelectItem>
+                                  <SelectItem value="Crédit Suisse">Crédit Suisse</SelectItem>
+                                  <SelectItem value="PostFinance">PostFinance</SelectItem>
+                                  <SelectItem value="Banque RAIFFEISEN">Banque RAIFFEISEN</SelectItem>
+                                  <SelectItem value="Banque Cantonale Vaudoise (BCV)">Banque Cantonale Vaudoise (BCV)</SelectItem>
+                                  <SelectItem value="Banque Cantonale Neuchâteloise (BCN)">Banque Cantonale Neuchâteloise (BCN)</SelectItem>
+                                  <SelectItem value="Banque Cantonale du Jura (BCJ)">Banque Cantonale du Jura (BCJ)</SelectItem>
+                                  <SelectItem value="Banque Cantonale Bernoise (BCBE)">Banque Cantonale Bernoise (BCBE)</SelectItem>
+                                  <SelectItem value="Banque Cantonale de Genève (BCGE)">Banque Cantonale de Genève (BCGE)</SelectItem>
+                                  <SelectItem value="Banque Cantonale du Valais (BCVS)">Banque Cantonale du Valais (BCVS)</SelectItem>
+                                  <SelectItem value="Banque Cantonale de Zurich (Zürcher Kantonalbank)">Banque Cantonale de Zurich (Zürcher Kantonalbank)</SelectItem>
+                                  <SelectItem value="Banque Migros">Banque Migros</SelectItem>
+                                  <SelectItem value="Banque COOP">Banque COOP</SelectItem>
+                                  <SelectItem value="Banque Cler">Banque Cler</SelectItem>
+                                  <SelectItem value="Valiant">Valiant</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
                             <Input
                               placeholder="IBAN (CH...)"
                               value={data.ibanEntreprise || ""}
@@ -742,15 +761,44 @@ export default function Questionnaire() {
 
                       <div>
                         <Label htmlFor="nationalite" className="text-lg">Nationalité *</Label>
-                        <Input
-                          id="nationalite"
-                          value={data.nationalite}
-                          onChange={(e) => setData({ ...data, nationalite: e.target.value })}
-                          placeholder="Suisse"
-                          className="mt-2 text-lg h-14"
-                          required
-                        />
+                        <Select value={data.nationalite} onValueChange={(value) => setData({ ...data, nationalite: value, permisEtablissement: value === "Suisse" ? "" : data.permisEtablissement })}>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Suisse">Suisse</SelectItem>
+                            <SelectItem value="France">France</SelectItem>
+                            <SelectItem value="Allemagne">Allemagne</SelectItem>
+                            <SelectItem value="Italie">Italie</SelectItem>
+                            <SelectItem value="Portugal">Portugal</SelectItem>
+                            <SelectItem value="Espagne">Espagne</SelectItem>
+                            <SelectItem value="Belgique">Belgique</SelectItem>
+                            <SelectItem value="Autre">Autre</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
+
+                      {/* Champ Permis d'établissement (conditionnel) */}
+                      {data.nationalite && data.nationalite !== "Suisse" && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          <Label htmlFor="permisEtablissement" className="text-lg">Permis d'établissement *</Label>
+                          <Select value={data.permisEtablissement} onValueChange={(value) => setData({ ...data, permisEtablissement: value })}>
+                            <SelectTrigger className="mt-2 text-lg h-14">
+                              <SelectValue placeholder="Sélectionnez..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Permis C (autorisation d'établissement)">Permis C (autorisation d'établissement)</SelectItem>
+                              <SelectItem value="Permis B (autorisation de séjour)">Permis B (autorisation de séjour)</SelectItem>
+                              <SelectItem value="Permis L (autorisation de courte durée)">Permis L (autorisation de courte durée)</SelectItem>
+                              <SelectItem value="Permis G (autorisation frontalière)">Permis G (autorisation frontalière)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </motion.div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -851,13 +899,31 @@ export default function Questionnaire() {
                           Coordonnées bancaires
                         </h3>
                         <div className="space-y-4">
-                          <Input
-                            placeholder="Nom de la Banque"
-                            value={data.banque}
-                            onChange={(e) => setData({ ...data, banque: e.target.value })}
-                            className="text-lg h-14"
-                            required
-                          />
+                          <div>
+                            <Label htmlFor="banque" className="text-lg">Banque *</Label>
+                            <Select value={data.banque} onValueChange={(value) => setData({ ...data, banque: value })}>
+                              <SelectTrigger className="mt-2 text-lg h-14">
+                                <SelectValue placeholder="Sélectionnez..." />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="UBS SA">UBS SA</SelectItem>
+                                <SelectItem value="Crédit Suisse">Crédit Suisse</SelectItem>
+                                <SelectItem value="PostFinance">PostFinance</SelectItem>
+                                <SelectItem value="Banque RAIFFEISEN">Banque RAIFFEISEN</SelectItem>
+                                <SelectItem value="Banque Cantonale Vaudoise (BCV)">Banque Cantonale Vaudoise (BCV)</SelectItem>
+                                <SelectItem value="Banque Cantonale Neuchâteloise (BCN)">Banque Cantonale Neuchâteloise (BCN)</SelectItem>
+                                <SelectItem value="Banque Cantonale du Jura (BCJ)">Banque Cantonale du Jura (BCJ)</SelectItem>
+                                <SelectItem value="Banque Cantonale Bernoise (BCBE)">Banque Cantonale Bernoise (BCBE)</SelectItem>
+                                <SelectItem value="Banque Cantonale de Genève (BCGE)">Banque Cantonale de Genève (BCGE)</SelectItem>
+                                <SelectItem value="Banque Cantonale du Valais (BCVS)">Banque Cantonale du Valais (BCVS)</SelectItem>
+                                <SelectItem value="Banque Cantonale de Zurich (Zürcher Kantonalbank)">Banque Cantonale de Zurich (Zürcher Kantonalbank)</SelectItem>
+                                <SelectItem value="Banque Migros">Banque Migros</SelectItem>
+                                <SelectItem value="Banque COOP">Banque COOP</SelectItem>
+                                <SelectItem value="Banque Cler">Banque Cler</SelectItem>
+                                <SelectItem value="Valiant">Valiant</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                           <Input
                             placeholder="IBAN (CH...)"
                             value={data.iban}
