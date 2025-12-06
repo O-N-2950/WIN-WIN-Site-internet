@@ -278,7 +278,7 @@ export const appRouter = router({
               },
             ],
             mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(input.email)}`,
             cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/paiement/${encodeURIComponent(input.email)}`,
             customer_email: input.email,
             metadata: {
