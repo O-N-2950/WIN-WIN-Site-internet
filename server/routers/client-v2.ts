@@ -16,7 +16,7 @@ import {
   type ClientData,
 } from '../lib/airtable';
 import { generateMandatPDF, type MandatData } from '../pdf-generator';
-import { storagePut } from '../storage';
+import { uploadToCloudinary } from '../lib/cloudinary-upload';
 import { generateFamilyCode, calculateFamilyDiscount, applyFamilyDiscount } from '../lib/parrainage';
 import { cleanIban, validateIbanWithMessage } from '../lib/iban';
 
@@ -143,7 +143,8 @@ export const clientRouterV2 = router({
           
           const pdfBuffer = await generateMandatPDF(mandatData);
           const fileName = `mandat-prive-${input.nom}-${Date.now()}.pdf`;
-          const { url: pdfUrl } = await storagePut(`mandats/${fileName}`, pdfBuffer, 'application/pdf');
+          const base64Data = `data:application/pdf;base64,${pdfBuffer.toString('base64')}`;
+          const pdfUrl = await uploadToCloudinary(base64Data, fileName, 'winwin-mandats');
           
           // Créer dans Airtable
           const clientData: ClientData = {
@@ -211,7 +212,8 @@ export const clientRouterV2 = router({
           
           const pdfBuffer = await generateMandatPDF(mandatData);
           const fileName = `mandat-entreprise-${input.nomEntreprise.replace(/\s/g, '-')}-${Date.now()}.pdf`;
-          const { url: pdfUrl } = await storagePut(`mandats/${fileName}`, pdfBuffer, 'application/pdf');
+          const base64Data = `data:application/pdf;base64,${pdfBuffer.toString('base64')}`;
+          const pdfUrl = await uploadToCloudinary(base64Data, fileName, 'winwin-mandats');
           
           // Créer dans Airtable
           const clientData: ClientData = {

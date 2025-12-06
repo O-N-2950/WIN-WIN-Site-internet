@@ -2823,3 +2823,17 @@ Remplir automatiquement le champ Localité dès que le NPA complet (4 chiffres) 
 - [ ] Tester workflow complet PRIVÉ Employé jusqu'à signature
 - [ ] Tester workflow complet ENTREPRISE jusqu'à signature
 - [ ] Vérifier données Airtable via MCP
+
+
+## 🔄 Réorganisation Questionnaire (06 déc 2025)
+
+### Validation
+- [x] Mettre à jour la logique de validation (étape 1 = Type client)
+
+### Affichage des étapes
+- [ ] Déplacer l'étape 4 (Type client) → Étape 1
+- [ ] Ajouter champs conditionnels Particulier dans étape 1
+- [ ] Ajouter champs conditionnels Entreprise dans étape 1
+- [ ] Supprimer l'ancienne étape 4 (devenue redondante)
+- [ ] Tester workflow Particulier complet
+- [ ] Tester workflow Entreprise complet

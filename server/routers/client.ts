@@ -17,7 +17,7 @@ import {
   uploadPdfToAirtable,
 } from '../airtable';
 import { generateMandatPDF, type MandatData } from '../pdf-generator';
-import { storagePut } from '../storage';
+import { uploadToCloudinary } from '../lib/cloudinary-upload';
 import { generateFamilyCode } from '../lib/parrainage';
 
 export const clientRouter = router({
@@ -218,13 +218,10 @@ export const clientRouter = router({
         const pdfBuffer = await generateMandatPDF(mandatData);
         console.log('[Client Router] PDF generated, size:', pdfBuffer.length, 'bytes');
         
-        // 3. Upload PDF vers S3
+        // 3. Upload PDF vers Cloudinary
         const fileName = `mandat-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
-        const { url: pdfUrl } = await storagePut(
-          `mandats/${fileName}`,
-          pdfBuffer,
-          'application/pdf'
-        );
+        const base64Data = `data:application/pdf;base64,${pdfBuffer.toString('base64')}`;
+        const pdfUrl = await uploadToCloudinary(base64Data, fileName, 'winwin-mandats');
         console.log('[Client Router] PDF uploaded to S3:', pdfUrl);
         
         // 4. Gérer le double mandat si typeClient = 'les_deux'
@@ -268,11 +265,8 @@ export const clientRouter = router({
           };
           const pdfBufferPrive = await generateMandatPDF(mandatDataPrive);
           const fileNamePrive = `mandat-prive-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
-          const { url: pdfUrlPrive } = await storagePut(
-            `mandats/${fileNamePrive}`,
-            pdfBufferPrive,
-            'application/pdf'
-          );
+          const base64DataPrive = `data:application/pdf;base64,${pdfBufferPrive.toString('base64')}`;
+          const pdfUrlPrive = await uploadToCloudinary(base64DataPrive, fileNamePrive, 'winwin-mandats');
           console.log('[Client Router] PDF PRIVÉ uploaded:', pdfUrlPrive);
           
           // Upload PDF PRIVÉ vers Airtable
@@ -316,11 +310,8 @@ export const clientRouter = router({
           };
           const pdfBufferEntreprise = await generateMandatPDF(mandatDataEntreprise);
           const fileNameEntreprise = `mandat-entreprise-${input.email.replace('@', '-at-')}-${Date.now()}.pdf`;
-          const { url: pdfUrlEntreprise } = await storagePut(
-            `mandats/${fileNameEntreprise}`,
-            pdfBufferEntreprise,
-            'application/pdf'
-          );
+          const base64DataEntreprise = `data:application/pdf;base64,${pdfBufferEntreprise.toString('base64')}`;
+          const pdfUrlEntreprise = await uploadToCloudinary(base64DataEntreprise, fileNameEntreprise, 'winwin-mandats');
           console.log('[Client Router] PDF ENTREPRISE uploaded:', pdfUrlEntreprise);
           
           // Upload PDF ENTREPRISE vers Airtable

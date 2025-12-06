@@ -5,11 +5,11 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../_core/trpc";
 import { generateMandatPDF, generateMandatFilename } from "../pdf-generator";
-import { storagePut } from "../storage";
+import { uploadToCloudinary } from "../lib/cloudinary-upload";
 
 export const mandatRouter = router({
   /**
-   * Générer le PDF du mandat et l'uploader vers S3
+   * Générer le PDF du mandat et l'uploader vers Cloudinary
    * Utilise les données complètes du questionnaire et la signature Canvas
    */
   generateMandat: publicProcedure
@@ -49,10 +49,17 @@ export const mandatRouter = router({
         // Générer un nom de fichier unique
         const filename = generateMandatFilename(input);
         const randomSuffix = Math.random().toString(36).substring(2, 15);
-        const fileKey = `mandats/${filename.replace('.pdf', '')}-${randomSuffix}.pdf`;
+        const fileKey = `${filename.replace('.pdf', '')}-${randomSuffix}.pdf`;
         
-        // Uploader vers S3
-        const { url } = await storagePut(fileKey, pdfBuffer, 'application/pdf');
+        // Convertir le buffer en base64 pour Cloudinary
+        const base64Data = `data:application/pdf;base64,${pdfBuffer.toString('base64')}`;
+        
+        // Uploader vers Cloudinary
+        const url = await uploadToCloudinary(
+          base64Data,
+          fileKey,
+          'winwin-mandats'
+        );
         
         console.log(`[Mandat] PDF généré et uploadé: ${url}`);
         

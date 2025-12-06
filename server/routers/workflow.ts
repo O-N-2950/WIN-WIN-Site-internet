@@ -223,28 +223,25 @@ export const workflowRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        console.log('[Upload Signature] Début upload pour:', input.clientEmail);
+        console.log('[Upload Signature] Début upload Cloudinary pour:', input.clientEmail);
         
-        const { storagePut } = await import('../storage');
+        const { uploadToCloudinary } = await import('../lib/cloudinary-upload');
         
-        // Convertir data URL en Buffer
-        const base64Data = input.signatureDataUrl.replace(/^data:image\/\w+;base64,/, '');
-        const buffer = Buffer.from(base64Data, 'base64');
+        // Générer un nom de fichier unique
+        const filename = `${input.clientEmail.replace('@', '-at-')}-${Date.now()}.png`;
         
-        console.log('[Upload Signature] Buffer créé, taille:', buffer.length, 'bytes');
+        console.log('[Upload Signature] Upload vers Cloudinary:', filename);
+        const url = await uploadToCloudinary(
+          input.signatureDataUrl,
+          filename,
+          'winwin-signatures'
+        );
         
-        // Générer une clé unique pour éviter l'énumération
-        const randomSuffix = Math.random().toString(36).substring(2, 15);
-        const fileKey = `signatures/${input.clientEmail.replace('@', '-at-')}-${Date.now()}-${randomSuffix}.png`;
-        
-        console.log('[Upload Signature] Upload vers S3:', fileKey);
-        const { url } = await storagePut(fileKey, buffer, 'image/png');
-        
-        console.log('[Upload Signature] Upload réussi:', url);
+        console.log('[Upload Signature] Upload Cloudinary réussi:', url);
         
         return {
           url,
-          key: fileKey,
+          key: filename,
         };
       } catch (error) {
         console.error('[Upload Signature] Erreur:', error);
