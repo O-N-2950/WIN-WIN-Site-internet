@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { useState, useEffect } from "react";
-import { useWorkflow } from "@/contexts/WorkflowContext";
+
 import { useLocation } from "wouter";
 import {
   ArrowRight, ArrowLeft, Check, Upload, Sparkles, Building2, User, Users,
@@ -89,7 +89,7 @@ interface QuestionnaireData {
 
 export default function Questionnaire() {
   const [, navigate] = useLocation();
-  const { workflow, updateWorkflow } = useWorkflow();
+  // Workflow context removed - using trpc.client.create instead
   
   // États de navigation
   const [showIntro, setShowIntro] = useState(true);
@@ -137,12 +137,9 @@ export default function Questionnaire() {
   useEffect(() => {
     if (!showIntro && !isSubmitted) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      // Sync Backend silencieuse pour capture email précoce
-      if (data.email && data.email.includes('@')) {
-         updateWorkflow({ clientEmail: data.email, questionnaireData: data });
-      }
+       // Sync Backend silencieuse désactivée (utilise trpc.client.create à la soumission)
     }
-  }, [data, showIntro, isSubmitted, updateWorkflow]);
+  }, [data, showIntro, isSubmitted]);
 
   // --- LOGIQUE DE NAVIGATION ---
 
@@ -318,10 +315,10 @@ export default function Questionnaire() {
                         <div className="font-bold">Ajouter mon Conjoint</div>
                         <div className="text-xs text-muted-foreground">Rabais groupe immédiat</div>
                     </button>
-                    <button onClick={() => navigate("/signature")} className="p-6 bg-slate-900 text-white rounded-xl hover:bg-slate-800 shadow-lg dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200">
+                    <button onClick={() => navigate(`/paiement/${encodeURIComponent(data.email)}`)} className="p-6 bg-slate-900 text-white rounded-xl hover:bg-slate-800 shadow-lg dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200">
                         <ArrowRight className="w-10 h-10 mx-auto mb-3"/>
                         <div className="font-bold">Terminer & Signer</div>
-                        <div className="text-xs opacity-70">Aller au mandat</div>
+                        <div className="text-xs opacity-70">Procéder au paiement</div>
                     </button>
                  </div>
             </Card>
