@@ -1,0 +1,9 @@
+Nom,Email,Téléphone,Type Client,Source,Message,Date RDV,Heure RDV,Statut
+Jean Dupont,jean.dupont@email.ch,+41 79 123 45 67,Particulier,Formulaire Contact,"Bonjour, je souhaiterais optimiser mes assurances maladie et RC. Merci de me recontacter.",,,"Nouveau"
+Marie Martin,marie.martin@gmail.com,+41 78 234 56 78,Entreprise,Demande RDV,"Nous cherchons une solution pour gérer les assurances de nos 15 employés.",2025-11-25,14:00,"Nouveau"
+Pierre Favre,p.favre@company.ch,+41 76 345 67 89,Les deux,Questionnaire Mandat,"Intéressé par le mandat de gestion. J'ai rempli le questionnaire complet.",,,"Nouveau"
+Sophie Blanc,sophie.blanc@hotmail.com,+41 77 456 78 90,Particulier,Formulaire Contact,"Question sur les assurances vie et prévoyance 3ème pilier.",,,"Nouveau"
+Luc Mercier,luc.mercier@startup.ch,+41 79 567 89 01,Entreprise,Demande RDV,"Startup de 8 personnes, besoin d'une analyse complète de nos couvertures.",2025-11-27,10:30,"Nouveau"
+Anne Dubois,anne.dubois@email.ch,+41 78 678 90 12,Particulier,Formulaire Contact,"Résiliation de mon assurance actuelle, recherche meilleure offre.",,,"Contacté"
+Marc Roux,marc.roux@sme.ch,+41 76 789 01 23,Les deux,Questionnaire Mandat,"Entreprise + besoins personnels. Mandat CHF 185/an validé.",,,"Qualifié"
+Claire Petit,claire.petit@gmail.com,+41 77 890 12 34,Particulier,Demande RDV,"Rendez-vous pour discuter optimisation assurance auto et ménage.",2025-11-26,16:00,"Nouveau"
