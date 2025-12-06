@@ -199,16 +199,44 @@ export default function Questionnaire() {
   };
 
   // --- LOGIQUE DE SOUMISSION ET UPSELL ---
+  const createClientMutation = trpc.client.create.useMutation();
 
   const handleSubmit = async () => {
     try {
-      await updateWorkflow({
-        clientName: data.typeClient === 'entreprise' ? (data.nomEntreprise || "") : `${data.prenom} ${data.nom}`,
-        clientEmail: data.email,
-        clientType: data.typeClient as "prive" | "entreprise",
-        questionnaireData: data, 
-        questionnaireCompleted: true,
+      // Appel au nouveau backend avec mapping Airtable strict
+      const result = await createClientMutation.mutateAsync({
+        typeClient: data.typeClient as "prive" | "entreprise",
+        email: data.email,
+        telMobile: data.telMobile,
+        // Champs PRIVÉ
+        formuleAppel: data.formuleAppel,
+        prenom: data.prenom,
+        nom: data.nom,
+        dateNaissance: data.dateNaissance,
+        statutProfessionnel: data.statutProfessionnel,
+        situationFamiliale: data.situationFamiliale,
+        nationalite: data.nationalite,
+        adresse: data.adresse,
+        npa: data.npa,
+        localite: data.localite,
+        banque: data.banque,
+        iban: data.iban,
+        // Champs ENTREPRISE
+        nomEntreprise: data.nomEntreprise,
+        formeJuridique: data.formeJuridique,
+        nombreEmployes: data.nombreEmployes,
+        adresseEntreprise: data.adresseEntreprise,
+        npaEntreprise: data.npaEntreprise,
+        localiteEntreprise: data.localiteEntreprise,
+        banqueEntreprise: data.banqueEntreprise,
+        ibanEntreprise: data.ibanEntreprise,
+        // Polices
+        polices: data.polices,
+        // CLÉ MULTI-MANDATS
+        parrainEmail: data.parrainEmail,
       });
+
+      console.log("✅ Client créé dans Airtable:", result);
 
       localStorage.removeItem(STORAGE_KEY);
 
@@ -217,10 +245,11 @@ export default function Questionnaire() {
         nom: data.typeClient === 'entreprise' ? (data.nomEntreprise || "") : data.nom
       });
 
-      toast.success("🎉 Dossier enregistré avec succès !");
+      toast.success(`🎉 Dossier enregistré ! Groupe: ${result.groupeFamilial}`);
       setIsSubmitted(true);
     } catch (error) {
-      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
+      console.error("Erreur:", error);
+      toast.error("Erreur lors de l'envoi. Vérifiez vos informations.");
     }
   };
 
