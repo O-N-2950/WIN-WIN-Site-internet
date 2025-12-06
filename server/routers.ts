@@ -157,6 +157,66 @@ export const appRouter = router({
           throw new Error("Impossible de créer le client dans Airtable");
         }
       }),
+
+    // Calculer le prix Stripe dynamique avec rabais familial
+    getStripePrice: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // 1. RÉCUPÉRATION DU CLIENT DANS AIRTABLE
+          const response = await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Email}='${input.email}'`,
+            {
+              headers: {
+                Authorization: `Bearer ${ENV.airtableApiKey}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (!data.records || data.records.length === 0) {
+            throw new Error("Client introuvable dans Airtable");
+          }
+
+          const clientRecord = data.records[0];
+          const nbMembres = clientRecord.fields["Nb membres famille actifs"] || 1;
+          const groupeFamilial = clientRecord.fields["Groupe Familial"] || "";
+
+          // 2. FORMULE DE RABAIS STRICTE
+          let rabaisPourcent = 0;
+          if (nbMembres >= 2) {
+            rabaisPourcent = (nbMembres - 1) * 2 + 2;
+            // Plafond à 20%
+            if (rabaisPourcent > 20) {
+              rabaisPourcent = 20;
+            }
+          }
+
+          // 3. CALCUL DU PRIX FINAL
+          const prixBase = 185.00; // CHF
+          const prixFinal = prixBase * (1 - rabaisPourcent / 100);
+          const prixFinalCentimes = Math.round(prixFinal * 100); // Arrondi au centime
+
+          // 4. CALCUL DE L'ÉCONOMIE
+          const economie = prixBase - prixFinal;
+
+          return {
+            prixBase,
+            rabaisPourcent,
+            prixFinal,
+            prixFinalCentimes,
+            economie,
+            nbMembres,
+            groupeFamilial,
+            metadata: `Rabais Groupe: ${rabaisPourcent}% (${nbMembres} membre${nbMembres > 1 ? 's' : ''})`
+          };
+        } catch (error) {
+          console.error("Erreur lors du calcul du prix:", error);
+          throw new Error("Impossible de calculer le prix Stripe");
+        }
+      }),
   }),
 });
 
