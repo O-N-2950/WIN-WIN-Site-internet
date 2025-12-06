@@ -35,9 +35,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-          <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-auto" />
-          <span className="font-bold text-xl text-primary hidden sm:inline-block">
+        <Link href="/" className="flex items-center gap-2 flex-nowrap hover:opacity-80 transition-opacity">
+          <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-auto flex-shrink-0" />
+          <span className="font-bold text-xl text-primary hidden sm:inline-block whitespace-nowrap">
             {APP_TITLE}
           </span>
         </Link>
