@@ -218,6 +218,89 @@ export const appRouter = router({
         }
       }),
   }),
+
+  // Router Workflow pour gérer le paiement Stripe
+  workflow: router({
+    createCheckoutSession: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        clientName: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // 1. RÉCUPÉRER LE PRIX DYNAMIQUE
+          const response = await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Email}='${input.email}'`,
+            {
+              headers: {
+                Authorization: `Bearer ${ENV.airtableApiKey}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (!data.records || data.records.length === 0) {
+            throw new Error("Client introuvable dans Airtable");
+          }
+
+          const clientRecord = data.records[0];
+          const nbMembres = clientRecord.fields["Nb membres famille actifs"] || 1;
+
+          // 2. CALCUL DU PRIX AVEC FORMULE VALIDÉE
+          let rabaisPourcent = 0;
+          if (nbMembres >= 2) {
+            rabaisPourcent = (nbMembres - 1) * 2 + 2;
+            if (rabaisPourcent > 20) {
+              rabaisPourcent = 20;
+            }
+          }
+
+          const prixBase = 185.00;
+          const prixFinal = prixBase * (1 - rabaisPourcent / 100);
+          const prixFinalCentimes = Math.round(prixFinal * 100);
+
+          // 3. CRÉER LA SESSION STRIPE
+          const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+          
+          const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+              {
+                price_data: {
+                  currency: 'chf',
+                  product_data: {
+                    name: 'Mandat de courtage WIN WIN Finance',
+                    description: `Rabais Groupe: ${rabaisPourcent}% (${nbMembres} membre${nbMembres > 1 ? 's' : ''})`,
+                  },
+                  unit_amount: prixFinalCentimes,
+                },
+                quantity: 1,
+              },
+            ],
+            mode: 'payment',
+            success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/paiement/${encodeURIComponent(input.email)}`,
+            customer_email: input.email,
+            metadata: {
+              clientName: input.clientName,
+              email: input.email,
+              rabaisPourcent: rabaisPourcent.toString(),
+              nbMembres: nbMembres.toString(),
+              prixBase: prixBase.toString(),
+              prixFinal: prixFinal.toString(),
+            },
+          });
+
+          return {
+            checkoutUrl: session.url,
+            sessionId: session.id,
+          };
+        } catch (error) {
+          console.error("Erreur lors de la création de la session Stripe:", error);
+          throw new Error("Impossible de créer la session de paiement");
+        }
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -29,6 +29,7 @@ export default function Paiement() {
   
   // Mutations tRPC
   const getPriceMutation = trpc.client.getStripePrice.useMutation();
+  const createCheckoutMutation = trpc.workflow.createCheckoutSession.useMutation();
   
   useEffect(() => {
     if (!email) {
@@ -92,9 +93,21 @@ WIN WIN Finance Group m'a fait gagner du temps ET de l'argent.
     window.open(shareUrl, "_blank");
   };
   
-  const handlePayment = () => {
-    // TODO: Créer la session Stripe avec le prix dynamique
-    toast.info("Redirection vers Stripe...");
+  const handlePayment = async () => {
+    try {
+      toast.info("Création de la session de paiement...");
+      
+      const result = await createCheckoutMutation.mutateAsync({
+        email,
+        clientName: prixInfo.groupeFamilial, // TODO: Récupérer le vrai nom du client
+      });
+      
+      // Redirection vers Stripe
+      window.location.href = result.checkoutUrl;
+    } catch (error) {
+      console.error("Erreur lors de la création de la session Stripe:", error);
+      toast.error("Impossible de créer la session de paiement. Veuillez réessayer.");
+    }
   };
   
   if (!prixInfo) {
