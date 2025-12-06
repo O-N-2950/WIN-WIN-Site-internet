@@ -100,18 +100,3 @@ export async function storageGet(relKey: string): Promise<{ key: string; url: st
     url: await buildDownloadUrl(baseUrl, key, apiKey),
   };
 }
-
-/**
- * Télécharge le contenu d'un fichier depuis S3 sous forme de Buffer
- */
-export async function storageGetBuffer(relKey: string): Promise<Buffer> {
-  const { url } = await storageGet(relKey);
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    throw new Error(`Failed to download file from S3: ${response.statusText}`);
-  }
-  
-  const arrayBuffer = await response.arrayBuffer();
-  return Buffer.from(arrayBuffer);
-}
