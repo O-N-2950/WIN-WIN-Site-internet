@@ -213,6 +213,7 @@ export default function Questionnaire() {
         statutProfessionnel: data.statutProfessionnel,
         situationFamiliale: data.situationFamiliale,
         nationalite: data.nationalite,
+        permis: data.permisEtablissement,
         adresse: data.adresse,
         npa: data.npa,
         localite: data.localite,
