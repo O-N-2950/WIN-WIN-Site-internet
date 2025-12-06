@@ -4,3 +4,6 @@
 - [x] Ajouter option "Autre" dans listes Banque et Nationalité avec champ texte libre
 - [x] Corriger backend server/routers.ts pour accepter tous les nouveaux champs du questionnaire
 - [ ] Tester enregistrement complet (frontend → backend → Airtable)
+- [x] Implémenter validation IBAN stricte (CH + 19 chiffres ou CH + 18 chiffres + 1 lettre) avec auto-formatage
+- [x] Ajouter champ Profession conditionnel (si Employé ou Indépendant)
+- [x] Mapper champ Profession vers Airtable

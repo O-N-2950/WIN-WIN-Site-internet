@@ -32,6 +32,7 @@ export const appRouter = router({
         nom: z.string().optional(),
         dateNaissance: z.string().optional(),
         statutProfessionnel: z.string().optional(),
+        profession: z.string().optional(), // Si statutProfessionnel === "Employé(e)" ou "Indépendant(e)"
         situationFamiliale: z.string().optional(),
         nationalite: z.string().optional(),
         autreNationalite: z.string().optional(), // Si nationalite === "Autre"
@@ -125,6 +126,9 @@ export const appRouter = router({
           airtableFields["Nom"] = input.nom || "";
           airtableFields["Date de naissance"] = input.dateNaissance || "";
           airtableFields["Statut professionnel"] = input.statutProfessionnel || "";
+          if (input.profession) {
+            airtableFields["Profession"] = input.profession;
+          }
           airtableFields["Situation familiale"] = input.situationFamiliale || "";
           // Nationalité : Utiliser "autreNationalite" si "Autre" sélectionné
           airtableFields["Nationalité"] = input.nationalite === "Autre" ? (input.autreNationalite || "Autre") : (input.nationalite || "");

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
+import { formatIBAN, getIBANError } from "@/lib/ibanUtils";
 import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { useState, useEffect } from "react";
 
@@ -214,13 +215,16 @@ export default function Questionnaire() {
         nom: data.nom,
         dateNaissance: data.dateNaissance,
         statutProfessionnel: data.statutProfessionnel,
+        profession: data.profession,
         situationFamiliale: data.situationFamiliale,
         nationalite: data.nationalite,
+        autreNationalite: data.autreNationalite,
         permis: data.permisEtablissement,
         adresse: data.adresse,
         npa: data.npa,
         localite: data.localite,
         banque: data.banque,
+        autreBanque: data.autreBanque,
         iban: data.iban,
         // Champs ENTREPRISE
         nomEntreprise: data.nomEntreprise,
@@ -230,6 +234,7 @@ export default function Questionnaire() {
         npaEntreprise: data.npaEntreprise,
         localiteEntreprise: data.localiteEntreprise,
         banqueEntreprise: data.banqueEntreprise,
+        autreBanqueEntreprise: data.autreBanqueEntreprise,
         ibanEntreprise: data.ibanEntreprise,
         // Polices
         polices: data.polices,
@@ -649,12 +654,22 @@ export default function Questionnaire() {
                               </motion.div>
                             )}
 
-                            <Input
-                              placeholder="IBAN (CH...)"
-                              value={data.ibanEntreprise || ""}
-                              onChange={(e) => setData({ ...data, ibanEntreprise: e.target.value })}
-                              className="text-lg h-14"
-                            />
+                            <div>
+                              <Input
+                                placeholder="IBAN (CH...)"
+                                value={data.ibanEntreprise || ""}
+                                onChange={(e) => {
+                                  const formatted = formatIBAN(e.target.value);
+                                  setData({ ...data, ibanEntreprise: formatted });
+                                }}
+                                className="text-lg h-14"
+                              />
+                              {data.ibanEntreprise && getIBANError(data.ibanEntreprise) && (
+                                <p className="text-sm text-destructive mt-2">
+                                  {getIBANError(data.ibanEntreprise)}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </motion.div>
@@ -766,6 +781,25 @@ export default function Questionnaire() {
                           </SelectContent>
                         </Select>
                       </div>
+
+                      {/* Champ Profession (conditionnel) */}
+                      {(data.statutProfessionnel === "Employé(e)" || data.statutProfessionnel === "Indépendant(e)") && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          <Label htmlFor="profession" className="text-lg">Profession *</Label>
+                          <Input
+                            id="profession"
+                            value={data.profession}
+                            onChange={(e) => setData({ ...data, profession: e.target.value })}
+                            placeholder="Ex: Comptable, Ingénieur, etc."
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+                      )}
 
                       <div>
                         <Label htmlFor="situationFamiliale" className="text-lg">Situation familiale *</Label>
@@ -988,13 +1022,23 @@ export default function Questionnaire() {
                             </motion.div>
                           )}
 
-                          <Input
-                            placeholder="IBAN (CH...)"
-                            value={data.iban}
-                            onChange={(e) => setData({ ...data, iban: e.target.value })}
-                            className="text-lg h-14"
-                            required
-                          />
+                          <div>
+                            <Input
+                              placeholder="IBAN (CH...)"
+                              value={data.iban}
+                              onChange={(e) => {
+                                const formatted = formatIBAN(e.target.value);
+                                setData({ ...data, iban: formatted });
+                              }}
+                              className="text-lg h-14"
+                              required
+                            />
+                            {data.iban && getIBANError(data.iban) && (
+                              <p className="text-sm text-destructive mt-2">
+                                {getIBANError(data.iban)}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
