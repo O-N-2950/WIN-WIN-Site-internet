@@ -643,39 +643,361 @@ export default function Questionnaire() {
                 )}
 
                 {/* Étapes 3-7 : À venir */}
+                {/* Étape 3: Situation personnelle (PRIVÉ uniquement) */}
                 {currentStep === 3 && (
-                  <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold mb-4">Étape 3 : Situation personnelle</h2>
-                    <p className="text-muted-foreground">À venir...</p>
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center justify-center mb-8"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                        <User className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Votre situation personnelle
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Ces informations nous aident à mieux vous conseiller
+                      </p>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div>
+                        <Label htmlFor="dateNaissance" className="text-lg">Date de naissance *</Label>
+                        <Input
+                          id="dateNaissance"
+                          type="date"
+                          value={data.dateNaissance}
+                          onChange={(e) => setData({ ...data, dateNaissance: e.target.value })}
+                          className="mt-2 text-lg h-14"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="statutProfessionnel" className="text-lg">Statut professionnel *</Label>
+                        <Select value={data.statutProfessionnel} onValueChange={(value) => setData({ ...data, statutProfessionnel: value as any })}>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Employé(e)">Employé(e)</SelectItem>
+                            <SelectItem value="Indépendant(e)">Indépendant(e)</SelectItem>
+                            <SelectItem value="Retraité(e)">Retraité(e)</SelectItem>
+                            <SelectItem value="Sans Emploi">Sans Emploi</SelectItem>
+                            <SelectItem value="Au chômage">Au chômage</SelectItem>
+                            <SelectItem value="Ai">AI</SelectItem>
+                            <SelectItem value="Etudiant(e)">Étudiant(e)</SelectItem>
+                            <SelectItem value="Enfant">Enfant</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="situationFamiliale" className="text-lg">Situation familiale *</Label>
+                        <Select value={data.situationFamiliale} onValueChange={(value) => setData({ ...data, situationFamiliale: value as any })}>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Célibataire">Célibataire</SelectItem>
+                            <SelectItem value="Marié(e)">Marié(e)</SelectItem>
+                            <SelectItem value="Divorcé(e)">Divorcé(e)</SelectItem>
+                            <SelectItem value="Veuf/Veuve">Veuf/Veuve</SelectItem>
+                            <SelectItem value="Concubin(e)">Concubin(e)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="nationalite" className="text-lg">Nationalité *</Label>
+                        <Input
+                          id="nationalite"
+                          value={data.nationalite}
+                          onChange={(e) => setData({ ...data, nationalite: e.target.value })}
+                          placeholder="Suisse"
+                          className="mt-2 text-lg h-14"
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
 
+                {/* Étape 4: Adresse entreprise (ENTREPRISE uniquement) */}
                 {currentStep === 4 && (
-                  <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold mb-4">Étape 4 : Adresse entreprise</h2>
-                    <p className="text-muted-foreground">À venir...</p>
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center justify-center mb-8"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                        <MapPin className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Où se situe votre entreprise ?
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Adresse du siège social
+                      </p>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div>
+                        <Label htmlFor="adresseEntreprise" className="text-lg">Adresse et numéro *</Label>
+                        <Input
+                          id="adresseEntreprise"
+                          value={data.adresseEntreprise || ""}
+                          onChange={(e) => setData({ ...data, adresseEntreprise: e.target.value })}
+                          placeholder="Rue de la Gare 15"
+                          className="mt-2 text-lg h-14"
+                          autoFocus
+                          required
+                        />
+                      </div>
+
+                      <AddressAutocomplete
+                        npaValue={data.npaEntreprise || ""}
+                        localiteValue={data.localiteEntreprise || ""}
+                        onNpaChange={(value) => setData({ ...data, npaEntreprise: value })}
+                        onLocaliteChange={(value) => setData({ ...data, localiteEntreprise: value })}
+                        required
+                      />
+                    </div>
                   </div>
                 )}
 
+                {/* Étape 5: Adresse + Banque (PRIVÉ uniquement) */}
                 {currentStep === 5 && (
-                  <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold mb-4">Étape 5 : Adresse + Banque</h2>
-                    <p className="text-muted-foreground">À venir...</p>
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center justify-center mb-8"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                        <MapPin className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Votre adresse
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Où habitez-vous ?
+                      </p>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div>
+                        <Label htmlFor="adresse" className="text-lg">Adresse et numéro *</Label>
+                        <Input
+                          id="adresse"
+                          value={data.adresse}
+                          onChange={(e) => setData({ ...data, adresse: e.target.value })}
+                          placeholder="Rue de la Gare 15"
+                          className="mt-2 text-lg h-14"
+                          required
+                        />
+                      </div>
+
+                      <AddressAutocomplete
+                        npaValue={data.npa}
+                        localiteValue={data.localite}
+                        onNpaChange={(value) => setData({ ...data, npa: value })}
+                        onLocaliteChange={(value) => setData({ ...data, localite: value })}
+                        required
+                      />
+
+                      <div className="mt-8 pt-8 border-t border-border">
+                        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                          <Shield className="h-5 w-5 text-primary" />
+                          Coordonnées bancaires
+                        </h3>
+                        <div className="space-y-4">
+                          <Input
+                            placeholder="Nom de la Banque"
+                            value={data.banque}
+                            onChange={(e) => setData({ ...data, banque: e.target.value })}
+                            className="text-lg h-14"
+                            required
+                          />
+                          <Input
+                            placeholder="IBAN (CH...)"
+                            value={data.iban}
+                            onChange={(e) => setData({ ...data, iban: e.target.value })}
+                            className="text-lg h-14"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
 
+                {/* Étape 6: Upload polices + Checklist */}
                 {currentStep === 6 && (
-                  <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold mb-4">Étape 6 : Upload polices</h2>
-                    <p className="text-muted-foreground">À venir...</p>
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center justify-center mb-8"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
+                        <Upload className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Vos documents d'assurance
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Cochez les polices que vous souhaitez optimiser
+                      </p>
+                    </div>
+
+                    {/* Checklist dynamique */}
+                    <div className="space-y-3">
+                      {(data.typeClient === 'entreprise' ? CHECKLIST_ENTREPRISE : CHECKLIST_PRIVE).map((item) => (
+                        <label
+                          key={item.id}
+                          className="flex items-center gap-4 p-4 rounded-lg border-2 border-border hover:border-primary/50 cursor-pointer transition-all bg-background"
+                        >
+                          <Checkbox
+                            checked={data.polices.some(p => p.typesContrats.includes(item.id))}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setData({
+                                  ...data,
+                                  polices: [...data.polices, {
+                                    compagnie: "",
+                                    typesContrats: [item.id],
+                                    mode: "plus_tard"
+                                  }]
+                                });
+                              } else {
+                                setData({
+                                  ...data,
+                                  polices: data.polices.filter(p => !p.typesContrats.includes(item.id))
+                                });
+                              }
+                            }}
+                          />
+                          <span className="text-2xl">{item.icon}</span>
+                          <span className="text-lg font-medium flex-1">{item.label}</span>
+                        </label>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <p className="text-sm text-blue-900 dark:text-blue-100">
+                        💡 <strong>Astuce :</strong> Vous pourrez télécharger vos polices après la signature du mandat.
+                      </p>
+                    </div>
                   </div>
                 )}
 
+                {/* Étape 7: Récapitulatif */}
                 {currentStep === 7 && (
-                  <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold mb-4">Étape 7 : Récapitulatif</h2>
-                    <p className="text-muted-foreground">À venir...</p>
-                    <Button onClick={handleSubmit} className="mt-8" size="lg">
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center justify-center mb-8"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                        <CheckCircle2 className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Récapitulatif
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Vérifiez vos informations avant de continuer
+                      </p>
+                    </div>
+
+                    <div className="space-y-6 text-left">
+                      {/* Identité */}
+                      <div className="p-6 bg-primary/5 rounded-lg border border-primary/20">
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <User className="h-5 w-5 text-primary" />
+                          Identité
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4 text-sm">
+                          {data.typeClient === 'prive' ? (
+                            <>
+                              <div><span className="text-muted-foreground">Nom :</span> <strong>{data.formuleAppel} {data.prenom} {data.nom}</strong></div>
+                              <div><span className="text-muted-foreground">Date de naissance :</span> <strong>{data.dateNaissance}</strong></div>
+                              <div><span className="text-muted-foreground">Nationalité :</span> <strong>{data.nationalite}</strong></div>
+                              <div><span className="text-muted-foreground">Situation :</span> <strong>{data.situationFamiliale}</strong></div>
+                            </>
+                          ) : (
+                            <>
+                              <div><span className="text-muted-foreground">Entreprise :</span> <strong>{data.nomEntreprise}</strong></div>
+                              <div><span className="text-muted-foreground">Forme juridique :</span> <strong>{data.formeJuridique}</strong></div>
+                              <div><span className="text-muted-foreground">Employés :</span> <strong>{data.nombreEmployes}</strong></div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Contact */}
+                      <div className="p-6 bg-accent/5 rounded-lg border border-accent/20">
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <Sparkles className="h-5 w-5 text-accent" />
+                          Contact
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4 text-sm">
+                          <div><span className="text-muted-foreground">Email :</span> <strong>{data.email}</strong></div>
+                          <div><span className="text-muted-foreground">Téléphone :</span> <strong>{data.telMobile}</strong></div>
+                        </div>
+                      </div>
+
+                      {/* Adresse */}
+                      <div className="p-6 bg-green-50 dark:bg-green-950/30 rounded-lg border border-green-200 dark:border-green-800">
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <MapPin className="h-5 w-5 text-green-600" />
+                          Adresse
+                        </h3>
+                        <div className="text-sm">
+                          {data.typeClient === 'prive' ? (
+                            <p><strong>{data.adresse}, {data.npa} {data.localite}</strong></p>
+                          ) : (
+                            <p><strong>{data.adresseEntreprise}, {data.npaEntreprise} {data.localiteEntreprise}</strong></p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Polices */}
+                      <div className="p-6 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <FileText className="h-5 w-5 text-blue-600" />
+                          Polices à optimiser
+                        </h3>
+                        <div className="text-sm">
+                          {data.polices.length > 0 ? (
+                            <p><strong>{data.polices.length} police(s) sélectionnée(s)</strong></p>
+                          ) : (
+                            <p className="text-muted-foreground">Aucune police sélectionnée</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button onClick={handleSubmit} className="w-full mt-8" size="lg">
                       Enregistrer le dossier
                       <Check className="ml-2 h-5 w-5" />
                     </Button>
