@@ -34,11 +34,14 @@ export const appRouter = router({
         statutProfessionnel: z.string().optional(),
         situationFamiliale: z.string().optional(),
         nationalite: z.string().optional(),
+        permis: z.string().optional(), // Si nationalité !== "Suisse"
         adresse: z.string().optional(),
         npa: z.string().optional(),
         localite: z.string().optional(),
         banque: z.string().optional(),
-        iban: z.string().optional(),
+        iban: z.string().refine((val) => !val || val.length >= 15, {
+          message: "L'IBAN doit contenir au moins 15 caractères",
+        }).optional(),
         // Champs ENTREPRISE
         nomEntreprise: z.string().optional(),
         formeJuridique: z.string().optional(),
@@ -47,7 +50,9 @@ export const appRouter = router({
         npaEntreprise: z.string().optional(),
         localiteEntreprise: z.string().optional(),
         banqueEntreprise: z.string().optional(),
-        ibanEntreprise: z.string().optional(),
+        ibanEntreprise: z.string().refine((val) => !val || val.length >= 15, {
+          message: "L'IBAN doit contenir au moins 15 caractères",
+        }).optional(),
         // Polices
         polices: z.array(z.object({
           compagnie: z.string(),
@@ -95,6 +100,7 @@ export const appRouter = router({
           "Téléphone Mobile": input.telMobile,
           "Groupe Familial": groupeFamilial,
           "Statut du client": "NOUVEAU CLIENT",
+          "Type de client": input.typeClient === "entreprise" ? "Entreprise" : "Particulier",
         };
 
         if (input.typeClient === "entreprise") {
@@ -117,6 +123,9 @@ export const appRouter = router({
           airtableFields["Statut professionnel"] = input.statutProfessionnel || "";
           airtableFields["Situation familiale"] = input.situationFamiliale || "";
           airtableFields["Nationalité"] = input.nationalite || "";
+          if (input.nationalite && input.nationalite !== "Suisse") {
+            airtableFields["Permis"] = input.permis || "";
+          }
           airtableFields["Adresse"] = input.adresse || "";
           airtableFields["NPA"] = input.npa || "";
           airtableFields["Localité"] = input.localite || "";
