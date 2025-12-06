@@ -1,9 +1,0 @@
-<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shield background -->
-  <path d="M64 8L16 32V56C16 84.8 36.8 110.4 64 120C91.2 110.4 112 84.8 112 56V32L64 8Z" fill="#3176A6"/>
-  <path d="M64 16L24 36V56C24 80.8 41.6 102.4 64 110.4C86.4 102.4 104 80.8 104 56V36L64 16Z" fill="#8CB4D2"/>
-  
-  <!-- WIN WIN text -->
-  <text x="64" y="60" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">WIN</text>
-  <text x="64" y="85" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#D4AF37" text-anchor="middle">WIN</text>
-</svg>

@@ -7,11 +7,4 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
-  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
-  resendApiKey: process.env.RESEND_API_KEY ?? "",
-  backendUrl: process.env.BACKEND_URL ?? "http://localhost:3000",
-  googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
-  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-  airtableApiKey: process.env.AIRTABLE_API_KEY ?? "",
 };

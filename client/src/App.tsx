@@ -5,71 +5,16 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
-import LibrePassage from "./pages/LibrePassage";
-import About from "./pages/About";
-import ClientSpace from "./pages/ClientSpace";
-import Pricing from "./pages/Pricing";
-import Talentis from "./pages/Talentis";
-import Durabilis from "./pages/Durabilis";
-import Synergis from "./pages/Synergis";
-import ParentsEnfants from "./pages/ParentsEnfants";
-import ContactSimple from "./pages/ContactSimple";
-import ProtectionJuridique from "./pages/ProtectionJuridique";
-import Questionnaire from "./pages/Questionnaire";
-import Conseil from "./pages/Conseil";
-import Signature from "./pages/Signature";
-import Paiement from "./pages/Paiement";
-import Merci from "./pages/Merci";
-import Confirmation from "./pages/Confirmation";
-import Inscription from "./pages/Inscription";
-import Outils from "./pages/Outils";
-import InventaireMenage from "./pages/InventaireMenage";
-import Mapping360 from "./pages/Mapping360";
-import Startup from "./pages/Startup";
-import MentionsLegales from "./pages/MentionsLegales";
-import Confidentialite from "./pages/Confidentialite";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-1">
-        <Switch>
-          <Route path={"/"} component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/libre-passage" component={LibrePassage} />
-          <Route path="/protection-juridique" component={ProtectionJuridique} />
-          <Route path="/outils" component={Outils} />
-          <Route path="/outils/inventaire-menage" component={InventaireMenage} />
-          <Route path="/mapping-360" component={Mapping360} />
-          <Route path="/startup" component={Startup} />
-          <Route path="/tarifs" component={Pricing} />
-          <Route path="/concepts/talentis" component={Talentis} />
-          <Route path="/concepts/durabilis" component={Durabilis} />
-          <Route path="/concepts/synergis" component={Synergis} />
-          <Route path="/concepts/parents-enfants" component={ParentsEnfants} />
-          <Route path="/a-propos" component={About} />
-          <Route path="/contact" component={ContactSimple} />
-          <Route path="/conseil" component={Conseil} />
-          <Route path="/espace-client" component={ClientSpace} />
-          <Route path="/questionnaire-info" component={Questionnaire} />
-          <Route path="/inscription" component={Inscription} />
-          <Route path="/signature" component={Signature} />
-          <Route path="/paiement" component={Paiement} />
-          <Route path="/merci" component={Merci} />
-          <Route path="/confirmation" component={Confirmation} />
-          <Route path="/mentions-legales" component={MentionsLegales} />
-          <Route path="/confidentialite" component={Confidentialite} />
-          <Route path={"/404"} component={NotFound} />
-          {/* Final fallback route */}
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <Footer />
-    </div>
+    <Switch>
+      <Route path={"/"} component={Home} />
+      <Route path={"/404"} component={NotFound} />
+      {/* Final fallback route */}
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
