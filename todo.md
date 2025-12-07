@@ -11,4 +11,4 @@
 - [x] Corriger schéma Zod polices (array de strings au lieu d'objets)
 - [x] Déboguer erreur d'enregistrement (tester localement + analyser logs)
 - [x] Corriger format polices dans handleSubmit (objects → strings)
-- [ ] Corriger nom champ Email dans mapping Airtable (Email → Contact E-mail)
+- [x] Corriger tous les noms de champs Airtable (11 champs corrigés)
