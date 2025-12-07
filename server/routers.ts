@@ -96,8 +96,8 @@ export const appRouter = router({
 
         // 2. MAPPING AIRTABLE STRICT (selon typeClient)
         const airtableFields: Record<string, any> = {
-          Email: input.email,
-          "Téléphone Mobile": input.telMobile,
+          "Contact E-mail": input.email,
+          "Tél. Mobile": input.telMobile,
           "Groupe Familial": groupeFamilial,
           "Statut du client": "NOUVEAU CLIENT",
           "Type de client": input.typeClient === "entreprise" ? "Entreprise" : "Particulier",
@@ -106,11 +106,11 @@ export const appRouter = router({
         if (input.typeClient === "entreprise") {
           // CAS A : ENTREPRISE
           airtableFields["Nom de l'entreprise"] = input.nomEntreprise || "";
-          airtableFields["Forme juridique"] = input.formeJuridique || "";
+          airtableFields["Forme Juridique "] = input.formeJuridique || "";
           airtableFields["Nombre d'employés"] = input.nombreEmployes || 0;
-          airtableFields["Adresse"] = input.adresseEntreprise || "";
-          airtableFields["NPA"] = input.npaEntreprise || "";
-          airtableFields["Localité"] = input.localiteEntreprise || "";
+          airtableFields["Contact Adresse, no"] = input.adresseEntreprise || "";
+          airtableFields["Contact NPA"] = input.npaEntreprise || "";
+          airtableFields["Contact Localité"] = input.localiteEntreprise || "";
           // Banque entreprise : Utiliser "autreBanqueEntreprise" si "Autre" sélectionné
           airtableFields["Banque"] = input.banqueEntreprise === "Autre" ? (input.autreBanqueEntreprise || "Autre") : (input.banqueEntreprise || "");
           airtableFields["IBAN"] = input.ibanEntreprise || "";
@@ -118,8 +118,8 @@ export const appRouter = router({
         } else {
           // CAS B : PRIVÉ
           airtableFields["Formule d'appel"] = input.formuleAppel || "";
-          airtableFields["Prénom"] = input.prenom || "";
-          airtableFields["Nom"] = input.nom || "";
+          airtableFields["Contact Prénom"] = input.prenom || "";
+          airtableFields["Contact Nom"] = input.nom || "";
           airtableFields["Date de naissance"] = input.dateNaissance || "";
           airtableFields["Statut professionnel"] = input.statutProfessionnel || "";
           if (input.profession) {
@@ -129,11 +129,11 @@ export const appRouter = router({
           // Nationalité : Utiliser "autreNationalite" si "Autre" sélectionné
           airtableFields["Nationalité"] = input.nationalite === "Autre" ? (input.autreNationalite || "Autre") : (input.nationalite || "");
           if (input.nationalite && input.nationalite !== "Suisse") {
-            airtableFields["Permis"] = input.permis || "";
+            airtableFields["Permis d'établissement"] = input.permis || "";
           }
-          airtableFields["Adresse"] = input.adresse || "";
-          airtableFields["NPA"] = input.npa || "";
-          airtableFields["Localité"] = input.localite || "";
+          airtableFields["Contact Adresse, no"] = input.adresse || "";
+          airtableFields["Contact NPA"] = input.npa || "";
+          airtableFields["Contact Localité"] = input.localite || "";
           // Banque : Utiliser "autreBanque" si "Autre" sélectionné
           airtableFields["Banque"] = input.banque === "Autre" ? (input.autreBanque || "Autre") : (input.banque || "");
           airtableFields["IBAN"] = input.iban || "";
