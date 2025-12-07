@@ -252,8 +252,8 @@ export default function Questionnaire() {
         banqueEntreprise: data.banqueEntreprise,
         autreBanqueEntreprise: data.autreBanqueEntreprise,
         ibanEntreprise: data.ibanEntreprise,
-        // Polices
-        polices: data.polices,
+        // Polices (convertir objets en strings)
+        polices: data.polices.flatMap(p => p.typesContrats),
         // CLÉ MULTI-MANDATS
         parrainEmail: data.parrainEmail,
       });

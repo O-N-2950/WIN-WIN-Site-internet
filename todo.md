@@ -9,3 +9,5 @@
 - [x] Mapper champ Profession vers Airtable
 - [x] Bloquer soumission si IBAN invalide (afficher erreur claire)
 - [x] Corriger schéma Zod polices (array de strings au lieu d'objets)
+- [x] Déboguer erreur d'enregistrement (tester localement + analyser logs)
+- [ ] Corriger format polices dans handleSubmit (objects → strings)
