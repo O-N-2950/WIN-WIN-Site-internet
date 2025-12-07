@@ -7,4 +7,5 @@
 - [x] Implémenter validation IBAN stricte (CH + 19 chiffres ou CH + 18 chiffres + 1 lettre) avec auto-formatage
 - [x] Ajouter champ Profession conditionnel (si Employé ou Indépendant)
 - [x] Mapper champ Profession vers Airtable
-- [ ] Bloquer soumission si IBAN invalide (afficher erreur claire)
+- [x] Bloquer soumission si IBAN invalide (afficher erreur claire)
+- [x] Corriger schéma Zod polices (array de strings au lieu d'objets)
