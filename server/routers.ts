@@ -57,12 +57,8 @@ export const appRouter = router({
         ibanEntreprise: z.string().refine((val) => !val || val.length >= 15, {
           message: "L'IBAN doit contenir au moins 15 caractères",
         }).optional(),
-        // Polices
-        polices: z.array(z.object({
-          compagnie: z.string(),
-          typesContrats: z.array(z.string()),
-          mode: z.string(),
-        })).optional(),
+        // Polices (tableau de noms de polices sélectionnées)
+        polices: z.array(z.string()).optional(),
         // CLÉ MULTI-MANDATS
         parrainEmail: z.string().optional(),
       }))

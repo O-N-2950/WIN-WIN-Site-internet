@@ -204,6 +204,22 @@ export default function Questionnaire() {
 
   const handleSubmit = async () => {
     try {
+      // VALIDATION IBAN AVANT ENVOI
+      if (data.typeClient === "prive" && data.iban) {
+        const ibanError = getIBANError(data.iban);
+        if (ibanError) {
+          toast.error(`IBAN invalide : ${ibanError}`);
+          return;
+        }
+      }
+      if (data.typeClient === "entreprise" && data.ibanEntreprise) {
+        const ibanError = getIBANError(data.ibanEntreprise);
+        if (ibanError) {
+          toast.error(`IBAN invalide : ${ibanError}`);
+          return;
+        }
+      }
+
       // Appel au nouveau backend avec mapping Airtable strict
       const result = await createClientMutation.mutateAsync({
         typeClient: data.typeClient as "prive" | "entreprise",
