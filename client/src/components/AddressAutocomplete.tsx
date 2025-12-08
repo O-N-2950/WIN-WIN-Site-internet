@@ -120,23 +120,32 @@ export function AddressAutocomplete({
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
             
-            if (data.length === 1) {
+            // Dédupliquer par postalCode + name (ignorer les doublons de communes)
+            const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
+              const key = `${current.postalCode}-${current.name}`;
+              if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) {
+                acc.push(current);
+              }
+              return acc;
+            }, []);
+            
+            if (uniqueData.length === 1) {
               // 1 seule localité → Remplissage automatique NPA + Localité
-              onNpaChange(data[0].postalCode);
-              onLocaliteChange(data[0].name);
+              onNpaChange(uniqueData[0].postalCode);
+              onLocaliteChange(uniqueData[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
               
               // Remplir automatiquement le canton
-              const cantonName = mapCantonToAirtable(data[0].canton.shortName);
+              const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
               if (cantonName && onCantonChange) {
                 onCantonChange(cantonName);
               }
               
-              toast.success(`✓ ${data[0].name} (${data[0].postalCode} - ${data[0].canton.shortName})`);
-            } else if (data.length > 1) {
+              toast.success(`✓ ${uniqueData[0].name} (${uniqueData[0].postalCode} - ${uniqueData[0].canton.shortName})`);
+            } else if (uniqueData.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
-              setSuggestions(data);
+              setSuggestions(uniqueData);
               setShowSuggestions(true);
             } else {
               // Localité introuvable
