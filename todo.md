@@ -42,6 +42,12 @@
 - [ ] Corriger erreurs TypeScript dans Merci.tsx (3 erreurs)
 - [ ] Corriger autres erreurs TypeScript (60+ erreurs dans d'autres fichiers)
 
+## 🎨 Améliorations UX AddressAutocomplete (Terminé)
+
+- [x] Ajouter indicateur visuel vert (✓) sur le champ NPA quand une localité est trouvée automatiquement
+- [x] Pré-remplir automatiquement le canton dans un champ caché pour l'envoyer à Airtable
+- [x] Ajouter un message d'aide sous les champs : "Tapez votre NPA ou votre localité, l'autre champ se remplira automatiquement"
+
 ## 🚀 PROCHAINES FONCTIONNALITÉS
 
 - [ ] Code de parrainage à l'étape 2

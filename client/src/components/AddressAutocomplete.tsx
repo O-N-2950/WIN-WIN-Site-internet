@@ -3,10 +3,10 @@ import { Label } from "@/components/ui/label";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { mapCantonToAirtable } from "@/lib/cantonMapping";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle2 } from "lucide-react";
 
-// VERSION V4 - FORCE RENDER FIX
-// Ce composant force la mise à jour visuelle des inputs
+// VERSION V5 - UX AMÉLIORÉE
+// Indicateur visuel vert + Message d'aide + Pré-remplissage canton
 
 interface AddressAutocompleteProps {
   npaValue: string;
@@ -38,6 +38,7 @@ export function AddressAutocomplete({
   const [suggestions, setSuggestions] = useState<OpenPLZLocality[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [npaIsValid, setNpaIsValid] = useState(false); // État pour l'indicateur vert
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -51,18 +52,16 @@ export function AddressAutocomplete({
   }, []);
 
   // --- LOGIQUE 1 : NPA CHANGE -> ON CHERCHE LA VILLE ---
-  // Cette logique est MAÎTRE. Si le NPA change, on veut toujours voir la ville correspondante.
   useEffect(() => {
-    // On lance la recherche seulement si on a 4 chiffres
     if (npaValue.length === 4 && /^\d{4}$/.test(npaValue)) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
+        setNpaIsValid(false); // Reset l'indicateur pendant la recherche
         try {
           const response = await fetch(`https://openplzapi.org/ch/Localities?postalCode=${npaValue}`);
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
             
-            // Déduplication
             const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
               const key = `${current.postalCode}-${current.name}`;
               if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) acc.push(current);
@@ -70,12 +69,13 @@ export function AddressAutocomplete({
             }, []);
             
             if (uniqueData.length === 1) {
-              // FORCE UPDATE: On met à jour même si c'est déjà la même valeur pour être sûr
+              // FORCE UPDATE: On met à jour même si c'est déjà la même valeur
               onLocaliteChange(uniqueData[0].name);
               
               const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
               if (cantonName && onCantonChange) onCantonChange(cantonName);
               
+              setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
               toast.success(`✓ ${uniqueData[0].name}`);
               
               setSuggestions([]);
@@ -93,7 +93,7 @@ export function AddressAutocomplete({
       }, 300);
       return () => clearTimeout(timer);
     } else if (npaValue.length < 4) {
-        // Si on efface le NPA, on ferme les suggestions mais on laisse la ville (choix UX)
+        setNpaIsValid(false); // Reset l'indicateur si NPA incomplet
         setSuggestions([]);
         setShowSuggestions(false);
     }
@@ -101,7 +101,6 @@ export function AddressAutocomplete({
 
   // --- LOGIQUE 2 : VILLE CHANGE -> ON CHERCHE LE NPA ---
   useEffect(() => {
-    // On ne cherche que si NPA incomplet pour éviter les boucles
     if (localiteValue.length > 2 && npaValue.length < 4) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
@@ -120,6 +119,8 @@ export function AddressAutocomplete({
                
                const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
                if (cantonName && onCantonChange) onCantonChange(cantonName);
+               
+               setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
                
                setSuggestions([]);
                setShowSuggestions(false);
@@ -146,21 +147,29 @@ export function AddressAutocomplete({
     
     const cantonName = mapCantonToAirtable(locality.canton.shortName);
     if (cantonName && onCantonChange) onCantonChange(cantonName);
+    
+    setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
   };
 
   return (
     <div className="space-y-2">
       {label && <Label>{label}</Label>}
       <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-1">
+        <div className="col-span-1 relative">
             <Input
             type="text"
             placeholder="NPA"
             value={npaValue}
             onChange={(e) => onNpaChange(e.target.value)}
             maxLength={4}
-            className="h-14 text-lg"
+            className={`h-14 text-lg ${npaIsValid ? 'border-green-500 border-2' : ''}`}
             />
+            {/* ✅ INDICATEUR VERT SUR LE CHAMP NPA */}
+            {npaIsValid && (
+              <div className="absolute right-3 top-4">
+                <CheckCircle2 className="h-6 w-6 text-green-500" />
+              </div>
+            )}
         </div>
         <div className="col-span-2 relative" ref={suggestionsRef}>
           <div className="relative">
@@ -199,6 +208,10 @@ export function AddressAutocomplete({
           )}
         </div>
       </div>
+      {/* ✅ MESSAGE D'AIDE SOUS LES CHAMPS */}
+      <p className="text-sm text-gray-500 mt-2">
+        💡 Tapez votre NPA ou votre localité, l'autre champ se remplira automatiquement
+      </p>
     </div>
   );
 }
