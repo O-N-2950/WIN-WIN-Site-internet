@@ -12,3 +12,6 @@
 - [x] Déboguer erreur d'enregistrement (tester localement + analyser logs)
 - [x] Corriger format polices dans handleSubmit (objects → strings)
 - [x] Corriger tous les noms de champs Airtable (11 champs corrigés)
+- [ ] Analyser logs Railway récents pour identifier l'erreur exacte
+- [ ] Vérifier TOUS les champs envoyés vs schéma Airtable
+- [ ] Fournir code complet corrigé si nécessaire
