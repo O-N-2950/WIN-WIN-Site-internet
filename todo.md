@@ -1,38 +1,42 @@
 
-- [x] Synchroniser listes déroulantes questionnaire avec Airtable (Nationalité, Permis, Banque)
-- [x] Implémenter logique conditionnelle : afficher champ Permis uniquement si nationalité !== "Suisse"
-- [x] Ajouter option "Autre" dans listes Banque et Nationalité avec champ texte libre
-- [x] Corriger backend server/routers.ts pour accepter tous les nouveaux champs du questionnaire
-- [ ] Tester enregistrement complet (frontend → backend → Airtable)
-- [x] Implémenter validation IBAN stricte (CH + 19 chiffres ou CH + 18 chiffres + 1 lettre) avec auto-formatage
-- [x] Ajouter champ Profession conditionnel (si Employé ou Indépendant)
-- [x] Mapper champ Profession vers Airtable
-- [x] Bloquer soumission si IBAN invalide (afficher erreur claire)
-- [x] Corriger schéma Zod polices (array de strings au lieu d'objets)
-- [x] Déboguer erreur d'enregistrement (tester localement + analyser logs)
-- [x] Corriger format polices dans handleSubmit (objects → strings)
-- [x] Corriger tous les noms de champs Airtable (11 champs corrigés)
-- [x] Analyser logs Railway récents pour identifier l'erreur exacte
-- [x] Vérifier TOUS les champs envoyés vs schéma Airtable
-- [x] Corriger champ Banque (espaces supprimés dans Airtable)
-- [x] Analyser les logs Railway pour voir l'erreur exacte côté serveur
-- [x] Identifier le champ ou la valeur qui cause le rejet par Airtable (Contact NPA)
-- [x] Corriger le code backend (conversion NPA string → number)
-- [x] Forcer Railway à redéployer avec le dernier commit GitHub
+- [x] Synchroniser listes déroulantes questionnaire avec Airtable
+- [x] Implémenter validation IBAN stricte avec auto-formatage
+- [x] Corriger backend pour accepter tous les champs
+- [x] Corriger tous les noms de champs Airtable
+- [x] Corriger conversion NPA string → number
+- [x] Améliorer copywriting ("rabais de groupe")
+- [x] Ajouter "Tout sélectionner" pour les polices
+- [x] Simplifier labels polices + ajouter Protection juridique + Dégâts d'eau
+- [x] Validation complète avec messages d'erreur précis
 
-## 🎨 AMÉLIORATIONS UX - Questionnaire Polices
+## 🐛 BUGS CRITIQUES EN COURS
 
-- [x] Remplacer "Voulez-vous payer moins cher ?" par "Souhaitez-vous bénéficier d'un rabais de groupe ?"
-- [x] Ajouter option "Tout sélectionner" en premier choix (coche/décoche toutes les polices)
-- [x] Simplifier les labels des polices (enlever "Police" répété : "Ménage" au lieu de "Police Ménage")
-- [x] Ajouter "Protection juridique" dans la liste des polices
-- [x] Ajouter "Dégâts d'eau bâtiment" dans la liste des polices
-- [x] Corriger validation email (z.string().min(1) au lieu de z.string().email())
-- [x] Ajouter validation complète avec messages d'erreur précis pour champs manquants
+- [x] **CSS Header** : Cacher le texte "WIN WIN Finance Group" (garder uniquement le logo)
+  - Problème : Le texte déborde et recouvre les onglets de navigation
+  - Solution : Modifier Header.tsx ligne 40 pour cacher le texte sur tous les écrans
 
-## 🚀 PROCHAINE FONCTIONNALITÉ - Code de Parrainage
+- [x] **UX Critique** : Ajouter bouton "Retour" pour revenir en arrière sans perdre les données
+  - Problème : Si l'utilisateur clique sur "Ajouter mon Entreprise" JUSTE POUR VOIR, tout s'efface
+  - Solution : Sauvegarder l'état précédent et ajouter un bouton "Annuler" qui restaure les données
+  - Workflow :
+    1. Utilisateur remplit dossier PRIVÉ → "Dossier enregistré !"
+    2. Clique "Ajouter mon Entreprise" → Nouveau formulaire vide
+    3. Clique "Annuler" → Retour à l'écran "Dossier enregistré !" avec données intactes
+    4. Peut finaliser avec "Terminer & Signer"
 
-- [ ] Ajouter champ "Code de parrainage (optionnel)" à l'étape 2 du questionnaire
-- [ ] Implémenter validation temps réel du code de parrainage
-- [ ] Afficher message de confirmation si code valide ("✓ Vous rejoignez le groupe de [Nom]")
-- [ ] Calculer et afficher le rabais immédiatement
+- [ ] **Attendre Railway** : Vérifier que le nouveau déploiement (commit 47972c2) fonctionne
+  - Railway doit redéployer avec la correction parseInt(npa)
+  - Tester enregistrement Airtable avec Oli Exemple3
+
+## 🔍 AUTO-COMPLÉTION NPA (EN ATTENTE)
+
+- [x] Rechercher API Zippopotam.us
+- [ ] Implémenter auto-complétion NPA → Localité dans AddressAutocomplete.tsx
+- [ ] Ajouter debouncing (500ms)
+- [ ] Gérer cas multiples localités
+
+## 🚀 PROCHAINES FONCTIONNALITÉS
+
+- [ ] Code de parrainage à l'étape 2
+- [ ] Validation temps réel du code
+- [ ] Afficher rabais immédiatement

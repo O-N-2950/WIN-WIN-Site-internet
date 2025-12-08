@@ -104,6 +104,7 @@ export default function Questionnaire() {
   const [direction, setDirection] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [parentDossier, setParentDossier] = useState<{email: string, nom: string} | null>(null);
+  const [previousData, setPreviousData] = useState<QuestionnaireData | null>(null);
 
   // État des données (Initialisation COMPLÈTE)
   const [data, setData] = useState<QuestionnaireData>({
@@ -337,6 +338,9 @@ export default function Questionnaire() {
   const handleNewDossier = (targetType: "prive" | "entreprise") => {
     const isConjoint = targetType === "prive";
     
+    // SAUVEGARDER l'état actuel avant de réinitialiser
+    setPreviousData({ ...data });
+    
     const commonContact = {
         email: data.email,
         telMobile: data.telMobile,
@@ -371,6 +375,17 @@ export default function Questionnaire() {
     setIsSubmitted(false);
     setCurrentStep(1);
     toast.info(targetType === 'entreprise' ? "Ajout de l'entreprise : Champs initialisés" : "Ajout du conjoint : Champs initialisés");
+  };
+
+  // Fonction pour revenir en arrière
+  const handleRetour = () => {
+    if (previousData) {
+      setData(previousData);
+      setPreviousData(null);
+      setIsSubmitted(true);
+      setCurrentStep(1);
+      toast.success("Retour au dossier précédent");
+    }
   };
 
   // Écran Upsell Final
@@ -476,6 +491,20 @@ export default function Questionnaire() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-background">
+      {/* Bouton Retour (si previousData existe) */}
+      {previousData && (
+        <div className="fixed top-4 left-4 z-50">
+          <Button
+            variant="outline"
+            onClick={handleRetour}
+            className="bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour
+          </Button>
+        </div>
+      )}
+
       {/* Indicateur de progression */}
       <div className="fixed top-4 right-4 z-50">
         <motion.div
