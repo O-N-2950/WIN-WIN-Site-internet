@@ -70,7 +70,7 @@ export const appRouter = router({
           // CAS : Dossier lié (Conjoint ou Entreprise)
           try {
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Email}='${input.parrainEmail}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.parrainEmail}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -182,7 +182,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRATION DU CLIENT DANS AIRTABLE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Email}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -245,7 +245,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRER LE PRIX DYNAMIQUE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Email}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,

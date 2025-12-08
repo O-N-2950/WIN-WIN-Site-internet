@@ -1,3 +1,6 @@
+# TODO - WIN WIN Finance Group
+
+## ✅ TERMINÉ
 
 - [x] Synchroniser listes déroulantes questionnaire avec Airtable
 - [x] Implémenter validation IBAN stricte avec auto-formatage
@@ -12,18 +15,32 @@
 - [x] Bouton "← Retour" pour préserver données
 - [x] Auto-complétion NPA → Localité avec API Zippopotam.us
 - [x] Champs Employeur + Taux d'activité pour Employé(e)
+- [x] Taux d'activité AUSSI pour Indépendant(e)
+- [x] Message humoristique 150% (Indépendant + Employé)
+- [x] Corrections TypeScript Durabilis.tsx (0 erreur)
 
-## 🐛 TÂCHE EN COURS
+## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
-- [x] **TAUX D'ACTIVITÉ + MESSAGE HUMORISTIQUE 150%**
-  - Ajouter le champ "Taux d'activité" AUSSI pour les Indépendant(e)
-  - Afficher un message humoristique quand 150% est sélectionné :
-    * Indépendant(e) → 💪 "Ah, un vrai entrepreneur ! 150% c'est le minimum !"
-    * Employé(e) → 🚀 "Wow ! Vous cumulez deux postes ?"
+- [ ] **BUG CALCUL PRIX STRIPE** : Erreur 500 lors du calcul du prix (client.getStripePrice)
+  - Vérifier que la mutation existe dans server/routers.ts
+  - Vérifier les credentials Airtable (AIRTABLE_BASE_ID, AIRTABLE_API_KEY)
+  - Vérifier la formule "Nb membres famille actifs" dans Airtable
 
-- [ ] **Attendre Railway** : Vérifier que le nouveau déploiement fonctionne
-  - Railway doit redéployer avec toutes les corrections
-  - Tester enregistrement Airtable complet
+- [ ] **API Zippopotam 404** : Remplacer par OpenPLZ (API suisse complète)
+  - URL : https://openplzapi.org/ch/Localities?postalCode=2950
+  - Plus fiable pour TOUS les NPA suisses
+
+- [ ] **Auto-complétion BIDIRECTIONNELLE** :
+  - [x] NPA → Localité (déjà fait)
+  - [ ] Localité → NPA (nouveau !)
+  - Exemple : "Bure" → NPA devient "2915"
+
+## 📝 ERREURS TYPESCRIPT (93 erreurs restantes)
+
+- [ ] Corriger erreurs TypeScript dans Mapping360.tsx (20+ erreurs)
+- [ ] Corriger erreurs TypeScript dans ParentsEnfants.tsx (10+ erreurs)
+- [ ] Corriger erreurs TypeScript dans Merci.tsx (3 erreurs)
+- [ ] Corriger autres erreurs TypeScript (60+ erreurs dans d'autres fichiers)
 
 ## 🚀 PROCHAINES FONCTIONNALITÉS
 
