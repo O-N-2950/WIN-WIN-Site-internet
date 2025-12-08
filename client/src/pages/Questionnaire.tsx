@@ -222,8 +222,14 @@ export default function Questionnaire() {
         if (!data.nom) missingFields.push("Nom");
         if (!data.dateNaissance) missingFields.push("Date de naissance");
         if (!data.statutProfessionnel) missingFields.push("Statut professionnel");
-        if ((data.statutProfessionnel === "Employé" || data.statutProfessionnel === "Indépendant") && !data.profession) {
+        if ((data.statutProfessionnel === "Employé(e)" || data.statutProfessionnel === "Indépendant(e)") && !data.profession) {
           missingFields.push("Profession");
+        }
+        if (data.statutProfessionnel === "Employé(e)" && !data.employeur) {
+          missingFields.push("Employeur");
+        }
+        if ((data.statutProfessionnel === "Employé(e)" || data.statutProfessionnel === "Indépendant(e)") && !data.tauxActivite) {
+          missingFields.push("Taux d'activité");
         }
         if (!data.situationFamiliale) missingFields.push("Situation familiale");
         if (!data.nationalite) missingFields.push("Nationalité");
@@ -291,6 +297,8 @@ export default function Questionnaire() {
         dateNaissance: data.dateNaissance,
         statutProfessionnel: data.statutProfessionnel,
         profession: data.profession,
+        employeur: data.employeur,
+        tauxActivite: data.tauxActivite,
         situationFamiliale: data.situationFamiliale,
         nationalite: data.nationalite,
         autreNationalite: data.autreNationalite,
@@ -901,6 +909,71 @@ export default function Questionnaire() {
                             className="mt-2 text-lg h-14"
                             required
                           />
+                        </motion.div>
+                      )}
+
+                      {/* Champ Employeur (conditionnel pour Employé(e) uniquement) */}
+                      {data.statutProfessionnel === "Employé(e)" && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          <Label htmlFor="employeur" className="text-lg">Employeur *</Label>
+                          <Input
+                            id="employeur"
+                            value={data.employeur}
+                            onChange={(e) => setData({ ...data, employeur: e.target.value })}
+                            placeholder="Ex: WIN WIN Finance Group"
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+                      )}
+
+                      {/* Champ Taux d'activité (conditionnel pour Employé(e) ET Indépendant(e)) */}
+                      {(data.statutProfessionnel === "Employé(e)" || data.statutProfessionnel === "Indépendant(e)") && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          <Label htmlFor="tauxActivite" className="text-lg">Taux d'activité *</Label>
+                          <Select 
+                            value={data.tauxActivite} 
+                            onValueChange={(value) => {
+                              setData({ ...data, tauxActivite: value as any });
+                              // Message humoristique pour 150%
+                              if (value === "150 %") {
+                                if (data.statutProfessionnel === "Indépendant(e)") {
+                                  toast.success("💪 Ah, un vrai entrepreneur ! 150% c'est le minimum !", {
+                                    duration: 4000,
+                                  });
+                                } else if (data.statutProfessionnel === "Employé(e)") {
+                                  toast.success("🚀 Wow ! Vous cumulez deux postes ?", {
+                                    duration: 4000,
+                                  });
+                                }
+                              }
+                            }}
+                          >
+                            <SelectTrigger className="mt-2 text-lg h-14">
+                              <SelectValue placeholder="Sélectionnez..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="10 %">10 %</SelectItem>
+                              <SelectItem value="20 %">20 %</SelectItem>
+                              <SelectItem value="30 %">30 %</SelectItem>
+                              <SelectItem value="40 %">40 %</SelectItem>
+                              <SelectItem value="50 %">50 %</SelectItem>
+                              <SelectItem value="60 %">60 %</SelectItem>
+                              <SelectItem value="70 %">70 %</SelectItem>
+                              <SelectItem value="80 %">80 %</SelectItem>
+                              <SelectItem value="90 %">90 %</SelectItem>
+                              <SelectItem value="100 %">100 %</SelectItem>
+                              <SelectItem value="150 %">150 %</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </motion.div>
                       )}
 

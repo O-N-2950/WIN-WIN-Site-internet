@@ -8,32 +8,22 @@
 - [x] Ajouter "Tout sélectionner" pour les polices
 - [x] Simplifier labels polices + ajouter Protection juridique + Dégâts d'eau
 - [x] Validation complète avec messages d'erreur précis
+- [x] CSS Header : Cacher texte logo
+- [x] Bouton "← Retour" pour préserver données
+- [x] Auto-complétion NPA → Localité avec API Zippopotam.us
+- [x] Champs Employeur + Taux d'activité pour Employé(e)
 
-## 🐛 BUGS CRITIQUES EN COURS
+## 🐛 TÂCHE EN COURS
 
-- [x] **CSS Header** : Cacher le texte "WIN WIN Finance Group" (garder uniquement le logo)
-  - Problème : Le texte déborde et recouvre les onglets de navigation
-  - Solution : Modifier Header.tsx ligne 40 pour cacher le texte sur tous les écrans
+- [x] **TAUX D'ACTIVITÉ + MESSAGE HUMORISTIQUE 150%**
+  - Ajouter le champ "Taux d'activité" AUSSI pour les Indépendant(e)
+  - Afficher un message humoristique quand 150% est sélectionné :
+    * Indépendant(e) → 💪 "Ah, un vrai entrepreneur ! 150% c'est le minimum !"
+    * Employé(e) → 🚀 "Wow ! Vous cumulez deux postes ?"
 
-- [x] **UX Critique** : Ajouter bouton "Retour" pour revenir en arrière sans perdre les données
-  - Problème : Si l'utilisateur clique sur "Ajouter mon Entreprise" JUSTE POUR VOIR, tout s'efface
-  - Solution : Sauvegarder l'état précédent et ajouter un bouton "Annuler" qui restaure les données
-  - Workflow :
-    1. Utilisateur remplit dossier PRIVÉ → "Dossier enregistré !"
-    2. Clique "Ajouter mon Entreprise" → Nouveau formulaire vide
-    3. Clique "Annuler" → Retour à l'écran "Dossier enregistré !" avec données intactes
-    4. Peut finaliser avec "Terminer & Signer"
-
-- [ ] **Attendre Railway** : Vérifier que le nouveau déploiement (commit 47972c2) fonctionne
-  - Railway doit redéployer avec la correction parseInt(npa)
-  - Tester enregistrement Airtable avec Oli Exemple3
-
-## 🔍 AUTO-COMPLÉTION NPA (EN ATTENTE)
-
-- [x] Rechercher API Zippopotam.us
-- [ ] Implémenter auto-complétion NPA → Localité dans AddressAutocomplete.tsx
-- [ ] Ajouter debouncing (500ms)
-- [ ] Gérer cas multiples localités
+- [ ] **Attendre Railway** : Vérifier que le nouveau déploiement fonctionne
+  - Railway doit redéployer avec toutes les corrections
+  - Tester enregistrement Airtable complet
 
 ## 🚀 PROCHAINES FONCTIONNALITÉS
 
