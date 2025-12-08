@@ -24,7 +24,11 @@ interface AddressAutocompleteProps {
 interface OpenPLZLocality {
   postalCode: string;
   name: string;
-  canton: string;
+  canton: {
+    key: string;
+    name: string;
+    shortName: string;
+  };
 }
 
 export function AddressAutocomplete({
@@ -66,7 +70,7 @@ export function AddressAutocomplete({
               onLocaliteChange(data[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
-              toast.success(`✓ ${data[0].name} (${data[0].canton})`);
+              toast.success(`✓ ${data[0].name} (${data[0].canton.shortName})`);
             } else if (data.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
               setSuggestions(data);
@@ -112,7 +116,7 @@ export function AddressAutocomplete({
               onLocaliteChange(data[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
-              toast.success(`✓ ${data[0].name} (${data[0].postalCode})`);
+              toast.success(`✓ ${data[0].name} (${data[0].postalCode} - ${data[0].canton.shortName})`);
             } else if (data.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
               setSuggestions(data);
@@ -139,7 +143,7 @@ export function AddressAutocomplete({
     onLocaliteChange(locality.name);
     setShowSuggestions(false);
     setSuggestions([]);
-    toast.success(`✓ ${locality.name} (${locality.postalCode})`);
+    toast.success(`✓ ${locality.name} (${locality.postalCode} - ${locality.canton.shortName})`);
   };
 
   return (
@@ -174,7 +178,7 @@ export function AddressAutocomplete({
                 >
                   <div className="font-medium">{locality.name}</div>
                   <div className="text-sm text-gray-500">
-                    {locality.postalCode} · {locality.canton}
+                    {locality.postalCode} · {locality.canton.shortName}
                   </div>
                 </button>
               ))}

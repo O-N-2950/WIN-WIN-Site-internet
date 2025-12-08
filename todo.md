@@ -21,19 +21,19 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
-- [ ] **BUG CALCUL PRIX STRIPE** : Erreur 500 lors du calcul du prix (client.getStripePrice)
-  - Vérifier que la mutation existe dans server/routers.ts
-  - Vérifier les credentials Airtable (AIRTABLE_BASE_ID, AIRTABLE_API_KEY)
-  - Vérifier la formule "Nb membres famille actifs" dans Airtable
+- [x] **BUG CALCUL PRIX STRIPE** : Erreur 500 lors du calcul du prix (client.getStripePrice)
+  - ✅ Filtres Airtable corrigés avec field IDs
+  - ✅ Calcul dynamique du nombre de membres (plus besoin de champ Airtable)
+  - ✅ 3 mutations corrigées (create, getStripePrice, createCheckoutSession)
 
-- [ ] **API Zippopotam 404** : Remplacer par OpenPLZ (API suisse complète)
-  - URL : https://openplzapi.org/ch/Localities?postalCode=2950
-  - Plus fiable pour TOUS les NPA suisses
+- [x] **API Zippopotam 404** : Remplacer par OpenPLZ (API suisse complète)
+  - ✅ AddressAutocomplete.tsx réécrit avec OpenPLZ
+  - ✅ Plus d'erreurs 404 sur NPA valides
 
-- [ ] **Auto-complétion BIDIRECTIONNELLE** :
+- [x] **Auto-complétion BIDIRECTIONNELLE** :
   - [x] NPA → Localité (déjà fait)
-  - [ ] Localité → NPA (nouveau !)
-  - Exemple : "Bure" → NPA devient "2915"
+  - [x] Localité → NPA (nouveau !)
+  - ✅ Exemple : "Bure" → NPA devient "2915"
 
 ## 📝 ERREURS TYPESCRIPT (93 erreurs restantes)
 
