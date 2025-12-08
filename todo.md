@@ -47,6 +47,8 @@
 - [x] Ajouter indicateur visuel vert (✓) sur le champ NPA quand une localité est trouvée automatiquement
 - [x] Pré-remplir automatiquement le canton dans un champ caché pour l'envoyer à Airtable
 - [x] Ajouter un message d'aide sous les champs : "Tapez votre NPA ou votre localité, l'autre champ se remplira automatiquement"
+- [x] Ajouter animation bounce sur l'icône verte ✓ pour la rendre plus visible
+- [x] Afficher le canton trouvé dans le message d'aide (ex: "✓ Porrentruy, Jura")
 
 ## 🚀 PROCHAINES FONCTIONNALITÉS
 
