@@ -213,12 +213,7 @@ export function AddressAutocomplete({
           type="text"
           placeholder="NPA"
           value={npaValue}
-          onChange={(e) => {
-            // Réinitialiser isSelecting si l'utilisateur tape manuellement
-            if (!isSelecting) {
-              onNpaChange(e.target.value);
-            }
-          }}
+          onChange={(e) => onNpaChange(e.target.value)}
           maxLength={4}
         />
         <div className="relative" ref={suggestionsRef}>
@@ -226,12 +221,7 @@ export function AddressAutocomplete({
             type="text"
             placeholder={isLoading ? "Recherche..." : "Localité"}
             value={localiteValue}
-            onChange={(e) => {
-              // Réinitialiser isSelecting si l'utilisateur tape manuellement
-              if (!isSelecting) {
-                onLocaliteChange(e.target.value);
-              }
-            }}
+            onChange={(e) => onLocaliteChange(e.target.value)}
             disabled={isLoading}
           />
           
