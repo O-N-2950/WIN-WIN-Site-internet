@@ -21,6 +21,11 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
+- [x] **BUG VALIDATION EMPLOYÉS** : Permettre 0 employés pour les entreprises immobilières
+- [x] **BUG LOCALITÉ VIDE** : Railway n'a pas redéployé la V6, forcer le déploiement
+
+## 🔥 BUGS CRITIQUES RÉSOLUS
+
 - [x] **BUG CALCUL PRIX STRIPE** : Erreur 500 lors du calcul du prix (client.getStripePrice)
   - ✅ Filtres Airtable corrigés avec field IDs
   - ✅ Calcul dynamique du nombre de membres (plus besoin de champ Airtable)

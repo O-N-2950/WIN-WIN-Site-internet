@@ -248,7 +248,7 @@ export default function Questionnaire() {
         // Champs ENTREPRISE obligatoires
         if (!data.nomEntreprise) missingFields.push("Nom de l'entreprise");
         if (!data.formeJuridique) missingFields.push("Forme juridique");
-        if (!data.nombreEmployes) missingFields.push("Nombre d'employés");
+        if (data.nombreEmployes === undefined || data.nombreEmployes === null) missingFields.push("Nombre d'employés");
         if (!data.adresseEntreprise) missingFields.push("Adresse de l'entreprise");
         if (!data.npaEntreprise) missingFields.push("NPA de l'entreprise");
         if (!data.localiteEntreprise) missingFields.push("Localité de l'entreprise");
