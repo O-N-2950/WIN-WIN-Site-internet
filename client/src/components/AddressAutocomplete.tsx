@@ -38,7 +38,6 @@ export function AddressAutocomplete({
   const [isSelecting, setIsSelecting] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  // Fermer les suggestions si clic dehors
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
@@ -49,11 +48,10 @@ export function AddressAutocomplete({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // --- RECHERCHE 1 : NPA → LOCALITÉ ---
+  // SEARCH 1: NPA -> LOCALITY
   useEffect(() => {
-    if (isSelecting) return; // Sécurité anti-boucle
+    if (isSelecting) return;
     
-    // On ne lance la recherche que si on a 4 chiffres exacts
     if (npaValue.length === 4 && /^\d{4}$/.test(npaValue)) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
@@ -61,8 +59,6 @@ export function AddressAutocomplete({
           const response = await fetch(`https://openplzapi.org/ch/Localities?postalCode=${npaValue}`);
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
-            
-            // Dédupliquer
             const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
               const key = `${current.postalCode}-${current.name}`;
               if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) acc.push(current);
@@ -70,44 +66,32 @@ export function AddressAutocomplete({
             }, []);
             
             if (uniqueData.length === 1) {
-              // MATCH EXACT -> AUTOFILL
-              // IMPORTANT : On verrouille pour ne pas déclencher l'autre useEffect
               setIsSelecting(true);
-              
               onLocaliteChange(uniqueData[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
-              
               const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
               if (cantonName && onCantonChange) onCantonChange(cantonName);
-              
               toast.success(`✓ ${uniqueData[0].name}`);
-              
-              // Déverrouillage après délai
               setTimeout(() => setIsSelecting(false), 800);
             } else if (uniqueData.length > 1) {
               setSuggestions(uniqueData);
               setShowSuggestions(true);
             }
           }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsLoading(false);
-        }
+        } catch (error) { console.error(error); } finally { setIsLoading(false); }
       }, 300);
       return () => clearTimeout(timer);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
     }
-  }, [npaValue]); // Dépendance unique
+  }, [npaValue]);
 
-  // --- RECHERCHE 2 : LOCALITÉ → NPA ---
+  // SEARCH 2: LOCALITY -> NPA
   useEffect(() => {
-    if (isSelecting) return; // Sécurité anti-boucle
+    if (isSelecting) return;
 
-    // On cherche si > 2 lettres et que le NPA n'est pas déjà rempli (ou incomplet)
     if (localiteValue.length > 2 && npaValue.length < 4) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
@@ -115,8 +99,6 @@ export function AddressAutocomplete({
           const response = await fetch(`https://openplzapi.org/ch/Localities?name=${encodeURIComponent(localiteValue)}`);
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
-            
-            // Dédupliquer
             const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
               const key = `${current.postalCode}-${current.name}`;
               if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) acc.push(current);
@@ -124,17 +106,12 @@ export function AddressAutocomplete({
             }, []);
             
             if (uniqueData.length === 1) {
-               // MATCH EXACT -> AUTOFILL
-               setIsSelecting(true); // Verrouillage
-               
+               setIsSelecting(true);
                onNpaChange(uniqueData[0].postalCode);
-               // onLocaliteChange(uniqueData[0].name); // Pas besoin de changer la localité si on la tape déjà
                setSuggestions([]);
                setShowSuggestions(false);
-               
                const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
                if (cantonName && onCantonChange) onCantonChange(cantonName);
-               
                toast.success(`✓ ${uniqueData[0].postalCode}`);
                setTimeout(() => setIsSelecting(false), 800);
             } else if (uniqueData.length > 1) {
@@ -142,27 +119,20 @@ export function AddressAutocomplete({
               setShowSuggestions(true);
             }
           }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsLoading(false);
-        }
+        } catch (error) { console.error(error); } finally { setIsLoading(false); }
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [localiteValue]); // Dépendance unique
+  }, [localiteValue]);
 
   const handleSelectSuggestion = (locality: OpenPLZLocality) => {
-    setIsSelecting(true); // Verrouillage manuel
-    
+    setIsSelecting(true);
     onNpaChange(locality.postalCode);
     onLocaliteChange(locality.name);
     setShowSuggestions(false);
     setSuggestions([]);
-    
     const cantonName = mapCantonToAirtable(locality.canton.shortName);
     if (cantonName && onCantonChange) onCantonChange(cantonName);
-    
     setTimeout(() => setIsSelecting(false), 800);
   };
 
@@ -171,44 +141,19 @@ export function AddressAutocomplete({
       {label && <Label>{label}</Label>}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-1">
-            <Input
-            type="text"
-            placeholder="NPA"
-            value={npaValue}
-            onChange={(e) => onNpaChange(e.target.value)}
-            maxLength={4}
-            className="h-14 text-lg"
-            />
+            <Input type="text" placeholder="NPA" value={npaValue} onChange={(e) => onNpaChange(e.target.value)} maxLength={4} className="h-14 text-lg" />
         </div>
         <div className="col-span-2 relative" ref={suggestionsRef}>
           <div className="relative">
-            <Input
-                type="text"
-                placeholder="Localité"
-                value={localiteValue}
-                onChange={(e) => onLocaliteChange(e.target.value)}
-                className="h-14 text-lg"
-            />
-            {isLoading && (
-                <div className="absolute right-3 top-4">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-            )}
+            <Input type="text" placeholder="Localité" value={localiteValue} onChange={(e) => onLocaliteChange(e.target.value)} className="h-14 text-lg" />
+            {isLoading && (<div className="absolute right-3 top-4"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>)}
           </div>
-          
           {showSuggestions && suggestions.length > 0 && (
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
               {suggestions.map((locality, index) => (
-                <button
-                  key={`${locality.postalCode}-${index}`}
-                  type="button"
-                  onClick={() => handleSelectSuggestion(locality)}
-                  className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors border-b last:border-b-0"
-                >
+                <button key={`${locality.postalCode}-${index}`} type="button" onClick={() => handleSelectSuggestion(locality)} className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors border-b last:border-b-0">
                   <div className="font-medium text-base">{locality.name}</div>
-                  <div className="text-sm text-gray-500">
-                    {locality.postalCode} · {locality.canton.shortName}
-                  </div>
+                  <div className="text-sm text-gray-500">{locality.postalCode} · {locality.canton.shortName}</div>
                 </button>
               ))}
             </div>
