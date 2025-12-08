@@ -15,3 +15,10 @@
 - [x] Analyser logs Railway récents pour identifier l'erreur exacte
 - [x] Vérifier TOUS les champs envoyés vs schéma Airtable
 - [x] Corriger champ Banque (espaces supprimés dans Airtable)
+
+## 🐛 DÉBOGAGE URGENT - Erreur 500 Airtable (Oli Exemple3)
+
+- [x] Analyser les logs Railway pour voir l'erreur exacte côté serveur
+- [x] Identifier le champ ou la valeur qui cause le rejet par Airtable (Contact NPA)
+- [x] Corriger le code backend (conversion NPA string → number)
+- [ ] Tester avec les données de Oli Exemple3 pour valider la correction

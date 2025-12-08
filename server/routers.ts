@@ -109,7 +109,7 @@ export const appRouter = router({
           airtableFields["Forme Juridique "] = input.formeJuridique || "";
           airtableFields["Nombre d'employés"] = input.nombreEmployes || 0;
           airtableFields["Contact Adresse, no"] = input.adresseEntreprise || "";
-          airtableFields["Contact NPA"] = input.npaEntreprise || "";
+          airtableFields["Contact NPA"] = input.npaEntreprise ? parseInt(input.npaEntreprise, 10) : null;
           airtableFields["Contact Localité"] = input.localiteEntreprise || "";
           // Banque entreprise : Utiliser "autreBanqueEntreprise" si "Autre" sélectionné
           airtableFields["Banque"] = input.banqueEntreprise === "Autre" ? (input.autreBanqueEntreprise || "Autre") : (input.banqueEntreprise || "");
@@ -132,7 +132,7 @@ export const appRouter = router({
             airtableFields["Permis d'établissement"] = input.permis || "";
           }
           airtableFields["Contact Adresse, no"] = input.adresse || "";
-          airtableFields["Contact NPA"] = input.npa || "";
+          airtableFields["Contact NPA"] = input.npa ? parseInt(input.npa, 10) : null;
           airtableFields["Contact Localité"] = input.localite || "";
           // Banque : Utiliser "autreBanque" si "Autre" sélectionné
           airtableFields["Banque"] = input.banque === "Autre" ? (input.autreBanque || "Autre") : (input.banque || "");
