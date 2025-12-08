@@ -70,7 +70,7 @@ export const appRouter = router({
           // CAS : Dossier lié (Conjoint ou Entreprise)
           try {
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.parrainEmail}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.parrainEmail}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -81,7 +81,7 @@ export const appRouter = router({
             
             if (data.records && data.records.length > 0) {
               // Récupérer le groupe familial du parrain
-              groupeFamilial = data.records[0].fields["Groupe Familial"] || "";
+              groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
             }
           } catch (error) {
             console.error("Erreur lors de la récupération du parrain:", error);
@@ -182,7 +182,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRATION DU CLIENT DANS AIRTABLE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -196,8 +196,22 @@ export const appRouter = router({
           }
 
           const clientRecord = data.records[0];
-          const nbMembres = clientRecord.fields["Nb membres famille actifs"] || 1;
-          const groupeFamilial = clientRecord.fields["Groupe Familial"] || "";
+          const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
+          
+          // Compter les membres actifs du groupe familial
+          let nbMembres = 1;
+          if (groupeFamilial) {
+            const familyResponse = await fetch(
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              {
+                headers: {
+                  Authorization: `Bearer ${ENV.airtableApiKey}`,
+                },
+              }
+            );
+            const familyData = await familyResponse.json();
+            nbMembres = familyData.records?.length || 1;
+          }
 
           // 2. FORMULE DE RABAIS STRICTE
           let rabaisPourcent = 0;
@@ -245,7 +259,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRER LE PRIX DYNAMIQUE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={Contact E-mail}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -259,7 +273,22 @@ export const appRouter = router({
           }
 
           const clientRecord = data.records[0];
-          const nbMembres = clientRecord.fields["Nb membres famille actifs"] || 1;
+          const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
+          
+          // Compter les membres actifs du groupe familial
+          let nbMembres = 1;
+          if (groupeFamilial) {
+            const familyResponse = await fetch(
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              {
+                headers: {
+                  Authorization: `Bearer ${ENV.airtableApiKey}`,
+                },
+              }
+            );
+            const familyData = await familyResponse.json();
+            nbMembres = familyData.records?.length || 1;
+          }
 
           // 2. CALCUL DU PRIX AVEC FORMULE VALIDÉE
           let rabaisPourcent = 0;
