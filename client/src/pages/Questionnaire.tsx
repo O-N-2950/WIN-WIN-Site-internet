@@ -75,6 +75,7 @@ interface QuestionnaireData {
   adresse: string;
   npa: string;
   localite: string;
+  canton: string; // Rempli automatiquement par OpenPLZ
   polices: Police[];
   
   // Données entreprise (si typeClient = "entreprise")
@@ -113,7 +114,7 @@ export default function Questionnaire() {
     profession: "", employeur: "", tauxActivite: "",
     situationFamiliale: "", nationalite: "", autreNationalite: "", permisEtablissement: "",
     banque: "", autreBanque: "", iban: "", typeClient: "",
-    adresse: "", npa: "", localite: "", polices: [],
+    adresse: "", npa: "", localite: "", canton: "", polices: [],
     // Entreprise
     nomEntreprise: "", formeJuridique: "", nombreEmployes: 0,
     adresseEntreprise: "", npaEntreprise: "", localiteEntreprise: "",
@@ -1097,6 +1098,7 @@ export default function Questionnaire() {
                         localiteValue={data.localiteEntreprise || ""}
                         onNpaChange={(value) => setData({ ...data, npaEntreprise: value })}
                         onLocaliteChange={(value) => setData({ ...data, localiteEntreprise: value })}
+                        onCantonChange={(value) => setData({ ...data, canton: value })}
                         required
                       />
                     </div>
@@ -1143,6 +1145,7 @@ export default function Questionnaire() {
                         localiteValue={data.localite}
                         onNpaChange={(value) => setData({ ...data, npa: value })}
                         onLocaliteChange={(value) => setData({ ...data, localite: value })}
+                        onCantonChange={(value) => setData({ ...data, canton: value })}
                         required
                       />
 

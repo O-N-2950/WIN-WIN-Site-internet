@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { mapCantonToAirtable } from "@/lib/cantonMapping";
 
 /**
  * Composant AddressAutocomplete avec API OpenPLZ (Suisse)
@@ -18,6 +19,7 @@ interface AddressAutocompleteProps {
   localiteValue: string;
   onNpaChange: (value: string) => void;
   onLocaliteChange: (value: string) => void;
+  onCantonChange?: (value: string) => void;
   label?: string;
 }
 
@@ -36,7 +38,8 @@ export function AddressAutocomplete({
   localiteValue,
   onNpaChange,
   onLocaliteChange,
-  label = "NPA / Localité",
+  onCantonChange,
+  label,
 }: AddressAutocompleteProps) {
   const [suggestions, setSuggestions] = useState<OpenPLZLocality[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -70,6 +73,13 @@ export function AddressAutocomplete({
               onLocaliteChange(data[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
+              
+              // Remplir automatiquement le canton
+              const cantonName = mapCantonToAirtable(data[0].canton.shortName);
+              if (cantonName && onCantonChange) {
+                onCantonChange(cantonName);
+              }
+              
               toast.success(`✓ ${data[0].name} (${data[0].canton.shortName})`);
             } else if (data.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
@@ -116,6 +126,13 @@ export function AddressAutocomplete({
               onLocaliteChange(data[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
+              
+              // Remplir automatiquement le canton
+              const cantonName = mapCantonToAirtable(data[0].canton.shortName);
+              if (cantonName && onCantonChange) {
+                onCantonChange(cantonName);
+              }
+              
               toast.success(`✓ ${data[0].name} (${data[0].postalCode} - ${data[0].canton.shortName})`);
             } else if (data.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
@@ -143,6 +160,13 @@ export function AddressAutocomplete({
     onLocaliteChange(locality.name);
     setShowSuggestions(false);
     setSuggestions([]);
+    
+    // Remplir automatiquement le canton
+    const cantonName = mapCantonToAirtable(locality.canton.shortName);
+    if (cantonName && onCantonChange) {
+      onCantonChange(cantonName);
+    }
+    
     toast.success(`✓ ${locality.name} (${locality.postalCode} - ${locality.canton.shortName})`);
   };
 

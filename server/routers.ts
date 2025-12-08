@@ -40,6 +40,7 @@ export const appRouter = router({
         adresse: z.string().optional(),
         npa: z.string().optional(),
         localite: z.string().optional(),
+        canton: z.string().optional(), // Rempli automatiquement par OpenPLZ
         banque: z.string().optional(),
         autreBanque: z.string().optional(), // Si banque === "Autre"
         iban: z.string().refine((val) => !val || val.length >= 15, {
@@ -134,6 +135,7 @@ export const appRouter = router({
           airtableFields["Contact Adresse, no"] = input.adresse || "";
           airtableFields["Contact NPA"] = input.npa ? parseInt(input.npa, 10) : null;
           airtableFields["Contact Localité"] = input.localite || "";
+          airtableFields["Canton"] = input.canton || ""; // Rempli automatiquement par OpenPLZ
           // Banque : Utiliser "autreBanque" si "Autre" sélectionné
           airtableFields["Banque"] = input.banque === "Autre" ? (input.autreBanque || "Autre") : (input.banque || "");
           airtableFields["IBAN"] = input.iban || "";
