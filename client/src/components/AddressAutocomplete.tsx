@@ -11,6 +11,7 @@ import { mapCantonToAirtable } from "@/lib/cantonMapping";
  * - NPA → Localité : Tape "2950" → Liste déroulante ["Courgenay", "Courtemautruy"]
  * - Localité → NPA : Tape "Bure" → NPA devient "2915" automatiquement
  * - Auto-complétion BIDIRECTIONNELLE
+ * - Canton rempli automatiquement
  * - API gratuite et complète pour TOUS les NPA suisses
  */
 
@@ -44,6 +45,7 @@ export function AddressAutocomplete({
   const [suggestions, setSuggestions] = useState<OpenPLZLocality[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSelecting, setIsSelecting] = useState(false); // Flag pour bloquer la recherche après sélection
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   // Fermer les suggestions si clic en dehors
@@ -58,9 +60,12 @@ export function AddressAutocomplete({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // RECHERCHE NPA → LOCALITÉ (quand NPA complet = 4 chiffres)
+  // RECHERCHE NPA → LOCALITÉ (quand NPA = 4 chiffres)
   useEffect(() => {
-    if (npaValue.length === 4) {
+    // Bloquer si en train de sélectionner
+    if (isSelecting) return;
+    
+    if (npaValue.length === 4 && /^\d{4}$/.test(npaValue)) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
         try {
@@ -68,22 +73,31 @@ export function AddressAutocomplete({
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
             
-            if (data.length === 1) {
+            // Dédupliquer par postalCode + name
+            const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
+              const key = `${current.postalCode}-${current.name}`;
+              if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) {
+                acc.push(current);
+              }
+              return acc;
+            }, []);
+            
+            if (uniqueData.length === 1) {
               // 1 seule localité → Remplissage automatique
-              onLocaliteChange(data[0].name);
+              onLocaliteChange(uniqueData[0].name);
               setSuggestions([]);
               setShowSuggestions(false);
               
               // Remplir automatiquement le canton
-              const cantonName = mapCantonToAirtable(data[0].canton.shortName);
+              const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
               if (cantonName && onCantonChange) {
                 onCantonChange(cantonName);
               }
               
-              toast.success(`✓ ${data[0].name} (${data[0].canton.shortName})`);
-            } else if (data.length > 1) {
+              toast.success(`✓ ${uniqueData[0].name} (${uniqueData[0].canton.shortName})`);
+            } else if (uniqueData.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
-              setSuggestions(data);
+              setSuggestions(uniqueData);
               setShowSuggestions(true);
             } else {
               // NPA invalide
@@ -107,20 +121,23 @@ export function AddressAutocomplete({
       setSuggestions([]);
       setShowSuggestions(false);
     }
-  }, [npaValue, onLocaliteChange]);
+  }, [npaValue]); // SEULEMENT npaValue !
 
   // RECHERCHE LOCALITÉ → NPA (quand localité >= 3 caractères)
   useEffect(() => {
+    // Bloquer si en train de sélectionner
+    if (isSelecting) return;
+    
+    // Ne chercher que si localité >= 3 caractères ET NPA pas encore rempli
     if (localiteValue.length >= 3 && npaValue.length < 4) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
         try {
-          // Recherche regex pour auto-complétion partielle
           const response = await fetch(`https://openplzapi.org/ch/Localities?name=${encodeURIComponent(localiteValue)}`);
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
             
-            // Dédupliquer par postalCode + name (ignorer les doublons de communes)
+            // Dédupliquer par postalCode + name
             const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
               const key = `${current.postalCode}-${current.name}`;
               if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) {
@@ -131,6 +148,7 @@ export function AddressAutocomplete({
             
             if (uniqueData.length === 1) {
               // 1 seule localité → Remplissage automatique NPA + Localité
+              setIsSelecting(true); // Bloquer la recherche
               onNpaChange(uniqueData[0].postalCode);
               onLocaliteChange(uniqueData[0].name);
               setSuggestions([]);
@@ -143,6 +161,9 @@ export function AddressAutocomplete({
               }
               
               toast.success(`✓ ${uniqueData[0].name} (${uniqueData[0].postalCode} - ${uniqueData[0].canton.shortName})`);
+              
+              // Débloquer après 500ms
+              setTimeout(() => setIsSelecting(false), 500);
             } else if (uniqueData.length > 1) {
               // Plusieurs localités → Afficher liste déroulante
               setSuggestions(uniqueData);
@@ -158,13 +179,15 @@ export function AddressAutocomplete({
         } finally {
           setIsLoading(false);
         }
-      }, 500); // Debounce 500ms pour la recherche texte
+      }, 300); // Debounce 300ms
 
       return () => clearTimeout(timer);
     }
-  }, [localiteValue, npaValue, onCantonChange]);
+  }, [localiteValue, npaValue]); // localiteValue ET npaValue pour la condition
 
   const handleSelectSuggestion = (locality: OpenPLZLocality) => {
+    setIsSelecting(true); // Bloquer la recherche
+    
     onNpaChange(locality.postalCode);
     onLocaliteChange(locality.name);
     setShowSuggestions(false);
@@ -177,6 +200,9 @@ export function AddressAutocomplete({
     }
     
     toast.success(`✓ ${locality.name} (${locality.postalCode} - ${locality.canton.shortName})`);
+    
+    // Débloquer après 500ms
+    setTimeout(() => setIsSelecting(false), 500);
   };
 
   return (
@@ -187,7 +213,12 @@ export function AddressAutocomplete({
           type="text"
           placeholder="NPA"
           value={npaValue}
-          onChange={(e) => onNpaChange(e.target.value)}
+          onChange={(e) => {
+            // Réinitialiser isSelecting si l'utilisateur tape manuellement
+            if (!isSelecting) {
+              onNpaChange(e.target.value);
+            }
+          }}
           maxLength={4}
         />
         <div className="relative" ref={suggestionsRef}>
@@ -195,7 +226,12 @@ export function AddressAutocomplete({
             type="text"
             placeholder={isLoading ? "Recherche..." : "Localité"}
             value={localiteValue}
-            onChange={(e) => onLocaliteChange(e.target.value)}
+            onChange={(e) => {
+              // Réinitialiser isSelecting si l'utilisateur tape manuellement
+              if (!isSelecting) {
+                onLocaliteChange(e.target.value);
+              }
+            }}
             disabled={isLoading}
           />
           
@@ -204,7 +240,7 @@ export function AddressAutocomplete({
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
               {suggestions.map((locality, index) => (
                 <button
-                  key={index}
+                  key={`${locality.postalCode}-${locality.name}-${index}`}
                   type="button"
                   onClick={() => handleSelectSuggestion(locality)}
                   className="w-full text-left px-4 py-2 hover:bg-primary/10 transition-colors border-b last:border-b-0"
