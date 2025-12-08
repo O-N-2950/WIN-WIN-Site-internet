@@ -23,11 +23,14 @@ import { trpc } from "@/lib/trpc";
 const STORAGE_KEY = "winwin_form_autosave";
 
 const CHECKLIST_PRIVE = [
-  { id: "maladie", label: "Police Assurance Maladie (Base + Compl.)", icon: "🏥" },
-  { id: "menage", label: "Police Ménage & RC Privée", icon: "🏠" },
-  { id: "voiture", label: "Police Véhicule / Moto", icon: "🚗" },
-  { id: "vie", label: "Police Vie / 3ème pilier", icon: "🌱" },
-  { id: "batiment", label: "Police Bâtiment (si propriétaire)", icon: "🏗️" },
+  { id: "tout", label: "Tout sélectionner", icon: "✅" },
+  { id: "maladie", label: "Assurance Maladie (Base + Compl.)", icon: "🏥" },
+  { id: "menage", label: "Ménage & RC Privée", icon: "🏠" },
+  { id: "voiture", label: "Véhicule / Moto", icon: "🚗" },
+  { id: "vie", label: "Vie / 3ème pilier", icon: "🌱" },
+  { id: "batiment", label: "Bâtiment (si propriétaire)", icon: "🏗️" },
+  { id: "degats_eau", label: "Dégâts d'eau bâtiment", icon: "💧" },
+  { id: "protection_juridique", label: "Protection juridique", icon: "⚖️" },
 ];
 
 const CHECKLIST_ENTREPRISE = [
@@ -204,6 +207,61 @@ export default function Questionnaire() {
 
   const handleSubmit = async () => {
     try {
+      // VALIDATION COMPLÈTE DES CHAMPS OBLIGATOIRES
+      const missingFields: string[] = [];
+      
+      // Champs communs
+      if (!data.email) missingFields.push("Émail");
+      if (!data.telMobile) missingFields.push("Téléphone mobile");
+      
+      if (data.typeClient === "prive") {
+        // Champs PRIVÉ obligatoires
+        if (!data.formuleAppel) missingFields.push("Formule d'appel");
+        if (!data.prenom) missingFields.push("Prénom");
+        if (!data.nom) missingFields.push("Nom");
+        if (!data.dateNaissance) missingFields.push("Date de naissance");
+        if (!data.statutProfessionnel) missingFields.push("Statut professionnel");
+        if ((data.statutProfessionnel === "Employé" || data.statutProfessionnel === "Indépendant") && !data.profession) {
+          missingFields.push("Profession");
+        }
+        if (!data.situationFamiliale) missingFields.push("Situation familiale");
+        if (!data.nationalite) missingFields.push("Nationalité");
+        if (data.nationalite === "Autre" && !data.autreNationalite) missingFields.push("Autre nationalité (préciser)");
+        if (data.nationalite && data.nationalite !== "Suisse" && !data.permisEtablissement) {
+          missingFields.push("Permis d'établissement");
+        }
+        if (!data.adresse) missingFields.push("Adresse");
+        if (!data.npa) missingFields.push("NPA");
+        if (!data.localite) missingFields.push("Localité");
+        if (!data.banque) missingFields.push("Banque");
+        if (data.banque === "Autre" && !data.autreBanque) missingFields.push("Autre banque (préciser)");
+        if (!data.iban) missingFields.push("IBAN");
+      } else if (data.typeClient === "entreprise") {
+        // Champs ENTREPRISE obligatoires
+        if (!data.nomEntreprise) missingFields.push("Nom de l'entreprise");
+        if (!data.formeJuridique) missingFields.push("Forme juridique");
+        if (!data.nombreEmployes) missingFields.push("Nombre d'employés");
+        if (!data.adresseEntreprise) missingFields.push("Adresse de l'entreprise");
+        if (!data.npaEntreprise) missingFields.push("NPA de l'entreprise");
+        if (!data.localiteEntreprise) missingFields.push("Localité de l'entreprise");
+        if (!data.banqueEntreprise) missingFields.push("Banque de l'entreprise");
+        if (data.banqueEntreprise === "Autre" && !data.autreBanqueEntreprise) missingFields.push("Autre banque (préciser)");
+        if (!data.ibanEntreprise) missingFields.push("IBAN de l'entreprise");
+      }
+      
+      // Polices obligatoires (au moins 1)
+      if (data.polices.length === 0) {
+        missingFields.push("Au moins une police à optimiser");
+      }
+      
+      if (missingFields.length > 0) {
+        toast.error(
+          `⚠️ Formulaire incomplet\n\nVeuillez remplir les champs suivants :\n• ${missingFields.join('\n• ')}`,
+          { duration: 8000 }
+        );
+        return;
+      }
+      
       // VALIDATION IBAN AVANT ENVOI
       if (data.typeClient === "prive" && data.iban) {
         const ibanError = getIBANError(data.iban);
@@ -326,7 +384,7 @@ export default function Questionnaire() {
                  <h2 className="text-4xl font-bold mb-4">Dossier enregistré !</h2>
                  <p className="text-xl text-muted-foreground mb-8">
                     Le tarif standard est de 185.-/an. <br/>
-                    <span className="text-primary font-bold">Voulez-vous payer moins cher ?</span>
+                    <span className="text-primary font-bold">Souhaitez-vous bénéficier d'un rabais de groupe ?</span>
                  </p>
                  
                  <div className="grid md:grid-cols-3 gap-6">
@@ -1091,22 +1149,45 @@ export default function Questionnaire() {
                           className="flex items-center gap-4 p-4 rounded-lg border-2 border-border hover:border-primary/50 cursor-pointer transition-all bg-background"
                         >
                           <Checkbox
-                            checked={data.polices.some(p => p.typesContrats.includes(item.id))}
+                            checked={item.id === "tout" ? 
+                              (data.typeClient === 'prive' ? CHECKLIST_PRIVE : CHECKLIST_ENTREPRISE)
+                                .filter(i => i.id !== "tout")
+                                .every(i => data.polices.some(p => p.typesContrats.includes(i.id)))
+                              : data.polices.some(p => p.typesContrats.includes(item.id))}
                             onCheckedChange={(checked) => {
-                              if (checked) {
-                                setData({
-                                  ...data,
-                                  polices: [...data.polices, {
+                              if (item.id === "tout") {
+                                // Tout sélectionner / désélectionner
+                                const checklist = data.typeClient === 'prive' ? CHECKLIST_PRIVE : CHECKLIST_ENTREPRISE;
+                                const allIds = checklist.filter(i => i.id !== "tout").map(i => i.id);
+                                if (checked) {
+                                  // Cocher toutes les polices
+                                  const newPolices = allIds.map(id => ({
                                     compagnie: "",
-                                    typesContrats: [item.id],
-                                    mode: "plus_tard"
-                                  }]
-                                });
+                                    typesContrats: [id],
+                                    mode: "plus_tard" as const
+                                  }));
+                                  setData({ ...data, polices: newPolices });
+                                } else {
+                                  // Décocher toutes les polices
+                                  setData({ ...data, polices: [] });
+                                }
                               } else {
-                                setData({
-                                  ...data,
-                                  polices: data.polices.filter(p => !p.typesContrats.includes(item.id))
-                                });
+                                // Logique normale pour une police individuelle
+                                if (checked) {
+                                  setData({
+                                    ...data,
+                                    polices: [...data.polices, {
+                                      compagnie: "",
+                                      typesContrats: [item.id],
+                                      mode: "plus_tard"
+                                    }]
+                                  });
+                                } else {
+                                  setData({
+                                    ...data,
+                                    polices: data.polices.filter(p => !p.typesContrats.includes(item.id))
+                                  });
+                                }
                               }
                             }}
                           />

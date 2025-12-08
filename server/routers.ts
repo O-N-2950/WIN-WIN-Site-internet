@@ -24,7 +24,7 @@ export const appRouter = router({
     create: publicProcedure
       .input(z.object({
         typeClient: z.enum(["prive", "entreprise"]),
-        email: z.string().email(),
+        email: z.string().min(1, "Email requis"),
         telMobile: z.string(),
         // Champs PRIVÉ
         formuleAppel: z.string().optional(),
@@ -176,7 +176,7 @@ export const appRouter = router({
     // Calculer le prix Stripe dynamique avec rabais familial
     getStripePrice: publicProcedure
       .input(z.object({
-        email: z.string().email(),
+        email: z.string().min(1, "Email requis"),
       }))
       .mutation(async ({ input }) => {
         try {
@@ -238,7 +238,7 @@ export const appRouter = router({
   workflow: router({
     createCheckoutSession: publicProcedure
       .input(z.object({
-        email: z.string().email(),
+        email: z.string().min(1, "Email requis"),
         clientName: z.string(),
       }))
       .mutation(async ({ input }) => {
