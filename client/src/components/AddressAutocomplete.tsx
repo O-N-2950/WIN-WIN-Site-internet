@@ -5,6 +5,9 @@ import { toast } from "sonner";
 import { mapCantonToAirtable } from "@/lib/cantonMapping";
 import { Loader2 } from "lucide-react";
 
+// VERSION V4 - FORCE RENDER FIX
+// Ce composant force la mise à jour visuelle des inputs
+
 interface AddressAutocompleteProps {
   npaValue: string;
   localiteValue: string;
@@ -67,17 +70,14 @@ export function AddressAutocomplete({
             }, []);
             
             if (uniqueData.length === 1) {
-              // MATCH EXACT -> On remplit la ville DIRECTEMENT
-              // Note : On ne vérifie pas si la ville est déjà la bonne, on force la mise à jour pour être sûr.
-              if (uniqueData[0].name !== localiteValue) {
-                  onLocaliteChange(uniqueData[0].name);
-                  
-                  // Update Canton
-                  const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
-                  if (cantonName && onCantonChange) onCantonChange(cantonName);
-                  
-                  toast.success(`✓ ${uniqueData[0].name}`);
-              }
+              // FORCE UPDATE: On met à jour même si c'est déjà la même valeur pour être sûr
+              onLocaliteChange(uniqueData[0].name);
+              
+              const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
+              if (cantonName && onCantonChange) onCantonChange(cantonName);
+              
+              toast.success(`✓ ${uniqueData[0].name}`);
+              
               setSuggestions([]);
               setShowSuggestions(false);
             } else if (uniqueData.length > 1) {
@@ -100,11 +100,8 @@ export function AddressAutocomplete({
   }, [npaValue]); 
 
   // --- LOGIQUE 2 : VILLE CHANGE -> ON CHERCHE LE NPA ---
-  // C'est ici qu'on évite la boucle infinie.
   useEffect(() => {
-    // IMPORTANT : On ne cherche le NPA que si le champ NPA est VIDE ou INCOMPLET.
-    // Si le NPA est déjà rempli (4 chiffres), on considère que l'utilisateur a déjà son code postal
-    // et qu'il corrige juste l'orthographe de la ville.
+    // On ne cherche que si NPA incomplet pour éviter les boucles
     if (localiteValue.length > 2 && npaValue.length < 4) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
@@ -112,7 +109,6 @@ export function AddressAutocomplete({
           const response = await fetch(`https://openplzapi.org/ch/Localities?name=${encodeURIComponent(localiteValue)}`);
           if (response.ok) {
             const data: OpenPLZLocality[] = await response.json();
-             // Déduplication
              const uniqueData = data.reduce((acc: OpenPLZLocality[], current) => {
                 const key = `${current.postalCode}-${current.name}`;
                 if (!acc.find(item => `${item.postalCode}-${item.name}` === key)) acc.push(current);
@@ -120,7 +116,6 @@ export function AddressAutocomplete({
               }, []);
             
             if (uniqueData.length === 1) {
-               // Si une seule ville trouvée, on remplit le NPA
                onNpaChange(uniqueData[0].postalCode);
                
                const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
@@ -141,7 +136,7 @@ export function AddressAutocomplete({
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [localiteValue]); // Déclencheur : changement de ville
+  }, [localiteValue]);
 
   const handleSelectSuggestion = (locality: OpenPLZLocality) => {
     onNpaChange(locality.postalCode);
@@ -169,7 +164,9 @@ export function AddressAutocomplete({
         </div>
         <div className="col-span-2 relative" ref={suggestionsRef}>
           <div className="relative">
+            {/* KEY AJOUTÉE POUR FORCER LE RENDER SI LA VALEUR CHANGE MAIS NE S'AFFICHE PAS */}
             <Input
+                key={localiteValue ? `loc-${localiteValue}` : 'loc-empty'}
                 type="text"
                 placeholder="Localité"
                 value={localiteValue}
