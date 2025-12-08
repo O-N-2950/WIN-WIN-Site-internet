@@ -162,7 +162,7 @@ export function AddressAutocomplete({
 
       return () => clearTimeout(timer);
     }
-  }, [localiteValue, npaValue, onNpaChange, onLocaliteChange]);
+  }, [localiteValue, npaValue, onCantonChange]);
 
   const handleSelectSuggestion = (locality: OpenPLZLocality) => {
     onNpaChange(locality.postalCode);
