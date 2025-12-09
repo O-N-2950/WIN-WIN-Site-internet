@@ -5,8 +5,9 @@ import { toast } from "sonner";
 import { mapCantonToAirtable } from "@/lib/cantonMapping";
 import { Loader2, CheckCircle2 } from "lucide-react";
 
-// VERSION V6 - UX AMÉLIORÉE FINALE
-// Indicateur visuel vert avec animation + Message d'aide avec canton + Pré-remplissage canton
+// VERSION V7 FINALE - SANS KEY DYNAMIQUE
+// La key dynamique bloquait la saisie manuelle → SUPPRIMÉE
+// Utilise useRef + focus pour garantir l'affichage
 
 interface AddressAutocompleteProps {
   npaValue: string;
@@ -38,9 +39,10 @@ export function AddressAutocomplete({
   const [suggestions, setSuggestions] = useState<OpenPLZLocality[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [npaIsValid, setNpaIsValid] = useState(false); // État pour l'indicateur vert
-  const [foundCanton, setFoundCanton] = useState<string>(""); // Canton trouvé pour le message d'aide
+  const [npaIsValid, setNpaIsValid] = useState(false);
+  const [foundCanton, setFoundCanton] = useState<string>("");
   const suggestionsRef = useRef<HTMLDivElement>(null);
+  const localiteInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,7 +59,7 @@ export function AddressAutocomplete({
     if (npaValue.length === 4 && /^\d{4}$/.test(npaValue)) {
       const timer = setTimeout(async () => {
         setIsLoading(true);
-        setNpaIsValid(false); // Reset l'indicateur pendant la recherche
+        setNpaIsValid(false);
         try {
           const response = await fetch(`https://openplzapi.org/ch/Localities?postalCode=${npaValue}`);
           if (response.ok) {
@@ -70,14 +72,14 @@ export function AddressAutocomplete({
             }, []);
             
             if (uniqueData.length === 1) {
-              // FORCE UPDATE: On met à jour même si c'est déjà la même valeur
+              // FORCE UPDATE sans key dynamique
               onLocaliteChange(uniqueData[0].name);
               
               const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
               if (cantonName && onCantonChange) onCantonChange(cantonName);
               
-              setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
-              setFoundCanton(cantonName || ""); // ✅ SAUVEGARDER LE CANTON POUR LE MESSAGE
+              setNpaIsValid(true);
+              setFoundCanton(cantonName || "");
               toast.success(`✓ ${uniqueData[0].name}`);
               
               setSuggestions([]);
@@ -95,8 +97,8 @@ export function AddressAutocomplete({
       }, 300);
       return () => clearTimeout(timer);
     } else if (npaValue.length < 4) {
-        setNpaIsValid(false); // Reset l'indicateur si NPA incomplet
-        setFoundCanton(""); // Reset le canton
+        setNpaIsValid(false);
+        setFoundCanton("");
         setSuggestions([]);
         setShowSuggestions(false);
     }
@@ -123,8 +125,8 @@ export function AddressAutocomplete({
                const cantonName = mapCantonToAirtable(uniqueData[0].canton.shortName);
                if (cantonName && onCantonChange) onCantonChange(cantonName);
                
-               setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
-               setFoundCanton(cantonName || ""); // ✅ SAUVEGARDER LE CANTON POUR LE MESSAGE
+               setNpaIsValid(true);
+               setFoundCanton(cantonName || "");
                
                setSuggestions([]);
                setShowSuggestions(false);
@@ -152,8 +154,8 @@ export function AddressAutocomplete({
     const cantonName = mapCantonToAirtable(locality.canton.shortName);
     if (cantonName && onCantonChange) onCantonChange(cantonName);
     
-    setNpaIsValid(true); // ✅ INDICATEUR VERT ACTIVÉ
-    setFoundCanton(cantonName || ""); // ✅ SAUVEGARDER LE CANTON POUR LE MESSAGE
+    setNpaIsValid(true);
+    setFoundCanton(cantonName || "");
   };
 
   return (
@@ -169,7 +171,6 @@ export function AddressAutocomplete({
             maxLength={4}
             className={`h-14 text-lg ${npaIsValid ? 'border-green-500 border-2' : ''}`}
             />
-            {/* ✅ INDICATEUR VERT SUR LE CHAMP NPA AVEC ANIMATION BOUNCE */}
             {npaIsValid && (
               <div className="absolute right-3 top-4 animate-bounce">
                 <CheckCircle2 className="h-6 w-6 text-green-500" />
@@ -178,9 +179,9 @@ export function AddressAutocomplete({
         </div>
         <div className="col-span-2 relative" ref={suggestionsRef}>
           <div className="relative">
-            {/* KEY AJOUTÉE POUR FORCER LE RENDER SI LA VALEUR CHANGE MAIS NE S'AFFICHE PAS */}
+            {/* PLUS DE KEY DYNAMIQUE - Saisie manuelle fonctionne maintenant */}
             <Input
-                key={localiteValue ? `loc-${localiteValue}` : 'loc-empty'}
+                ref={localiteInputRef}
                 type="text"
                 placeholder="Localité"
                 value={localiteValue}
@@ -213,7 +214,7 @@ export function AddressAutocomplete({
           )}
         </div>
       </div>
-      {/* ✅ MESSAGE D'AIDE SOUS LES CHAMPS AVEC CANTON */}
+      {/* MESSAGE D'AIDE AVEC CANTON */}
       <p className="text-sm text-gray-500 mt-2">
         {npaIsValid && foundCanton ? (
           <span className="text-green-600 font-medium">
