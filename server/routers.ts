@@ -33,6 +33,8 @@ export const appRouter = router({
         dateNaissance: z.string().optional(),
         statutProfessionnel: z.string().optional(),
         profession: z.string().optional(), // Si statutProfessionnel === "Employé(e)" ou "Indépendant(e)"
+        employeur: z.string().optional(), // Si statutProfessionnel === "Employé(e)"
+        tauxActivite: z.string().optional(), // Si statutProfessionnel === "Employé(e)" ou "Indépendant(e)"
         situationFamiliale: z.string().optional(),
         nationalite: z.string().optional(),
         autreNationalite: z.string().optional(), // Si nationalite === "Autre"
@@ -126,6 +128,12 @@ export const appRouter = router({
           if (input.profession) {
             airtableFields["Profession"] = input.profession;
           }
+          if (input.employeur) {
+            airtableFields["Employeur"] = input.employeur;
+          }
+          if (input.tauxActivite) {
+            airtableFields["Taux d'activité"] = input.tauxActivite;
+          }
           airtableFields["Situation familiale"] = input.situationFamiliale || "";
           // Nationalité : Utiliser "autreNationalite" si "Autre" sélectionné
           airtableFields["Nationalité"] = input.nationalite === "Autre" ? (input.autreNationalite || "Autre") : (input.nationalite || "");
@@ -161,6 +169,8 @@ export const appRouter = router({
           const data = await response.json();
 
           if (!response.ok) {
+            console.error("❌ ERREUR AIRTABLE COMPLÈTE:", JSON.stringify(data, null, 2));
+            console.error("📦 CHAMPS ENVOYÉS:", JSON.stringify(airtableFields, null, 2));
             throw new Error(`Airtable error: ${JSON.stringify(data)}`);
           }
 

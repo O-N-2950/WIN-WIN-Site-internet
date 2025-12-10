@@ -1343,7 +1343,7 @@ export default function Questionnaire() {
                           {data.typeClient === 'prive' ? (
                             <>
                               <div><span className="text-muted-foreground">Nom :</span> <strong>{data.formuleAppel} {data.prenom} {data.nom}</strong></div>
-                              <div><span className="text-muted-foreground">Date de naissance :</span> <strong>{data.dateNaissance}</strong></div>
+                              <div><span className="text-muted-foreground">Date de naissance :</span> <strong>{data.dateNaissance ? new Date(data.dateNaissance).toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.') : ''}</strong></div>
                               <div><span className="text-muted-foreground">Nationalité :</span> <strong>{data.nationalite}</strong></div>
                               <div><span className="text-muted-foreground">Situation :</span> <strong>{data.situationFamiliale}</strong></div>
                             </>

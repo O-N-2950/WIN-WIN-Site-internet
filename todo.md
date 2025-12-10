@@ -21,6 +21,11 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
+- [x] **BUG ERREUR ENVOI AIRTABLE** : "Erreur lors de l'envoi. Vérifiez vos informations." → Manquait employeur + tauxActivite dans schema Zod
+- [x] **BUG FORMAT DATE NAISSANCE** : Affiche "1973-05-12" au lieu de "12.05.1973" → Formaté avec toLocaleDateString
+
+## 🔥 BUGS CRITIQUES RÉSOLUS (Récents)
+
 - [x] **BUG SAISIE LOCALITÉ BLOQUÉE** : La key dynamique empêche la saisie manuelle, supprimée complètement
 
 ## 🔥 BUGS CRITIQUES RÉSOLUS (Anciens)
