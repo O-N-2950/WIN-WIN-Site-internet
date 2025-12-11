@@ -90,6 +90,7 @@ interface QuestionnaireData {
   
   // Champ technique pour le rabais familial
   parrainEmail?: string;
+  codeParrainageRef?: string; // Code de parrainage du parrain (depuis URL ?ref=CODE)
 }
 
 // --- COMPOSANT PRINCIPAL ---
@@ -119,11 +120,26 @@ export default function Questionnaire() {
     adresseEntreprise: "", npaEntreprise: "", localiteEntreprise: "",
     banqueEntreprise: "", autreBanqueEntreprise: "", ibanEntreprise: "",
     // Champ technique pour le rabais familial
-    parrainEmail: "" 
+    parrainEmail: "",
+    codeParrainageRef: "" // Récupéré depuis URL ?ref=CODE 
   });
 
   const [currentPoliceIndex, setCurrentPoliceIndex] = useState(0);
   const [showPoliceForm, setShowPoliceForm] = useState(false);
+
+  // 0. RÉCUPÉRATION DU CODE DE PARRAINAGE DEPUIS URL (?ref=CODE)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get("ref");
+    
+    if (refCode) {
+      console.log("🎉 Code de parrainage détecté dans l'URL:", refCode);
+      setData(prev => ({ ...prev, codeParrainageRef: refCode }));
+      toast.success("Code de parrainage appliqué !", {
+        description: `Vous bénéficierez du rabais groupe familial grâce au code ${refCode}`
+      });
+    }
+  }, []); // Exécuté UNE SEULE FOIS au montage
 
   // 1. CHARGEMENT AUTO (LocalStorage)
   useEffect(() => {

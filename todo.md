@@ -109,5 +109,10 @@
 
 ## 🔥🔥🔥 BUGS CRITIQUES SYSTÈME PARRAINAGE (11 DÉC 2025 - 13:15)
 
-- [ ] BUG #6 CRITIQUE: Le rabais n'est PAS appliqué quand on clique sur un lien de parrainage (système parrainage cassé)
-- [ ] BUG #7: Messages de partage WhatsApp/Telegram/Email/SMS ne fonctionnent pas (liens cassés)
+- [x] BUG #6 CRITIQUE: Système de parrainage complètement cassé → CORRIGÉ
+  - ✅ Questionnaire.tsx récupère URLSearchParams (?ref=CODE)
+  - ✅ Code de parrainage envoyé au backend (codeParrainageRef)
+  - ✅ Backend cherche le parrain par code (FIND dans Airtable)
+  - ✅ Nouveau client lié au groupe familial du parrain
+  - ✅ Rabais calculé automatiquement (nb membres groupe)
+- [x] BUG #7: Code de parrainage VIDE dans les messages de partage → Fixé avec loader

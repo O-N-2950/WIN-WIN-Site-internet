@@ -64,12 +64,42 @@ export const appRouter = router({
         polices: z.array(z.string()).optional(),
         // CLÉ MULTI-MANDATS
         parrainEmail: z.string().optional(),
+        // CODE DE PARRAINAGE (depuis URL ?ref=CODE)
+        codeParrainageRef: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        // 1. LOGIQUE DE LIAISON MULTI-MANDATS
+        // 1. LOGIQUE DE LIAISON MULTI-MANDATS + PARRAINAGE
         let groupeFamilial = "";
         
-        if (input.parrainEmail) {
+        // PRIORITÉ 1 : Code de parrainage (depuis URL ?ref=CODE)
+        if (input.codeParrainageRef) {
+          console.log("🎉 Code de parrainage détecté:", input.codeParrainageRef);
+          try {
+            // Chercher le parrain par son code de parrainage
+            const response = await fetch(
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=FIND('${input.codeParrainageRef}',{fldEx4ytlCnqPoSDM})>0`,
+              {
+                headers: {
+                  Authorization: `Bearer ${ENV.airtableApiKey}`,
+                },
+              }
+            );
+            const data = await response.json();
+            
+            if (data.records && data.records.length > 0) {
+              // Récupérer le groupe familial du parrain
+              groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
+              console.log("✅ Parrain trouvé ! Groupe familial:", groupeFamilial);
+            } else {
+              console.warn("⚠️ Code de parrainage invalide:", input.codeParrainageRef);
+            }
+          } catch (error) {
+            console.error("❌ Erreur lors de la recherche du parrain par code:", error);
+          }
+        }
+        
+        // PRIORITÉ 2 : Email du parrain (multi-mandats)
+        if (!groupeFamilial && input.parrainEmail) {
           // CAS : Dossier lié (Conjoint ou Entreprise)
           try {
             const response = await fetch(
@@ -85,16 +115,19 @@ export const appRouter = router({
             if (data.records && data.records.length > 0) {
               // Récupérer le groupe familial du parrain
               groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
+              console.log("✅ Parrain trouvé par email ! Groupe familial:", groupeFamilial);
             }
           } catch (error) {
-            console.error("Erreur lors de la récupération du parrain:", error);
+            console.error("❌ Erreur lors de la récupération du parrain par email:", error);
           }
         }
         
+        // PRIORITÉ 3 : Nouveau groupe familial (premier mandat)
         if (!groupeFamilial) {
           // CAS : Premier mandat - Générer un nouveau groupe familial unique
           const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
           groupeFamilial = `FAMILLE-${randomSuffix}`;
+          console.log("🆕 Nouveau groupe familial créé:", groupeFamilial);
         }
 
         // 2. MAPPING AIRTABLE STRICT (selon typeClient)
