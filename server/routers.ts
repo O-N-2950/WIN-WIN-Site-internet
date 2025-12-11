@@ -264,8 +264,33 @@ export const appRouter = router({
           // 4. CALCUL DE L'ÉCONOMIE
           const economie = prixBase - prixFinal;
 
-          // 5. RÉCUPÉRER LE CODE DE PARRAINAGE
-          const codeParrainage = clientRecord.fields["fldEx4ytlCnqPoSDM"] || ""; // Field ID du champ "Code Parrainage"
+          // 5. GÉNÉRER LE CODE DE PARRAINAGE CÔTÉ BACKEND
+          // La formule Airtable prend du temps à calculer, on génère le code immédiatement
+          const recordId = clientRecord.id; // ex: recU9ptDPQzSdcwd
+          const typeClient = clientRecord.fields["flddoSiduFTUIciGX"] || ""; // Type de client
+          let codeParrainage = "";
+          
+          if (typeClient === "Particulier") {
+            const prenom = clientRecord.fields["fldfhjuxTQwZipdOf"] || ""; // Prénom
+            if (prenom) {
+              const prenomPrefix = prenom.substring(0, 4).toUpperCase();
+              const recordSuffix = recordId.substring(recordId.length - 4).toUpperCase();
+              codeParrainage = `${prenomPrefix}-${recordSuffix}`;
+            }
+          } else if (typeClient === "Entreprise") {
+            const nomEntreprise = clientRecord.fields["fldZ8w4IDGJBKS35M"] || ""; // Nom de l'entreprise
+            if (nomEntreprise) {
+              const entreprisePrefix = nomEntreprise.substring(0, 4).toUpperCase();
+              const recordSuffix = recordId.substring(recordId.length - 4).toUpperCase();
+              codeParrainage = `${entreprisePrefix}-${recordSuffix}`;
+            }
+          }
+          
+          // Fallback si le code n'a pas pu être généré
+          if (!codeParrainage) {
+            const recordSuffix = recordId.substring(recordId.length - 4).toUpperCase();
+            codeParrainage = `CODE-${recordSuffix}`;
+          }
 
           return {
             prixBase,
