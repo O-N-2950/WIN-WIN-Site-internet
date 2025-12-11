@@ -116,3 +116,9 @@
   - ✅ Nouveau client lié au groupe familial du parrain
   - ✅ Rabais calculé automatiquement (nb membres groupe)
 - [x] BUG #7: Code de parrainage VIDE dans les messages de partage → Fixé avec loader
+
+## 🎨 UX - Amélioration CORRIGÉE (11 DÉC 2025 - 14:30)
+
+- [x] Ajouter texte explicatif au-dessus de "Coordonnées bancaires" : "Sur quel compte souhaitez-vous recevoir vos prestations en cas de sinistre ?"
+  - Ajouté dans section Entreprise (ligne 733-735)
+  - Ajouté dans section Privé (ligne 1271-1273)

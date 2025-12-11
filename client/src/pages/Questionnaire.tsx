@@ -730,6 +730,9 @@ export default function Questionnaire() {
 
                         {/* Coordonnées bancaires déplacées ici pour l'entreprise */}
                         <div className="mt-6 pt-6 border-t border-border">
+                          <p className="text-muted-foreground mb-4">
+                            Sur quel compte souhaitez-vous recevoir vos prestations en cas de sinistre ?
+                          </p>
                           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                             <Shield className="h-5 w-5 text-primary" />
                             Coordonnées bancaires
@@ -1265,6 +1268,9 @@ export default function Questionnaire() {
                       </motion.div>
 
                       <div className="mt-8 pt-8 border-t border-border">
+                        <p className="text-muted-foreground mb-4">
+                          Sur quel compte souhaitez-vous recevoir vos prestations en cas de sinistre ?
+                        </p>
                         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                           <Shield className="h-5 w-5 text-primary" />
                           Coordonnées bancaires
