@@ -61,7 +61,7 @@ interface QuestionnaireData {
   statutProfessionnel: "Employé(e)" | "Indépendant(e)" | "Retraité(e)" | "Sans Emploi" | "Au chômage" | "Ai" | "Etudiant(e)" | "Enfant" | "";
   profession: string;
   employeur: string;
-  tauxActivite: "10 %" | "20 %" | "30 %" | "40 %" | "50 %" | "60 %" | "70 %" | "80 %" | "90 %" | "100 %" | "150 %" | "";
+  tauxActivite: "10 %" | "20 %" | "30 %" | "40 %" | "50 %" | "60 %" | "70 %" | "80 %" | "90 %" | "100 %" | "";
   situationFamiliale: "Célibataire" | "Marié(e)" | "Divorcé(e)" | "Veuf/Veuve" | "Concubin(e)" | "";
   nationalite: string;
   autreNationalite: string; // Si nationalite === "Autre"
@@ -944,18 +944,6 @@ export default function Questionnaire() {
                             value={data.tauxActivite} 
                             onValueChange={(value) => {
                               setData({ ...data, tauxActivite: value as any });
-                              // Message humoristique pour 150%
-                              if (value === "150 %") {
-                                if (data.statutProfessionnel === "Indépendant(e)") {
-                                  toast.success("💪 Ah, un vrai entrepreneur ! 150% c'est le minimum !", {
-                                    duration: 4000,
-                                  });
-                                } else if (data.statutProfessionnel === "Employé(e)") {
-                                  toast.success("🚀 Wow ! Vous cumulez deux postes ?", {
-                                    duration: 4000,
-                                  });
-                                }
-                              }
                             }}
                           >
                             <SelectTrigger className="mt-2 text-lg h-14">
@@ -972,7 +960,7 @@ export default function Questionnaire() {
                               <SelectItem value="80 %">80 %</SelectItem>
                               <SelectItem value="90 %">90 %</SelectItem>
                               <SelectItem value="100 %">100 %</SelectItem>
-                              <SelectItem value="150 %">150 %</SelectItem>
+
                             </SelectContent>
                           </Select>
                         </motion.div>

@@ -21,6 +21,10 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
+- [x] **SUPPRIMER 150%** : Airtable n'accepte pas 150%, supprimé du formulaire (type + SelectItem + message)
+
+## 🔥 BUGS CRITIQUES RÉSOLUS (V9)
+
 - [x] **BUG NOM CHAMP AIRTABLE** : Airtable refuse "Taux d'activité" → Le champ s'appelle "Taux d'activité %" (avec %)
 
 ## 🔥 BUGS CRITIQUES RÉSOLUS (V8)
