@@ -7,14 +7,7 @@ import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
 
-// Désactiver vite-plugin-manus-runtime sur Railway (production)
-const isRailway = process.env.RAILWAY_ENVIRONMENT !== undefined;
-const plugins = [
-  react(),
-  tailwindcss(),
-  jsxLocPlugin(),
-  ...(isRailway ? [] : [vitePluginManusRuntime()]),
-];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime()];
 
 export default defineConfig({
   plugins,
