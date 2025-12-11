@@ -102,3 +102,7 @@
 - [ ] Code de parrainage à l'étape 2
 - [ ] Validation temps réel du code
 - [ ] Afficher rabais immédiatement
+
+## 🔥 BUG URGENT CORRIGÉ (11 DÉC 2025 - 12:45)
+
+- [x] BUG #5: Code de parrainage vide → Généré côté backend (PRENOM-XXXX) au lieu d'attendre la formule Airtable

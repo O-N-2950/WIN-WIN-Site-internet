@@ -178,14 +178,27 @@ export const appRouter = router({
             throw new Error(`Airtable error: ${JSON.stringify(data)}`);
           }
 
-          // 4. RÉCUPÉRER LE CODE DE PARRAINAGE (généré automatiquement par Airtable)
-          const codeParrainage = data.fields?.["fldEx4ytlCnqPoSDM"] || ""; // Field ID du champ "Code Parrainage"
+          // 4. GÉNÉRER LE CODE DE PARRAINAGE CÔTÉ BACKEND
+          // La formule Airtable prend du temps à calculer, on génère le code immédiatement
+          // Format : PRENOM-XXXX (4 premiers caractères du prénom + 4 derniers du record ID)
+          let codeParrainage = "";
+          if (input.typeClient === "prive" && input.prenom) {
+            const recordId = data.id; // ex: recU9ptDPQzSdcwd
+            const prenomPrefix = input.prenom.substring(0, 4).toUpperCase();
+            const recordSuffix = recordId.substring(recordId.length - 4).toUpperCase();
+            codeParrainage = `${prenomPrefix}-${recordSuffix}`;
+          } else if (input.typeClient === "entreprise" && input.nomEntreprise) {
+            const recordId = data.id;
+            const entreprisePrefix = input.nomEntreprise.substring(0, 4).toUpperCase();
+            const recordSuffix = recordId.substring(recordId.length - 4).toUpperCase();
+            codeParrainage = `${entreprisePrefix}-${recordSuffix}`;
+          }
 
           return {
             success: true,
             clientId: data.id,
             groupeFamilial,
-            codeParrainage, // ← AJOUTÉ : Code personnel du client
+            codeParrainage, // ← Généré côté backend (PRENOM-XXXX)
           };
         } catch (error) {
           console.error("Erreur lors de la création du client:", error);
