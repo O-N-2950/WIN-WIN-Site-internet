@@ -47,10 +47,13 @@ export default function Paiement() {
       const result = await getPriceMutation.mutateAsync({ email });
       setPrixInfo(result);
       
-      // Générer le code de parrainage (format : PRENOM-XXX)
-      // TODO: Récupérer le vrai code depuis Airtable
-      const code = result.groupeFamilial.replace("FAMILLE-", "");
-      setCodeParrainage(code);
+      // Récupérer le VRAI code de parrainage depuis Airtable
+      if (result.codeParrainage) {
+        setCodeParrainage(result.codeParrainage);
+      } else {
+        // Fallback si le code n'est pas encore généré
+        setCodeParrainage(result.groupeFamilial.replace("FAMILLE-", ""));
+      }
       
       console.log("✅ Prix calculé:", result);
     } catch (error) {
@@ -65,28 +68,40 @@ export default function Paiement() {
   };
   
   const handleShare = (platform: string) => {
-    const message = `🎁 J'ai trouvé LA solution pour mes assurances !
+    // Message viral optimisé pour conversion
+    const message = `👋 J'ai trouvé LA solution pour mes assurances !
+
 WIN WIN Finance Group m'a fait gagner du temps ET de l'argent.
-✅ Conseiller neutre et honnête
+✅ Conseiller neutre et honnête (pas de commission cachée)
 ✅ Ils optimisent TOUTES mes assurances
-👉 Utilise mon code : ${codeParrainage}`;
+
+👉 Utilise mon code : ${codeParrainage}
+
+👉 https://www.winwin.swiss/questionnaire?ref=${codeParrainage}`;
     
     const encodedMessage = encodeURIComponent(message);
-    const url = `https://winwin-finance.ch/questionnaire?ref=${codeParrainage}`;
+    const url = `https://www.winwin.swiss/questionnaire?ref=${codeParrainage}`;
     
     let shareUrl = "";
     switch (platform) {
       case "whatsapp":
-        shareUrl = `https://wa.me/?text=${encodedMessage}%20${url}`;
+        // WhatsApp : Message + lien intégré
+        shareUrl = `https://wa.me/?text=${encodedMessage}`;
         break;
       case "telegram":
-        shareUrl = `https://t.me/share/url?url=${url}&text=${encodedMessage}`;
+        // Telegram : URL + texte séparés
+        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`👋 J'ai trouvé LA solution pour mes assurances ! Utilise mon code : ${codeParrainage}`)}`;
         break;
       case "email":
-        shareUrl = `mailto:?subject=Découvre WIN WIN Finance&body=${encodedMessage}%20${url}`;
+        // Email : Sujet + corps structuré
+        const emailSubject = encodeURIComponent("🎁 Découvre WIN WIN Finance Group");
+        const emailBody = encodeURIComponent(`Salut,\n\nJ'ai trouvé LA solution pour mes assurances !\n\nWIN WIN Finance Group m'a fait gagner du temps ET de l'argent.\n✅ Conseiller neutre et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances\n\n👉 Utilise mon code : ${codeParrainage}\n\n👉 ${url}\n\nBonne journée !`);
+        shareUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
         break;
       case "sms":
-        shareUrl = `sms:?body=${encodedMessage}%20${url}`;
+        // SMS : Message court optimisé
+        const smsMessage = encodeURIComponent(`👋 J'ai trouvé LA solution pour mes assurances ! Utilise mon code ${codeParrainage} : ${url}`);
+        shareUrl = `sms:?body=${smsMessage}`;
         break;
     }
     

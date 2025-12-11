@@ -1,5 +1,12 @@
 # TODO - WIN WIN Finance Group
 
+## 🔥 BUGS CRITIQUES CORRIGÉS (11 DÉC 2025)
+
+- [x] BUG #1: Code de parrainage vide sur la page Paiement → Récupéré depuis Airtable (field fldEx4ytlCnqPoSDM)
+- [x] BUG #2: Messages de partage WhatsApp/Telegram/Email/SMS → Refaits complètement avec bon domaine (www.winwin.swiss)
+- [x] BUG #3: Email client non enregistré dans "Contact E-mail" → Déjà présent (fldFdqxwos16iziy3)
+- [x] BUG #4: Email client non enregistré dans "Email du client (table client)" → Ajouté (fldI0sr2QLOJYsZR6)
+
 ## ✅ TERMINÉ
 
 - [x] Synchroniser listes déroulantes questionnaire avec Airtable

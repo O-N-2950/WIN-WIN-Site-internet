@@ -99,7 +99,8 @@ export const appRouter = router({
 
         // 2. MAPPING AIRTABLE STRICT (selon typeClient)
         const airtableFields: Record<string, any> = {
-          "Contact E-mail": input.email,
+          "Contact E-mail": input.email, // fldFdqxwos16iziy3
+          "Email du client (table client)": input.email, // fldI0sr2QLOJYsZR6 ← AJOUTÉ
           "Tél. Mobile": input.telMobile,
           "Groupe Familial": groupeFamilial,
           "Statut du client": "NOUVEAU CLIENT",
@@ -177,10 +178,14 @@ export const appRouter = router({
             throw new Error(`Airtable error: ${JSON.stringify(data)}`);
           }
 
+          // 4. RÉCUPÉRER LE CODE DE PARRAINAGE (généré automatiquement par Airtable)
+          const codeParrainage = data.fields?.["fldEx4ytlCnqPoSDM"] || ""; // Field ID du champ "Code Parrainage"
+
           return {
             success: true,
             clientId: data.id,
             groupeFamilial,
+            codeParrainage, // ← AJOUTÉ : Code personnel du client
           };
         } catch (error) {
           console.error("Erreur lors de la création du client:", error);
@@ -246,6 +251,9 @@ export const appRouter = router({
           // 4. CALCUL DE L'ÉCONOMIE
           const economie = prixBase - prixFinal;
 
+          // 5. RÉCUPÉRER LE CODE DE PARRAINAGE
+          const codeParrainage = clientRecord.fields["fldEx4ytlCnqPoSDM"] || ""; // Field ID du champ "Code Parrainage"
+
           return {
             prixBase,
             rabaisPourcent,
@@ -254,6 +262,7 @@ export const appRouter = router({
             economie,
             nbMembres,
             groupeFamilial,
+            codeParrainage, // ← AJOUTÉ
             metadata: `Rabais Groupe: ${rabaisPourcent}% (${nbMembres} membre${nbMembres > 1 ? 's' : ''})`
           };
         } catch (error) {
