@@ -21,6 +21,10 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
+- [x] **BUG CANTON VIDE** : Airtable refuse Canton vide (INVALID_MULTIPLE_CHOICE_OPTIONS) → Ne pas envoyer si vide
+
+## 🔥 BUGS CRITIQUES RÉSOLUS (V9 - suite)
+
 - [x] **SUPPRIMER 150%** : Airtable n'accepte pas 150%, supprimé du formulaire (type + SelectItem + message)
 
 ## 🔥 BUGS CRITIQUES RÉSOLUS (V9)

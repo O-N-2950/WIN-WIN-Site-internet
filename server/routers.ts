@@ -143,7 +143,10 @@ export const appRouter = router({
           airtableFields["Contact Adresse, no"] = input.adresse || "";
           airtableFields["Contact NPA"] = input.npa ? parseInt(input.npa, 10) : null;
           airtableFields["Contact Localité"] = input.localite || "";
-          airtableFields["Canton"] = input.canton || ""; // Rempli automatiquement par OpenPLZ
+          // Canton : Ne pas envoyer si vide (Airtable refuse les chaînes vides pour singleSelect)
+          if (input.canton) {
+            airtableFields["Canton"] = input.canton;
+          }
           // Banque : Utiliser "autreBanque" si "Autre" sélectionné
           airtableFields["Banque"] = input.banque === "Autre" ? (input.autreBanque || "Autre") : (input.banque || "");
           airtableFields["IBAN"] = input.iban || "";
