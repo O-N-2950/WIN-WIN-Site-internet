@@ -48,11 +48,17 @@ export default function Paiement() {
       setPrixInfo(result);
       
       // Récupérer le VRAI code de parrainage depuis Airtable
+      console.log("🔍 Réponse backend getStripePrice:", result);
+      console.log("🔍 codeParrainage reçu:", result.codeParrainage);
+      
       if (result.codeParrainage) {
         setCodeParrainage(result.codeParrainage);
+        console.log("✅ Code de parrainage défini:", result.codeParrainage);
       } else {
         // Fallback si le code n'est pas encore généré
-        setCodeParrainage(result.groupeFamilial.replace("FAMILLE-", ""));
+        const fallbackCode = result.groupeFamilial.replace("FAMILLE-", "");
+        setCodeParrainage(fallbackCode);
+        console.log("⚠️ Fallback code de parrainage:", fallbackCode);
       }
       
       console.log("✅ Prix calculé:", result);
@@ -299,40 +305,47 @@ WIN WIN Finance Group m'a fait gagner du temps ET de l'argent.
             </div>
             
             {/* Boutons de partage */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <Button
-                variant="outline"
-                onClick={() => handleShare("whatsapp")}
-                className="gap-2"
-              >
-                <span className="text-xl">📱</span>
-                WhatsApp
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => handleShare("telegram")}
-                className="gap-2"
-              >
-                <span className="text-xl">✈️</span>
-                Telegram
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => handleShare("email")}
-                className="gap-2"
-              >
-                <span className="text-xl">📧</span>
-                Email
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => handleShare("sms")}
-                className="gap-2"
-              >
-                <span className="text-xl">💬</span>
-                SMS
-              </Button>
-            </div>
+            {!codeParrainage ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="ml-3 text-muted-foreground">Chargement de votre code de parrainage...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  variant="outline"
+                  onClick={() => handleShare("whatsapp")}
+                  className="gap-2"
+                >
+                  <span className="text-xl">📱</span>
+                  WhatsApp
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleShare("telegram")}
+                  className="gap-2"
+                >
+                  <span className="text-xl">✈️</span>
+                  Telegram
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleShare("email")}
+                  className="gap-2"
+                >
+                  <span className="text-xl">📧</span>
+                  Email
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleShare("sms")}
+                  className="gap-2"
+                >
+                  <span className="text-xl">💬</span>
+                  SMS
+                </Button>
+              </div>
+            )}
           </Card>
         </motion.div>
       </div>

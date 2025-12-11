@@ -106,3 +106,8 @@
 ## 🔥 BUG URGENT CORRIGÉ (11 DÉC 2025 - 12:45)
 
 - [x] BUG #5: Code de parrainage vide → Généré côté backend (PRENOM-XXXX) au lieu d'attendre la formule Airtable
+
+## 🔥🔥🔥 BUGS CRITIQUES SYSTÈME PARRAINAGE (11 DÉC 2025 - 13:15)
+
+- [ ] BUG #6 CRITIQUE: Le rabais n'est PAS appliqué quand on clique sur un lien de parrainage (système parrainage cassé)
+- [ ] BUG #7: Messages de partage WhatsApp/Telegram/Email/SMS ne fonctionnent pas (liens cassés)
