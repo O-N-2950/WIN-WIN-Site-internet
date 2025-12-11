@@ -132,7 +132,7 @@ export const appRouter = router({
             airtableFields["Employeur"] = input.employeur;
           }
           if (input.tauxActivite) {
-            airtableFields["Taux d'activité"] = input.tauxActivite;
+            airtableFields["Taux d'activité %"] = input.tauxActivite;
           }
           airtableFields["Situation familiale"] = input.situationFamiliale || "";
           // Nationalité : Utiliser "autreNationalite" si "Autre" sélectionné

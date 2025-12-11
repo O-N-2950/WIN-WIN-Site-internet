@@ -21,6 +21,10 @@
 
 ## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
 
+- [x] **BUG NOM CHAMP AIRTABLE** : Airtable refuse "Taux d'activité" → Le champ s'appelle "Taux d'activité %" (avec %)
+
+## 🔥 BUGS CRITIQUES RÉSOLUS (V8)
+
 - [x] **BUG ERREUR ENVOI AIRTABLE** : "Erreur lors de l'envoi. Vérifiez vos informations." → Manquait employeur + tauxActivite dans schema Zod
 - [x] **BUG FORMAT DATE NAISSANCE** : Affiche "1973-05-12" au lieu de "12.05.1973" → Formaté avec toLocaleDateString
 
