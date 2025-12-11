@@ -133,3 +133,10 @@
   - CAUSE: encodeURIComponent() encode les emojis en %F0%9F%91%8B, affichés comme ◆
   - SOLUTION: Retrait des emojis, remplacés par des puces • (plus sûr)
   - RÉSULTAT: Messages propres et lisibles sur tous les canaux
+
+## 🔥🔥🔥 BUG CRITIQUE CRÉATION CLIENT CORRIGÉ (11 DÉC 2025 - 15:10)
+
+- [x] BUG #10 BLOQUANT: Impossible de créer le client dans Airtable → CORRIGÉ
+  - CAUSE: Formule Airtable incorrecte `FIND('CODE',{field})>0` au lieu de `{field}='CODE'`
+  - SOLUTION: Remplacement par `{fldEx4ytlCnqPoSDM}='${input.codeParrainageRef}'`
+  - RÉSULTAT: La création du client fonctionne maintenant

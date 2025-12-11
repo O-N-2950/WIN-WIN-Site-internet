@@ -77,7 +77,7 @@ export const appRouter = router({
           try {
             // Chercher le parrain par son code de parrainage
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=FIND('${input.codeParrainageRef}',{fldEx4ytlCnqPoSDM})>0`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldEx4ytlCnqPoSDM}='${input.codeParrainageRef}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -95,6 +95,7 @@ export const appRouter = router({
             }
           } catch (error) {
             console.error("❌ Erreur lors de la recherche du parrain par code:", error);
+            console.error("❌ Détails de l'erreur:", error);
           }
         }
         
