@@ -121,8 +121,8 @@ export const appRouter = router({
         } else {
           // CAS B : PRIVÉ
           airtableFields["Formule d'appel"] = input.formuleAppel || "";
-          airtableFields["Contact Prénom"] = input.prenom || "";
-          airtableFields["Contact Nom"] = input.nom || "";
+          airtableFields["Prénom"] = input.prenom || "";
+          airtableFields["Nom"] = input.nom || "";
           airtableFields["Date de naissance"] = input.dateNaissance || "";
           airtableFields["Statut professionnel"] = input.statutProfessionnel || "";
           if (input.profession) {

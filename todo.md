@@ -19,7 +19,15 @@
 - [x] Message humoristique 150% (Indépendant + Employé)
 - [x] Corrections TypeScript Durabilis.tsx (0 erreur)
 
-## 🔥 SIMPLIFICATION NPA/LOCALITÉ/CANTON (EN COURS)
+## 🔥 BUG NOMS CHAMPS AIRTABLE (EN COURS)
+
+- [x] **BUG NOMS CHAMPS** : Envoie "Contact Nom" au lieu de "Nom", "Contact Prénom" au lieu de "Prénom" → Corrigé
+
+## 🔥 BUG CODE PARRAINAGE (EN ATTENTE)
+
+- [ ] **BUG AFFICHAGE CODE PARRAINAGE** : Le backend retourne groupeFamilial mais le frontend ne l'affiche pas
+
+## 🔥 SIMPLIFICATION NPA/LOCALITÉ/CANTON (TERMINÉ)
 
 - [x] Remplacer AddressAutocomplete par champs texte simples (NPA + Localité)
 - [x] Ajouter dropdown Canton avec valeurs exactes Airtable (26 cantons)
