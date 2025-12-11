@@ -122,3 +122,14 @@
 - [x] Ajouter texte explicatif au-dessus de "Coordonnées bancaires" : "Sur quel compte souhaitez-vous recevoir vos prestations en cas de sinistre ?"
   - Ajouté dans section Entreprise (ligne 733-735)
   - Ajouté dans section Privé (ligne 1271-1273)
+
+## 🔥🔥🔥 BUGS CRITIQUES RABAIS + MESSAGE CORRIGÉS (11 DÉC 2025 - 14:45)
+
+- [x] BUG #8 CRITIQUE: Le rabais n'est PAS appliqué sur la page Paiement → CORRIGÉ
+  - CAUSE: getStripePrice appelé immédiatement après création, Airtable n'a pas eu le temps de calculer nb membres
+  - SOLUTION: Délai de 2 secondes avant d'appeler loadPriceInfo() pour laisser Airtable mettre à jour
+  - RÉSULTAT: Le rabais 4% (177.60 CHF) s'affiche correctement pour 2 membres
+- [x] BUG #9: Emojis cassés dans les messages WhatsApp/Telegram → CORRIGÉ
+  - CAUSE: encodeURIComponent() encode les emojis en %F0%9F%91%8B, affichés comme ◆
+  - SOLUTION: Retrait des emojis, remplacés par des puces • (plus sûr)
+  - RÉSULTAT: Messages propres et lisibles sur tous les canaux

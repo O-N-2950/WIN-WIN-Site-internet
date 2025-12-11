@@ -38,8 +38,15 @@ export default function Paiement() {
       return;
     }
     
-    // Charger le prix dynamique
-    loadPriceInfo();
+    // Attendre 2 secondes pour laisser Airtable calculer le nombre de membres du groupe
+    // (les formules Airtable prennent 1-2 secondes à se mettre à jour)
+    console.log("⏳ Attente de 2 secondes pour la mise à jour Airtable...");
+    const timer = setTimeout(() => {
+      console.log("✅ Chargement du prix dynamique...");
+      loadPriceInfo();
+    }, 2000);
+    
+    return () => clearTimeout(timer);
   }, [email]);
   
   const loadPriceInfo = async () => {
@@ -74,16 +81,16 @@ export default function Paiement() {
   };
   
   const handleShare = (platform: string) => {
-    // Message viral optimisé pour conversion
-    const message = `👋 J'ai trouvé LA solution pour mes assurances !
+    // Message viral optimisé pour conversion (sans emojis pour éviter les problèmes d'encodage)
+    const message = `J'ai trouvé LA solution pour mes assurances !
 
 WIN WIN Finance Group m'a fait gagner du temps ET de l'argent.
-✅ Conseiller neutre et honnête (pas de commission cachée)
-✅ Ils optimisent TOUTES mes assurances
+• Conseiller neutre et honnête (pas de commission cachée)
+• Ils optimisent TOUTES mes assurances
 
-👉 Utilise mon code : ${codeParrainage}
+Utilise mon code : ${codeParrainage}
 
-👉 https://www.winwin.swiss/questionnaire?ref=${codeParrainage}`;
+https://www.winwin.swiss/questionnaire?ref=${codeParrainage}`;
     
     const encodedMessage = encodeURIComponent(message);
     const url = `https://www.winwin.swiss/questionnaire?ref=${codeParrainage}`;
@@ -96,17 +103,17 @@ WIN WIN Finance Group m'a fait gagner du temps ET de l'argent.
         break;
       case "telegram":
         // Telegram : URL + texte séparés
-        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`👋 J'ai trouvé LA solution pour mes assurances ! Utilise mon code : ${codeParrainage}`)}`;
+        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`J'ai trouvé LA solution pour mes assurances ! Utilise mon code : ${codeParrainage}`)}`;
         break;
       case "email":
         // Email : Sujet + corps structuré
-        const emailSubject = encodeURIComponent("🎁 Découvre WIN WIN Finance Group");
-        const emailBody = encodeURIComponent(`Salut,\n\nJ'ai trouvé LA solution pour mes assurances !\n\nWIN WIN Finance Group m'a fait gagner du temps ET de l'argent.\n✅ Conseiller neutre et honnête (pas de commission cachée)\n✅ Ils optimisent TOUTES mes assurances\n\n👉 Utilise mon code : ${codeParrainage}\n\n👉 ${url}\n\nBonne journée !`);
+        const emailSubject = encodeURIComponent("Découvre WIN WIN Finance Group");
+        const emailBody = encodeURIComponent(`Salut,\n\nJ'ai trouvé LA solution pour mes assurances !\n\nWIN WIN Finance Group m'a fait gagner du temps ET de l'argent.\n• Conseiller neutre et honnête (pas de commission cachée)\n• Ils optimisent TOUTES mes assurances\n\nUtilise mon code : ${codeParrainage}\n\n${url}\n\nBonne journée !`);
         shareUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
         break;
       case "sms":
         // SMS : Message court optimisé
-        const smsMessage = encodeURIComponent(`👋 J'ai trouvé LA solution pour mes assurances ! Utilise mon code ${codeParrainage} : ${url}`);
+        const smsMessage = encodeURIComponent(`J'ai trouvé LA solution pour mes assurances ! Utilise mon code ${codeParrainage} : ${url}`);
         shareUrl = `sms:?body=${smsMessage}`;
         break;
     }
