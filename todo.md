@@ -19,7 +19,13 @@
 - [x] Message humoristique 150% (Indépendant + Employé)
 - [x] Corrections TypeScript Durabilis.tsx (0 erreur)
 
-## 🔥 BUGS CRITIQUES (PRIORITÉ MAXIMALE)
+## 🔥 SIMPLIFICATION NPA/LOCALITÉ/CANTON (EN COURS)
+
+- [x] Remplacer AddressAutocomplete par champs texte simples (NPA + Localité)
+- [x] Ajouter dropdown Canton avec valeurs exactes Airtable (26 cantons)
+- [x] Supprimer tous les contrôles (icônes vertes, animations, messages)
+
+## 🔥 BUGS CRITIQUES RÉSOLUS (V10)
 
 - [x] **BUG CANTON VIDE** : Airtable refuse Canton vide (INVALID_MULTIPLE_CHOICE_OPTIONS) → Ne pas envoyer si vide
 

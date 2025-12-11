@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatIBAN, getIBANError } from "@/lib/ibanUtils";
-import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { useState, useEffect } from "react";
 
 import { useLocation } from "wouter";
@@ -1081,14 +1080,70 @@ export default function Questionnaire() {
                         />
                       </div>
 
-                      <AddressAutocomplete
-                        npaValue={data.npaEntreprise || ""}
-                        localiteValue={data.localiteEntreprise || ""}
-                        onNpaChange={(value) => setData({ ...data, npaEntreprise: value })}
-                        onLocaliteChange={(value) => setData({ ...data, localiteEntreprise: value })}
-                        onCantonChange={(value) => setData({ ...data, canton: value })}
-                        required
-                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                          <Label htmlFor="npaEntreprise" className="text-lg">NPA *</Label>
+                          <Input
+                            id="npaEntreprise"
+                            type="text"
+                            placeholder="2900"
+                            value={data.npaEntreprise || ""}
+                            onChange={(e) => setData({ ...data, npaEntreprise: e.target.value })}
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                          <Label htmlFor="localiteEntreprise" className="text-lg">Localité *</Label>
+                          <Input
+                            id="localiteEntreprise"
+                            type="text"
+                            placeholder="Porrentruy"
+                            value={data.localiteEntreprise || ""}
+                            onChange={(e) => setData({ ...data, localiteEntreprise: e.target.value })}
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+                      </div>
+
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-4">
+                        <Label htmlFor="cantonEntreprise" className="text-lg">Canton *</Label>
+                        <Select value={data.canton} onValueChange={(value) => setData({ ...data, canton: value })} required>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Appenzell Rhodes-Extérieures">Appenzell Rhodes-Extérieures</SelectItem>
+                            <SelectItem value="Appenzell Rhodes-Intérieures">Appenzell Rhodes-Intérieures</SelectItem>
+                            <SelectItem value="Argovie">Argovie</SelectItem>
+                            <SelectItem value="Bâle_Campagne">Bâle-Campagne</SelectItem>
+                            <SelectItem value="Bâle_Ville">Bâle-Ville</SelectItem>
+                            <SelectItem value="Berne">Berne</SelectItem>
+                            <SelectItem value="Fribourg">Fribourg</SelectItem>
+                            <SelectItem value="Genève">Genève</SelectItem>
+                            <SelectItem value="Glaris">Glaris</SelectItem>
+                            <SelectItem value="Grisons">Grisons</SelectItem>
+                            <SelectItem value="Jura">Jura</SelectItem>
+                            <SelectItem value="Lucerne">Lucerne</SelectItem>
+                            <SelectItem value="Neuchâtel">Neuchâtel</SelectItem>
+                            <SelectItem value="Nidwald">Nidwald</SelectItem>
+                            <SelectItem value="Obwald">Obwald</SelectItem>
+                            <SelectItem value="Saint-Gall">Saint-Gall</SelectItem>
+                            <SelectItem value="Schaffhouse">Schaffhouse</SelectItem>
+                            <SelectItem value="Schwytz">Schwytz</SelectItem>
+                            <SelectItem value="Soleure">Soleure</SelectItem>
+                            <SelectItem value="Tessin">Tessin</SelectItem>
+                            <SelectItem value="Thurgovie">Thurgovie</SelectItem>
+                            <SelectItem value="Uri">Uri</SelectItem>
+                            <SelectItem value="Valais">Valais</SelectItem>
+                            <SelectItem value="Vaud">Vaud</SelectItem>
+                            <SelectItem value="Zoug">Zoug</SelectItem>
+                            <SelectItem value="Zurich">Zurich</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </motion.div>
                     </div>
                   </div>
                 )}
@@ -1128,14 +1183,70 @@ export default function Questionnaire() {
                         />
                       </div>
 
-                      <AddressAutocomplete
-                        npaValue={data.npa}
-                        localiteValue={data.localite}
-                        onNpaChange={(value) => setData({ ...data, npa: value })}
-                        onLocaliteChange={(value) => setData({ ...data, localite: value })}
-                        onCantonChange={(value) => setData({ ...data, canton: value })}
-                        required
-                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                          <Label htmlFor="npa" className="text-lg">NPA *</Label>
+                          <Input
+                            id="npa"
+                            type="text"
+                            placeholder="2900"
+                            value={data.npa}
+                            onChange={(e) => setData({ ...data, npa: e.target.value })}
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                          <Label htmlFor="localite" className="text-lg">Localité *</Label>
+                          <Input
+                            id="localite"
+                            type="text"
+                            placeholder="Porrentruy"
+                            value={data.localite}
+                            onChange={(e) => setData({ ...data, localite: e.target.value })}
+                            className="mt-2 text-lg h-14"
+                            required
+                          />
+                        </motion.div>
+                      </div>
+
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-4">
+                        <Label htmlFor="canton" className="text-lg">Canton *</Label>
+                        <Select value={data.canton} onValueChange={(value) => setData({ ...data, canton: value })} required>
+                          <SelectTrigger className="mt-2 text-lg h-14">
+                            <SelectValue placeholder="Sélectionnez..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Appenzell Rhodes-Extérieures">Appenzell Rhodes-Extérieures</SelectItem>
+                            <SelectItem value="Appenzell Rhodes-Intérieures">Appenzell Rhodes-Intérieures</SelectItem>
+                            <SelectItem value="Argovie">Argovie</SelectItem>
+                            <SelectItem value="Bâle_Campagne">Bâle-Campagne</SelectItem>
+                            <SelectItem value="Bâle_Ville">Bâle-Ville</SelectItem>
+                            <SelectItem value="Berne">Berne</SelectItem>
+                            <SelectItem value="Fribourg">Fribourg</SelectItem>
+                            <SelectItem value="Genève">Genève</SelectItem>
+                            <SelectItem value="Glaris">Glaris</SelectItem>
+                            <SelectItem value="Grisons">Grisons</SelectItem>
+                            <SelectItem value="Jura">Jura</SelectItem>
+                            <SelectItem value="Lucerne">Lucerne</SelectItem>
+                            <SelectItem value="Neuchâtel">Neuchâtel</SelectItem>
+                            <SelectItem value="Nidwald">Nidwald</SelectItem>
+                            <SelectItem value="Obwald">Obwald</SelectItem>
+                            <SelectItem value="Saint-Gall">Saint-Gall</SelectItem>
+                            <SelectItem value="Schaffhouse">Schaffhouse</SelectItem>
+                            <SelectItem value="Schwytz">Schwytz</SelectItem>
+                            <SelectItem value="Soleure">Soleure</SelectItem>
+                            <SelectItem value="Tessin">Tessin</SelectItem>
+                            <SelectItem value="Thurgovie">Thurgovie</SelectItem>
+                            <SelectItem value="Uri">Uri</SelectItem>
+                            <SelectItem value="Valais">Valais</SelectItem>
+                            <SelectItem value="Vaud">Vaud</SelectItem>
+                            <SelectItem value="Zoug">Zoug</SelectItem>
+                            <SelectItem value="Zurich">Zurich</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </motion.div>
 
                       <div className="mt-8 pt-8 border-t border-border">
                         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
