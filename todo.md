@@ -140,3 +140,17 @@
   - CAUSE: Formule Airtable incorrecte `FIND('CODE',{field})>0` au lieu de `{field}='CODE'`
   - SOLUTION: Remplacement par `{fldEx4ytlCnqPoSDM}='${input.codeParrainageRef}'`
   - RÉSULTAT: La création du client fonctionne maintenant
+
+## 🔥🔥🔥 BUG SYSTÈME PARRAINAGE FAMILIAL (11 DÉC 2025 - 20:05)
+
+- [ ] BUG #11 CRITIQUE: Le nouveau client n'intègre pas le groupe familial du parrain
+  - Code de parrainage détecté dans l'URL (CODE-1MQY)
+  - Erreur: "TRPCClientError: Impossible de créer le client dans Airtable"
+  - Le nouveau client devrait rejoindre le groupe familial du parrain
+  - Les rabais du groupe doivent s'ajuster automatiquement
+  - Le prix calculé sur le site doit tenir compte du rabais de groupe
+
+- [ ] Analyser les logs Railway pour identifier la cause exacte
+- [ ] Corriger la logique de création du groupe familial
+- [ ] Vérifier que les formules Airtable calculent bien les rabais
+- [ ] Tester le workflow complet avec un code de parrainage réel

@@ -66,12 +66,15 @@ export const appRouter = router({
         parrainEmail: z.string().optional(),
         // CODE DE PARRAINAGE (depuis URL ?ref=CODE)
         codeParrainageRef: z.string().optional(),
+        // RELATION FAMILIALE (avec le parrain)
+        relationFamiliale: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         // 1. LOGIQUE DE LIAISON MULTI-MANDATS + PARRAINAGE
         let groupeFamilial = "";
         
         // PRIORITÉ 1 : Code de parrainage (depuis URL ?ref=CODE)
+        let parrainId = ""; // ← AJOUT : Stocker l'ID du parrain
         if (input.codeParrainageRef) {
           console.log("🎉 Code de parrainage détecté:", input.codeParrainageRef);
           try {
@@ -87,9 +90,11 @@ export const appRouter = router({
             const data = await response.json();
             
             if (data.records && data.records.length > 0) {
-              // Récupérer le groupe familial du parrain
-              groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
-              console.log("✅ Parrain trouvé ! Groupe familial:", groupeFamilial);
+              // Récupérer l'ID ET le groupe familial du parrain
+              const parrainRecord = data.records[0];
+              parrainId = parrainRecord.id; // ← AJOUT : Stocker l'ID du parrain
+              groupeFamilial = parrainRecord.fields["fld7adFgijiW0Eqhj"] || "";
+              console.log("✅ Parrain trouvé ! ID:", parrainId, "Groupe familial:", groupeFamilial);
             } else {
               console.warn("⚠️ Code de parrainage invalide:", input.codeParrainageRef);
             }
@@ -134,12 +139,25 @@ export const appRouter = router({
         // 2. MAPPING AIRTABLE STRICT (selon typeClient)
         const airtableFields: Record<string, any> = {
           "Contact E-mail": input.email, // fldFdqxwos16iziy3
-          "Email du client (table client)": input.email, // fldI0sr2QLOJYsZR6 ← AJOUTÉ
+          "Email du client (table client)": input.email, // fldI0sr2QLOJYsZR6
           "Tél. Mobile": input.telMobile,
-          "Groupe Familial": groupeFamilial,
+          "Groupe Familial": groupeFamilial, // fld7adFgijiW0Eqhj
           "Statut du client": "NOUVEAU CLIENT",
           "Type de client": input.typeClient === "entreprise" ? "Entreprise" : "Particulier",
         };
+
+        // ✅ AJOUT : Créer les liens bidirectionnels si parrain trouvé
+        if (parrainId) {
+          airtableFields["fldCyRJx4POhP1KjX"] = [parrainId]; // Membres de la famille
+          airtableFields["fldwwD2OCerxa7dtz"] = [parrainId]; // Parrainé par
+          console.log("🔗 Liens bidirectionnels créés avec le parrain:", parrainId);
+          
+          // Ajouter la relation familiale si fournie
+          if (input.relationFamiliale) {
+            airtableFields["fldXEhXcXbV40f6zM"] = input.relationFamiliale; // Relations familiales
+            console.log("👨‍👩‍👧 Relation familiale:", input.relationFamiliale);
+          }
+        }
 
         if (input.typeClient === "entreprise") {
           // CAS A : ENTREPRISE
@@ -237,6 +255,51 @@ export const appRouter = router({
         } catch (error) {
           console.error("Erreur lors de la création du client:", error);
           throw new Error("Impossible de créer le client dans Airtable");
+        }
+      }),
+
+    // Valider un code de parrainage et récupérer les infos du parrain
+    validateReferralCode: publicProcedure
+      .input(z.object({
+        code: z.string().min(1, "Code requis"),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // Chercher le parrain par son code de parrainage
+          const response = await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldEx4ytlCnqPoSDM}='${input.code}'`,
+            {
+              headers: {
+                Authorization: `Bearer ${ENV.airtableApiKey}`,
+              },
+            }
+          );
+          const data = await response.json();
+          
+          if (data.records && data.records.length > 0) {
+            const parrainRecord = data.records[0];
+            const parrainNom = parrainRecord.fields["fldoJ7b8Q7PaM27Vd"] || "Client"; // NOM du client (formule)
+            const parrainId = parrainRecord.id;
+            const groupeFamilial = parrainRecord.fields["fld7adFgijiW0Eqhj"] || "";
+            
+            return {
+              valid: true,
+              parrainNom,
+              parrainId,
+              groupeFamilial,
+            };
+          } else {
+            return {
+              valid: false,
+              message: "Code de parrainage invalide",
+            };
+          }
+        } catch (error) {
+          console.error("❌ Erreur lors de la validation du code:", error);
+          return {
+            valid: false,
+            message: "Erreur lors de la validation",
+          };
         }
       }),
 

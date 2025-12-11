@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import PoliceModal from "@/components/PoliceModal";
+import ReferralCodeInput from "@/components/ReferralCodeInput";
 import { trpc } from "@/lib/trpc";
 
 // --- CONSTANTES & TYPES ---
@@ -91,6 +92,7 @@ interface QuestionnaireData {
   // Champ technique pour le rabais familial
   parrainEmail?: string;
   codeParrainageRef?: string; // Code de parrainage du parrain (depuis URL ?ref=CODE)
+  relationFamiliale?: string; // Relation avec le parrain (ex: "époux", "fille", "ami(e)")
 }
 
 // --- COMPOSANT PRINCIPAL ---
@@ -849,9 +851,23 @@ export default function Questionnaire() {
                           onChange={(e) => setData({ ...data, telMobile: e.target.value })}
                           placeholder="+41 79 123 45 67"
                           className="mt-2 text-lg h-14"
-                          onKeyPress={(e) => e.key === 'Enter' && nextStep()}
                           required
                         />
+                      </div>
+
+                      {/* CODE DE PARRAINAGE */}
+                      <div className="mt-8 p-6 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-2 border-green-200 dark:border-green-800">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center">
+                            <span className="text-2xl">💰</span>
+                          </div>
+                          <h3 className="text-xl font-semibold">Avez-vous un code de parrainage ?</h3>
+                        </div>
+                        <p className="text-muted-foreground mb-4">
+                          Bénéficiez d'un rabais de groupe familial de 4% à 20% !
+                        </p>
+                        
+                        <ReferralCodeInput data={data} setData={setData} />
                       </div>
                     </div>
                   </div>
