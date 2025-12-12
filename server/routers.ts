@@ -81,7 +81,7 @@ export const appRouter = router({
           try {
             // Chercher le parrain par son code de parrainage
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldEx4ytlCnqPoSDM}='${input.codeParrainageRef}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fldEx4ytlCnqPoSDM}='${input.codeParrainageRef}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -110,7 +110,7 @@ export const appRouter = router({
           // CAS : Dossier lié (Conjoint ou Entreprise)
           try {
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.parrainEmail}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fldI0sr2QLOJYsZR6}='${input.parrainEmail}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -165,7 +165,7 @@ export const appRouter = router({
           try {
             // 1. Récupérer les données actuelles du parrain
             const parrainResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${parrainId}`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI/${parrainId}`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -179,7 +179,7 @@ export const appRouter = router({
             if (!relationExistante || (Array.isArray(relationExistante) && relationExistante.length === 0)) {
               // Le parrain est SEUL (pas de relation existante) → Le marquer comme "Membre fondateur"
               await fetch(
-                `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${parrainId}`,
+                `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI/${parrainId}`,
                 {
                   method: "PATCH",
                   headers: {
@@ -252,7 +252,7 @@ export const appRouter = router({
         // 3. CRÉATION DANS AIRTABLE
         try {
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI`,
             {
               method: "POST",
               headers: {
@@ -322,7 +322,7 @@ export const appRouter = router({
         try {
           // Chercher le parrain par son code de parrainage
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldEx4ytlCnqPoSDM}='${input.code}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fldEx4ytlCnqPoSDM}='${input.code}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -367,7 +367,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRATION DU CLIENT DANS AIRTABLE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -387,7 +387,7 @@ export const appRouter = router({
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -473,7 +473,7 @@ export const appRouter = router({
         try {
           // 1. RÉCUPÉRER LE PRIX DYNAMIQUE
           const response = await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fldI0sr2QLOJYsZR6}='${input.email}'`,
             {
               headers: {
                 Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -493,7 +493,7 @@ export const appRouter = router({
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/tblWPcIpGmBZ3ASGI?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,

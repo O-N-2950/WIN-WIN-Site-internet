@@ -199,3 +199,12 @@
 ### Amélioration : Ajouter "Employé(e)" dans les relations familiales
 - [ ] Vérifier que "Employé(e)" est bien dans la liste déroulante Airtable
 - [ ] Permettre aux entreprises de parrainer leurs employés
+
+
+## 🔥 BUG CRITIQUE NOT_FOUND AIRTABLE (12 DÉC 2025 - 17:30)
+
+- [ ] **BUG #12 CRITIQUE**: Erreur NOT_FOUND lors de la création de clients
+  - CAUSE: Le code utilise le nom de la table ("Clients") au lieu de l'ID (tblWPcIpGmBZ3ASGI)
+  - SOLUTION: Remplacer tous les `/Clients` par `/tblWPcIpGmBZ3ASGI` dans les URLs Airtable
+  - FICHIERS À CORRIGER: server/routers.ts (toutes les URLs Airtable)
+  - IMPACT: Bloque complètement la création de nouveaux clients
