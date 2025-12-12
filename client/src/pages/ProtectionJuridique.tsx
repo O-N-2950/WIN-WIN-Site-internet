@@ -35,7 +35,7 @@ export default function ProtectionJuridique() {
       {/* Hero Section avec image parapluie */}
       <section className="relative bg-gradient-to-br from-[#3176A6] via-[#4A8FBF] to-[#8CB4D2] text-white py-24 overflow-hidden">
         {/* Image de fond parapluie */}
-        <div className="absolute inset-0 opacity-70">
+        <div className="absolute inset-0 opacity-30">
           <img
             src="/protection-juridique-banner.png"
             alt="Protection juridique - Parapluie sous la pluie"
@@ -43,67 +43,8 @@ export default function ProtectionJuridique() {
           />
         </div>
 
-        {/* Animation de pluie qui tombe - CSS pur */}
-        <div className="absolute inset-0 pointer-events-none">
-          <style>{`
-            @keyframes rain {
-              0% { transform: translateY(-100vh); opacity: 0.6; }
-              100% { transform: translateY(100vh); opacity: 0; }
-            }
-            .rain-container .raindrop {
-              position: absolute;
-              width: 2px;
-              height: 40px;
-              background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.4));
-              animation: rain linear infinite;
-            }
-            .rain-container .raindrop:nth-child(1) { left: 5%; animation-duration: 0.7s; animation-delay: 0.1s; }
-            .rain-container .raindrop:nth-child(2) { left: 15%; animation-duration: 0.6s; animation-delay: 0.3s; }
-            .rain-container .raindrop:nth-child(3) { left: 25%; animation-duration: 0.8s; animation-delay: 0.5s; }
-            .rain-container .raindrop:nth-child(4) { left: 35%; animation-duration: 0.7s; animation-delay: 0.2s; }
-            .rain-container .raindrop:nth-child(5) { left: 45%; animation-duration: 0.9s; animation-delay: 0.4s; }
-            .rain-container .raindrop:nth-child(6) { left: 55%; animation-duration: 0.6s; animation-delay: 0.6s; }
-            .rain-container .raindrop:nth-child(7) { left: 65%; animation-duration: 0.8s; animation-delay: 0.1s; }
-            .rain-container .raindrop:nth-child(8) { left: 75%; animation-duration: 0.7s; animation-delay: 0.3s; }
-            .rain-container .raindrop:nth-child(9) { left: 85%; animation-duration: 0.9s; animation-delay: 0.5s; }
-            .rain-container .raindrop:nth-child(10) { left: 95%; animation-duration: 0.6s; animation-delay: 0.2s; }
-            .rain-container .raindrop:nth-child(11) { left: 10%; animation-duration: 0.8s; animation-delay: 0.7s; }
-            .rain-container .raindrop:nth-child(12) { left: 20%; animation-duration: 0.7s; animation-delay: 0.9s; }
-            .rain-container .raindrop:nth-child(13) { left: 30%; animation-duration: 0.6s; animation-delay: 1.1s; }
-            .rain-container .raindrop:nth-child(14) { left: 40%; animation-duration: 0.9s; animation-delay: 1.3s; }
-            .rain-container .raindrop:nth-child(15) { left: 50%; animation-duration: 0.7s; animation-delay: 1.5s; }
-            .rain-container .raindrop:nth-child(16) { left: 60%; animation-duration: 0.8s; animation-delay: 1.7s; }
-            .rain-container .raindrop:nth-child(17) { left: 70%; animation-duration: 0.6s; animation-delay: 1.9s; }
-            .rain-container .raindrop:nth-child(18) { left: 80%; animation-duration: 0.9s; animation-delay: 0.8s; }
-            .rain-container .raindrop:nth-child(19) { left: 90%; animation-duration: 0.7s; animation-delay: 1.0s; }
-            .rain-container .raindrop:nth-child(20) { left: 8%; animation-duration: 0.8s; animation-delay: 1.2s; }
-          `}</style>
-          <div className="rain-container">
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-            <div className="raindrop" />
-          </div>
-        </div>
-
-        {/* Overlay gradient léger */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3176A6]/40 via-[#4A8FBF]/30 to-[#8CB4D2]/20" />
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3176A6]/90 via-[#4A8FBF]/80 to-[#8CB4D2]/70" />
 
         <div className="container relative z-10">
           <motion.div
