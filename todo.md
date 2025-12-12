@@ -220,3 +220,5 @@
     * Utiliser l'image "winwin_bandeau_protect.jpg" avec slogan "Parce que vos droits doivent être respectés"
     * Reformuler le texte : "Nous recherchons pour vous les meilleures protections juridiques du marché"
     * Ajouter CTA : "Souscrivez directement votre nouveau contrat en 2 minutes"
+
+- [x] 🔥 URGENCE: Supprimer temporairement la page Protection Juridique pour débloquer le site
