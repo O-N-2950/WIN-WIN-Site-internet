@@ -208,3 +208,15 @@
   - SOLUTION: Remplacer tous les `/Clients` par `/tblWPcIpGmBZ3ASGI` dans les URLs Airtable
   - FICHIERS À CORRIGER: server/routers.ts (toutes les URLs Airtable)
   - IMPACT: Bloque complètement la création de nouveaux clients
+
+
+## 🔥 CONFORMITÉ FINMA - PAGE PROTECTION JURIDIQUE (12 DÉC 2025 - 17:45)
+
+- [x] **URGENT FINMA**: Supprimer toute mention d'Emilia sur la page Protection Juridique
+  - RAISON: Éviter d'être considéré comme courtier lié à Emilia
+  - ACTIONS:
+    * Supprimer toutes les mentions "Emilia"
+    * Remplacer couleur jaune Emilia par couleurs WIN WIN (bleu #3176A6 + doré #D4AF37)
+    * Utiliser l'image "winwin_bandeau_protect.jpg" avec slogan "Parce que vos droits doivent être respectés"
+    * Reformuler le texte : "Nous recherchons pour vous les meilleures protections juridiques du marché"
+    * Ajouter CTA : "Souscrivez directement votre nouveau contrat en 2 minutes"
