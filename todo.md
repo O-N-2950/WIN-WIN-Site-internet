@@ -222,3 +222,5 @@
     * Ajouter CTA : "Souscrivez directement votre nouveau contrat en 2 minutes"
 
 - [x] Réduire l'opacité de l'overlay bleu sur le bandeau pour rendre l'image du parapluie bien visible
+
+- [x] Ajouter une animation de pluie qui tombe sur le bandeau Protection Juridique (renforcer la métaphore visuelle)

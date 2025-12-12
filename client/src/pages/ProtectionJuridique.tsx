@@ -43,6 +43,34 @@ export default function ProtectionJuridique() {
           />
         </div>
 
+        {/* Animation de pluie qui tombe */}
+        <div className="absolute inset-0 pointer-events-none">
+          <style>{`
+            @keyframes rain {
+              0% { transform: translateY(-100vh); opacity: 0.6; }
+              100% { transform: translateY(100vh); opacity: 0; }
+            }
+            .raindrop {
+              position: absolute;
+              width: 2px;
+              height: 40px;
+              background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.4));
+              animation: rain linear infinite;
+            }
+          `}</style>
+          {Array.from({ length: 50 }).map((_, i) => (
+            <div
+              key={i}
+              className="raindrop"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDuration: `${0.5 + Math.random() * 0.5}s`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+
         {/* Overlay gradient léger */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#3176A6]/40 via-[#4A8FBF]/30 to-[#8CB4D2]/20" />
 
