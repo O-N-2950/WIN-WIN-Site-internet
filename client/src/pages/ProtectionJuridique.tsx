@@ -35,7 +35,7 @@ export default function ProtectionJuridique() {
       {/* Hero Section avec image parapluie */}
       <section className="relative bg-gradient-to-br from-[#3176A6] via-[#4A8FBF] to-[#8CB4D2] text-white py-24 overflow-hidden">
         {/* Image de fond parapluie */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-70">
           <img
             src="/protection-juridique-banner.png"
             alt="Protection juridique - Parapluie sous la pluie"
@@ -43,8 +43,8 @@ export default function ProtectionJuridique() {
           />
         </div>
 
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3176A6]/90 via-[#4A8FBF]/80 to-[#8CB4D2]/70" />
+        {/* Overlay gradient léger */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3176A6]/40 via-[#4A8FBF]/30 to-[#8CB4D2]/20" />
 
         <div className="container relative z-10">
           <motion.div
