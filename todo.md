@@ -98,5 +98,5 @@
 
 ## 🔧 CORRECTIONS 16 DÉC 2024
 
-- [ ] Corriger page Contact : retirer bloc "Dernière étape : Partagez-nous vos contrats"
+- [x] Corriger page Conseil : retirer bloc "Dernière étape : Partagez-nous vos contrats"
 - [ ] Corriger page Protection Juridique : remettre image parapluie sans animation pluie
