@@ -24,7 +24,7 @@ export default function Conseil() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const sendContactRequest = trpc.appointment.sendContactRequest.useMutation({
+  const sendContactRequest = trpc.contact.sendMessage.useMutation({
     onSuccess: () => {
       toast.success("Message envoyé ! Nous vous répondrons sous 24h.");
       setFormData({ nom: "", email: "", telephone: "", typeClient: "particulier", message: "" });
@@ -110,8 +110,10 @@ export default function Conseil() {
       email: formData.email,
       telephone: formData.telephone,
       typeClient: formData.typeClient,
+      sujet: "Demande de conseil",
       message: formData.message,
       attachmentUrl,
+      attachmentFilename: selectedFile?.name,
     });
   };
 
