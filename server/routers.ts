@@ -21,7 +21,7 @@ export const appRouter = router({
   }),
 
   // Router Client pour gérer les dossiers multi-mandats
-  client: router({
+  clients: router({
     create: publicProcedure
       .input(z.object({
         typeClient: z.enum(["prive", "entreprise"]),
