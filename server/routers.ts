@@ -393,17 +393,19 @@ export const appRouter = router({
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                fields: {
-                  Nom: input.nom,
-                  Email: input.email,
-                  Telephone: input.telephone,
-                  TypeClient: input.typeClient,
-                  Sujet: input.sujet,
-                  Message: input.message,
-                  AttachmentUrl: input.attachmentUrl || "",
-                  AttachmentFilename: input.attachmentFilename || "",
-                  DateEnvoi: new Date().toISOString(),
-                },
+                records: [{
+                  fields: {
+                    "Nom": input.nom,
+                    "Email": input.email,
+                    "Téléphone": input.telephone,
+                    "Type": input.typeClient,
+                    "Sujet": input.sujet,
+                    "Message": input.message,
+                    "Pièce jointe URL": input.attachmentUrl || "",
+                    "Nom fichier": input.attachmentFilename || "",
+                    "Date": new Date().toISOString(),
+                  }
+                }]
               }),
             }
           );
