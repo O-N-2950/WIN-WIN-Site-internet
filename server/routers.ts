@@ -402,7 +402,6 @@ export const appRouter = router({
                     "Source": "Site web - " + input.sujet,
                     "Message": input.message + (input.attachmentUrl ? "\n\nPièce jointe: " + input.attachmentFilename + "\n" + input.attachmentUrl : ""),
                     "Statut": "Nouveau",
-                    "Date de création": new Date().toISOString(),
                   }
                 }]
               }),
