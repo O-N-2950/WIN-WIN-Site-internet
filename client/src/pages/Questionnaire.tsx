@@ -96,7 +96,7 @@ interface QuestionnaireData {
 
 export default function Questionnaire() {
   const [, navigate] = useLocation();
-  // Workflow context removed - using trpc.client.create instead
+  // Workflow context removed - using trpc.clients.create instead
   
   // États de navigation
   const [showIntro, setShowIntro] = useState(true);
@@ -145,7 +145,7 @@ export default function Questionnaire() {
   useEffect(() => {
     if (!showIntro && !isSubmitted) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-       // Sync Backend silencieuse désactivée (utilise trpc.client.create à la soumission)
+       // Sync Backend silencieuse désactivée (utilise trpc.clients.create à la soumission)
     }
   }, [data, showIntro, isSubmitted]);
 
@@ -204,7 +204,7 @@ export default function Questionnaire() {
   };
 
   // --- LOGIQUE DE SOUMISSION ET UPSELL ---
-  const createClientMutation = trpc.client.create.useMutation();
+  const createClientMutation = trpc.clients.create.useMutation();
 
   const handleSubmit = async () => {
     try {

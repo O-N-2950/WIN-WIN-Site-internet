@@ -26,7 +26,7 @@ export default function Success() {
   }, [navigate]);
 
   // Récupérer le code de parrainage depuis Airtable
-  const getPriceMutation = trpc.client.getStripePrice.useMutation();
+  const getPriceMutation = trpc.clients.getStripePrice.useMutation();
 
   useEffect(() => {
     if (!email) return;

@@ -28,7 +28,7 @@ export default function Paiement() {
   const [codeParrainage, setCodeParrainage] = useState("");
   
   // Mutations tRPC
-  const getPriceMutation = trpc.client.getStripePrice.useMutation();
+  const getPriceMutation = trpc.clients.getStripePrice.useMutation();
   const createCheckoutMutation = trpc.workflow.createCheckoutSession.useMutation();
   
   useEffect(() => {

@@ -7,6 +7,6 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
-  airtableBaseId: process.env.AIRTABLE_BASE_ID ?? "",
+  airtableBaseId: process.env.AIRTABLE_BASE_ID ?? "appZQkRJ7PwOtdQ3O",
   airtableApiKey: process.env.AIRTABLE_API_KEY ?? "",
 };
