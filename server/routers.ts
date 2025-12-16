@@ -384,6 +384,13 @@ export const appRouter = router({
             throw new Error("Configuration Airtable manquante");
           }
 
+          // Mapper les valeurs typeClient vers les valeurs Airtable
+          const typeClientMapping: Record<string, string> = {
+            "particulier": "Particulier",
+            "entreprise": "Entreprise",
+            "les-deux": "Les deux"
+          };
+
           const response = await fetch(
             `https://api.airtable.com/v0/${airtableBaseId}/tbl7kIZd294RTM1de`,
             {
@@ -398,8 +405,8 @@ export const appRouter = router({
                     "Nom": input.nom,
                     "Email": input.email,
                     "Téléphone": input.telephone,
-                    "Type Client": input.typeClient,
-                    "Source": "Site web - " + input.sujet,
+                    "Type Client": typeClientMapping[input.typeClient] || "Particulier",
+                    "Source": "Formulaire Contact",
                     "Message": input.message + (input.attachmentUrl ? "\n\nPièce jointe: " + input.attachmentFilename + "\n" + input.attachmentUrl : ""),
                     "Statut": "Nouveau",
                   }
