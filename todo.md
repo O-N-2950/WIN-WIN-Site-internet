@@ -100,3 +100,4 @@
 
 - [x] Corriger page Conseil : retirer bloc "Dernière étape : Partagez-nous vos contrats"
 - [ ] Corriger page Protection Juridique : remettre image parapluie sans animation pluie
+- [x] BUG CRITIQUE: Corriger l'upload de fichiers page Conseil (erreur 404 upload.uploadFile)

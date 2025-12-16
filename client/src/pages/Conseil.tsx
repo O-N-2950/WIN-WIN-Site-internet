@@ -69,7 +69,7 @@ export default function Conseil() {
     }
   };
 
-  const uploadFile = trpc.upload.uploadFile.useMutation();
+  const uploadFile = trpc.contact.uploadAttachment.useMutation();
 
   const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,11 +88,10 @@ export default function Conseil() {
           reader.readAsDataURL(selectedFile);
         });
 
-        // Upload vers S3
+        // Upload vers Cloudinary
         const uploadResult = await uploadFile.mutateAsync({
-          fileName: selectedFile.name,
-          fileType: selectedFile.type,
-          fileData,
+          base64Data: fileData,
+          filename: selectedFile.name,
         });
 
         attachmentUrl = uploadResult.url;
