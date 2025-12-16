@@ -385,7 +385,7 @@ export const appRouter = router({
           }
 
           const response = await fetch(
-            `https://api.airtable.com/v0/${airtableBaseId}/Messages%20Contact`,
+            `https://api.airtable.com/v0/${airtableBaseId}/tbl7kIZd294RTM1de`,
             {
               method: "POST",
               headers: {
