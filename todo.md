@@ -95,3 +95,8 @@
 - [ ] Code de parrainage à l'étape 2
 - [ ] Validation temps réel du code
 - [ ] Afficher rabais immédiatement
+
+## 🔧 CORRECTIONS 16 DÉC 2024
+
+- [ ] Corriger page Contact : retirer bloc "Dernière étape : Partagez-nous vos contrats"
+- [ ] Corriger page Protection Juridique : remettre image parapluie sans animation pluie
