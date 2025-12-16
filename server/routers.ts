@@ -398,12 +398,11 @@ export const appRouter = router({
                     "Nom": input.nom,
                     "Email": input.email,
                     "Téléphone": input.telephone,
-                    "Type": input.typeClient,
-                    "Sujet": input.sujet,
-                    "Message": input.message,
-                    "Pièce jointe URL": input.attachmentUrl || "",
-                    "Nom fichier": input.attachmentFilename || "",
-                    "Date": new Date().toISOString(),
+                    "Type Client": input.typeClient,
+                    "Source": "Site web - " + input.sujet,
+                    "Message": input.message + (input.attachmentUrl ? "\n\nPièce jointe: " + input.attachmentFilename + "\n" + input.attachmentUrl : ""),
+                    "Statut": "Nouveau",
+                    "Date de création": new Date().toISOString(),
                   }
                 }]
               }),
