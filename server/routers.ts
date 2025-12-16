@@ -360,6 +360,107 @@ export const appRouter = router({
         }
       }),
   }),
+
+  // Router Contact pour gérer les messages de contact
+  contact: router({
+    sendMessage: publicProcedure
+      .input(z.object({
+        nom: z.string().min(1, "Nom requis"),
+        email: z.string().email("Email invalide"),
+        telephone: z.string().min(1, "Téléphone requis"),
+        typeClient: z.enum(["particulier", "entreprise", "les-deux"]),
+        sujet: z.string().min(1, "Sujet requis"),
+        message: z.string().min(1, "Message requis"),
+        attachmentUrl: z.string().optional(),
+        attachmentFilename: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // Envoyer l'email via Airtable
+          const airtableApiKey = ENV.airtableApiKey;
+          const airtableBaseId = ENV.airtableBaseId;
+
+          if (!airtableApiKey || !airtableBaseId) {
+            throw new Error("Configuration Airtable manquante");
+          }
+
+          const response = await fetch(
+            `https://api.airtable.com/v0/${airtableBaseId}/Messages%20Contact`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${airtableApiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                fields: {
+                  Nom: input.nom,
+                  Email: input.email,
+                  Telephone: input.telephone,
+                  TypeClient: input.typeClient,
+                  Sujet: input.sujet,
+                  Message: input.message,
+                  AttachmentUrl: input.attachmentUrl || "",
+                  AttachmentFilename: input.attachmentFilename || "",
+                  DateEnvoi: new Date().toISOString(),
+                },
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Erreur Airtable:", errorText);
+            throw new Error("Erreur lors de l'envoi du message");
+          }
+
+          return { success: true };
+        } catch (error) {
+          console.error("Erreur sendMessage:", error);
+          throw error;
+        }
+      }),
+
+    uploadAttachment: publicProcedure
+      .input(z.object({
+        base64Data: z.string(),
+        filename: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // Upload vers Cloudinary
+          const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME || "dqonhvxik";
+          const cloudinaryUploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || "ml_default";
+
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                file: input.base64Data,
+                upload_preset: cloudinaryUploadPreset,
+                resource_type: "auto",
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Erreur Cloudinary:", errorText);
+            throw new Error("Erreur lors de l'upload du fichier");
+          }
+
+          const data = await response.json();
+          return { url: data.secure_url };
+        } catch (error) {
+          console.error("Erreur uploadAttachment:", error);
+          throw error;
+        }
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -102,3 +102,4 @@
 - [ ] Corriger page Protection Juridique : remettre image parapluie sans animation pluie
 - [x] BUG CRITIQUE: Corriger l'upload de fichiers page Conseil (erreur 404 upload.uploadFile)
 - [x] BUG: Corriger l'envoi de message page Conseil (erreur 404 appointment.sendContactRequest)
+- [x] CRÉER le router contact avec sendMessage et uploadAttachment dans server/routers.ts
