@@ -115,3 +115,7 @@
 ## 🔧 Correction liens "Demandez conseil" (17 DÉC 2024)
 
 - [ ] Corriger tous les boutons "Demandez conseil" pour pointer vers /conseil au lieu de /contact
+
+## 🎨 Amélioration icône Protection Juridique (17 DÉC 2024)
+
+- [ ] Remplacer emoji cadenas 🔒 par balance ⚖️ (plus pertinent pour la justice)

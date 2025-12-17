@@ -71,7 +71,7 @@ export default function ProtectionJuridique() {
             </motion.div>
 
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-2xl">
-              🔒 Protection Juridique
+              ⚖️ Protection Juridique
             </motion.h1>
 
             <motion.p variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-xl">
