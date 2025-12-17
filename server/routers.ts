@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { ENV } from "./_core/env";
+import { v2 as cloudinary } from 'cloudinary';
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -436,8 +437,6 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         try {
           // Upload vers Cloudinary avec credentials signés
-          const cloudinary = require('cloudinary').v2;
-          
           cloudinary.config({
             cloud_name: ENV.cloudinaryCloudName,
             api_key: ENV.cloudinaryApiKey,
