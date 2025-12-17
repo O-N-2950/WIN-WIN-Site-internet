@@ -122,5 +122,7 @@
 
 ## 🐛 BUG: Pièces jointes non attachées dans Airtable (17 DÉC 2024)
 
-- [ ] URGENT: Les PDF ne sont toujours PAS attachés dans Airtable (vérifier format exact avec MCP)
-- [ ] Tester le format Airtable Attachments avec MCP avant de déployer
+- [x] URGENT: Les PDF ne sont toujours PAS attachés dans Airtable (vérifier format exact avec MCP)
+- [x] Tester le format Airtable Attachments avec MCP avant de déployer
+- [x] Format Airtable Attachments validé avec MCP (fonctionne parfaitement)
+- [ ] BUG CRITIQUE: Formulaire Contact ne se soumet PAS (onSubmit ne se déclenche pas)
