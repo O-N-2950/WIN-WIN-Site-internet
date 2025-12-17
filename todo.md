@@ -122,5 +122,5 @@
 
 ## 🐛 BUG: Pièces jointes non attachées dans Airtable (17 DÉC 2024)
 
-- [x] Corriger l'upload des PDF pour qu'ils soient attachés directement dans Airtable (champ Attachments)
-- [x] Au lieu d'envoyer juste un lien texte Cloudinary, utiliser le format Airtable Attachments
+- [ ] URGENT: Les PDF ne sont toujours PAS attachés dans Airtable (vérifier format exact avec MCP)
+- [ ] Tester le format Airtable Attachments avec MCP avant de déployer
