@@ -47,12 +47,12 @@ export default function ProtectionJuridique() {
             variants={staggerContainer}
             className="max-w-5xl mx-auto text-center"
           >
-            {/* Badge Vainqueur */}
+            {/* Image parapluie protection juridique */}
             <motion.div variants={fadeInUp} className="mb-8 flex justify-center">
               <img
-                src="/emilia-banner.png"
-                alt="Emilia, vainqueur du test Moneyland.ch"
-                className="max-w-2xl w-full h-auto drop-shadow-2xl"
+                src="/protection-juridique-parapluie.png"
+                alt="Protection juridique - Une femme protégée par un parapluie"
+                className="max-w-3xl w-full h-auto drop-shadow-2xl rounded-2xl"
               />
             </motion.div>
 
