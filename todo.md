@@ -107,7 +107,11 @@
 
 ## 🎨 Page Protection Juridique - Améliorations UX/Conversion (17 DÉC 2024)
 
-- [ ] Transformer l'image parapluie en bandeau background (bien visible)
-- [ ] Ajouter 2 CTA dans le hero (Souscrire + Demandez conseil)
-- [ ] Tester le scroll automatique vers les cartes de souscription
-- [ ] Vérifier que l'image du parapluie reste reconnaissable
+- [x] Transformer l'image parapluie en bandeau background (bien visible)
+- [x] Ajouter 2 CTA dans le hero (Souscrire + Demandez conseil)
+- [x] Tester le scroll automatique vers les cartes de souscription
+- [x] Vérifier que l'image du parapluie reste reconnaissable
+
+## 🔧 Correction liens "Demandez conseil" (17 DÉC 2024)
+
+- [ ] Corriger tous les boutons "Demandez conseil" pour pointer vers /conseil au lieu de /contact

@@ -100,7 +100,7 @@ export default function ProtectionJuridique() {
                 size="lg"
                 variant="outline"
                 className="bg-white/20 backdrop-blur-md text-white border-2 border-white/50 hover:bg-white/30 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => window.location.href = '/conseil'}
               >
                 <Zap className="w-6 h-6 mr-2" />
                 Demandez conseil
@@ -196,7 +196,7 @@ export default function ProtectionJuridique() {
               <Button
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => window.location.href = '/conseil'}
               >
                 <Zap className="w-6 h-6 mr-2" />
                 Demandez conseil à WIN WIN
@@ -428,7 +428,7 @@ export default function ProtectionJuridique() {
               <Button
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => window.location.href = '/conseil'}
               >
                 <Zap className="w-6 h-6 mr-2" />
                 Contactez WIN WIN Finance Group
