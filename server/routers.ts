@@ -435,36 +435,26 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         try {
+          // Upload vers Cloudinary avec credentials signés
+          const cloudinary = require('cloudinary').v2;
+          
+          cloudinary.config({
+            cloud_name: ENV.cloudinaryCloudName,
+            api_key: ENV.cloudinaryApiKey,
+            api_secret: ENV.cloudinaryApiSecret,
+          });
+
           // Upload vers Cloudinary
-          const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME || "dqonhvxik";
-          const cloudinaryUploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || "ml_default";
+          const result = await cloudinary.uploader.upload(input.base64Data, {
+            folder: 'winwin-contact',
+            resource_type: 'auto',
+            public_id: `${Date.now()}-${input.filename}`,
+          });
 
-          const response = await fetch(
-            `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                file: input.base64Data,
-                upload_preset: cloudinaryUploadPreset,
-                resource_type: "auto",
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Erreur Cloudinary:", errorText);
-            throw new Error("Erreur lors de l'upload du fichier");
-          }
-
-          const data = await response.json();
-          return { url: data.secure_url };
+          return { url: result.secure_url };
         } catch (error) {
           console.error("Erreur uploadAttachment:", error);
-          throw error;
+          throw new Error("Erreur lors de l'upload du fichier");
         }
       }),
   }),
