@@ -408,8 +408,14 @@ export const appRouter = router({
                     "Téléphone": input.telephone,
                     "Type Client": typeClientMapping[input.typeClient] || "Particulier",
                     "Source": "Formulaire Contact",
-                    "Message": input.message + (input.attachmentUrl ? "\n\nPièce jointe: " + input.attachmentFilename + "\n" + input.attachmentUrl : ""),
+                    "Message": input.message,
                     "Statut": "Nouveau",
+                    ...(input.attachmentUrl ? {
+                      "Pièce jointe": [{
+                        url: input.attachmentUrl,
+                        filename: input.attachmentFilename
+                      }]
+                    } : {})
                   }
                 }]
               }),

@@ -119,3 +119,8 @@
 ## 🎨 Amélioration icône Protection Juridique (17 DÉC 2024)
 
 - [x] Remplacer emoji cadenas 🔒 par balance ⚖️ (plus pertinent pour la justice)
+
+## 🐛 BUG: Pièces jointes non attachées dans Airtable (17 DÉC 2024)
+
+- [ ] Corriger l'upload des PDF pour qu'ils soient attachés directement dans Airtable (champ Attachments)
+- [ ] Au lieu d'envoyer juste un lien texte Cloudinary, utiliser le format Airtable Attachments
