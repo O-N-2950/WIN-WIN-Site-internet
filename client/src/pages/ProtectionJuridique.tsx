@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { Shield, CheckCircle2, Scale, Users, Building2, User, ArrowRight, Award, Zap } from "lucide-react";
+import { Shield, CheckCircle2, Scale, Users, Building2, User, ArrowRight, Award, Zap, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 /**
  * Page Protection Juridique
  * Présente la meilleure protection juridique de Suisse avec liens directs
+ * VERSION AMÉLIORÉE : Bandeau image parapluie + 2 CTA (Souscrire + Conseil)
  */
 
 const AFFILIATE_LINKS = {
@@ -30,12 +31,27 @@ const staggerContainer = {
 };
 
 export default function ProtectionJuridique() {
+  const scrollToSubscription = () => {
+    document.getElementById('subscription-cards')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen">
-      {/* Hero Section avec image parapluie */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 text-white py-24 overflow-hidden">
+      {/* Hero Section avec BANDEAU image parapluie en background */}
+      <section 
+        className="relative text-white py-32 md:py-40 overflow-hidden"
+        style={{
+          backgroundImage: "url('/protection-juridique-parapluie.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Overlay bleu WIN WIN pour lisibilité (léger) */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 via-blue-500/60 to-blue-700/70" />
+
         {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse delay-1000" />
         </div>
@@ -47,42 +63,47 @@ export default function ProtectionJuridique() {
             variants={staggerContainer}
             className="max-w-5xl mx-auto text-center"
           >
-            {/* Image parapluie protection juridique */}
-            <motion.div variants={fadeInUp} className="mb-8 flex justify-center">
-              <img
-                src="/protection-juridique-parapluie.png"
-                alt="Protection juridique - Une femme protégée par un parapluie"
-                className="max-w-3xl w-full h-auto drop-shadow-2xl rounded-2xl"
-              />
-            </motion.div>
-
             <motion.div variants={fadeInUp} className="mb-6">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30">
+              <div className="inline-flex items-center gap-2 bg-white/30 backdrop-blur-md px-6 py-3 rounded-full border-2 border-white/50 shadow-2xl">
                 <Award className="w-5 h-5" />
-                <span className="font-semibold">Vainqueur du Test Moneyland.ch 10/2024</span>
+                <span className="font-semibold text-lg">Vainqueur du Test Moneyland.ch 10/2024</span>
               </div>
             </motion.div>
 
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold mb-6">
+            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-2xl">
               🔒 Protection Juridique
             </motion.h1>
 
-            <motion.p variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-4">
+            <motion.p variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-xl">
               La meilleure protection juridique de Suisse
             </motion.p>
 
-            <motion.p variants={fadeInUp} className="text-2xl md:text-3xl mb-12 font-medium">
+            <motion.p variants={fadeInUp} className="text-2xl md:text-3xl mb-12 font-medium drop-shadow-lg">
               Défendez vos droits. Protégez votre avenir.
             </motion.p>
 
-            <motion.div variants={fadeInUp}>
+            {/* 2 CTA côte à côte */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              {/* CTA Principal : Souscrire maintenant (VERT/DORÉ) */}
               <Button
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
-                onClick={() => document.getElementById('winwin-contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-300 hover:scale-105 font-bold border-2 border-white/30"
+                onClick={scrollToSubscription}
+              >
+                <ExternalLink className="w-6 h-6 mr-2" />
+                Souscrire maintenant
+                <ArrowRight className="w-6 h-6 ml-2" />
+              </Button>
+
+              {/* CTA Secondaire : Demandez conseil (BLEU/BLANC) */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white/20 backdrop-blur-md text-white border-2 border-white/50 hover:bg-white/30 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
+                onClick={() => window.location.href = '/contact'}
               >
                 <Zap className="w-6 h-6 mr-2" />
-                Demandez conseil à WIN WIN
+                Demandez conseil
                 <ArrowRight className="w-6 h-6 ml-2" />
               </Button>
             </motion.div>
@@ -237,7 +258,7 @@ export default function ProtectionJuridique() {
               </div>
 
               <div className="text-center">
-                <p className="text-xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-gray-900">
                   = Une couverture 2-en-1 au prix d'une seule protection
                 </p>
               </div>
@@ -246,8 +267,8 @@ export default function ProtectionJuridique() {
         </div>
       </section>
 
-      {/* Section 3 Offres avec CTA directs */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Section Souscription - 3 CARTES AVEC LIENS DIRECTS */}
+      <section id="subscription-cards" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="container">
           <motion.div
             initial="hidden"
@@ -256,141 +277,162 @@ export default function ProtectionJuridique() {
             variants={staggerContainer}
             className="max-w-6xl mx-auto"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-center mb-4">
+            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-center mb-6 text-gray-900">
               Souscrivez directement en 2 minutes chrono
             </motion.h2>
 
-            <motion.p variants={fadeInUp} className="text-xl text-center text-gray-600 mb-12">
+            <motion.p variants={fadeInUp} className="text-xl text-center mb-12 text-gray-700">
               Choisissez l'offre adaptée à votre situation
             </motion.p>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Offre Particuliers */}
+              {/* Carte Particuliers */}
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full flex flex-col border-2 border-blue-200 hover:border-blue-400 transition-all hover:shadow-2xl">
+                <Card className="p-8 h-full flex flex-col border-2 border-blue-300 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:scale-105">
                   <div className="text-center mb-6">
                     <User className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-bold mb-2">Particuliers</h3>
+                    <h3 className="text-2xl font-bold mb-2 text-gray-900">Particuliers</h3>
                     <p className="text-gray-600">Protection complète pour vous et votre famille</p>
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-grow">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Droit privé + Circulation inclus</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Droit privé + Circulation inclus</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Protection famille complète</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Protection famille complète</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Assistance juridique 24/7</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Assistance juridique 24/7</span>
                     </li>
                   </ul>
 
                   <Button
                     size="lg"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-6"
                     onClick={() => window.open(AFFILIATE_LINKS.particuliers, '_blank')}
                   >
                     Souscrire maintenant
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ExternalLink className="w-5 h-5 ml-2" />
                   </Button>
                 </Card>
               </motion.div>
 
-              {/* Offre Ménage */}
+              {/* Carte Ménage - RECOMMANDÉ */}
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full flex flex-col border-2 border-blue-400 hover:border-blue-600 transition-all hover:shadow-2xl relative">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    RECOMMANDÉ
+                <Card className="p-8 h-full flex flex-col border-4 border-green-500 hover:border-green-600 transition-all duration-300 hover:shadow-2xl hover:scale-105 relative">
+                  {/* Badge RECOMMANDÉ */}
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg">
+                      RECOMMANDÉ
+                    </div>
                   </div>
 
-                  <div className="text-center mb-6">
-                    <Users className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-bold mb-2">Ménage</h3>
+                  <div className="text-center mb-6 mt-4">
+                    <Users className="w-16 h-16 mx-auto mb-4 text-green-600" />
+                    <h3 className="text-2xl font-bold mb-2 text-gray-900">Ménage</h3>
                     <p className="text-gray-600">Protection optimale pour votre foyer</p>
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-grow">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Droit privé + Circulation inclus</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Droit privé + Circulation inclus</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Protection logement</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Protection logement</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Litiges de voisinage</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Litiges de voisinage</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Meilleur rapport qualité/prix</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700 font-bold">Meilleur rapport qualité/prix</span>
                     </li>
                   </ul>
 
                   <Button
                     size="lg"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg py-6"
                     onClick={() => window.open(AFFILIATE_LINKS.menage, '_blank')}
                   >
                     Souscrire maintenant
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ExternalLink className="w-5 h-5 ml-2" />
                   </Button>
                 </Card>
               </motion.div>
 
-              {/* Offre Entreprises */}
+              {/* Carte Entreprises */}
               <motion.div variants={fadeInUp}>
-                <Card className="p-8 h-full flex flex-col border-2 border-blue-200 hover:border-blue-400 transition-all hover:shadow-2xl">
+                <Card className="p-8 h-full flex flex-col border-2 border-blue-300 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:scale-105">
                   <div className="text-center mb-6">
                     <Building2 className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-bold mb-2">Entreprises</h3>
+                    <h3 className="text-2xl font-bold mb-2 text-gray-900">Entreprises</h3>
                     <p className="text-gray-600">Protection professionnelle sur mesure</p>
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-grow">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Droit du travail</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Droit du travail</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Litiges commerciaux</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Litiges commerciaux</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
-                      <span>Protection contractuelle</span>
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-gray-700">Protection contractuelle</span>
                     </li>
                   </ul>
 
                   <Button
                     size="lg"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-6"
                     onClick={() => window.open(AFFILIATE_LINKS.entreprises, '_blank')}
                   >
                     Souscrire maintenant
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ExternalLink className="w-5 h-5 ml-2" />
                   </Button>
                 </Card>
               </motion.div>
             </div>
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.div variants={fadeInUp} className="text-center mt-12">
-              <p className="text-lg text-gray-600 mb-6">
-                Vous avez des questions ou besoin d'un conseil personnalisé ?
-              </p>
+      {/* Section CTA Final */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+        <div className="container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
+              Vous avez des questions ou besoin d'un conseil personnalisé ?
+            </motion.h2>
+
+            <motion.p variants={fadeInUp} className="text-xl md:text-2xl mb-12">
+              Notre équipe d'experts est à votre disposition pour vous guider vers la meilleure solution.
+            </motion.p>
+
+            <motion.div variants={fadeInUp}>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50"
+                className="bg-white text-blue-600 hover:bg-gray-100 text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 font-bold"
                 onClick={() => window.location.href = '/contact'}
               >
+                <Zap className="w-6 h-6 mr-2" />
                 Contactez WIN WIN Finance Group
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-6 h-6 ml-2" />
               </Button>
             </motion.div>
           </motion.div>

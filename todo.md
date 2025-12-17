@@ -104,3 +104,10 @@
 - [x] BUG: Corriger l'envoi de message page Conseil (erreur 404 appointment.sendContactRequest)
 - [x] CRÉER le router contact avec sendMessage et uploadAttachment dans server/routers.ts
 - [x] BUG: Erreur 500 lors de l'envoi de message (vérifier table Airtable)
+
+## 🎨 Page Protection Juridique - Améliorations UX/Conversion (17 DÉC 2024)
+
+- [ ] Transformer l'image parapluie en bandeau background (bien visible)
+- [ ] Ajouter 2 CTA dans le hero (Souscrire + Demandez conseil)
+- [ ] Tester le scroll automatique vers les cartes de souscription
+- [ ] Vérifier que l'image du parapluie reste reconnaissable
