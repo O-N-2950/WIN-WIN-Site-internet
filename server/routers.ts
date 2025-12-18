@@ -5,6 +5,7 @@ import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { ENV } from "./_core/env";
 import { v2 as cloudinary } from 'cloudinary';
+import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -427,6 +428,26 @@ export const appRouter = router({
             console.error("Erreur Airtable:", errorText);
             throw new Error("Erreur lors de l'envoi du message");
           }
+
+          // Envoyer une notification au propriétaire
+          const notificationContent = `
+**Nouveau message de contact**
+
+**Nom:** ${input.nom}
+**Email:** ${input.email}
+**Téléphone:** ${input.telephone}
+**Type:** ${typeClientMapping[input.typeClient]}
+
+**Message:**
+${input.message}
+
+${input.attachmentUrl ? `**Pièce jointe:** ${input.attachmentUrl}` : ''}
+          `.trim();
+
+          await notifyOwner({
+            title: `📩 Nouveau message de ${input.nom}`,
+            content: notificationContent,
+          });
 
           return { success: true };
         } catch (error) {

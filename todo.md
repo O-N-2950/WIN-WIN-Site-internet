@@ -122,7 +122,9 @@
 
 ## 🐛 BUG: Pièces jointes non attachées dans Airtable (17 DÉC 2024)
 
-- [x] URGENT: Les PDF ne sont toujours PAS attachés dans Airtable (vérifier format exact avec MCP)
-- [x] Tester le format Airtable Attachments avec MCP avant de déployer
-- [x] Format Airtable Attachments validé avec MCP (fonctionne parfaitement)
-- [ ] BUG CRITIQUE: Formulaire Contact ne se soumet PAS (onSubmit ne se déclenche pas)
+- [x] Corriger l'upload des PDF pour qu'ils soient attachés directement dans Airtable (champ Attachments)
+- [x] Au lieu d'envoyer juste un lien texte Cloudinary, utiliser le format Airtable Attachments
+
+## 🐛 BUG: Pièce jointe non incluse dans la notification (18 DÉC 2024)
+
+- [ ] La pièce jointe uploadée sur Cloudinary n'est pas transmise dans la notification au propriétaire
