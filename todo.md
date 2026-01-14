@@ -131,6 +131,6 @@
 
 ## 🐛 BUG: Email dupliqué dans Airtable (18 DÉC 2024)
 
-- [x] L'email du client apparaît deux fois dans la colonne "Email du client (table client)"
+- [x] L'email du client doit être dans les DEUX colonnes : "Email du client (table client)" ET "Contact E-mail"
 - [x] Erreur 500 lors de la création du client : "Impossible de créer le client dans Airtable"
-- [x] Correction: Remplacé "Contact E-mail" par "Email du client (table client)" dans le router clients.create
+- [x] Correction: Ajout de l'email dans les 2 champs Airtable dans le router clients.create
