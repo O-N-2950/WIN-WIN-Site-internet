@@ -128,3 +128,9 @@
 ## 🐛 BUG: Pièce jointe non incluse dans la notification (18 DÉC 2024)
 
 - [ ] La pièce jointe uploadée sur Cloudinary n'est pas transmise dans la notification au propriétaire
+
+## 🐛 BUG: Email dupliqué dans Airtable (18 DÉC 2024)
+
+- [x] L'email du client apparaît deux fois dans la colonne "Email du client (table client)"
+- [x] Erreur 500 lors de la création du client : "Impossible de créer le client dans Airtable"
+- [x] Correction: Remplacé "Contact E-mail" par "Email du client (table client)" dans le router clients.create

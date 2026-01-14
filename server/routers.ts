@@ -101,7 +101,7 @@ export const appRouter = router({
 
         // 2. MAPPING AIRTABLE STRICT (selon typeClient)
         const airtableFields: Record<string, any> = {
-          "Contact E-mail": input.email,
+          "Email du client (table client)": input.email,
           "Tél. Mobile": input.telMobile,
           "Groupe Familial": groupeFamilial,
           "Statut du client": "NOUVEAU CLIENT",
