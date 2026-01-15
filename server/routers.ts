@@ -74,8 +74,9 @@ export const appRouter = router({
         if (input.parrainEmail) {
           // CAS : Dossier lié (Conjoint ou Entreprise)
           try {
+            // Chercher le parrain dans les 2 champs email
             const response = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.parrainEmail}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=OR({fldI0sr2QLOJYsZR6}='${input.parrainEmail}',{fldFdqxwos16iziy3}='${input.parrainEmail}')`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -87,6 +88,9 @@ export const appRouter = router({
             if (data.records && data.records.length > 0) {
               // Récupérer le groupe familial du parrain
               groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
+              console.log("✅ Parrain trouvé !", { parrainEmail: input.parrainEmail, groupeFamilial });
+            } else {
+              console.error("❌ Parrain introuvable avec l'email:", input.parrainEmail);
             }
           } catch (error) {
             console.error("Erreur lors de la récupération du parrain:", error);

@@ -134,3 +134,12 @@
 - [x] L'email du client doit être dans les DEUX colonnes : "Email du client (table client)" ET "Contact E-mail"
 - [x] Erreur 500 lors de la création du client : "Impossible de créer le client dans Airtable"
 - [x] Correction: Ajout de l'email dans les 2 champs Airtable dans le router clients.create
+
+## 🐛 BUG: Système multi-mandats ne fonctionne pas correctement (18 DÉC 2024)
+
+- [x] Impossible d'ajouter le conjoint (erreur lors de la création du 2ème mandat)
+- [x] Le système doit permettre de créer 3 mandats distincts : Personne 1, Personne 2 (conjoint), Entreprise
+- [x] Chaque mandat doit être lié au même groupe familial
+- [x] Le rabais familial doit se calculer selon le nombre total de mandats (2 = 4%, 3 = 6%, etc.)
+- [x] Chaque mandat doit générer sa propre facture Stripe
+- [x] Correction: Recherche du parrain dans les 2 champs email (fldI0sr2QLOJYsZR6 ET fldFdqxwos16iziy3)
