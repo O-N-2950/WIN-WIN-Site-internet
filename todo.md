@@ -143,3 +143,11 @@
 - [x] Le rabais familial doit se calculer selon le nombre total de mandats (2 = 4%, 3 = 6%, etc.)
 - [x] Chaque mandat doit générer sa propre facture Stripe
 - [x] Correction: Recherche du parrain dans les 2 champs email (fldI0sr2QLOJYsZR6 ET fldFdqxwos16iziy3)
+
+## 🐛 BUG: Calcul du rabais familial incorrect (18 DÉC 2024)
+
+- [x] Le système compte TOUS les membres du groupe familial (actifs + inactifs)
+- [x] Les clients inactifs sont comptés dans le rabais → Rabais artificiellement augmenté
+- [x] Les mandats offerts sont comptés dans le rabais → Fausse le calcul
+- [x] Correction: Filtrer uniquement les membres "Actifs" ET avec mandat "Payant" (non offert)
+- [x] Filtre Airtable: AND({Groupe Familial}='...', {Statut du client}='Actif', NOT({Mandat offert}))

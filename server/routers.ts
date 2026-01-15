@@ -220,11 +220,11 @@ export const appRouter = router({
           const clientRecord = data.records[0];
           const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
           
-          // Compter les membres actifs du groupe familial
+          // Compter UNIQUEMENT les membres ACTIFS avec mandat PAYANT (non offert)
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fld7adFgijiW0Eqhj}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -233,6 +233,7 @@ export const appRouter = router({
             );
             const familyData = await familyResponse.json();
             nbMembres = familyData.records?.length || 1;
+            console.log(`📊 Groupe ${groupeFamilial}: ${nbMembres} membre(s) actif(s) avec mandat payant`);
           }
 
           // 2. FORMULE DE RABAIS STRICTE
@@ -297,11 +298,11 @@ export const appRouter = router({
           const clientRecord = data.records[0];
           const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
           
-          // Compter les membres actifs du groupe familial
+          // Compter UNIQUEMENT les membres ACTIFS avec mandat PAYANT (non offert)
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fld7adFgijiW0Eqhj}='${groupeFamilial}'`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fld7adFgijiW0Eqhj}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -310,6 +311,7 @@ export const appRouter = router({
             );
             const familyData = await familyResponse.json();
             nbMembres = familyData.records?.length || 1;
+            console.log(`📊 Groupe ${groupeFamilial}: ${nbMembres} membre(s) actif(s) avec mandat payant`);
           }
 
           // 2. CALCUL DU PRIX AVEC FORMULE VALIDÉE
