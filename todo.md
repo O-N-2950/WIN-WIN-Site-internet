@@ -167,4 +167,20 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Vérifier que la route `/signature` existe dans App.tsx
 - [x] Vérifier où redirige le bouton "Terminer & Signer" du questionnaire
 - [x] Corriger le workflow pour : Questionnaire → SIGNATURE → Paiement (ligne 424 Questionnaire.tsx)
+- [x] Ajouter sauvegarde des données dans WorkflowContext avant redirection
+- [x] Modifier Signature.tsx pour lire l'email depuis l'URL ET le workflow
+- [x] Pousser les corrections sur GitHub (commit 1e095d6)
 - [ ] Tester que la page de signature s'affiche bien avant le paiement
+
+
+---
+
+# 🚨🚨 BUG CRITIQUE - Site DOWN - WorkflowProvider manquant
+
+**ERREUR:** `useWorkflow must be used within a WorkflowProvider`
+
+- [x] Vérifier que client/src/contexts/WorkflowContext.tsx existe
+- [x] Vérifier que WorkflowProvider est bien wrappé dans App.tsx ou main.tsx
+- [x] Corriger le provider (ajouté dans main.tsx)
+- [ ] Pousser la correction sur GitHub
+- [ ] Vérifier que le site fonctionne à nouveau
