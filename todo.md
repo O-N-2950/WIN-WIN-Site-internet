@@ -198,3 +198,16 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Vérifier tous les autres champs requis
 - [ ] Pousser sur GitHub
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR __dirname dans generateMandatPDF.ts (ES Modules)
+
+**ERREUR Railway:** `ReferenceError: __dirname is not defined at generateMandatPDF`
+
+- [x] Lire server/_core/generateMandatPDF.ts pour voir l'utilisation de __dirname
+- [x] Remplacer __dirname par import.meta.url (solution ES Modules)
+- [ ] Pousser sur GitHub
+- [ ] Attendre redéploiement Railway
+- [ ] Tester le workflow complet
