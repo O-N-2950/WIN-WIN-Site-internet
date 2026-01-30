@@ -6,6 +6,8 @@ import { z } from "zod";
 import { ENV } from "./_core/env";
 import { v2 as cloudinary } from 'cloudinary';
 import { notifyOwner } from "./_core/notification";
+import { generateMandatPDF } from "./_core/generateMandatPDF";
+import { dataUrlToBuffer, uploadToAirtableAttachment, updateAirtableAttachment } from "./_core/airtableAttachments";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -366,6 +368,144 @@ export const appRouter = router({
         } catch (error) {
           console.error("Erreur lors de la création de la session Stripe:", error);
           throw new Error("Impossible de créer la session de paiement");
+        }
+      }),
+
+    // Mutation pour uploader la signature vers Airtable
+    uploadSignature: publicProcedure
+      .input(z.object({
+        signatureDataUrl: z.string(),
+        clientEmail: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // Convertir dataURL en Buffer PNG
+          const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
+          
+          // Upload vers Airtable (retourne data URL pour l'instant)
+          const result = await uploadToAirtableAttachment(
+            signatureBuffer,
+            `signature-${input.clientEmail}.png`,
+            'image/png'
+          );
+
+          return {
+            signatureUrl: result.url,
+            filename: result.filename,
+          };
+        } catch (error) {
+          console.error("Erreur lors de l'upload de la signature:", error);
+          throw new Error("Impossible d'uploader la signature");
+        }
+      }),
+  }),
+
+  // Router Customers pour créer un client avec signature et PDF
+  customers: router({
+    createFromSignature: publicProcedure
+      .input(z.object({
+        clientEmail: z.string(),
+        signatureDataUrl: z.string(),
+        signatureDate: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          // 1. Récupérer les données du client depuis Airtable
+          const response = await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula={fldI0sr2QLOJYsZR6}='${input.clientEmail}'`,
+            {
+              headers: {
+                Authorization: `Bearer ${ENV.airtableApiKey}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (!data.records || data.records.length === 0) {
+            throw new Error("Client introuvable dans Airtable");
+          }
+
+          const clientRecord = data.records[0];
+          const recordId = clientRecord.id;
+          const fields = clientRecord.fields;
+
+          // Extraire les données du client (selon colonnes Airtable)
+          const clientName = fields["fldCCOGEOh2Yvk8Aw"] || ""; // NOM du client (formule)
+          const clientAddress = fields["fldAOZgLZEP2Hq9Gg"] || ""; // Adresse et no
+          const clientNPA = fields["fld7XmqMRPVqNrOmN"] || ""; // NPA
+          const clientLocality = fields["fldOqGfkBvZr3VBNs"] || ""; // Localité
+
+          // 2. Convertir signature en PNG Buffer
+          const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
+          const signatureFilename = `signature-${input.clientEmail}.png`;
+
+          // 3. Upload signature vers Airtable (colonne #197 "Signature client")
+          const signatureResult = await uploadToAirtableAttachment(
+            signatureBuffer,
+            signatureFilename,
+            'image/png'
+          );
+
+          // 4. Générer le PDF du mandat avec la signature
+          const pdfBuffer = await generateMandatPDF({
+            clientName,
+            clientAddress,
+            clientNPA,
+            clientLocality,
+            signatureUrl: signatureResult.url,
+            signatureDate: input.signatureDate,
+          });
+
+          // 5. Upload PDF vers Airtable (colonne #194 "MANDAT DE GESTION signé")
+          const pdfFilename = `mandat-${input.clientEmail}.pdf`;
+          const pdfResult = await uploadToAirtableAttachment(
+            pdfBuffer,
+            pdfFilename,
+            'application/pdf'
+          );
+
+          // 6. Mettre à jour l'enregistrement Airtable avec signature et PDF
+          // Note: Pour l'instant on utilise data URLs, mais idéalement il faudrait
+          // uploader vers un service externe (S3, Cloudinary) et récupérer l'URL publique
+          
+          // Mise à jour Airtable avec les attachments
+          await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${recordId}`,
+            {
+              method: 'PATCH',
+              headers: {
+                Authorization: `Bearer ${ENV.airtableApiKey}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                fields: {
+                  // Colonne #197 "Signature client"
+                  "fldS3mYjK8vN9pQrT": [
+                    {
+                      url: signatureResult.url,
+                      filename: signatureFilename,
+                    },
+                  ],
+                  // Colonne #194 "MANDAT DE GESTION signé"
+                  "fldM4nDaT9sIgN7eD": [
+                    {
+                      url: pdfResult.url,
+                      filename: pdfFilename,
+                    },
+                  ],
+                },
+              }),
+            }
+          );
+
+          return {
+            clientId: recordId,
+            pdfUrl: pdfResult.url,
+            signatureUrl: signatureResult.url,
+          };
+        } catch (error) {
+          console.error("Erreur lors de la création du client avec signature:", error);
+          throw new Error("Impossible de créer le client avec signature");
         }
       }),
   }),

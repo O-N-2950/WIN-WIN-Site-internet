@@ -107,3 +107,52 @@
 - [x] Ajouter le conseil "Faites la demande depuis votre smartphone"
 - [x] Ajouter la liste des documents nécessaires (numéro AVS, photo recto/verso carte d'identité)
 - [x] Mettre à jour le template HTML de l'email
+
+
+---
+
+# 🚨 PHASE 1 URGENT - RÉPARATION WORKFLOW SIGNATURE (30 janvier 2026)
+
+## Problème critique identifié par Claude IA
+Le système de signature ne fonctionne PAS actuellement :
+- Mutations `workflow.uploadSignature` et `customers.createFromSignature` n'existent pas
+- Signatures jamais enregistrées dans Airtable
+- PDF mandat jamais généré
+
+## Mutations tRPC manquantes
+- [x] Créer mutation `workflow.uploadSignature` dans server/routers.ts
+- [x] Créer mutation `customers.createFromSignature` dans server/routers.ts
+
+## Génération PDF du mandat
+- [x] Installer puppeteer (`pnpm add puppeteer`)
+- [x] Copier mandat-template.html dans server/email-templates/
+- [x] Créer fonction generateMandatPDF dans server/_core/
+- [x] Implémenter remplacement variables {{CLIENT_NAME}}, {{CLIENT_ADDRESS}}, {{CLIENT_NPA}}, {{CLIENT_LOCALITY}}
+- [x] Implémenter conversion signature canvas → PNG
+- [x] Implémenter upload PNG signature vers Airtable (colonne #197 "Signature client")
+- [x] Implémenter génération PDF avec puppeteer
+- [x] Implémenter upload PDF vers Airtable (colonne #194 "MANDAT DE GESTION signé")
+
+## Intégration Airtable
+- [ ] Vérifier colonnes Airtable (Signature client #197, MANDAT DE GESTION signé #194)
+- [ ] Implémenter upload attachments vers Airtable via API
+- [ ] Tester upload fichiers PNG et PDF
+
+## Tests complets
+- [ ] Tester workflow complet : signature → PNG → PDF → Airtable
+- [ ] Vérifier que Stripe se déclenche après signature
+- [ ] Vérifier système groupes familiaux et rabais fonctionnent
+
+## Déploiement
+- [ ] Pousser sur GitHub
+- [ ] Vérifier déploiement Railway
+- [ ] Tester en production sur www.winwin.swiss
+
+---
+
+# 📋 PHASE 2 - Après Phase 1 validée
+
+## Migration Cloudinary → Airtable
+- [ ] Migrer formulaire contact de Cloudinary vers Airtable Attachments
+- [ ] Supprimer dépendances Cloudinary (variables d'environnement)
+- [ ] Tester upload pièces jointes formulaire contact

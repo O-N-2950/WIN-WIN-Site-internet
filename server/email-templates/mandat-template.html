@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandat de Gestion WIN WIN</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 11pt;
+      line-height: 1.4;
+      color: #333;
+      background: white;
+    }
+    
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 20mm;
+      margin: 0 auto;
+      background: white;
+      position: relative;
+    }
+    
+    /* En-tête */
+    .header {
+      background: linear-gradient(135deg, #3176A6 0%, #8CB4D2 100%);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      font-size: 20pt;
+      font-weight: bold;
+      margin-bottom: 3px;
+      letter-spacing: 8px;
+    }
+    
+    .header h2 {
+      font-size: 13pt;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .header .subtitle {
+      font-size: 9pt;
+      opacity: 0.9;
+    }
+    
+    /* Blocs Mandant/Mandataire */
+    .parties {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .partie {
+      flex: 1;
+      border: 2px solid #3176A6;
+      border-radius: 8px;
+      padding: 15px;
+      min-height: 140px;
+    }
+    
+    .partie h3 {
+      color: #3176A6;
+      font-size: 12pt;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .mandataire-info {
+      font-size: 10pt;
+      line-height: 1.6;
+    }
+    
+    .mandataire-info strong {
+      color: #333;
+      font-weight: 600;
+    }
+    
+    .mandataire-info p {
+      margin: 4px 0;
+    }
+    
+    .contact-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 3px 0;
+    }
+    
+    /* Description mandataire */
+    .description {
+      font-size: 9.5pt;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-left: 3px solid #3176A6;
+      border-radius: 4px;
+    }
+    
+    /* Prestations */
+    .section {
+      margin-bottom: 15px;
+    }
+    
+    .section h3 {
+      color: #3176A6;
+      font-size: 12pt;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #3176A6;
+    }
+    
+    .prestations-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 15px;
+      font-size: 10pt;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+    
+    .prestations-grid li {
+      list-style: none;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+    
+    .prestations-grid li::before {
+      content: "•";
+      color: #3176A6;
+      font-weight: bold;
+      font-size: 14pt;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+    
+    .note {
+      font-size: 8.5pt;
+      font-style: italic;
+      color: #666;
+      margin-top: 8px;
+    }
+    
+    /* Conditions */
+    .conditions {
+      margin-bottom: 15px;
+    }
+    
+    .condition {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 9.5pt;
+      line-height: 1.4;
+    }
+    
+    .condition-number {
+      background: #3176A6;
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11pt;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .condition-text {
+      flex: 1;
+      padding-top: 2px;
+    }
+    
+    .condition-text strong {
+      font-weight: 600;
+      color: #333;
+    }
+    
+    /* Signatures */
+    .signatures {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .signature-box {
+      flex: 1;
+      border: 2px solid #3176A6;
+      border-radius: 8px;
+      padding: 15px;
+      min-height: 140px;
+      position: relative;
+    }
+    
+    .signature-box h4 {
+      color: #3176A6;
+      font-size: 11pt;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    
+    .signature-line {
+      border-top: 2px solid #333;
+      margin: 60px 20px 5px 20px;
+      position: relative;
+    }
+    
+    .signature-label {
+      font-size: 9pt;
+      color: #666;
+      text-align: center;
+      margin-top: 5px;
+    }
+    
+    .signature-image {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 200px;
+      max-height: 80px;
+    }
+    
+    .date-field {
+      font-size: 10pt;
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+    
+    .mandataire-signature {
+      text-align: center;
+      margin-top: 25px;
+    }
+    
+    .mandataire-signature img {
+      max-width: 180px;
+      max-height: 70px;
+      margin-bottom: 5px;
+    }
+    
+    .mandataire-name {
+      font-size: 9pt;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    @media print {
+      .page {
+        margin: 0;
+        padding: 20mm;
+      }
+      
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- En-tête -->
+    <div class="header">
+      <h1>WIN WIN</h1>
+      <h2>MANDAT DE GESTION DE PORTEFEUILLE D'ASSURANCES</h2>
+      <div class="subtitle">WW Finance Group Sàrl - Autorisation FINMA F01042365</div>
+    </div>
+    
+    <!-- Parties -->
+    <div class="parties">
+      <div class="partie">
+        <h3>Le Mandant</h3>
+        <div style="padding-top: 10px; line-height: 1.8;">
+          <p><strong style="font-size: 11pt;">{{CLIENT_NAME}}</strong></p>
+          <p style="margin-top: 8px;">{{CLIENT_ADDRESS}}</p>
+          <p>{{CLIENT_NPA}} {{CLIENT_LOCALITY}}</p>
+        </div>
+      </div>
+      
+      <div class="partie">
+        <h3>Le Mandataire</h3>
+        <div class="mandataire-info">
+          <p><strong>WW Finance Group Sàrl</strong></p>
+          <p style="margin-top: 8px;"><strong>Olivier Neukomm</strong></p>
+          <p>Bellevue 7, 2950 Courgenay</p>
+          <p style="margin-top: 6px;">☎ 032 466 11 00 | 📱 079 579 25 00</p>
+          <p>WhatsApp pro : 032 466 11 00</p>
+          <p style="margin-top: 4px;">✉ contact@winwin.swiss | 🌐 www.winwin.swiss</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Description -->
+    <div class="description">
+      Le mandataire, <strong>autorisé par la FINMA (F01042365)</strong> et inscrit au registre <strong>CICERO (30101)</strong>, gère l'ensemble des contrats du portefeuille d'assurances du mandant ainsi que la correspondance avec les compagnies d'assurances. <strong>Responsabilité civile professionnelle assurée auprès d'AXA</strong> (Police n° 14.401.478) avec couverture jusqu'à <strong>10 millions CHF</strong>.
+    </div>
+    
+    <!-- Prestations -->
+    <div class="section">
+      <h3>Prestations incluses dans le mandat</h3>
+      <div class="prestations-grid">
+        <li>Conseils professionnels (agence, téléphone, domicile)</li>
+        <li>Accès Web via Airtable 24h/24</li>
+        <li>Appels d'offres et mise en concurrence</li>
+        <li>Correspondance avec les compagnies</li>
+        <li>Réception et contrôle des primes</li>
+        <li>Mise à jour budget assurances et échéancier</li>
+        <li>Gestion complète des sinistres</li>
+        <li>Recherche <strong>gratuite</strong> de vos avoir LPP (2e pilier)<br>(https://winwin.recherche-libre-passage.ch)</li>
+        <li>Archivage informatique et réexpédition</li>
+        <li>Analyse de prévoyance offerte aux membres PEP's<br>(CHF 250.- - www.peps.digital)</li>
+      </div>
+      <div class="note">* Application PEP's : Service séparé avec privilèges exclusifs auprès de WIN WIN</div>
+    </div>
+    
+    <!-- Conditions -->
+    <div class="section conditions">
+      <h3>Conditions du mandat</h3>
+      
+      <div class="condition">
+        <div class="condition-number">1</div>
+        <div class="condition-text">
+          Le mandant confie au mandataire la gestion de l'ensemble de son portefeuille d'assurances. <strong>Toute conclusion, modification ou résiliation de police nécessite la signature écrite du mandant.</strong>
+        </div>
+      </div>
+      
+      <div class="condition">
+        <div class="condition-number">2</div>
+        <div class="condition-text">
+          Le mandataire est autorisé à obtenir toutes informations nécessaires auprès des compagnies d'assurances pour la gestion du portefeuille, indépendamment de l'existence d'une convention de collaboration.
+        </div>
+      </div>
+      
+      <div class="condition">
+        <div class="condition-number">3</div>
+        <div class="condition-text">
+          <strong>Rémunération :</strong> Le mandant autorise le mandataire à percevoir les commissions et rétrocessions provenant des polices du portefeuille selon les conventions avec les compagnies partenaires.
+        </div>
+      </div>
+      
+      <div class="condition">
+        <div class="condition-number">4</div>
+        <div class="condition-text">
+          <strong>Durée :</strong> Le présent mandat est conclu pour une durée indéterminée. Il peut être résilié par chaque partie sans préavis.
+        </div>
+      </div>
+      
+      <div class="condition">
+        <div class="condition-number">5</div>
+        <div class="condition-text">
+          <strong>Protection des données :</strong> Le mandataire s'engage à respecter la législation suisse sur la protection des données. Les informations clients sont traitées confidentiellement et sécurisées.
+        </div>
+      </div>
+      
+      <div class="condition">
+        <div class="condition-number">6</div>
+        <div class="condition-text">
+          <strong>Droit applicable :</strong> Le présent mandat est régi par le droit suisse. For juridique exclusif : Porrentruy (2900).
+        </div>
+      </div>
+    </div>
+    
+    <!-- Signatures -->
+    <div class="signatures">
+      <div class="signature-box">
+        <h4>Le Mandant</h4>
+        <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+          <strong style="font-size: 10pt;">{{CLIENT_NAME}}</strong>
+        </div>
+        <img src="{{SIGNATURE_URL}}" alt="Signature" class="signature-image" style="display: {{SIGNATURE_DISPLAY}};" />
+        <div class="signature-line"></div>
+        <div class="signature-label">signature</div>
+        <div class="date-field">date : {{SIGNATURE_DATE}}</div>
+      </div>
+      
+      <div class="signature-box">
+        <h4>Le Mandataire</h4>
+        <div class="mandataire-signature">
+          <p><strong>WW Finance Group Sàrl</strong></p>
+          <!-- 
+            NOTE POUR MANUS : 
+            Ici, tu peux soit :
+            1. Mettre une image de ta signature manuscrite scannée
+            2. Ou laisser vide si signature électronique uniquement côté client
+            
+            Pour ajouter ton image de signature :
+            <img src="URL_DE_TA_SIGNATURE" alt="Signature Olivier Neukomm" style="max-width: 180px; max-height: 70px; margin: 10px 0;" />
+          -->
+          <div class="mandataire-name" style="margin-top: 60px;">Olivier Neukomm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
