@@ -102,3 +102,8 @@
 - [x] Ajouter les chiffres clés (CHF 12'838.-, 1.3 milliard retrouvés, 1 Suisse sur 4)
 - [x] Rendre l'appel à l'action plus clair et urgent
 - [x] Mettre à jour le template HTML de l'email
+
+### Phase 9 : Précision smartphone pour la recherche LPP
+- [x] Ajouter le conseil "Faites la demande depuis votre smartphone"
+- [x] Ajouter la liste des documents nécessaires (numéro AVS, photo recto/verso carte d'identité)
+- [x] Mettre à jour le template HTML de l'email
