@@ -16,6 +16,10 @@ export default function Signature() {
   const [, setLocation] = useLocation();
   const { workflow, updateWorkflow } = useWorkflow();
   
+  // Récupérer l'email depuis l'URL si disponible
+  const urlParams = new URLSearchParams(window.location.search);
+  const emailFromUrl = urlParams.get('email');
+  
   const uploadSignatureMutation = trpc.workflow.uploadSignature.useMutation();
   const createClientMutation = trpc.customers.createFromSignature.useMutation();
 
@@ -120,9 +124,11 @@ export default function Signature() {
       return;
     }
 
-    // Vérifier que les données du questionnaire sont présentes
-    if (!workflow.questionnaireData?.email) {
-      toast.error("Données du questionnaire manquantes. Veuillez recommencer.");
+    // Récupérer l'email depuis l'URL ou le workflow
+    const email = emailFromUrl || workflow.questionnaireData?.email;
+    
+    if (!email) {
+      toast.error("Email manquant. Veuillez recommencer le questionnaire.");
       setLocation("/questionnaire-info");
       return;
     }
@@ -144,7 +150,6 @@ export default function Signature() {
       console.log('[Signature] Workflow mis à jour');
       
       // Upload signature vers S3 (pour affichage immédiat)
-      const email = workflow.questionnaireData.email;
       console.log(`[Signature] Upload signature vers S3 pour ${email}...`);
       
       const signatureResult = await uploadSignatureMutation.mutateAsync({

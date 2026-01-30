@@ -134,8 +134,10 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Implémenter upload PDF vers Airtable (colonne #194 "MANDAT DE GESTION signé")
 
 ## Intégration Airtable
-- [ ] Vérifier colonnes Airtable (Signature client #197, MANDAT DE GESTION signé #194)
-- [ ] Implémenter upload attachments vers Airtable via API
+- [x] Vérifier colonnes Airtable (Signature client fldXxORXbvcHPVTio, MANDAT DE GESTION signé fldFlOqiGic9Yv3on)
+- [x] Implémenter upload attachments vers Airtable via API
+- [x] Corriger Base ID (appZQkRJ7PwOtdQ3O)
+- [x] Corriger tous les Field IDs avec les vraies valeurs
 - [ ] Tester upload fichiers PNG et PDF
 
 ## Tests complets
@@ -156,3 +158,13 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Migrer formulaire contact de Cloudinary vers Airtable Attachments
 - [ ] Supprimer dépendances Cloudinary (variables d'environnement)
 - [ ] Tester upload pièces jointes formulaire contact
+
+
+---
+
+# 🚨 BUG CRITIQUE - L'étape signature est sautée
+
+- [x] Vérifier que la route `/signature` existe dans App.tsx
+- [x] Vérifier où redirige le bouton "Terminer & Signer" du questionnaire
+- [x] Corriger le workflow pour : Questionnaire → SIGNATURE → Paiement (ligne 424 Questionnaire.tsx)
+- [ ] Tester que la page de signature s'affiche bien avant le paiement
