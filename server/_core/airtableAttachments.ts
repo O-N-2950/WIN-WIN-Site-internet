@@ -3,7 +3,7 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
-const AIRTABLE_BASE_ID = 'appZQkR17PwOtdQ30';
+const AIRTABLE_BASE_ID = 'appZQkRJ7PwOtdQ3O';
 
 interface UploadAttachmentResult {
   url: string;

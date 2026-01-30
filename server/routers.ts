@@ -430,10 +430,10 @@ export const appRouter = router({
           const fields = clientRecord.fields;
 
           // Extraire les données du client (selon colonnes Airtable)
-          const clientName = fields["fldCCOGEOh2Yvk8Aw"] || ""; // NOM du client (formule)
-          const clientAddress = fields["fldAOZgLZEP2Hq9Gg"] || ""; // Adresse et no
-          const clientNPA = fields["fld7XmqMRPVqNrOmN"] || ""; // NPA
-          const clientLocality = fields["fldOqGfkBvZr3VBNs"] || ""; // Localité
+          const clientName = fields["fldoJ7b8Q7PaM27Vd"] || ""; // NOM du client (formule)
+          const clientAddress = fields["fldWXpm73tI4mHUoj"] || ""; // Adresse et no
+          const clientNPA = fields["fldkbLY9Ziota9Wey"] ? fields["fldkbLY9Ziota9Wey"].toString() : ""; // NPA (number)
+          const clientLocality = fields["fldqs8SybdPAauPdJ"] || ""; // Localité
 
           // 2. Convertir signature en PNG Buffer
           const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
@@ -479,15 +479,15 @@ export const appRouter = router({
               },
               body: JSON.stringify({
                 fields: {
-                  // Colonne #197 "Signature client"
-                  "fldS3mYjK8vN9pQrT": [
+                  // Colonne "Signature client" (fldXxORXbvcHPVTio)
+                  "fldXxORXbvcHPVTio": [
                     {
                       url: signatureResult.url,
                       filename: signatureFilename,
                     },
                   ],
-                  // Colonne #194 "MANDAT DE GESTION signé"
-                  "fldM4nDaT9sIgN7eD": [
+                  // Colonne "MANDAT DE GESTION signé" (fldFlOqiGic9Yv3on)
+                  "fldFlOqiGic9Yv3on": [
                     {
                       url: pdfResult.url,
                       filename: pdfFilename,
