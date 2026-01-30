@@ -24,7 +24,8 @@ interface MandatData {
  */
 export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
   // Lire le template HTML
-  const templatePath = join(__dirname, '../email-templates/mandat-template.html');
+  // Utiliser process.cwd() pour pointer vers la racine du projet en production
+  const templatePath = join(process.cwd(), 'server/email-templates/mandat-template.html');
   let htmlContent = readFileSync(templatePath, 'utf-8');
 
   // Remplacer les variables du template

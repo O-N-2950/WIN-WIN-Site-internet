@@ -211,3 +211,21 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Attendre redéploiement Railway
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR FICHIER MANQUANT - mandat-template.html
+
+**ERREUR Railway:** `ENOENT: no such file or directory, open '/app/email-templates/mandat-template.html'`
+
+**2 PROBLÈMES :**
+1. Mauvais chemin : cherche dans `email-templates/` au lieu de `pdf-templates/`
+2. Fichier peut-être absent du repository GitHub
+
+- [x] Vérifier si server/pdf-templates/mandat-template.html existe localement (OUI, dans server/email-templates/)
+- [x] Corriger le chemin dans generateMandatPDF.ts (utiliser process.cwd())
+- [x] Ajouter le fichier à Git si manquant (Déjà dans Git)
+- [ ] Pousser sur GitHub
+- [ ] Attendre redéploiement Railway
+- [ ] Tester le workflow complet
