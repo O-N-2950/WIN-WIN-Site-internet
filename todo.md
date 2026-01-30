@@ -263,3 +263,20 @@ Le système de signature ne fonctionne PAS actuellement :
 
 - [x] Remplacer server/email-templates/mandat-template.html par la nouvelle version
 - [ ] Pousser sur GitHub
+
+
+---
+
+# 🚨 ERREUR CHROMIUM NON INSTALLÉ - nixpacks.toml n'a pas fonctionné
+
+**ERREUR Railway:** `Error: Browser was not found at the configured executablePath (/usr/bin/chromium)`
+
+**PROBLÈME :** Le fichier nixpacks.toml n'a pas installé Chromium sur Railway
+
+**SOLUTION :** Utiliser un Dockerfile personnalisé à la place
+
+- [x] Créer Dockerfile avec installation de Chromium et toutes les dépendances
+- [x] Supprimer nixpacks.toml (ne fonctionne pas)
+- [ ] Pousser sur GitHub
+- [ ] Railway détectera automatiquement le Dockerfile
+- [ ] Tester le workflow complet
