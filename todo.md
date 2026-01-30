@@ -229,3 +229,21 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Attendre redéploiement Railway
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR CHROME MANQUANT - Puppeteer sur Railway
+
+**ERREUR Railway:** `Error: Could not find Chrome (ver. 144.0.7559.96)`
+
+**PROBLÈME :** Railway n'installe pas Chrome automatiquement pour Puppeteer
+
+**SOLUTION :** Installer Chromium via Nixpacks
+
+- [x] Créer nixpacks.toml à la racine pour installer Chromium
+- [x] Modifier generateMandatPDF.ts pour pointer vers Chromium
+- [x] Ajouter les variables d'environnement Puppeteer (PUPPETEER_EXECUTABLE_PATH)
+- [ ] Pousser sur GitHub
+- [ ] Attendre redéploiement Railway
+- [ ] Tester le workflow complet

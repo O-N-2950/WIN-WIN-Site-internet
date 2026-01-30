@@ -1,0 +1,14 @@
+# Nixpacks configuration for Railway deployment
+# Installs Chromium for Puppeteer PDF generation
+
+[phases.setup]
+nixPkgs = ['nodejs', 'pnpm', 'chromium']
+
+[phases.install]
+cmds = [
+  'pnpm install',
+  'pnpm exec puppeteer browsers install chrome'
+]
+
+[start]
+cmd = 'pnpm run start'
