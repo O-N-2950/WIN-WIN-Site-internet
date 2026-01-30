@@ -247,3 +247,19 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Attendre redéploiement Railway
 - [ ] Tester le workflow complet
+
+
+---
+
+# 📝 MISE À JOUR TEMPLATE MANDAT - Clarification PEP's
+
+**CHANGEMENT :** Clarification de la ligne PEP's pour éviter l'ambiguïté sur le prix
+
+**AVANT :**
+> Analyse de prévoyance offerte aux membres PEP's (CHF 250.- - www.peps.digital)
+
+**APRÈS :**
+> Analyse de prévoyance d'une valeur de CHF 250.- offerte aux membres PEP's (www.peps.digital)
+
+- [x] Remplacer server/email-templates/mandat-template.html par la nouvelle version
+- [ ] Pousser sur GitHub
