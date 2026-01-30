@@ -174,21 +174,9 @@ export default function Signature() {
       // Cela continuera même après la redirection
       console.log('[Signature] Création du client en arrière-plan...');
       createClientMutation.mutate({
-        prenom: workflow.questionnaireData.prenom,
-        nom: workflow.questionnaireData.nom,
-        nomEntreprise: workflow.questionnaireData.nomEntreprise,
-        typeClient: workflow.questionnaireData.typeClient,
-        email: workflow.questionnaireData.email,
-        telMobile: workflow.questionnaireData.telMobile,
-        adresse: workflow.questionnaireData.adresse || '',
-        npa: workflow.questionnaireData.npa || '',
-        localite: workflow.questionnaireData.localite || '',
-        dateNaissance: workflow.questionnaireData.dateNaissance,
-        formeJuridique: workflow.questionnaireData.formeJuridique,
-        nombreEmployes: workflow.questionnaireData.nombreEmployes,
-        codeParrainage: workflow.questionnaireData.codeParrainage,
+        clientEmail: workflow.questionnaireData.email || clientEmail,
         signatureDataUrl,
-        signatureS3Url: signatureResult.url,
+        signatureDate: new Date().toISOString(),
       }, {
         onSuccess: (clientResult) => {
           console.log('[Signature] ✅ Client créé en arrière-plan:', clientResult.clientId);

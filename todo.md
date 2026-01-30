@@ -184,3 +184,17 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Corriger le provider (ajouté dans main.tsx)
 - [ ] Pousser la correction sur GitHub
 - [ ] Vérifier que le site fonctionne à nouveau
+
+
+---
+
+# 🚨 ERREUR 400 - Paramètres manquants dans customers.createFromSignature
+
+**ERREUR:** `Invalid input: expected string, received undefined path: ["clientEmail"] path: ["signatureDate"]`
+
+- [x] Lire le schéma Zod côté serveur (server/routers.ts) pour voir TOUS les champs requis
+- [x] Corriger Signature.tsx pour envoyer clientEmail (workflow.questionnaireData.email)
+- [x] Corriger Signature.tsx pour envoyer signatureDate (new Date().toISOString())
+- [x] Vérifier tous les autres champs requis
+- [ ] Pousser sur GitHub
+- [ ] Tester le workflow complet
