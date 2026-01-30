@@ -95,3 +95,10 @@
 3. ❌ Implémenter un service d'envoi d'email réel
 4. ❌ Créer l'automation Airtable
 5. ❌ Tester la facturation avec Olivier Neukomm
+
+### Phase 8 : Amélioration de l'explication du service LPP
+- [x] Corriger "recherche d'avoir" → "recherche d'avoirs" (avec s)
+- [x] Ajouter une explication concrète du problème (argent oublié sur anciens comptes)
+- [x] Ajouter les chiffres clés (CHF 12'838.-, 1.3 milliard retrouvés, 1 Suisse sur 4)
+- [x] Rendre l'appel à l'action plus clair et urgent
+- [x] Mettre à jour le template HTML de l'email
