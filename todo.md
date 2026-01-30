@@ -1,153 +1,97 @@
-# TODO - WIN WIN Finance Group
+# TODO - WIN WIN Finance Website
 
-## ✅ TERMINÉ
+## 🎯 SYSTÈME DE GROUPES FAMILIAUX (SOLUTION 1 : ID GROUPE PARTAGÉ)
 
-- [x] Synchroniser listes déroulantes questionnaire avec Airtable
-- [x] Implémenter validation IBAN stricte avec auto-formatage
-- [x] Corriger backend pour accepter tous les champs
-- [x] Corriger tous les noms de champs Airtable
-- [x] Corriger conversion NPA string → number
-- [x] Améliorer copywriting ("rabais de groupe")
-- [x] Ajouter "Tout sélectionner" pour les polices
-- [x] Simplifier labels polices + ajouter Protection juridique + Dégâts d'eau
-- [x] Validation complète avec messages d'erreur précis
-- [x] CSS Header : Cacher texte logo
-- [x] Bouton "← Retour" pour préserver données
-- [x] Auto-complétion NPA → Localité avec API Zippopotam.us
-- [x] Champs Employeur + Taux d'activité pour Employé(e)
-- [x] Taux d'activité AUSSI pour Indépendant(e)
-- [x] Message humoristique 150% (Indépendant + Employé)
-- [x] Corrections TypeScript Durabilis.tsx (0 erreur)
+### Phase 1 : Airtable
+- [x] Créer le champ "ID Groupe" dans la table Clients (type: Single line text)
+- [x] Créer un script de migration pour initialiser ID Groupe = Code Parrainage par défaut
+- [ ] **ACTION MANUELLE** : Regrouper les familles existantes (voir documentation Notion)
 
-## 🔥 BUG NOMS CHAMPS AIRTABLE (EN COURS)
+### Phase 2 : Code du site web
+- [x] Modifier le code d'inscription pour copier l'ID Groupe du parrain
+- [x] Modifier le calcul du rabais pour utiliser ID Groupe au lieu de Code Groupe Familial
+- [x] Mettre à jour tous les filtres Airtable pour utiliser ID Groupe
 
-- [x] **BUG NOMS CHAMPS** : Envoie "Contact Nom" au lieu de "Nom", "Contact Prénom" au lieu de "Prénom" → Corrigé
+### Phase 3 : Email personnalisé de facturation
+- [x] Créer le template HTML de l'email personnalisé
+- [x] Ajouter la section "Nouveautés WIN WIN Finance" (nouveau site + recherche LPP)
+- [x] Ajouter le lien vers www.winwin.swiss
+- [x] Ajouter le lien vers https://winwin.recherche-libre-passage.ch/fr/homepage
+- [x] Ajouter le lien de parrainage personnalisé
+- [x] Simplifier le tableau des rabais (sans formule de calcul)
+- [x] Utiliser le montant DYNAMIQUE (prixBase, rabaisPourcent, prixFinal)
+- [x] Créer la fonction d'envoi d'email (sendAnnualInvoiceEmail.ts)
+- [ ] **TODO** : Intégrer l'envoi d'email dans le router de facturation
+- [ ] **TODO** : Implémenter un service d'envoi d'email réel (SendGrid, AWS SES, etc.)
 
-## 🔥 BUG CODE PARRAINAGE (EN ATTENTE)
+### Phase 4 : Facturation automatique Stripe
+- [x] L'endpoint API `/api/billing/create-annual-invoice` existe déjà
+- [x] Création de facture Stripe avec prix dynamique implémentée
+- [ ] **TODO** : Créer l'automation Airtable qui appelle l'endpoint chaque jour
+- [ ] **TODO** : Tester la facturation avec Olivier Neukomm
 
-- [ ] **BUG AFFICHAGE CODE PARRAINAGE** : Le backend retourne groupeFamilial mais le frontend ne l'affiche pas
+### Phase 5 : Documentation Notion
+- [x] Créer une page Notion dans l'espace WIN WIN
+- [x] Documenter le système de groupes familiaux (ID Groupe)
+- [x] Documenter la facturation automatique annuelle
+- [x] Instructions manuelles pour regrouper les familles dans Airtable
+- [x] Liste des colonnes Airtable devenues inutiles (à supprimer)
+- [x] Guide de test complet
+- [x] FAQ et dépannage
 
-## 🔥 SIMPLIFICATION NPA/LOCALITÉ/CANTON (TERMINÉ)
+## 📋 ACTIONS MANUELLES REQUISES
 
-- [x] Remplacer AddressAutocomplete par champs texte simples (NPA + Localité)
-- [x] Ajouter dropdown Canton avec valeurs exactes Airtable (26 cantons)
-- [x] Supprimer tous les contrôles (icônes vertes, animations, messages)
+### 1. Regrouper les familles dans Airtable
+**Voir documentation Notion** : https://www.notion.so/2f8dd860ea518130a0e7e9a97eb48058
 
-## 🔥 BUGS CRITIQUES RÉSOLUS (V10)
+**Familles à regrouper :**
+- Famille Neukomm (9 membres)
+- Famille Vauthier (2 membres)
+- Famille Morel (4 membres)
+- Famille Jubin (4 membres)
+- Famille Apikian (2 membres)
+- Famille Monaco (2 membres)
+- Famille Clerc (2 membres)
+- Famille Chavanne (3 membres)
+- Famille Saunier (2 membres)
+- Famille Bussat (3 membres)
+- Famille Nussbaum (2 membres)
+- Famille Evan (2 membres)
 
-- [x] **BUG CANTON VIDE** : Airtable refuse Canton vide (INVALID_MULTIPLE_CHOICE_OPTIONS) → Ne pas envoyer si vide
+### 2. Supprimer les colonnes obsolètes dans Airtable
+- `Code Groupe Familial` (obsolète, remplacé par ID Groupe)
+- `Groupe Familial` (obsolète, remplacé par ID Groupe)
 
-## 🔥 BUGS CRITIQUES RÉSOLUS (V9 - suite)
+### 3. Implémenter un service d'envoi d'email
+**Options :**
+- SendGrid
+- AWS SES
+- Mailgun
+- Postmark
 
-- [x] **SUPPRIMER 150%** : Airtable n'accepte pas 150%, supprimé du formulaire (type + SelectItem + message)
+**Fichier à modifier :** `server/_core/sendAnnualInvoiceEmail.ts`
 
-## 🔥 BUGS CRITIQUES RÉSOLUS (V9)
+### 4. Créer l'automation Airtable
+**Déclencheur :** Chaque jour à 8h00
+**Condition :** `Date prochaine facturation` ≤ AUJOURD'HUI
+**Action :** Appeler l'endpoint `/api/billing/create-annual-invoice`
 
-- [x] **BUG NOM CHAMP AIRTABLE** : Airtable refuse "Taux d'activité" → Le champ s'appelle "Taux d'activité %" (avec %)
+## 🐛 BUGS EXISTANTS (NON LIÉS À CE PROJET)
+- [ ] Corriger les erreurs TypeScript dans Talentis.tsx (82 erreurs)
 
-## 🔥 BUGS CRITIQUES RÉSOLUS (V8)
+## ✅ RÉSUMÉ DU PROJET
 
-- [x] **BUG ERREUR ENVOI AIRTABLE** : "Erreur lors de l'envoi. Vérifiez vos informations." → Manquait employeur + tauxActivite dans schema Zod
-- [x] **BUG FORMAT DATE NAISSANCE** : Affiche "1973-05-12" au lieu de "12.05.1973" → Formaté avec toLocaleDateString
+**Ce qui a été fait :**
+1. ✅ Système de groupes familiaux avec champ "ID Groupe"
+2. ✅ Migration de 148 clients existants
+3. ✅ Code du site web mis à jour pour utiliser ID Groupe
+4. ✅ Email HTML personnalisé créé (nouveau site, recherche LPP, parrainage, rabais)
+5. ✅ Fonction d'envoi d'email créée
+6. ✅ Documentation Notion complète
 
-## 🔥 BUGS CRITIQUES RÉSOLUS (Récents)
-
-- [x] **BUG SAISIE LOCALITÉ BLOQUÉE** : La key dynamique empêche la saisie manuelle, supprimée complètement
-
-## 🔥 BUGS CRITIQUES RÉSOLUS (Anciens)
-
-- [x] **BUG VALIDATION EMPLOYÉS** : Permettre 0 employés pour les entreprises immobilières
-- [x] **BUG LOCALITÉ VIDE** : Railway n'a pas redéployé la V6, forcer le déploiement
-
-## 🔥 BUGS CRITIQUES RÉSOLUS
-
-- [x] **BUG CALCUL PRIX STRIPE** : Erreur 500 lors du calcul du prix (client.getStripePrice)
-  - ✅ Filtres Airtable corrigés avec field IDs
-  - ✅ Calcul dynamique du nombre de membres (plus besoin de champ Airtable)
-  - ✅ 3 mutations corrigées (create, getStripePrice, createCheckoutSession)
-
-- [x] **API Zippopotam 404** : Remplacer par OpenPLZ (API suisse complète)
-  - ✅ AddressAutocomplete.tsx réécrit avec OpenPLZ
-  - ✅ Plus d'erreurs 404 sur NPA valides
-
-- [x] **Auto-complétion BIDIRECTIONNELLE** :
-  - [x] NPA → Localité (déjà fait)
-  - [x] Localité → NPA (nouveau !)
-  - ✅ Exemple : "Bure" → NPA devient "2915"
-
-## 📝 ERREURS TYPESCRIPT (93 erreurs restantes)
-
-- [ ] Corriger erreurs TypeScript dans Mapping360.tsx (20+ erreurs)
-- [ ] Corriger erreurs TypeScript dans ParentsEnfants.tsx (10+ erreurs)
-- [ ] Corriger erreurs TypeScript dans Merci.tsx (3 erreurs)
-- [ ] Corriger autres erreurs TypeScript (60+ erreurs dans d'autres fichiers)
-
-## 🎨 Améliorations UX AddressAutocomplete (Terminé)
-
-- [x] Ajouter indicateur visuel vert (✓) sur le champ NPA quand une localité est trouvée automatiquement
-- [x] Pré-remplir automatiquement le canton dans un champ caché pour l'envoyer à Airtable
-- [x] Ajouter un message d'aide sous les champs : "Tapez votre NPA ou votre localité, l'autre champ se remplira automatiquement"
-- [x] Ajouter animation bounce sur l'icône verte ✓ pour la rendre plus visible
-- [x] Afficher le canton trouvé dans le message d'aide (ex: "✓ Porrentruy, Jura")
-
-## 🚀 PROCHAINES FONCTIONNALITÉS
-
-- [ ] Code de parrainage à l'étape 2
-- [ ] Validation temps réel du code
-- [ ] Afficher rabais immédiatement
-
-## 🔧 CORRECTIONS 16 DÉC 2024
-
-- [x] Corriger page Conseil : retirer bloc "Dernière étape : Partagez-nous vos contrats"
-- [ ] Corriger page Protection Juridique : remettre image parapluie sans animation pluie
-- [x] BUG CRITIQUE: Corriger l'upload de fichiers page Conseil (erreur 404 upload.uploadFile)
-- [x] BUG: Corriger l'envoi de message page Conseil (erreur 404 appointment.sendContactRequest)
-- [x] CRÉER le router contact avec sendMessage et uploadAttachment dans server/routers.ts
-- [x] BUG: Erreur 500 lors de l'envoi de message (vérifier table Airtable)
-
-## 🎨 Page Protection Juridique - Améliorations UX/Conversion (17 DÉC 2024)
-
-- [x] Transformer l'image parapluie en bandeau background (bien visible)
-- [x] Ajouter 2 CTA dans le hero (Souscrire + Demandez conseil)
-- [x] Tester le scroll automatique vers les cartes de souscription
-- [x] Vérifier que l'image du parapluie reste reconnaissable
-
-## 🔧 Correction liens "Demandez conseil" (17 DÉC 2024)
-
-- [x] Corriger tous les boutons "Demandez conseil" pour pointer vers /conseil au lieu de /contact
-
-## 🎨 Amélioration icône Protection Juridique (17 DÉC 2024)
-
-- [x] Remplacer emoji cadenas 🔒 par balance ⚖️ (plus pertinent pour la justice)
-
-## 🐛 BUG: Pièces jointes non attachées dans Airtable (17 DÉC 2024)
-
-- [x] Corriger l'upload des PDF pour qu'ils soient attachés directement dans Airtable (champ Attachments)
-- [x] Au lieu d'envoyer juste un lien texte Cloudinary, utiliser le format Airtable Attachments
-
-## 🐛 BUG: Pièce jointe non incluse dans la notification (18 DÉC 2024)
-
-- [ ] La pièce jointe uploadée sur Cloudinary n'est pas transmise dans la notification au propriétaire
-
-## 🐛 BUG: Email dupliqué dans Airtable (18 DÉC 2024)
-
-- [x] L'email du client doit être dans les DEUX colonnes : "Email du client (table client)" ET "Contact E-mail"
-- [x] Erreur 500 lors de la création du client : "Impossible de créer le client dans Airtable"
-- [x] Correction: Ajout de l'email dans les 2 champs Airtable dans le router clients.create
-
-## 🐛 BUG: Système multi-mandats ne fonctionne pas correctement (18 DÉC 2024)
-
-- [x] Impossible d'ajouter le conjoint (erreur lors de la création du 2ème mandat)
-- [x] Le système doit permettre de créer 3 mandats distincts : Personne 1, Personne 2 (conjoint), Entreprise
-- [x] Chaque mandat doit être lié au même groupe familial
-- [x] Le rabais familial doit se calculer selon le nombre total de mandats (2 = 4%, 3 = 6%, etc.)
-- [x] Chaque mandat doit générer sa propre facture Stripe
-- [x] Correction: Recherche du parrain dans les 2 champs email (fldI0sr2QLOJYsZR6 ET fldFdqxwos16iziy3)
-
-## 🐛 BUG: Calcul du rabais familial incorrect (18 DÉC 2024)
-
-- [x] Le système compte TOUS les membres du groupe familial (actifs + inactifs)
-- [x] Les clients inactifs sont comptés dans le rabais → Rabais artificiellement augmenté
-- [x] Les mandats offerts sont comptés dans le rabais → Fausse le calcul
-- [x] Correction: Filtrer uniquement les membres "Actifs" ET avec mandat "Payant" (non offert)
-- [x] Filtre Airtable: AND({Groupe Familial}='...', {Statut du client}='Actif', NOT({Mandat offert}))
+**Ce qu'il reste à faire :**
+1. ❌ Regrouper manuellement les familles dans Airtable
+2. ❌ Intégrer l'envoi d'email dans le router
+3. ❌ Implémenter un service d'envoi d'email réel
+4. ❌ Créer l'automation Airtable
+5. ❌ Tester la facturation avec Olivier Neukomm

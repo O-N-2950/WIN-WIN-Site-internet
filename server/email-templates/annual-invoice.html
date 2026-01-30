@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre facturation annuelle WIN WIN Finance</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4A7BA7;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4A7BA7;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #D4AF37;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        h1 {
+            color: #4A7BA7;
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h2 {
+            color: #4A7BA7;
+            font-size: 20px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .highlight-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #4A7BA7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .gift-box {
+            background-color: #fff9e6;
+            border-left: 4px solid #D4AF37;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #4A7BA7;
+            color: #ffffff !important;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .cta-button:hover {
+            background-color: #3a6287;
+        }
+        .secondary-button {
+            display: inline-block;
+            background-color: #D4AF37;
+            color: #ffffff !important;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4A7BA7;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .invoice-summary {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .invoice-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .invoice-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4A7BA7;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #666;
+            font-size: 14px;
+        }
+        .emoji {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">WIN WIN Finance Group</div>
+            <div class="subtitle">Votre partenaire de confiance en assurances</div>
+        </div>
+
+        <p>Bonjour <strong>{{clientName}}</strong>,</p>
+
+        <p>Nous tenons tout d'abord à vous remercier pour votre confiance renouvelée. Depuis {{yearsWithUs}} ans, nous sommes fiers de vous accompagner dans la protection de ce qui compte le plus pour vous.</p>
+
+        <p>Nous restons à vos côtés, aujourd'hui et pour l'avenir, pour vous offrir un service de qualité et des solutions adaptées à vos besoins.</p>
+
+        <h1><span class="emoji">🎁</span> Cadeau : Recherchez vos avoirs LPP oubliés GRATUITEMENT !</h1>
+
+        <div class="gift-box">
+            <p><strong>Saviez-vous que de nombreux Suisses possèdent des avoirs de 2e pilier oubliés ?</strong></p>
+            
+            <p>Nous avons mis en place pour vous un service <strong>100% GRATUIT</strong> de recherche d'avoirs LPP (libre passage) dans toute la Suisse :</p>
+            
+            <ul>
+                <li>✅ Plus de <strong>1500 institutions</strong> couvertes (+ caisse supplétive)</li>
+                <li>✅ Recherche complète et sécurisée</li>
+                <li>✅ Recommandé si vous avez eu plusieurs employeurs</li>
+                <li>✅ Simple, rapide et sans frais</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="https://winwin.recherche-libre-passage.ch/fr/homepage" class="secondary-button">
+                    🔍 Lancer ma recherche gratuite
+                </a>
+            </div>
+
+            <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                <em>Ce service est notre cadeau pour vous remercier de votre fidélité.</em>
+            </p>
+        </div>
+
+        <h1><span class="emoji">🆕</span> Découvrez notre nouveau site web !</h1>
+
+        <div class="highlight-box">
+            <p>Nous sommes ravis de vous annoncer le lancement de notre <strong>nouveau site internet</strong> :</p>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="https://www.winwin.swiss" class="cta-button">
+                    🌐 Visiter www.winwin.swiss
+                </a>
+            </div>
+
+            <p>Vous y trouverez :</p>
+            <ul>
+                <li>📋 Nos services détaillés</li>
+                <li>💼 Nos concepts spécialisés (Talentis, Durabilis, etc.)</li>
+                <li>📞 Un accès direct à notre équipe</li>
+                <li>🔐 Votre espace client personnalisé (bientôt disponible)</li>
+            </ul>
+        </div>
+
+        <h1><span class="emoji">💳</span> Modernisation de notre facturation</h1>
+
+        <p>Pour vous offrir un service toujours plus simple et sécurisé, nous avons modernisé notre système de facturation avec <strong>Stripe</strong>, leader mondial des paiements en ligne.</p>
+
+        <p><strong>Avantages pour vous :</strong></p>
+        <ul>
+            <li>✅ Paiement en ligne sécurisé</li>
+            <li>✅ Suivi de vos factures en temps réel</li>
+            <li>✅ Plusieurs moyens de paiement acceptés</li>
+        </ul>
+
+        <h2><span class="emoji">👨‍👩‍👧‍👦</span> Votre rabais de groupe familial</h2>
+
+        <div class="highlight-box">
+            <p>Grâce à votre groupe familial de <strong>{{nbMembres}} membres actifs</strong>, vous bénéficiez d'un rabais de <strong>{{rabaisPourcent}}%</strong> !</p>
+
+            <div class="invoice-summary">
+                <div class="invoice-line">
+                    <span>Prix de base du mandat</span>
+                    <span><strong>{{prixBase}} CHF</strong></span>
+                </div>
+                <div class="invoice-line">
+                    <span>Rabais familial ({{rabaisPourcent}}%)</span>
+                    <span style="color: #27ae60;"><strong>-{{montantRabais}} CHF</strong></span>
+                </div>
+                <div class="invoice-line invoice-total">
+                    <span>Prix final</span>
+                    <span>{{prixFinal}} CHF</span>
+                </div>
+            </div>
+
+            <p style="margin-top: 20px;"><strong>💡 Astuce :</strong> Plus votre groupe compte de membres, plus le rabais augmente !</p>
+        </div>
+
+        <h2><span class="emoji">🎯</span> Partagez WIN WIN Finance et augmentez votre rabais !</h2>
+
+        <p>Recommandez WIN WIN Finance à vos proches et profitez d'un rabais encore plus avantageux pour toute la famille !</p>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="https://www.winwin.swiss/questionnaire?parrain={{codeParrainage}}" class="cta-button">
+                📤 Partager mon lien de parrainage
+            </a>
+        </div>
+
+        <p style="text-align: center; font-size: 14px; color: #666; margin-top: 10px;">
+            Partagez ce lien par email, WhatsApp ou SMS !
+        </p>
+
+        <h3>Tableau des rabais selon le nombre de membres :</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Membres actifs</th>
+                    <th>Rabais</th>
+                    <th>Prix final (exemple sur 185 CHF)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 membre</td>
+                    <td>0%</td>
+                    <td>185.00 CHF</td>
+                </tr>
+                <tr>
+                    <td>2 membres</td>
+                    <td>4%</td>
+                    <td>177.60 CHF</td>
+                </tr>
+                <tr>
+                    <td>3 membres</td>
+                    <td>6%</td>
+                    <td>173.90 CHF</td>
+                </tr>
+                <tr>
+                    <td>4 membres</td>
+                    <td>8%</td>
+                    <td>170.20 CHF</td>
+                </tr>
+                <tr>
+                    <td>5 membres</td>
+                    <td>10%</td>
+                    <td>166.50 CHF</td>
+                </tr>
+                <tr>
+                    <td>6 membres</td>
+                    <td>12%</td>
+                    <td>162.80 CHF</td>
+                </tr>
+                <tr>
+                    <td>7 membres</td>
+                    <td>14%</td>
+                    <td>159.10 CHF</td>
+                </tr>
+                <tr>
+                    <td>8 membres</td>
+                    <td>16%</td>
+                    <td>155.40 CHF</td>
+                </tr>
+                <tr>
+                    <td>9 membres</td>
+                    <td>18%</td>
+                    <td>151.70 CHF</td>
+                </tr>
+                <tr style="background-color: #f0f7ff; font-weight: bold;">
+                    <td>10+ membres</td>
+                    <td>20%</td>
+                    <td>148.00 CHF</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="font-size: 14px; color: #666; margin-top: 10px;">
+            <em>* Les prix finaux sont calculés dynamiquement selon votre prix de base personnel.</em>
+        </p>
+
+        <h2><span class="emoji">📄</span> Votre facture Stripe</h2>
+
+        <p>Vous recevrez dans quelques instants un second email contenant votre facture Stripe avec un lien de paiement sécurisé.</p>
+
+        <p>Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter :</p>
+
+        <ul>
+            <li>📧 Email : <a href="mailto:contact@winwin.swiss">contact@winwin.swiss</a></li>
+            <li>📞 Téléphone : <a href="tel:+41324612323">+41 32 461 23 23</a></li>
+            <li>🌐 Site web : <a href="https://www.winwin.swiss">www.winwin.swiss</a></li>
+        </ul>
+
+        <p style="margin-top: 30px;">Nous vous remercions encore une fois pour votre confiance et restons à votre entière disposition.</p>
+
+        <p><strong>Cordialement,</strong><br>
+        L'équipe WIN WIN Finance Group</p>
+
+        <div class="footer">
+            <p><strong>WIN WIN Finance Group</strong></p>
+            <p>Rue de la Gare 10, 2900 Porrentruy, Suisse</p>
+            <p>📞 +41 32 461 23 23 | 📧 contact@winwin.swiss</p>
+            <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                Cet email a été envoyé à {{clientEmail}}.<br>
+                Vous recevez cet email car vous êtes client chez WIN WIN Finance Group.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

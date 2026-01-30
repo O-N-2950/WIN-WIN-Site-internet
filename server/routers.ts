@@ -86,8 +86,8 @@ export const appRouter = router({
             const data = await response.json();
             
             if (data.records && data.records.length > 0) {
-              // Récupérer le groupe familial du parrain
-              groupeFamilial = data.records[0].fields["fld7adFgijiW0Eqhj"] || "";
+              // Récupérer l'ID Groupe du parrain
+              groupeFamilial = data.records[0].fields["fldIdJBCoXvW9IgHD"] || "";
               console.log("✅ Parrain trouvé !", { parrainEmail: input.parrainEmail, groupeFamilial });
             } else {
               console.error("❌ Parrain introuvable avec l'email:", input.parrainEmail);
@@ -218,13 +218,13 @@ export const appRouter = router({
           }
 
           const clientRecord = data.records[0];
-          const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
+          const groupeFamilial = clientRecord.fields["fldIdJBCoXvW9IgHD"] || "";
           
           // Compter UNIQUEMENT les membres ACTIFS avec mandat PAYANT (non offert)
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fld7adFgijiW0Eqhj}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fldIdJBCoXvW9IgHD}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -296,13 +296,13 @@ export const appRouter = router({
           }
 
           const clientRecord = data.records[0];
-          const groupeFamilial = clientRecord.fields["fld7adFgijiW0Eqhj"] || "";
+          const groupeFamilial = clientRecord.fields["fldIdJBCoXvW9IgHD"] || "";
           
           // Compter UNIQUEMENT les membres ACTIFS avec mandat PAYANT (non offert)
           let nbMembres = 1;
           if (groupeFamilial) {
             const familyResponse = await fetch(
-              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fld7adFgijiW0Eqhj}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
+              `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients?filterByFormula=AND({fldIdJBCoXvW9IgHD}='${groupeFamilial}',{fldw9QKnjkINjZ7kQ}='Actif',NOT({flda7YHZTqwxL9zdr}))`,
               {
                 headers: {
                   Authorization: `Bearer ${ENV.airtableApiKey}`,
@@ -488,6 +488,151 @@ ${input.attachmentUrl ? `**Pièce jointe:** ${input.attachmentUrl}` : ''}
         } catch (error) {
           console.error("Erreur uploadAttachment:", error);
           throw new Error("Erreur lors de l'upload du fichier");
+        }
+      }),
+  }),
+
+  // Router Billing pour la facturation automatique annuelle
+  billing: router({
+    createAnnualInvoice: publicProcedure
+      .input(z.object({
+        recordId: z.string(),
+        clientName: z.string(),
+        email: z.string().email(),
+        prixBase: z.number(),
+        rabaisPourcent: z.number(),
+        prixFinal: z.number(),
+        montantRabais: z.number(),
+        groupeFamilial: z.string(),
+        nbMembres: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          console.log(`💰 Création facture pour ${input.clientName}`);
+          console.log(`   Email: ${input.email}`);
+          console.log(`   Groupe: ${input.groupeFamilial} (${input.nbMembres} membres)`);
+          console.log(`   Prix: ${input.prixFinal} CHF (base: ${input.prixBase}, rabais: ${input.rabaisPourcent}%)`);
+
+          // Vérifier la clé Stripe
+          if (!ENV.stripeSecretKey) {
+            throw new Error("STRIPE_SECRET_KEY non configurée");
+          }
+
+          const stripe = require('stripe')(ENV.stripeSecretKey);
+
+          // 1. Créer ou récupérer le client Stripe
+          const customers = await stripe.customers.list({
+            email: input.email,
+            limit: 1,
+          });
+
+          let customer;
+          if (customers.data.length > 0) {
+            customer = customers.data[0];
+            console.log(`   ✅ Client Stripe existant: ${customer.id}`);
+          } else {
+            customer = await stripe.customers.create({
+              email: input.email,
+              name: input.clientName,
+              metadata: {
+                groupeFamilial: input.groupeFamilial,
+                source: 'winwin-website-annual-billing',
+              },
+            });
+            console.log(`   ✅ Nouveau client Stripe créé: ${customer.id}`);
+          }
+
+          // 2. Créer la description détaillée
+          const description = `Mandat de courtage WIN WIN Finance - Année ${new Date().getFullYear()}
+Groupe familial: ${input.groupeFamilial} (${input.nbMembres} membre${input.nbMembres > 1 ? 's' : ''} actif${input.nbMembres > 1 ? 's' : ''})
+Prix de base: ${input.prixBase.toFixed(2)} CHF
+Rabais familial: ${input.rabaisPourcent}% (-${input.montantRabais.toFixed(2)} CHF)
+Prix final: ${input.prixFinal.toFixed(2)} CHF`;
+
+          // 3. Créer un item de facture
+          await stripe.invoiceItems.create({
+            customer: customer.id,
+            amount: Math.round(input.prixFinal * 100), // Convertir en centimes
+            currency: 'chf',
+            description: description,
+          });
+
+          // 4. Créer la facture
+          const invoice = await stripe.invoices.create({
+            customer: customer.id,
+            auto_advance: true, // Finaliser automatiquement
+            collection_method: 'send_invoice',
+            days_until_due: 30,
+            metadata: {
+              clientName: input.clientName,
+              groupeFamilial: input.groupeFamilial,
+              nbMembres: input.nbMembres.toString(),
+              rabaisPourcent: input.rabaisPourcent.toString(),
+              prixBase: input.prixBase.toFixed(2),
+              prixFinal: input.prixFinal.toFixed(2),
+              montantRabais: input.montantRabais.toFixed(2),
+              airtableRecordId: input.recordId,
+            },
+          });
+
+          console.log(`   ✅ Facture créée: ${invoice.id}`);
+
+          // 5. Finaliser la facture
+          const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
+          console.log(`   ✅ Facture finalisée`);
+
+          // 6. Envoyer la facture par email
+          await stripe.invoices.sendInvoice(invoice.id);
+          console.log(`   📧 Facture envoyée par email à ${input.email}`);
+
+          // 7. Mettre à jour Airtable avec les nouvelles dates
+          const airtableApiKey = ENV.airtableApiKey;
+          const airtableBaseId = ENV.airtableBaseId;
+
+          if (!airtableApiKey || !airtableBaseId) {
+            throw new Error("Configuration Airtable manquante");
+          }
+
+          const today = new Date().toISOString().split('T')[0];
+          const nextBillingDate = new Date();
+          nextBillingDate.setDate(nextBillingDate.getDate() + 360);
+          const nextBillingDateStr = nextBillingDate.toISOString().split('T')[0];
+
+          const updateResponse = await fetch(
+            `https://api.airtable.com/v0/${airtableBaseId}/Clients/${input.recordId}`,
+            {
+              method: 'PATCH',
+              headers: {
+                'Authorization': `Bearer ${airtableApiKey}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                fields: {
+                  'Date dernière facture établie': today,
+                  'Date prochaine facturation': nextBillingDateStr,
+                  'Stripe Invoice ID': invoice.id,
+                },
+              }),
+            }
+          );
+
+          if (!updateResponse.ok) {
+            const errorText = await updateResponse.text();
+            console.error(`   ⚠️  Erreur mise à jour Airtable: ${errorText}`);
+          } else {
+            console.log(`   ✅ Airtable mis à jour`);
+            console.log(`   📅 Prochaine facturation: ${nextBillingDateStr}`);
+          }
+
+          return {
+            success: true,
+            invoiceId: invoice.id,
+            invoiceUrl: finalizedInvoice.hosted_invoice_url,
+            nextBillingDate: nextBillingDateStr,
+          };
+        } catch (error: any) {
+          console.error("❌ Erreur createAnnualInvoice:", error);
+          throw new Error(`Erreur lors de la création de la facture: ${error.message}`);
         }
       }),
   }),
