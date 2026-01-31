@@ -330,3 +330,20 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Railway redéploiera automatiquement
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚀 MIGRATION PUPPETEER → PDFSHIFT
+
+**DÉCISION :** Abandonner Puppeteer pour PDFShift (service dédié, plus simple)
+
+**CLÉ API PDFSHIFT :** sk_28473ca5506da79d6cbb41a3b5a198a9dafb7c79
+
+- [x] Supprimer Dockerfile
+- [x] Désinstaller puppeteer et puppeteer-core
+- [x] Remplacer generateMandatPDF() par appel à PDFShift
+- [ ] Ajouter PDFSHIFT_API_KEY dans Railway (ACTION OLIVIER)
+- [ ] Supprimer variables Puppeteer de Railway (ACTION OLIVIER)
+- [ ] Commit et push
+- [ ] Tester le workflow complet
