@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { ENV } from './env';
 
 interface MandatData {
   clientName: string;
@@ -21,6 +22,14 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
   try {
     console.log('[PDF] 📄 Génération PDF avec PDFShift...');
     
+    // DEBUG: Vérifier que la clé API est chargée
+    console.log('[DEBUG] PDFSHIFT_API_KEY exists?', !!ENV.pdfshiftApiKey);
+    console.log('[DEBUG] PDFSHIFT_API_KEY first 10 chars:', ENV.pdfshiftApiKey?.substring(0, 10));
+    
+    if (!ENV.pdfshiftApiKey) {
+      throw new Error('PDFSHIFT_API_KEY non définie dans les variables d\'environnement');
+    }
+    
     // Lire le template HTML
     const templatePath = join(process.cwd(), 'server/email-templates/mandat-template.html');
     let htmlContent = readFileSync(templatePath, 'utf-8');
@@ -41,7 +50,7 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
       headers: {
-        'Authorization': 'Basic ' + Buffer.from(`${process.env.PDFSHIFT_API_KEY}:`).toString('base64'),
+        'Authorization': 'Basic ' + Buffer.from(`${ENV.pdfshiftApiKey}:`).toString('base64'),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

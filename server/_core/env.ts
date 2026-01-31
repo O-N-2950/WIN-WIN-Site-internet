@@ -13,4 +13,5 @@ export const ENV = {
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
+  pdfshiftApiKey: process.env.PDFSHIFT_API_KEY ?? "",
 };
