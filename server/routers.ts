@@ -405,10 +405,10 @@ export const appRouter = router({
           const fields = clientRecord.fields;
 
           // Extraire les données du client (selon colonnes Airtable)
-          const clientName = fields["fldoJ7b8Q7PaM27Vd"] || ""; // NOM du client (formule)
-          const clientAddress = fields["fldv0TzctnhsebDcb"] || ""; // Contact Adresse, no
-          const clientNPA = fields["fldtdX4lzcykwv53S"] ? fields["fldtdX4lzcykwv53S"].toString() : ""; // Contact NPA (number)
-          const clientLocality = fields["fldAVQfT3xgTlnow4"] || ""; // Contact Localité
+          const clientName = fields["NOM du client"] || "";
+          const clientAddress = fields["Contact Adresse, no"] || "";
+          const clientNPA = fields["Contact NPA"] ? fields["Contact NPA"].toString() : "";
+          const clientLocality = fields["Contact Localité"] || "";
 
           // 2. Convertir signature en PNG Buffer
           const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
