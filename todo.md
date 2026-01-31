@@ -437,3 +437,15 @@ Le système de signature ne fonctionne PAS actuellement :
 ## Actions
 - [ ] Commit et push
 - [ ] Tester le PDF généré
+
+
+---
+
+# ✍️ SIGNATURE OLIVIER DANS LE PDF
+
+**STATUT :** Le PDF tient sur 1 page ✅ MAIS il manque la signature d'Olivier dans le cadre "Le Mandataire"
+
+- [ ] Uploader signature-olivier-neukomm.png sur Cloudinary (dossier winwin-assets)
+- [ ] Intégrer l'image dans le template HTML (cadre "Le Mandataire")
+- [ ] Commit et push
+- [ ] Tester le PDF avec la signature
