@@ -46,7 +46,7 @@ export async function uploadToAirtableAttachment(
     });
     
     // Endpoint officiel Airtable Attachments API
-    const uploadUrl = `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${recordId}/attachments/${fieldId}`;
+    const uploadUrl = `https://api.airtable.com/v0/${ENV.airtableBaseId}/${ENV.airtableClientsTableId}/${recordId}/attachments/${fieldId}`;
     
     console.log(`[Airtable] 🔄 POST ${uploadUrl}`);
     

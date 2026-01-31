@@ -360,3 +360,17 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Supprimer le bloc PATCH dans customers.createFromSignature
 - [ ] Commit et push
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR 404 - ENDPOINT AIRTABLE INCORRECT
+
+**PROBLÈME :** Utilisation du nom de la table (`/Clients/`) au lieu de l'ID de la table (`/tblhcE5L98pE6h22T/`)
+
+**SOLUTION :** Utiliser le table ID dans l'endpoint Airtable Attachments
+
+- [x] Ajouter `airtableClientsTableId: 'tblhcE5L98pE6h22T'` dans env.ts
+- [x] Corriger l'endpoint dans airtableAttachments.ts (ligne ~47)
+- [ ] Commit et push
+- [ ] Tester le workflow complet

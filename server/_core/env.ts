@@ -9,6 +9,7 @@ export const ENV = {
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   airtableBaseId: process.env.AIRTABLE_BASE_ID ?? "appZQkRJ7PwOtdQ3O",
   airtableApiKey: process.env.AIRTABLE_API_KEY ?? "",
+  airtableClientsTableId: "tblhcE5L98pE6h22T",  // Table ID de "Clients"
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME ?? "",
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
