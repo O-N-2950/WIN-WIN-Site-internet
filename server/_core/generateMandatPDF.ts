@@ -32,10 +32,10 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     
     // Lire le template HTML
     const templatePath = join(process.cwd(), 'server/email-templates/mandat-template.html');
-    let htmlContent = readFileSync(templatePath, 'utf-8');
+    let htmlTemplate = readFileSync(templatePath, 'utf-8');
 
     // Remplacer les variables du template
-    htmlContent = htmlContent
+    htmlTemplate = htmlTemplate
       .replace(/\{\{CLIENT_NAME\}\}/g, data.clientName)
       .replace(/\{\{CLIENT_ADDRESS\}\}/g, data.clientAddress)
       .replace(/\{\{CLIENT_NPA\}\}/g, data.clientNPA)
@@ -46,7 +46,7 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
 
     console.log('[PDF] 🔄 Envoi à PDFShift...');
 
-    // Appeler PDFShift pour générer le PDF
+    // EXACTEMENT comme l'exemple officiel PDFShift
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
       headers: {
@@ -54,15 +54,9 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        source: htmlContent,
-        sandbox: false,
-        format: 'A4',
-        margin: {
-          top: '10mm',
-          bottom: '10mm',
-          left: '10mm',
-          right: '10mm'
-        }
+        source: htmlTemplate,  // Le HTML direct (pas une URL)
+        landscape: false,
+        use_print: false
       })
     });
 
@@ -72,7 +66,10 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
       throw new Error(`PDFShift API error: ${response.status} - ${errorText}`);
     }
 
-    const pdfBuffer = Buffer.from(await response.arrayBuffer());
+    // Convertir le stream en Buffer
+    const arrayBuffer = await response.arrayBuffer();
+    const pdfBuffer = Buffer.from(arrayBuffer);
+    
     console.log('[PDF] ✅ PDF généré avec succès:', pdfBuffer.length, 'bytes');
     
     return pdfBuffer;
