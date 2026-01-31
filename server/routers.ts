@@ -7,7 +7,8 @@ import { ENV } from "./_core/env";
 import { v2 as cloudinary } from 'cloudinary';
 import { notifyOwner } from "./_core/notification";
 import { generateMandatPDF } from "./_core/generateMandatPDF";
-import { dataUrlToBuffer, uploadToAirtableAttachment, updateAirtableAttachment } from "./_core/airtableAttachments";
+import { dataUrlToBuffer } from "./_core/airtableAttachments";
+import { uploadToCloudinary } from "./_core/cloudinaryUpload";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -413,14 +414,9 @@ export const appRouter = router({
           const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
           const signatureFilename = `signature-${input.clientEmail}.png`;
 
-          // 3. Upload signature vers Airtable (colonne #197 "Signature client")
-          const signatureResult = await uploadToAirtableAttachment(
-            signatureBuffer,
-            signatureFilename,
-            'image/png',
-            recordId,  // ID de l'enregistrement Airtable
-            'fldXxORXbvcHPVTio'  // Field ID "Signature client"
-          );
+          // 3. Upload signature vers Cloudinary
+          console.log('[Signature] 📤 Upload signature vers Cloudinary...');
+          const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${input.clientEmail}`);
 
           // 4. Générer le PDF du mandat avec la signature
           const pdfBuffer = await generateMandatPDF({
@@ -428,27 +424,45 @@ export const appRouter = router({
             clientAddress,
             clientNPA,
             clientLocality,
-            signatureUrl: signatureResult.url,
+            signatureUrl: signatureUrl,
             signatureDate: input.signatureDate,
           });
 
-          // 5. Upload PDF vers Airtable (colonne #194 "MANDAT DE GESTION signé")
-          const pdfFilename = `mandat-${input.clientEmail}.pdf`;
-          const pdfResult = await uploadToAirtableAttachment(
-            pdfBuffer,
-            pdfFilename,
-            'application/pdf',
-            recordId,  // ID de l'enregistrement Airtable
-            'fldFlOqiGic9Yv3on'  // Field ID "MANDAT DE GESTION signé"
+          // 5. Upload PDF vers Cloudinary
+          console.log('[PDF] 📤 Upload PDF vers Cloudinary...');
+          const pdfUrl = await uploadToCloudinary(pdfBuffer, `mandat-${input.clientEmail}`);
+
+          // 6. PATCH Airtable avec les URLs Cloudinary
+          console.log('[Airtable] 🔄 PATCH avec URLs Cloudinary...');
+          const patchResponse = await fetch(
+            `https://api.airtable.com/v0/${ENV.airtableBaseId}/${ENV.airtableClientsTableId}/${recordId}`,
+            {
+              method: 'PATCH',
+              headers: {
+                'Authorization': `Bearer ${ENV.airtableApiKey}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                fields: {
+                  "fldXxORXbvcHPVTio": [{ url: signatureUrl }],  // Signature client
+                  "fldFlOqiGic9Yv3on": [{ url: pdfUrl }],  // MANDAT DE GESTION signé
+                },
+              }),
+            }
           );
 
-          // 6. FIN ! L'API Airtable Attachments a déjà ajouté les fichiers directement
-          // Pas besoin de PATCH, les fichiers sont déjà dans les colonnes Airtable
+          if (!patchResponse.ok) {
+            const errorText = await patchResponse.text();
+            console.error('[Airtable] ❌ Erreur PATCH:', errorText);
+            throw new Error(`Airtable PATCH error: ${patchResponse.status} - ${errorText}`);
+          }
+
+          console.log('[Airtable] ✅ PATCH réussi !');
 
           return {
             clientId: recordId,
-            pdfUrl: pdfResult.url,
-            signatureUrl: signatureResult.url,
+            pdfUrl: pdfUrl,
+            signatureUrl: signatureUrl,
           };
         } catch (error) {
           console.error("Erreur lors de la création du client avec signature:", error);

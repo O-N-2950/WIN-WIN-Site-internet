@@ -374,3 +374,19 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Corriger l'endpoint dans airtableAttachments.ts (ligne ~47)
 - [ ] Commit et push
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚀 MIGRATION API AIRTABLE ATTACHMENTS → CLOUDINARY
+
+**PROBLÈME :** L'API Airtable Attachments ne fonctionne pas comme prévu
+
+**SOLUTION :** Utiliser Cloudinary (déjà configuré) pour uploader les fichiers
+
+- [x] Installer cloudinary (`pnpm add cloudinary`)
+- [x] Créer fonction uploadToCloudinary dans server/_core/cloudinaryUpload.ts
+- [x] Modifier routers.ts pour utiliser Cloudinary
+- [x] PATCH Airtable avec les URLs Cloudinary
+- [ ] Commit et push
+- [ ] Tester le workflow complet
