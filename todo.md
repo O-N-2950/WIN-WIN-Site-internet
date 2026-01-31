@@ -347,3 +347,16 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Supprimer variables Puppeteer de Railway (ACTION OLIVIER)
 - [ ] Commit et push
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR DOUBLE UPLOAD - PATCH inutile
+
+**PROBLÈME :** Après `uploadToAirtableAttachment()`, un PATCH est fait pour "mettre à jour" les attachments, mais l'API Attachments les ajoute **DIRECTEMENT** !
+
+**SOLUTION :** Supprimer le bloc PATCH (lignes ~472-499)
+
+- [x] Supprimer le bloc PATCH dans customers.createFromSignature
+- [ ] Commit et push
+- [ ] Tester le workflow complet

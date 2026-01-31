@@ -442,39 +442,8 @@ export const appRouter = router({
             'fldFlOqiGic9Yv3on'  // Field ID "MANDAT DE GESTION signé"
           );
 
-          // 6. Mettre à jour l'enregistrement Airtable avec signature et PDF
-          // Note: Pour l'instant on utilise data URLs, mais idéalement il faudrait
-          // uploader vers un service externe (S3, Cloudinary) et récupérer l'URL publique
-          
-          // Mise à jour Airtable avec les attachments
-          await fetch(
-            `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${recordId}`,
-            {
-              method: 'PATCH',
-              headers: {
-                Authorization: `Bearer ${ENV.airtableApiKey}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                fields: {
-                  // Colonne "Signature client" (fldXxORXbvcHPVTio)
-                  "fldXxORXbvcHPVTio": [
-                    {
-                      url: signatureResult.url,
-                      filename: signatureFilename,
-                    },
-                  ],
-                  // Colonne "MANDAT DE GESTION signé" (fldFlOqiGic9Yv3on)
-                  "fldFlOqiGic9Yv3on": [
-                    {
-                      url: pdfResult.url,
-                      filename: pdfFilename,
-                    },
-                  ],
-                },
-              }),
-            }
-          );
+          // 6. FIN ! L'API Airtable Attachments a déjà ajouté les fichiers directement
+          // Pas besoin de PATCH, les fichiers sont déjà dans les colonnes Airtable
 
           return {
             clientId: recordId,
