@@ -1,9 +1,5 @@
 import FormData from 'form-data';
-// @ts-ignore
-import fetch from 'node-fetch';
-
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
-const AIRTABLE_BASE_ID = 'appZQkRJ7PwOtdQ3O';
+import { ENV } from './env';
 
 interface UploadAttachmentResult {
   url: string;
@@ -11,36 +7,83 @@ interface UploadAttachmentResult {
 }
 
 /**
- * Upload un fichier (Buffer) vers Airtable Attachments
+ * Convertit une data URL (base64) en Buffer
+ */
+export function dataUrlToBuffer(dataUrl: string): Buffer {
+  const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  if (!matches || matches.length !== 3) {
+    throw new Error('Invalid data URL format');
+  }
+  return Buffer.from(matches[2], 'base64');
+}
+
+/**
+ * Upload un fichier vers Airtable Attachments API
+ * Documentation officielle : https://airtable.com/developers/web/api/upload-attachment
  * 
  * @param buffer - Contenu du fichier
  * @param filename - Nom du fichier
  * @param mimeType - Type MIME du fichier
- * @returns URL de l'attachment dans Airtable
+ * @param recordId - ID de l'enregistrement Airtable
+ * @param fieldId - ID du champ attachment dans Airtable
+ * @returns URL publique de l'attachment (compatible Airtable)
  */
 export async function uploadToAirtableAttachment(
   buffer: Buffer,
   filename: string,
-  mimeType: string
+  mimeType: string,
+  recordId: string,
+  fieldId: string
 ): Promise<UploadAttachmentResult> {
-  // Créer FormData pour l'upload
-  const formData = new FormData();
-  formData.append('file', buffer, {
-    filename,
-    contentType: mimeType,
-  });
-
-  // Upload vers Airtable (endpoint temporaire pour obtenir l'URL)
-  // Note: Airtable nécessite d'uploader via un service externe puis de référencer l'URL
-  // Pour simplifier, on va utiliser une approche directe avec base64
-  
-  const base64Data = buffer.toString('base64');
-  const dataUrl = `data:${mimeType};base64,${base64Data}`;
-
-  return {
-    url: dataUrl,
-    filename,
-  };
+  try {
+    console.log(`[Airtable] 📤 Upload de ${filename} vers Airtable Attachments API...`);
+    
+    // Créer FormData pour l'upload
+    const form = new FormData();
+    form.append('file', buffer, {
+      filename,
+      contentType: mimeType,
+    });
+    
+    // Endpoint officiel Airtable Attachments API
+    const uploadUrl = `https://api.airtable.com/v0/${ENV.airtableBaseId}/Clients/${recordId}/attachments/${fieldId}`;
+    
+    console.log(`[Airtable] 🔄 POST ${uploadUrl}`);
+    
+    // Upload vers Airtable
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ENV.airtableApiKey}`,
+        ...form.getHeaders(),
+      },
+      body: form,
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[Airtable] ❌ Erreur HTTP ${response.status}:`, errorText);
+      throw new Error(`Airtable Attachments API error: ${response.status} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log(`[Airtable] ✅ Upload réussi:`, result);
+    
+    // L'API Airtable retourne l'URL de l'attachment
+    const attachmentUrl = result.url || result.fields?.[fieldId]?.[0]?.url;
+    
+    if (!attachmentUrl) {
+      throw new Error('Airtable API ne retourne pas d\'URL d\'attachment');
+    }
+    
+    return {
+      url: attachmentUrl,
+      filename,
+    };
+  } catch (error) {
+    console.error(`[Airtable] ❌ Erreur lors de l'upload de ${filename}:`, error);
+    throw new Error(`Impossible d'uploader ${filename} vers Airtable: ${error}`);
+  }
 }
 
 /**
@@ -59,39 +102,7 @@ export async function updateAirtableAttachment(
   attachmentUrl: string,
   filename: string
 ): Promise<void> {
-  const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableId}/${recordId}`;
-
-  const response = await fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      fields: {
-        [fieldName]: [
-          {
-            url: attachmentUrl,
-            filename,
-          },
-        ],
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Failed to update Airtable attachment: ${error}`);
-  }
-}
-
-/**
- * Convertit une signature base64 (dataURL) en PNG Buffer
- * 
- * @param dataUrl - Data URL de la signature (data:image/png;base64,...)
- * @returns Buffer PNG
- */
-export function dataUrlToBuffer(dataUrl: string): Buffer {
-  const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-  return Buffer.from(base64Data, 'base64');
+  // Cette fonction n'est plus nécessaire car on utilise directement
+  // l'API Airtable Attachments pour uploader
+  console.warn('[Airtable] updateAirtableAttachment() est obsolète, utilisez uploadToAirtableAttachment()');
 }

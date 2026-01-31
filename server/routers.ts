@@ -371,33 +371,7 @@ export const appRouter = router({
         }
       }),
 
-    // Mutation pour uploader la signature vers Airtable
-    uploadSignature: publicProcedure
-      .input(z.object({
-        signatureDataUrl: z.string(),
-        clientEmail: z.string(),
-      }))
-      .mutation(async ({ input }) => {
-        try {
-          // Convertir dataURL en Buffer PNG
-          const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
-          
-          // Upload vers Airtable (retourne data URL pour l'instant)
-          const result = await uploadToAirtableAttachment(
-            signatureBuffer,
-            `signature-${input.clientEmail}.png`,
-            'image/png'
-          );
 
-          return {
-            signatureUrl: result.url,
-            filename: result.filename,
-          };
-        } catch (error) {
-          console.error("Erreur lors de l'upload de la signature:", error);
-          throw new Error("Impossible d'uploader la signature");
-        }
-      }),
   }),
 
   // Router Customers pour créer un client avec signature et PDF
@@ -443,7 +417,9 @@ export const appRouter = router({
           const signatureResult = await uploadToAirtableAttachment(
             signatureBuffer,
             signatureFilename,
-            'image/png'
+            'image/png',
+            recordId,  // ID de l'enregistrement Airtable
+            'fldXxORXbvcHPVTio'  // Field ID "Signature client"
           );
 
           // 4. Générer le PDF du mandat avec la signature
@@ -461,7 +437,9 @@ export const appRouter = router({
           const pdfResult = await uploadToAirtableAttachment(
             pdfBuffer,
             pdfFilename,
-            'application/pdf'
+            'application/pdf',
+            recordId,  // ID de l'enregistrement Airtable
+            'fldFlOqiGic9Yv3on'  // Field ID "MANDAT DE GESTION signé"
           );
 
           // 6. Mettre à jour l'enregistrement Airtable avec signature et PDF
