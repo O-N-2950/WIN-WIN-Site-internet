@@ -410,5 +410,30 @@ Le système de signature ne fonctionne PAS actuellement :
 
 - [x] Ajouter paramètre resource_type dans uploadToCloudinary
 - [x] Modifier routers.ts pour spécifier 'image' (signature) et 'raw' (PDF)
-- [ ] Commit et push
+- [x] Commit et push (commit 1b3afcf)
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🐛 BUGS PDF GÉNÉRÉ
+
+**✅ WORKFLOW FONCTIONNE !** Signature + PDF uploadés dans Airtable !
+
+**MAIS 2 bugs dans le PDF :**
+
+## Bug 1 : Cadre "Le Mandant" vide
+- [ ] Ajouter logs pour débugger les données client (clientName, clientAddress, clientNPA, clientLocality)
+- [ ] Vérifier les Field IDs Airtable dans routers.ts
+- [ ] Corriger les Field IDs si nécessaire
+
+## Bug 2 : PDF coupé sur 2 pages
+- [ ] Optimiser le template HTML mandat-template.html
+- [ ] Réduire les marges
+- [ ] Réduire la hauteur du header
+- [ ] Réduire l'espace entre les sections
+- [ ] Vérifier que le PDF tient sur 1 page A4 portrait
+
+## Actions
+- [ ] Commit et push
+- [ ] Tester le PDF généré

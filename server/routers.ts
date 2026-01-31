@@ -419,6 +419,11 @@ export const appRouter = router({
           const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${input.clientEmail}`, 'image');
 
           // 4. Générer le PDF du mandat avec la signature
+          console.log('[PDF] 📊 Données client pour PDF:');
+          console.log('  - clientName:', clientName);
+          console.log('  - clientAddress:', clientAddress);
+          console.log('  - clientNPA:', clientNPA);
+          console.log('  - clientLocality:', clientLocality);
           const pdfBuffer = await generateMandatPDF({
             clientName,
             clientAddress,
