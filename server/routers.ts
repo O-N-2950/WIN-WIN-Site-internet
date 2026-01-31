@@ -406,17 +406,19 @@ export const appRouter = router({
 
           // Extraire les données du client (selon colonnes Airtable)
           const clientName = fields["fldoJ7b8Q7PaM27Vd"] || ""; // NOM du client (formule)
-          const clientAddress = fields["fldWXpm73tI4mHUoj"] || ""; // Adresse et no
-          const clientNPA = fields["fldkbLY9Ziota9Wey"] ? fields["fldkbLY9Ziota9Wey"].toString() : ""; // NPA (number)
-          const clientLocality = fields["fldqs8SybdPAauPdJ"] || ""; // Localité
+          const clientAddress = fields["fldv0TzctnhsebDcb"] || ""; // Contact Adresse, no
+          const clientNPA = fields["fldtdX4lzcykwv53S"] ? fields["fldtdX4lzcykwv53S"].toString() : ""; // Contact NPA (number)
+          const clientLocality = fields["fldAVQfT3xgTlnow4"] || ""; // Contact Localité
 
           // 2. Convertir signature en PNG Buffer
           const signatureBuffer = dataUrlToBuffer(input.signatureDataUrl);
-          const signatureFilename = `signature-${input.clientEmail}.png`;
+          
+          // Sanitiser l'email pour Cloudinary (remplacer @ et . par -)
+          const sanitizedEmail = input.clientEmail.replace(/@/g, '-').replace(/\./g, '-');
 
           // 3. Upload signature vers Cloudinary
           console.log('[Signature] 📤 Upload signature vers Cloudinary...');
-          const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${input.clientEmail}`, 'image');
+          const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${sanitizedEmail}`, 'image');
 
           // 4. Générer le PDF du mandat avec la signature
           console.log('[PDF] 📊 Données client pour PDF:');
@@ -435,7 +437,7 @@ export const appRouter = router({
 
           // 5. Upload PDF vers Cloudinary
           console.log('[PDF] 📤 Upload PDF vers Cloudinary...');
-          const pdfUrl = await uploadToCloudinary(pdfBuffer, `mandat-${input.clientEmail}`, 'raw');
+          const pdfUrl = await uploadToCloudinary(pdfBuffer, `mandat-${sanitizedEmail}`, 'raw');
 
           // 6. PATCH Airtable avec les URLs Cloudinary
           console.log('[Airtable] 🔄 PATCH avec URLs Cloudinary...');
