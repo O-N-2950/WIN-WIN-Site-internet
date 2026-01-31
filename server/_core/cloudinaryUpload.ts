@@ -13,15 +13,20 @@ cloudinary.config({
  * 
  * @param buffer - Contenu du fichier
  * @param filename - Nom du fichier (sans extension)
+ * @param resourceType - Type de ressource Cloudinary ('image' pour PNG/JPG, 'raw' pour PDF/autres)
  * @returns URL sécurisée du fichier uploadé
  */
-export async function uploadToCloudinary(buffer: Buffer, filename: string): Promise<string> {
+export async function uploadToCloudinary(
+  buffer: Buffer,
+  filename: string,
+  resourceType: 'image' | 'raw' = 'image'
+): Promise<string> {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: 'winwin-mandats',
         public_id: filename,
-        resource_type: 'auto'
+        resource_type: resourceType
       },
       (error, result) => {
         if (error) {

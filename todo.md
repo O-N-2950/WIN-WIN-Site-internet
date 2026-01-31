@@ -400,6 +400,15 @@ Le système de signature ne fonctionne PAS actuellement :
 **HYPOTHÈSE :** Le PATCH avec les 2 champs ne fonctionne pas correctement
 
 - [x] Ajouter logs détaillés dans routers.ts (signatureUrl, pdfUrl, PATCH body, PATCH response)
+- [x] Commit et push (commit 8e8ebdc)
+- [x] Olivier refait un test pour voir les logs complets
+- [x] Analyser les logs pour identifier le problème
+
+**PROBLÈME IDENTIFIÉ :** Cloudinary utilise des paths différents selon le type :
+- Images (PNG) → /image/upload/ ✅
+- PDFs → /raw/upload/ ❌ (on utilisait /image/upload/ pour tout)
+
+- [x] Ajouter paramètre resource_type dans uploadToCloudinary
+- [x] Modifier routers.ts pour spécifier 'image' (signature) et 'raw' (PDF)
 - [ ] Commit et push
-- [ ] Olivier refait un test pour voir les logs complets
-- [ ] Analyser les logs pour identifier le problème
+- [ ] Tester le workflow complet

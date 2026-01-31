@@ -416,7 +416,7 @@ export const appRouter = router({
 
           // 3. Upload signature vers Cloudinary
           console.log('[Signature] 📤 Upload signature vers Cloudinary...');
-          const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${input.clientEmail}`);
+          const signatureUrl = await uploadToCloudinary(signatureBuffer, `signature-${input.clientEmail}`, 'image');
 
           // 4. Générer le PDF du mandat avec la signature
           const pdfBuffer = await generateMandatPDF({
@@ -430,7 +430,7 @@ export const appRouter = router({
 
           // 5. Upload PDF vers Cloudinary
           console.log('[PDF] 📤 Upload PDF vers Cloudinary...');
-          const pdfUrl = await uploadToCloudinary(pdfBuffer, `mandat-${input.clientEmail}`);
+          const pdfUrl = await uploadToCloudinary(pdfBuffer, `mandat-${input.clientEmail}`, 'raw');
 
           // 6. PATCH Airtable avec les URLs Cloudinary
           console.log('[Airtable] 🔄 PATCH avec URLs Cloudinary...');
