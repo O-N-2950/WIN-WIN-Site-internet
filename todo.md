@@ -296,3 +296,21 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Railway redéploiera automatiquement
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR CHEMIN CHROMIUM - /usr/bin/chromium n'existe pas
+
+**ERREUR Railway:** `Error: Browser was not found at the configured executablePath (/usr/bin/chromium)`
+
+**PROBLÈME :** Le chemin /usr/bin/chromium n'existe pas dans le conteneur Docker
+
+**SOLUTION :** Détecter dynamiquement le chemin de Chromium
+
+- [x] Créer fonction findChromiumPath() dans generateMandatPDF.ts
+- [x] Modifier Dockerfile pour détecter le chemin Chromium
+- [x] Utiliser la détection dynamique dans puppeteer.launch()
+- [ ] Pousser sur GitHub
+- [ ] Railway redéploiera automatiquement
+- [ ] Tester le workflow complet

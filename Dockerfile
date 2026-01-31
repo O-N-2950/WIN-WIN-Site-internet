@@ -3,7 +3,6 @@ FROM node:20-slim
 # Installer Chromium et toutes les dépendances nécessaires
 RUN apt-get update && apt-get install -y \
     chromium \
-    chromium-sandbox \
     fonts-liberation \
     libasound2 \
     libatk-bridge2.0-0 \
@@ -23,19 +22,25 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurer Puppeteer pour utiliser Chromium installé
+# Trouver et afficher le chemin de Chromium
+RUN echo "=== Recherche de Chromium ===" && \
+    which chromium && echo "Chromium trouvé via 'which chromium'" || \
+    which chromium-browser && echo "Chromium trouvé via 'which chromium-browser'" || \
+    find /usr -name chromium 2>/dev/null | head -1 && echo "Chromium trouvé via 'find'" || \
+    echo "ATTENTION: Chromium non trouvé !"
+
+# Configurer Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 
 # Installer pnpm globalement
 RUN npm install -g pnpm
 
-# Copier TOUT le code (y compris patches/) AVANT pnpm install
+# Copier TOUT le code (y compris patches/)
 COPY . .
 
-# Installer les dépendances (patches/ est maintenant disponible)
+# Installer les dépendances
 RUN pnpm install --frozen-lockfile
 
 # Build du projet

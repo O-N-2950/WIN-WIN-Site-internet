@@ -1,11 +1,52 @@
 import puppeteer from 'puppeteer';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 // Obtenir __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+/**
+ * Trouve le chemin de Chromium dans le conteneur Docker
+ * Essaie plusieurs chemins possibles et utilise 'which' en dernier recours
+ */
+function findChromiumPath(): string | undefined {
+  // Liste des chemins possibles
+  const possiblePaths = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/google-chrome',
+    '/usr/bin/google-chrome-stable',
+  ];
+
+  // Essayer chaque chemin
+  for (const path of possiblePaths) {
+    if (path && existsSync(path)) {
+      console.log(`[Puppeteer] Chromium trouvé à: ${path}`);
+      return path;
+    }
+  }
+
+  // Utiliser 'which' pour trouver Chromium
+  try {
+    const result = execSync('which chromium || which chromium-browser || which google-chrome', {
+      encoding: 'utf-8',
+    }).trim();
+    if (result) {
+      console.log(`[Puppeteer] Chromium trouvé via 'which': ${result}`);
+      return result;
+    }
+  } catch (error) {
+    console.error('[Puppeteer] Impossible de trouver Chromium avec which:', error);
+  }
+
+  // Aucun chemin trouvé, laisser Puppeteer utiliser son Chrome par défaut
+  console.warn('[Puppeteer] Aucun Chromium trouvé, utilisation du Chrome par défaut de Puppeteer');
+  return undefined;
+}
 
 interface MandatData {
   clientName: string;
@@ -39,10 +80,13 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     .replace(/\{\{SIGNATURE_DATE\}\}/g, data.signatureDate);
 
   // Lancer Puppeteer pour générer le PDF
-  // Utiliser Chromium sur Railway, Chrome en local
+  // Détecter automatiquement le chemin de Chromium
+  const chromiumPath = findChromiumPath();
+  console.log(`[Puppeteer] Lancement avec executablePath: ${chromiumPath || 'default'}`);
+  
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+    executablePath: chromiumPath,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
