@@ -314,3 +314,19 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Railway redéploiera automatiquement
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚀 SOLUTION FINALE - Image Docker officielle Puppeteer
+
+**PROBLÈME :** Impossible de trouver le bon chemin Chromium dans le conteneur
+
+**SOLUTION :** Utiliser l'image Docker officielle de Puppeteer qui a TOUT préinstallé
+
+- [x] Remplacer Dockerfile par image ghcr.io/puppeteer/puppeteer:23.11.1
+- [x] Simplifier generateMandatPDF.ts (supprimer findChromiumPath)
+- [x] Utiliser puppeteer.launch() sans executablePath
+- [ ] Pousser sur GitHub
+- [ ] Railway redéploiera automatiquement
+- [ ] Tester le workflow complet
