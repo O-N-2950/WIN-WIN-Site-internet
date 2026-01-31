@@ -50,7 +50,7 @@ export async function generateMandatPDF(data: MandatData): Promise<Buffer> {
     const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
       method: 'POST',
       headers: {
-        'Authorization': 'Basic ' + Buffer.from(`${ENV.pdfshiftApiKey}:`).toString('base64'),
+        'X-API-Key': ENV.pdfshiftApiKey,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
