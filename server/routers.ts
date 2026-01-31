@@ -434,6 +434,14 @@ export const appRouter = router({
 
           // 6. PATCH Airtable avec les URLs Cloudinary
           console.log('[Airtable] 🔄 PATCH avec URLs Cloudinary...');
+          console.log('[Airtable] 📤 Signature URL:', signatureUrl);
+          console.log('[Airtable] 📤 PDF URL:', pdfUrl);
+          console.log('[Airtable] 🔄 PATCH body:', JSON.stringify({
+            fields: {
+              "fldXxORXbvcHPVTio": [{ url: signatureUrl }],
+              "fldFlOqiGic9Yv3on": [{ url: pdfUrl }],
+            },
+          }, null, 2));
           const patchResponse = await fetch(
             `https://api.airtable.com/v0/${ENV.airtableBaseId}/${ENV.airtableClientsTableId}/${recordId}`,
             {
@@ -451,13 +459,15 @@ export const appRouter = router({
             }
           );
 
+          const patchResult = await patchResponse.json();
+          
           if (!patchResponse.ok) {
-            const errorText = await patchResponse.text();
-            console.error('[Airtable] ❌ Erreur PATCH:', errorText);
-            throw new Error(`Airtable PATCH error: ${patchResponse.status} - ${errorText}`);
+            console.error('[Airtable] ❌ Erreur PATCH:', JSON.stringify(patchResult, null, 2));
+            throw new Error(`Airtable PATCH error: ${patchResponse.status} - ${JSON.stringify(patchResult)}`);
           }
 
           console.log('[Airtable] ✅ PATCH réussi !');
+          console.log('[Airtable] 📥 PATCH response:', JSON.stringify(patchResult, null, 2));
 
           return {
             clientId: recordId,

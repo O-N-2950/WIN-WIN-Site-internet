@@ -388,5 +388,18 @@ Le système de signature ne fonctionne PAS actuellement :
 - [x] Créer fonction uploadToCloudinary dans server/_core/cloudinaryUpload.ts
 - [x] Modifier routers.ts pour utiliser Cloudinary
 - [x] PATCH Airtable avec les URLs Cloudinary
-- [ ] Commit et push
+- [x] Commit et push
 - [ ] Tester le workflow complet
+
+---
+
+# 🐛 DEBUG: PDF MANQUANT DANS AIRTABLE
+
+**PROBLÈME :** La signature PNG apparaît dans Airtable, MAIS le PDF n'apparaît pas
+
+**HYPOTHÈSE :** Le PATCH avec les 2 champs ne fonctionne pas correctement
+
+- [x] Ajouter logs détaillés dans routers.ts (signatureUrl, pdfUrl, PATCH body, PATCH response)
+- [ ] Commit et push
+- [ ] Olivier refait un test pour voir les logs complets
+- [ ] Analyser les logs pour identifier le problème
