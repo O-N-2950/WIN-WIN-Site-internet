@@ -29,16 +29,14 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copier package.json et pnpm-lock.yaml
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
-
-# Installer pnpm et les dépendances
+# Installer pnpm globalement
 RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
 
-# Copier le reste du code
+# Copier TOUT le code (y compris patches/) AVANT pnpm install
 COPY . .
+
+# Installer les dépendances (patches/ est maintenant disponible)
+RUN pnpm install --frozen-lockfile
 
 # Build du projet
 RUN pnpm run build

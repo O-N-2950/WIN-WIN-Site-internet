@@ -280,3 +280,19 @@ Le système de signature ne fonctionne PAS actuellement :
 - [ ] Pousser sur GitHub
 - [ ] Railway détectera automatiquement le Dockerfile
 - [ ] Tester le workflow complet
+
+
+---
+
+# 🚨 ERREUR DOCKERFILE - Ordre des copies incorrect
+
+**ERREUR Railway:** `ENOENT: no such file or directory, open '/app/patches/wouter@3.7.1.patch'`
+
+**PROBLÈME :** Le Dockerfile copie package.json et lance pnpm install AVANT de copier le dossier patches/
+
+**SOLUTION :** Copier TOUT le code (y compris patches/) AVANT pnpm install
+
+- [x] Corriger le Dockerfile : déplacer COPY . . avant pnpm install
+- [ ] Pousser sur GitHub
+- [ ] Railway redéploiera automatiquement
+- [ ] Tester le workflow complet
