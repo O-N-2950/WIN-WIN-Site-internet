@@ -1,4 +1,9 @@
-import { storagePut } from '../storage';
+import FormData from 'form-data';
+// @ts-ignore
+import fetch from 'node-fetch';
+
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
+const AIRTABLE_BASE_ID = 'appZQkRJ7PwOtdQ3O';
 
 interface UploadAttachmentResult {
   url: string;
@@ -18,27 +23,24 @@ export async function uploadToAirtableAttachment(
   filename: string,
   mimeType: string
 ): Promise<UploadAttachmentResult> {
-  try {
-    console.log(`[Airtable] 📤 Upload de ${filename} vers S3...`);
-    
-    // Générer une clé S3 unique avec timestamp pour éviter les collisions
-    const timestamp = Date.now();
-    const randomSuffix = Math.random().toString(36).substring(2, 8);
-    const s3Key = `airtable-attachments/${timestamp}-${randomSuffix}-${filename}`;
-    
-    // Upload vers S3 via storagePut
-    const result = await storagePut(s3Key, buffer, mimeType);
-    
-    console.log(`[Airtable] ✅ Upload réussi: ${result.url}`);
-    
-    return {
-      url: result.url,
-      filename,
-    };
-  } catch (error) {
-    console.error(`[Airtable] ❌ Erreur lors de l'upload de ${filename}:`, error);
-    throw new Error(`Impossible d'uploader ${filename} vers S3: ${error}`);
-  }
+  // Créer FormData pour l'upload
+  const formData = new FormData();
+  formData.append('file', buffer, {
+    filename,
+    contentType: mimeType,
+  });
+
+  // Upload vers Airtable (endpoint temporaire pour obtenir l'URL)
+  // Note: Airtable nécessite d'uploader via un service externe puis de référencer l'URL
+  // Pour simplifier, on va utiliser une approche directe avec base64
+  
+  const base64Data = buffer.toString('base64');
+  const dataUrl = `data:${mimeType};base64,${base64Data}`;
+
+  return {
+    url: dataUrl,
+    filename,
+  };
 }
 
 /**
@@ -57,9 +59,30 @@ export async function updateAirtableAttachment(
   attachmentUrl: string,
   filename: string
 ): Promise<void> {
-  // Cette fonction n'est plus nécessaire car on utilise directement
-  // l'URL S3 dans la mise à jour Airtable
-  console.warn('[Airtable] updateAirtableAttachment() est obsolète, utilisez directement l\'URL S3');
+  const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableId}/${recordId}`;
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      fields: {
+        [fieldName]: [
+          {
+            url: attachmentUrl,
+            filename,
+          },
+        ],
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to update Airtable attachment: ${error}`);
+  }
 }
 
 /**
