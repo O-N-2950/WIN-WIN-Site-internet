@@ -164,11 +164,12 @@ export default function Signature() {
       console.log('[Signature] Signature sauvegardée dans workflow');
       
       // REDIRECTION IMMÉDIATE vers la page de paiement
-      console.log('[Signature] 🔄 Redirection immédiate vers /paiement');
+      const email = workflow.questionnaireData.email || clientEmail;
+      console.log('[Signature] 🔄 Redirection immédiate vers /paiement/' + email);
       toast.success("✅ Signature enregistrée !");
       
       // Redirection sans attendre la création Airtable
-      setTimeout(() => setLocation("/paiement"), 500);
+      setTimeout(() => setLocation(`/paiement/${encodeURIComponent(email)}`), 500);
       
       // Création du client dans Airtable EN ARRIÈRE-PLAN (non bloquant)
       // Cela continuera même après la redirection
