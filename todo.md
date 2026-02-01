@@ -441,11 +441,39 @@ Le système de signature ne fonctionne PAS actuellement :
 
 ---
 
-# ✍️ SIGNATURE OLIVIER DANS LE PDF
+# ✒️ SIGNATURE OLIVIER DANS LE PDF
 
-**STATUT :** Le PDF tient sur 1 page ✅ MAIS il manque la signature d'Olivier dans le cadre "Le Mandataire"
+**STATUT :** Le PDF tient sur 1 page ✅ ET la signature d'Olivier est intégrée ✅
 
-- [ ] Uploader signature-olivier-neukomm.png sur Cloudinary (dossier winwin-assets)
-- [ ] Intégrer l'image dans le template HTML (cadre "Le Mandataire")
-- [ ] Commit et push
+- [x] Encoder signature-olivier-neukomm.png en base64 (Option B choisie)
+- [x] Intégrer l'image en base64 dans le template HTML (cadre "Le Mandataire")
+- [x] Commit et push (commit 2e4ad0a)
 - [ ] Tester le PDF avec la signature
+
+
+---
+
+# 🔧 CORRECTIONS FINALES PDF + WORKFLOW ENTREPRISE
+
+## 1. Position signature client dans le PDF
+- [ ] Corriger la position de la signature client (SUR la ligne, pas en dessous)
+- [ ] Tester le PDF
+
+## 2. Checkpoint workflow Particulier
+- [ ] Créer un checkpoint une fois que tout fonctionne
+
+## 3. Workflow Entreprise (ne fonctionne PAS actuellement)
+
+**ERREUR ACTUELLE :** `INVALID_MULTIPLE_CHOICE_OPTIONS` - "Insufficient permissions to create new select option \"sarl\""
+
+**PROBLÈME :** Le champ "Forme Juridique" dans Airtable n'accepte pas les valeurs envoyées
+
+**SOLUTION :** Appliquer exactement la même logique que le workflow Particulier
+
+- [ ] Analyser le workflow Particulier qui fonctionne
+- [ ] Corriger l'erreur Airtable "Forme Juridique" dans le workflow Entreprise
+- [ ] Vérifier que le tarif basé sur le nombre d'employés fonctionne
+- [ ] Ajouter "Tout sélectionner" dans "Vos documents d'assurance"
+- [ ] Tester le workflow Entreprise complet
+
+**RÈGLE D'OR :** Ne JAMAIS casser ce qui fonctionne déjà ! 🔒
