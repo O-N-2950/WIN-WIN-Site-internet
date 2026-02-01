@@ -119,7 +119,16 @@ export const appRouter = router({
         if (input.typeClient === "entreprise") {
           // CAS A : ENTREPRISE
           airtableFields["Nom de l'entreprise"] = input.nomEntreprise || "";
-          airtableFields["Forme Juridique "] = input.formeJuridique || "";
+          
+          // Mapper les valeurs frontend vers les valeurs Airtable pour Forme Juridique
+          const formeJuridiqueMapping: Record<string, string> = {
+            'entreprise_individuelle': 'Raison Individuelle',
+            'sarl': 'société à responsabilité limitée (Sàrl)',
+            'sa': 'société anonyme (SA)',
+            'snc': 'société en nom collectif (SNC)',
+            'autre': 'Autre'
+          };
+          airtableFields["Forme Juridique "] = formeJuridiqueMapping[input.formeJuridique || ''] || input.formeJuridique || "";
           airtableFields["Nombre d'employés"] = input.nombreEmployes || 0;
           airtableFields["Contact Adresse, no"] = input.adresseEntreprise || "";
           airtableFields["Contact NPA"] = input.npaEntreprise ? parseInt(input.npaEntreprise, 10) : null;
